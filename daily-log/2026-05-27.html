@@ -1,0 +1,493 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>每日扫描｜互联网大厂组织机制研究</title>
+  <style>
+    :root {
+      color-scheme: light;
+      --bg: #f6f7f1;
+      --paper: #fffdf8;
+      --ink: #172033;
+      --muted: #697181;
+      --line: #ded8c9;
+      --soft: #ece6d7;
+      --accent: #1f6f68;
+      --accent-2: #b45a34;
+      --code: #f1eee6;
+    }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "PingFang SC", "Microsoft YaHei", sans-serif;
+      color: var(--ink);
+      background: var(--bg);
+      line-height: 1.75;
+    }
+    .shell {
+      display: grid;
+      grid-template-columns: minmax(210px, 280px) minmax(0, 1fr);
+      min-height: 100vh;
+    }
+    aside {
+      position: sticky;
+      top: 0;
+      height: 100vh;
+      padding: 28px 22px;
+      border-right: 1px solid var(--line);
+      background: #ebe5d7;
+      overflow: auto;
+    }
+    main {
+      max-width: 1040px;
+      width: 100%;
+      padding: 56px 56px 90px;
+    }
+    .eyebrow {
+      color: var(--accent-2);
+      font-size: 13px;
+      font-weight: 800;
+      letter-spacing: .08em;
+      text-transform: uppercase;
+      margin: 0 0 10px;
+    }
+    h1 {
+      font-size: clamp(30px, 4vw, 48px);
+      line-height: 1.12;
+      margin: 0 0 18px;
+      letter-spacing: 0;
+    }
+    h2 {
+      font-size: 26px;
+      line-height: 1.32;
+      margin: 48px 0 14px;
+      padding-top: 18px;
+      border-top: 1px solid var(--line);
+    }
+    h3 {
+      font-size: 20px;
+      margin: 34px 0 10px;
+      color: #23314d;
+    }
+    h4 {
+      font-size: 17px;
+      margin: 26px 0 8px;
+    }
+    p, li {
+      font-size: 16px;
+      color: #2b3343;
+    }
+    p { margin: 10px 0; }
+    ul { padding-left: 1.2rem; }
+    li { margin: 7px 0; }
+    a { color: var(--accent); text-decoration-thickness: 1px; text-underline-offset: 3px; }
+    code {
+      background: var(--code);
+      border: 1px solid var(--line);
+      border-radius: 5px;
+      padding: 1px 5px;
+      font-size: .92em;
+    }
+    pre {
+      overflow: auto;
+      background: #fff9ec;
+      color: #202838;
+      border: 1px solid #d8ccb8;
+      border-radius: 8px;
+      padding: 18px;
+      box-shadow: inset 4px 0 0 var(--accent);
+      white-space: pre-wrap;
+      word-break: break-word;
+    }
+    pre code {
+      display: block;
+      padding: 0;
+      border: 0;
+      background: transparent;
+      color: inherit;
+      line-height: 1.7;
+      font-size: 14px;
+    }
+    blockquote {
+      margin: 24px 0;
+      padding: 14px 18px;
+      border-left: 4px solid var(--accent);
+      background: #eef4ee;
+      color: #344033;
+    }
+    .table-wrap {
+      overflow-x: auto;
+      margin: 18px 0 26px;
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      background: var(--paper);
+    }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      min-width: 720px;
+    }
+    th, td {
+      padding: 12px 14px;
+      border-bottom: 1px solid var(--line);
+      vertical-align: top;
+      text-align: left;
+      font-size: 14px;
+    }
+    th {
+      background: #e7e0cf;
+      color: #26324a;
+      font-weight: 800;
+      white-space: nowrap;
+    }
+    tr:last-child td { border-bottom: 0; }
+    .topbar {
+      display: flex;
+      gap: 10px;
+      align-items: center;
+      flex-wrap: wrap;
+      margin-bottom: 28px;
+    }
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 38px;
+      padding: 8px 12px;
+      border: 1px solid var(--line);
+      border-radius: 7px;
+      background: var(--paper);
+      color: var(--ink);
+      text-decoration: none;
+      font-weight: 750;
+      font-size: 14px;
+    }
+    .primary { background: var(--accent); border-color: var(--accent); color: white; }
+    .toc-title {
+      margin: 0 0 12px;
+      font-size: 14px;
+      font-weight: 850;
+      color: #273247;
+    }
+    .toc a {
+      display: block;
+      padding: 7px 0;
+      color: #465064;
+      text-decoration: none;
+      font-size: 14px;
+      line-height: 1.45;
+      border-bottom: 1px solid rgba(23,32,51,.08);
+    }
+    .toc a.level-3 { padding-left: 14px; font-size: 13px; color: #626b78; }
+    .meta {
+      color: var(--muted);
+      font-size: 14px;
+      margin-bottom: 24px;
+    }
+    @media (max-width: 900px) {
+      .shell { display: block; }
+      aside { position: relative; height: auto; border-right: 0; border-bottom: 1px solid var(--line); }
+      main { padding: 34px 20px 70px; }
+      .toc { columns: 1; }
+      table { min-width: 640px; }
+    }
+  </style>
+</head>
+<body>
+  <div class="shell">
+    <aside>
+      <p class="toc-title">目录</p>
+      <nav class="toc">
+        <a class="level-2" href="#今日结论-只写结论与证据">今日结论（只写结论与证据）</a>
+        <a class="level-2" href="#今日组织机制信号-按-事件-机制假设-效率影响">今日组织机制信号（按“事件 -&gt; 机制假设 -&gt; 效率影响”）</a>
+        <a class="level-3" href="#信号-a-腾讯撤销-ai-lab-研究组织归属重排">信号 A｜腾讯撤销 AI Lab（研究组织归属重排）</a>
+        <a class="level-3" href="#信号-b-anthropic-labs-product-组织分工-把两种节奏制度化">信号 B｜Anthropic Labs / Product 组织分工（把两种节奏制度化）</a>
+        <a class="level-3" href="#信号-c-openai-结构说明-治理-激励-安全流程耦合">信号 C｜OpenAI 结构说明（治理/激励/安全流程耦合）</a>
+        <a class="level-2" href="#分组观察">分组观察</a>
+        <a class="level-3" href="#传统大厂-国内-国外">传统大厂（国内/国外）</a>
+        <a class="level-3" href="#ai-原生与模型公司">AI 原生与模型公司</a>
+        <a class="level-2" href="#高价值变化卡片-只收录今天证据相对更硬的条目">高价值变化卡片（只收录今天证据相对更硬的条目）</a>
+        <a class="level-3" href="#腾讯-ai-研发组织归属-ai-lab-撤销与并入">腾讯 / AI 研发组织归属 / AI Lab 撤销与并入</a>
+        <a class="level-3" href="#anthropic-产品组织-labs-扩展与-product-组织重排">Anthropic / 产品组织 / Labs 扩展与 Product 组织重排</a>
+        <a class="level-3" href="#openai-治理结构-结构说明页-资本与安全治理耦合">OpenAI / 治理结构 / 结构说明页（资本与安全治理耦合）</a>
+        <a class="level-2" href="#不是新闻而是机制-把-热闹-压缩成可复用判断">不是新闻而是机制（把“热闹”压缩成可复用判断）</a>
+        <a class="level-2" href="#组织情报结论卡-今天可对外复述的最小集合">组织情报结论卡（今天可对外复述的最小集合）</a>
+        <a class="level-2" href="#证据链与可信度-今天进入核心区的条目">证据链与可信度（今天进入核心区的条目）</a>
+        <a class="level-2" href="#去伪存真记录-今天做了什么核验">去伪存真记录（今天做了什么核验）</a>
+        <a class="level-2" href="#渠道索引补充-今日新增">渠道索引补充（今日新增）</a>
+        <a class="level-2" href="#观察池-待核验池">观察池 / 待核验池</a>
+      </nav>
+    </aside>
+    <main>
+      <div class="topbar">
+        <a class="btn primary" href="../index.html">返回研究源</a>
+        <a class="btn" href="./2026-05-27.md">查看 Markdown 原文</a>
+      </div>
+      <p class="eyebrow">Daily Scan</p>
+      <h1>2026-05-27 组织情报信息｜互联网大厂与 AI 原生组织机制扫描</h1>
+      <p class="meta">本页面由本地 Markdown 自动渲染生成，仍保留原始 md 文件作为知识库源文档。</p>
+      <article>
+        <blockquote>私有本地材料。仅用于本地知识库研究；公开分享前必须脱敏，并保留证据等级与不确定性。</blockquote>
+<h2 id="今日结论-只写结论与证据">今日结论（只写结论与证据）</h2>
+<ul>
+<li><strong>“AI 组织归属与考核口径”正在成为传统大厂的显性组织变量</strong>：腾讯被报道撤销 AI Lab 并把人员并入大语言模型与产学研合作单元；其组织口径同时出现“CEO/总裁办公室首席 AI 科学家 + AI Infra/LLM 组织单元”等结构化描述。对外可读信号是：AI 研发从“实验室形态”向“工程化交付/平台化”靠拢，但仍需核验其预算与人事权是否同步变化。证据：B/C（媒体转述内部通知与公众号截图）。来源：<a href="https://news.caijingmobile.com/article/detail/565706" target="_blank" rel="noreferrer">https://news.caijingmobile.com/article/detail/565706</a> ，<a href="https://www.ithome.com/0/950/399.htm" target="_blank" rel="noreferrer">https://www.ithome.com/0/950/399.htm</a></li>
+<li><strong>AI 原生公司在把“探索 vs 规模化”两种 motion 制度化拆分</strong>：Anthropic 官方公告将 Labs（实验产品孵化）与 Product 组织的规模化职责拆开并明确负责人分工，这是“研究驱动产品化”阶段常见的组织机制解法。证据：A（官方公告）。来源：<a href="https://www.anthropic.com/news/introducing-anthropic-labs" target="_blank" rel="noreferrer">https://www.anthropic.com/news/introducing-anthropic-labs</a></li>
+<li><strong>治理与资本结构仍是模型公司组织效率的硬约束</strong>：OpenAI 官方结构说明把“筹资能力 + 人才吸引/保留 + 安全治理委员会常设化”写成同一结构叙事，提示其组织机制的关键矛盾不是单一组织架构，而是治理、激励、与安全流程的耦合。证据：A（官方说明页）。来源：<a href="https://openai.com/id-ID/our-structure/" target="_blank" rel="noreferrer">https://openai.com/id-ID/our-structure/</a></li>
+<li><strong>“基层管理层级压缩/项目负责制”仍是高热度信号，但今天新增证据偏弱</strong>：关于腾讯“取消组长负责制/消灭小组长”的报道仍以媒体与员工口径为主，暂时更适合放入持续观察池而不是写成可迁移结论。证据：C（媒体转述链条为主）。来源：<a href="https://www.ce.cn/xwzx/gnsz/gdxw/202605/t20260522_2982969.shtml" target="_blank" rel="noreferrer">https://www.ce.cn/xwzx/gnsz/gdxw/202605/t20260522_2982969.shtml</a></li>
+<li><strong>阿里集团层技术治理结构出现更清晰的“委员会 + 推理/云/平台分工”叙事</strong>：媒体转载内部信口径显示集团层设立技术委员会并升级通义相关组织；这更像“跨 BU 资源统筹机制”而不仅是单点人事调整，但仍需补齐其强制执行权与预算协调权证据。证据：B/C（媒体转载内部信）。来源：<a href="https://finance.sina.com.cn/roll/2026-04-08/doc-inhtwaie2224474.shtml" target="_blank" rel="noreferrer">https://finance.sina.com.cn/roll/2026-04-08/doc-inhtwaie2224474.shtml</a></li>
+</ul>
+<h2 id="今日组织机制信号-按-事件-机制假设-效率影响">今日组织机制信号（按“事件 -&gt; 机制假设 -&gt; 效率影响”）</h2>
+<h3 id="信号-a-腾讯撤销-ai-lab-研究组织归属重排">信号 A｜腾讯撤销 AI Lab（研究组织归属重排）</h3>
+<ul>
+<li>事件（L1）：媒体称腾讯内部通知撤销 AI Lab，人员调整到“大语言模型部”和“产学研合作中心”。来源：<a href="https://news.caijingmobile.com/article/detail/565706" target="_blank" rel="noreferrer">https://news.caijingmobile.com/article/detail/565706</a></li>
+<li>机制假设（L2）：当研究组织长期存在“归属/考核/方向”摩擦时，组织常通过“并入平台/产品主线”来收敛目标函数与评价口径。</li>
+<li>可能的效率影响（L3，推论）：减少跨组织协调成本、提升工程化交付节奏；但若预算与晋升评价仍分散，组织摩擦可能只是换壳。</li>
+<li>证据强度：中（B）</li>
+<li>反向解释：品牌与成本归集调整 ≠ 研究能力削弱；可能是局部摩擦修复而非战略转向。</li>
+<li>待验证：预算权/绩效评价权/晋升评审主体是否随组织归属同步变化？</li>
+</ul>
+<h3 id="信号-b-anthropic-labs-product-组织分工-把两种节奏制度化">信号 B｜Anthropic Labs / Product 组织分工（把两种节奏制度化）</h3>
+<ul>
+<li>事件（L1）：Anthropic 官方公告扩展 Labs（孵化实验产品），并明确 Product 组织领导与协作方式。来源：<a href="https://www.anthropic.com/news/introducing-anthropic-labs" target="_blank" rel="noreferrer">https://www.anthropic.com/news/introducing-anthropic-labs</a></li>
+<li>机制假设（L2）：把“探索（incubation）”与“规模化（scaling）”的流程、指标与人才画像拆开，降低单一组织同时追逐两种节奏的内耗。</li>
+<li>可能的效率影响（L3，推论）：提升试错速度与主产品稳定性交付的并行度；风险是接口治理不清会抬升协作成本。</li>
+<li>证据强度：高（A）</li>
+<li>反向解释：组织拆分本身不保证效率提升；关键在资源边界、决策权与质量门槛是否清晰。</li>
+<li>待验证：Labs 输出并入主产品的“门槛与治理节点”是什么（安全、合规、可靠性、可观测性）？</li>
+</ul>
+<h3 id="信号-c-openai-结构说明-治理-激励-安全流程耦合">信号 C｜OpenAI 结构说明（治理/激励/安全流程耦合）</h3>
+<ul>
+<li>事件（L1）：OpenAI 官方结构说明强调筹资与留才能力，并描述 Safety and Security Committee 的治理角色。来源：<a href="https://openai.com/id-ID/our-structure/" target="_blank" rel="noreferrer">https://openai.com/id-ID/our-structure/</a></li>
+<li>机制假设（L2）：通过结构与治理设计同时处理三类张力：资本可得性、人才市场激励、以及安全治理稳定性。</li>
+<li>可能的效率影响（L3，推论）：更强筹资/留才能力可能提升执行速度与资源密度；但也可能加重“安全审查 vs 产品节奏”的内部权衡成本。</li>
+<li>证据强度：高（A）</li>
+<li>反向解释：官方页面偏治理叙事，不能直接推出内部研发/产品组织如何协作。</li>
+<li>待验证：SSC 介入项目决策的具体节点与 veto/建议权边界。</li>
+</ul>
+<h2 id="分组观察">分组观察</h2>
+<h3 id="传统大厂-国内-国外">传统大厂（国内/国外）</h3>
+<ul>
+<li>腾讯：AI 研发组织的“归属与考核口径”成为显性议题（AI Lab 调整、AI Infra/LLM 单元、CEO/总裁办公室链路）。来源：<a href="https://news.caijingmobile.com/article/detail/565706" target="_blank" rel="noreferrer">https://news.caijingmobile.com/article/detail/565706</a> ，<a href="https://www.ithome.com/0/950/399.htm" target="_blank" rel="noreferrer">https://www.ithome.com/0/950/399.htm</a></li>
+<li>阿里：集团层技术治理与 AI 平台分工叙事增强（技术委员会、推理/云/平台分工、通义组织升级）。来源：<a href="https://finance.sina.com.cn/roll/2026-04-08/doc-inhtwaie2224474.shtml" target="_blank" rel="noreferrer">https://finance.sina.com.cn/roll/2026-04-08/doc-inhtwaie2224474.shtml</a></li>
+</ul>
+<h3 id="ai-原生与模型公司">AI 原生与模型公司</h3>
+<ul>
+<li>Anthropic：把“实验孵化（Labs）”正式组织化，并与规模化 Product 组织拆分节奏与责任。来源：<a href="https://www.anthropic.com/news/introducing-anthropic-labs" target="_blank" rel="noreferrer">https://www.anthropic.com/news/introducing-anthropic-labs</a></li>
+<li>OpenAI：公开结构说明强调“资本结构/治理/安全委员会”作为吸引与保留人才的组织条件变量。来源：<a href="https://openai.com/id-ID/our-structure/" target="_blank" rel="noreferrer">https://openai.com/id-ID/our-structure/</a></li>
+</ul>
+<h2 id="高价值变化卡片-只收录今天证据相对更硬的条目">高价值变化卡片（只收录今天证据相对更硬的条目）</h2>
+<h3 id="腾讯-ai-研发组织归属-ai-lab-撤销与并入">腾讯 / AI 研发组织归属 / AI Lab 撤销与并入</h3>
+<ul>
+<li>时间：报道时间 2026-03-20。</li>
+<li>组织范围：AI Lab -&gt; 大语言模型部 + 产学研合作中心（媒体口径）。</li>
+<li>机制类型：组织结构、研究/应用边界、绩效与方向治理。</li>
+<li>机制变化：从“独立实验室形态”转向“更贴近模型研发主线与外部合作接口”的组织归属。</li>
+<li>组织影响（推论）：目标函数更收敛、工程化交付链条更短；但需要核验权责与资源是否同步。</li>
+<li>来源与证据：<a href="https://news.caijingmobile.com/article/detail/565706（B）" target="_blank" rel="noreferrer">https://news.caijingmobile.com/article/detail/565706（B）</a></li>
+<li>阅读价值：核心结论（但仍需补齐一手可核验材料）</li>
+<li>入库判断：L2（双源互证不足，尚不能写成确定结论）</li>
+</ul>
+<h3 id="anthropic-产品组织-labs-扩展与-product-组织重排">Anthropic / 产品组织 / Labs 扩展与 Product 组织重排</h3>
+<ul>
+<li>时间：2026-01-13。</li>
+<li>组织范围：Labs（实验孵化）与 Product（规模化产品）两种 motion 的组织化拆分。</li>
+<li>机制类型：组织结构、产品研发流程、节奏治理。</li>
+<li>机制变化：把“孵化探索”与“规模化交付”的责任、节奏、人才画像显性分离。</li>
+<li>组织影响（推论）：并行提升探索速度与稳定性交付；风险是接口治理不清导致协作成本上升。</li>
+<li>来源与证据：<a href="https://www.anthropic.com/news/introducing-anthropic-labs（A）" target="_blank" rel="noreferrer">https://www.anthropic.com/news/introducing-anthropic-labs（A）</a></li>
+<li>阅读价值：核心结论</li>
+<li>入库判断：L3（官方一手 + 机制清晰，具备可信结论条件；趋势验证仍需更多公司样本）</li>
+</ul>
+<h3 id="openai-治理结构-结构说明页-资本与安全治理耦合">OpenAI / 治理结构 / 结构说明页（资本与安全治理耦合）</h3>
+<ul>
+<li>时间：页面口径包含 2025-10-28 结构更新描述（抓取可读版本）。</li>
+<li>组织范围：Foundation / Group 的治理结构与 SSC 常设化。</li>
+<li>机制类型：治理机制、激励机制（留才/筹资）、安全治理流程。</li>
+<li>机制变化：通过结构设计把“筹资 + 留才 + 安全治理”写成同一套组织条件。</li>
+<li>组织影响（推论）：更高资源密度潜在提升执行节奏；安全流程与商业化节奏的权衡成本可能更显性。</li>
+<li>来源与证据：<a href="https://openai.com/id-ID/our-structure/（A）" target="_blank" rel="noreferrer">https://openai.com/id-ID/our-structure/（A）</a></li>
+<li>阅读价值：持续观察（对组织效率理解很关键，但对日常组织机制操作的可迁移性需谨慎）</li>
+<li>入库判断：L3（官方一手 + 结构清晰）</li>
+</ul>
+<h2 id="不是新闻而是机制-把-热闹-压缩成可复用判断">不是新闻而是机制（把“热闹”压缩成可复用判断）</h2>
+<ul>
+<li>“撤销某 Lab/新设某组织”本身不是结论；结论是：<strong>组织把评价口径、预算权、人事权、与交付责任如何重新对齐</strong>。</li>
+<li>“新增 Labs/孵化团队”也不是结论；结论是：<strong>公司是否承认并制度化两种节奏，并为其配置不同的流程与人才画像</strong>。</li>
+<li>“治理结构说明”不是八卦；其组织含义在于：<strong>人才激励、资本结构、与安全流程如何共同约束决策速度与协作成本</strong>。</li>
+</ul>
+<h2 id="组织情报结论卡-今天可对外复述的最小集合">组织情报结论卡（今天可对外复述的最小集合）</h2>
+<ul>
+<li>结论 1：腾讯被报道撤销 AI Lab 并重排 AI 研发组织归属，指向“研究形态 -&gt; 平台/工程化形态”的治理收敛趋势（证据中等，需补齐权责变化旁证）。来源：<a href="https://news.caijingmobile.com/article/detail/565706" target="_blank" rel="noreferrer">https://news.caijingmobile.com/article/detail/565706</a> ，<a href="https://www.ithome.com/0/950/399.htm" target="_blank" rel="noreferrer">https://www.ithome.com/0/950/399.htm</a></li>
+<li>结论 2：Anthropic 公开把 Labs（探索）与 Product（规模化）拆分，是 AI 原生公司把两种 motion 制度化的高可信样本。来源：<a href="https://www.anthropic.com/news/introducing-anthropic-labs" target="_blank" rel="noreferrer">https://www.anthropic.com/news/introducing-anthropic-labs</a></li>
+<li>结论 3：OpenAI 结构说明把筹资/留才与 SSC 安全治理常设化放在同一结构叙事中，提示“治理与激励”是组织效率硬约束变量。来源：<a href="https://openai.com/id-ID/our-structure/" target="_blank" rel="noreferrer">https://openai.com/id-ID/our-structure/</a></li>
+</ul>
+<h2 id="证据链与可信度-今天进入核心区的条目">证据链与可信度（今天进入核心区的条目）</h2>
+<div class="table-wrap"><table><thead><tr>
+<th>条目</th>
+<th>主要来源</th>
+<th>证据等级</th>
+<th>置信度</th>
+<th>阅读价值</th>
+<th>备注</th>
+</tr></thead><tbody>
+<tr>
+<td>腾讯撤销 AI Lab 并并入相关组织</td>
+<td>《财经》报道</td>
+<td>B</td>
+<td>中</td>
+<td>核心结论</td>
+<td>缺官方可核验原文；可先入库为“事实观察”而非确定结论 <a href="https://news.caijingmobile.com/article/detail/565706" target="_blank" rel="noreferrer">https://news.caijingmobile.com/article/detail/565706</a></td>
+</tr>
+<tr>
+<td>腾讯 AI 岗位谣言辟谣 + 组织口径</td>
+<td>IT之家（引公众号截图）</td>
+<td>B/C</td>
+<td>中</td>
+<td>背景参考</td>
+<td>截图需二次校验原文；“汇报线=权力”不能直接推出 <a href="https://www.ithome.com/0/950/399.htm" target="_blank" rel="noreferrer">https://www.ithome.com/0/950/399.htm</a></td>
+</tr>
+<tr>
+<td>Anthropic Labs / Product 分工</td>
+<td>Anthropic 官方</td>
+<td>A</td>
+<td>高</td>
+<td>核心结论</td>
+<td>一手公告，机制清晰 <a href="https://www.anthropic.com/news/introducing-anthropic-labs" target="_blank" rel="noreferrer">https://www.anthropic.com/news/introducing-anthropic-labs</a></td>
+</tr>
+<tr>
+<td>OpenAI 结构说明与 SSC</td>
+<td>OpenAI 官方</td>
+<td>A</td>
+<td>高</td>
+<td>持续观察</td>
+<td>结构叙事强，但对内部协作方式仍需旁证 <a href="https://openai.com/id-ID/our-structure/" target="_blank" rel="noreferrer">https://openai.com/id-ID/our-structure/</a></td>
+</tr>
+<tr>
+<td>腾讯“消灭小组长”报道</td>
+<td>中国经济网转述链</td>
+<td>C</td>
+<td>低-中</td>
+<td>持续观察</td>
+<td>暂不写成确定结论 <a href="https://www.ce.cn/xwzx/gnsz/gdxw/202605/t20260522_2982969.shtml" target="_blank" rel="noreferrer">https://www.ce.cn/xwzx/gnsz/gdxw/202605/t20260522_2982969.shtml</a></td>
+</tr>
+<tr>
+<td>阿里技术委员会与通义组织升级</td>
+<td>新浪财经转载</td>
+<td>B/C</td>
+<td>中</td>
+<td>持续观察</td>
+<td>需核验技术委员会权责边界 <a href="https://finance.sina.com.cn/roll/2026-04-08/doc-inhtwaie2224474.shtml" target="_blank" rel="noreferrer">https://finance.sina.com.cn/roll/2026-04-08/doc-inhtwaie2224474.shtml</a></td>
+</tr>
+</tbody></table></div>
+<h2 id="去伪存真记录-今天做了什么核验">去伪存真记录（今天做了什么核验）</h2>
+<ul>
+<li>已做：把“腾讯 AI Lab 调整”“Anthropic Labs”“OpenAI 结构说明”拆成 L1/L2/L3，避免把推论写成事实。</li>
+<li>已做：对“腾讯消灭小组长”仅保留为信号与观察池条目，不进入可复述结论。</li>
+<li>未完成（受限于当日无法使用 AnySearch 的 URL extract）：对更多二手报道的原始出处链（第一来源、发布时间、引用链）还需要回补。</li>
+</ul>
+<h2 id="渠道索引补充-今日新增">渠道索引补充（今日新增）</h2>
+<div class="table-wrap"><table><thead><tr>
+<th>渠道</th>
+<th>URL</th>
+<th>公司</th>
+<th>主题</th>
+<th>证据等级</th>
+<th>是否新增</th>
+</tr></thead><tbody>
+<tr>
+<td>《财经》</td>
+<td><a href="https://news.caijingmobile.com/article/detail/565706" target="_blank" rel="noreferrer">https://news.caijingmobile.com/article/detail/565706</a></td>
+<td>腾讯</td>
+<td>AI Lab 撤销</td>
+<td>B</td>
+<td>是</td>
+</tr>
+<tr>
+<td>IT之家</td>
+<td><a href="https://www.ithome.com/0/950/399.htm" target="_blank" rel="noreferrer">https://www.ithome.com/0/950/399.htm</a></td>
+<td>腾讯</td>
+<td>AI 负责人辟谣/组织口径</td>
+<td>B/C</td>
+<td>是</td>
+</tr>
+<tr>
+<td>阿里（转载）</td>
+<td><a href="https://finance.sina.com.cn/roll/2026-04-08/doc-inhtwaie2224474.shtml" target="_blank" rel="noreferrer">https://finance.sina.com.cn/roll/2026-04-08/doc-inhtwaie2224474.shtml</a></td>
+<td>阿里</td>
+<td>技术委员会/通义升级</td>
+<td>B/C</td>
+<td>是</td>
+</tr>
+<tr>
+<td>Anthropic 官方</td>
+<td><a href="https://www.anthropic.com/news/introducing-anthropic-labs" target="_blank" rel="noreferrer">https://www.anthropic.com/news/introducing-anthropic-labs</a></td>
+<td>Anthropic</td>
+<td>Labs/产品组织</td>
+<td>A</td>
+<td>是</td>
+</tr>
+<tr>
+<td>OpenAI 官方</td>
+<td><a href="https://openai.com/id-ID/our-structure/" target="_blank" rel="noreferrer">https://openai.com/id-ID/our-structure/</a></td>
+<td>OpenAI</td>
+<td>治理/结构说明</td>
+<td>A</td>
+<td>是</td>
+</tr>
+<tr>
+<td>中国经济网（转述）</td>
+<td><a href="https://www.ce.cn/xwzx/gnsz/gdxw/202605/t20260522_2982969.shtml" target="_blank" rel="noreferrer">https://www.ce.cn/xwzx/gnsz/gdxw/202605/t20260522_2982969.shtml</a></td>
+<td>腾讯</td>
+<td>取消组长制（传闻/报道）</td>
+<td>C</td>
+<td>是</td>
+</tr>
+</tbody></table></div>
+<h2 id="观察池-待核验池">观察池 / 待核验池</h2>
+<div class="table-wrap"><table><thead><tr>
+<th>线索</th>
+<th>当前证据</th>
+<th>为什么不够</th>
+<th>需要怎样的互证</th>
+</tr></thead><tbody>
+<tr>
+<td>腾讯是否系统性从“组长负责制”转“项目负责制”</td>
+<td>媒体/员工口径</td>
+<td>缺可核验一手材料</td>
+<td>找到更多权威媒体互证、或可公开的制度/handbook/高管表述旁证 <a href="https://www.ce.cn/xwzx/gnsz/gdxw/202605/t20260522_2982969.shtml" target="_blank" rel="noreferrer">https://www.ce.cn/xwzx/gnsz/gdxw/202605/t20260522_2982969.shtml</a></td>
+</tr>
+<tr>
+<td>阿里技术委员会是否具备强制执行/预算协调权</td>
+<td>转载内部信口径</td>
+<td>缺权责边界与运行机制</td>
+<td>找到更多一手材料（对外演讲、财报问答、招聘/组织任命变化等） <a href="https://finance.sina.com.cn/roll/2026-04-08/doc-inhtwaie2224474.shtml" target="_blank" rel="noreferrer">https://finance.sina.com.cn/roll/2026-04-08/doc-inhtwaie2224474.shtml</a></td>
+</tr>
+<tr>
+<td>腾讯 AI 组织口径里的预算与评价权边界</td>
+<td>媒体整理口径</td>
+<td>组织单元存在不等于权责清晰</td>
+<td>需要进一步旁证：负责人权责、绩效流程、资源分配流程 <a href="https://www.ithome.com/0/950/399.htm" target="_blank" rel="noreferrer">https://www.ithome.com/0/950/399.htm</a></td>
+</tr>
+</tbody></table></div>
+<h2 id="公开知识库入库判断-按-l0-l4">公开知识库入库判断（按 L0-L4）</h2>
+<blockquote>说明：这里的“入库”指进入本地私有知识源的结构化条目；公开知识库仅接收脱敏后的主题结论与来源索引。</blockquote>
+<ul>
+<li>Anthropic Labs / Product 组织分工：入库 L3（官方一手，机制清晰）。<a href="https://www.anthropic.com/news/introducing-anthropic-labs" target="_blank" rel="noreferrer">https://www.anthropic.com/news/introducing-anthropic-labs</a></li>
+<li>OpenAI 结构说明与 SSC：入库 L3（官方一手，结构清晰；可迁移性需标注边界）。<a href="https://openai.com/id-ID/our-structure/" target="_blank" rel="noreferrer">https://openai.com/id-ID/our-structure/</a></li>
+<li>腾讯撤销 AI Lab：入库 L2（权威媒体转述内部通知；仍需更多互证才能沉淀为可信结论）。<a href="https://news.caijingmobile.com/article/detail/565706" target="_blank" rel="noreferrer">https://news.caijingmobile.com/article/detail/565706</a></li>
+<li>阿里技术委员会/通义升级：入库 L2（转载内部信口径；需补齐权责与运行机制证据）。<a href="https://finance.sina.com.cn/roll/2026-04-08/doc-inhtwaie2224474.shtml" target="_blank" rel="noreferrer">https://finance.sina.com.cn/roll/2026-04-08/doc-inhtwaie2224474.shtml</a></li>
+<li>腾讯“消灭小组长”：仅入观察池（暂不入库结论区）。<a href="https://www.ce.cn/xwzx/gnsz/gdxw/202605/t20260522_2982969.shtml" target="_blank" rel="noreferrer">https://www.ce.cn/xwzx/gnsz/gdxw/202605/t20260522_2982969.shtml</a></li>
+</ul>
+<h2 id="关键反模式-边界审校">关键反模式（边界审校）</h2>
+<ul>
+<li>不要把热闹当趋势：单篇报道/单个部门试点不等于集团级机制。</li>
+<li>不要把工具使用当组织变革：组织效率变化要看权责、流程、指标是否被重写。</li>
+<li>不要把单点案例当普适方法：AI 原生公司的组织节奏与传统大厂治理约束不可直接类比。</li>
+<li>不要只比较快而不比较风险：扁平化/高授权可能引入合规与质量风险，不能只看速度。</li>
+</ul>
+      </article>
+    </main>
+  </div>
+</body>
+</html>
