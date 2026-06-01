@@ -1,0 +1,990 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>最新大厂组织情报｜互联网大厂组织机制研究</title>
+  <style>
+    :root {
+      color-scheme: light;
+      --bg: #f6f7f1;
+      --paper: #fffdf8;
+      --ink: #172033;
+      --muted: #697181;
+      --line: #ded8c9;
+      --soft: #ece6d7;
+      --accent: #1f6f68;
+      --accent-2: #b45a34;
+      --code: #f1eee6;
+    }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "PingFang SC", "Microsoft YaHei", sans-serif;
+      color: var(--ink);
+      background: var(--bg);
+      line-height: 1.75;
+    }
+    .shell {
+      display: grid;
+      grid-template-columns: minmax(210px, 280px) minmax(0, 1fr);
+      min-height: 100vh;
+    }
+    aside {
+      position: sticky;
+      top: 0;
+      height: 100vh;
+      padding: 28px 22px;
+      border-right: 1px solid var(--line);
+      background: #ebe5d7;
+      overflow: auto;
+    }
+    main {
+      max-width: 1040px;
+      width: 100%;
+      padding: 56px 56px 90px;
+    }
+    .eyebrow {
+      color: var(--accent-2);
+      font-size: 13px;
+      font-weight: 800;
+      letter-spacing: .08em;
+      text-transform: uppercase;
+      margin: 0 0 10px;
+    }
+    h1 {
+      font-size: clamp(30px, 4vw, 48px);
+      line-height: 1.12;
+      margin: 0 0 18px;
+      letter-spacing: 0;
+    }
+    h2 {
+      font-size: 26px;
+      line-height: 1.32;
+      margin: 48px 0 14px;
+      padding-top: 18px;
+      border-top: 1px solid var(--line);
+    }
+    h3 {
+      font-size: 20px;
+      margin: 34px 0 10px;
+      color: #23314d;
+    }
+    h4 {
+      font-size: 17px;
+      margin: 26px 0 8px;
+    }
+    p, li {
+      font-size: 16px;
+      color: #2b3343;
+    }
+    p { margin: 10px 0; }
+    ul { padding-left: 1.2rem; }
+    li { margin: 7px 0; }
+    a { color: var(--accent); text-decoration-thickness: 1px; text-underline-offset: 3px; }
+    code {
+      background: var(--code);
+      border: 1px solid var(--line);
+      border-radius: 5px;
+      padding: 1px 5px;
+      font-size: .92em;
+    }
+    pre {
+      overflow: auto;
+      background: #fff9ec;
+      color: #202838;
+      border: 1px solid #d8ccb8;
+      border-radius: 8px;
+      padding: 18px;
+      box-shadow: inset 4px 0 0 var(--accent);
+      white-space: pre-wrap;
+      word-break: break-word;
+    }
+    pre code {
+      display: block;
+      padding: 0;
+      border: 0;
+      background: transparent;
+      color: inherit;
+      line-height: 1.7;
+      font-size: 14px;
+    }
+    blockquote {
+      margin: 24px 0;
+      padding: 14px 18px;
+      border-left: 4px solid var(--accent);
+      background: #eef4ee;
+      color: #344033;
+    }
+    .table-wrap {
+      overflow-x: auto;
+      margin: 18px 0 26px;
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      background: var(--paper);
+    }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      min-width: 720px;
+    }
+    th, td {
+      padding: 12px 14px;
+      border-bottom: 1px solid var(--line);
+      vertical-align: top;
+      text-align: left;
+      font-size: 14px;
+    }
+    th {
+      background: #e7e0cf;
+      color: #26324a;
+      font-weight: 800;
+      white-space: nowrap;
+    }
+    tr:last-child td { border-bottom: 0; }
+    .topbar {
+      display: flex;
+      gap: 10px;
+      align-items: center;
+      flex-wrap: wrap;
+      margin-bottom: 28px;
+    }
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 38px;
+      padding: 8px 12px;
+      border: 1px solid var(--line);
+      border-radius: 7px;
+      background: var(--paper);
+      color: var(--ink);
+      text-decoration: none;
+      font-weight: 750;
+      font-size: 14px;
+    }
+    .primary { background: var(--accent); border-color: var(--accent); color: white; }
+    .toc-title {
+      margin: 0 0 12px;
+      font-size: 14px;
+      font-weight: 850;
+      color: #273247;
+    }
+    .toc a {
+      display: block;
+      padding: 7px 0;
+      color: #465064;
+      text-decoration: none;
+      font-size: 14px;
+      line-height: 1.45;
+      border-bottom: 1px solid rgba(23,32,51,.08);
+    }
+    .toc a.level-3 { padding-left: 14px; font-size: 13px; color: #626b78; }
+    .meta {
+      color: var(--muted);
+      font-size: 14px;
+      margin-bottom: 24px;
+    }
+    @media (max-width: 900px) {
+      .shell { display: block; }
+      aside { position: relative; height: auto; border-right: 0; border-bottom: 1px solid var(--line); }
+      main { padding: 34px 20px 70px; }
+      .toc { columns: 1; }
+      table { min-width: 640px; }
+    }
+  </style>
+</head>
+<body>
+  <div class="shell">
+    <aside>
+      <p class="toc-title">目录</p>
+      <nav class="toc">
+        <a class="level-2" href="#0-结论先行">0. 结论先行</a>
+        <a class="level-3" href="#当前判断状态">当前判断状态</a>
+        <a class="level-2" href="#1-本轮持续报告结构">1. 本轮持续报告结构</a>
+        <a class="level-3" href="#1-1-当前变化雷达">1.1 当前变化雷达</a>
+        <a class="level-3" href="#1-2-四主题总览">1.2 四主题总览</a>
+        <a class="level-3" href="#1-3-公司现状卡片口径">1.3 公司现状卡片口径</a>
+        <a class="level-3" href="#1-4-机制对比矩阵">1.4 机制对比矩阵</a>
+        <a class="level-3" href="#1-5-证据分级与状态映射">1.5 证据分级与状态映射</a>
+        <a class="level-2" href="#2-企业现状总览">2. 企业现状总览</a>
+        <a class="level-3" href="#2-1-国内公司">2.1 国内公司</a>
+        <a class="level-3" href="#2-2-国外传统科技公司">2.2 国外传统科技公司</a>
+        <a class="level-3" href="#2-3-ai-原生与模型公司">2.3 AI 原生与模型公司</a>
+        <a class="level-2" href="#3-四个主题的深度观察">3. 四个主题的深度观察</a>
+        <a class="level-3" href="#3-1-组织扁平化-从-管人层级-到-任务-owner">3.1 组织扁平化：从“管人层级”到“任务 owner”</a>
+        <a class="level-3" href="#3-2-人才密度-从-保留人才-到-保留高产能人才">3.2 人才密度：从“保留人才”到“保留高产能人才”</a>
+        <a class="level-3" href="#3-3-职级与岗位架构-从身份体系到能力组合">3.3 职级与岗位架构：从身份体系到能力组合</a>
+        <a class="level-3" href="#3-4-绩效晋升与激励-ai-正在进入评价系统">3.4 绩效晋升与激励：AI 正在进入评价系统</a>
+        <a class="level-3" href="#3-5-ai-原生组织边界-research-product-safety-delivery-分化">3.5 AI 原生组织边界：Research / Product / Safety / Delivery 分化</a>
+      </nav>
+    </aside>
+    <main>
+      <div class="topbar">
+        <a class="btn primary" href="../index.html">返回研究源</a>
+        <a class="btn" href="./latest-bigtech-org-intelligence.md">查看 Markdown 原文</a>
+      </div>
+      <p class="eyebrow">Current Intelligence</p>
+      <h1>最新大厂组织情报：AI 时代互联网大厂组织机制现状</h1>
+      <p class="meta">本页面由本地 Markdown 自动渲染生成，仍保留原始 md 文件作为知识库源文档。</p>
+      <article>
+        <blockquote>私有本地总报告。更新至 2026-05-29。这个页面是顶部主入口，用来承载当前最完整的组织情报判断；每日扫描用于补充证据、反证和日期溯源。</blockquote>
+<h2 id="0-结论先行">0. 结论先行</h2>
+<p>这轮持续扫描看到的主线没有变：AI 时代的大厂组织调整，表面上是团队合并、裁员、转岗、职级调整、FDE 新岗位，底层实际上在改四件事：</p>
+<p class="ordered">1. <strong>谁有权组织工作</strong>：从固定组长、总监、部门墙，转向项目 owner、pod/cohort、FDE、Deployment Company、模型产品线负责人。</p>
+<p class="ordered">2. <strong>什么算高绩效</strong>：从完成业务目标，扩展到能否用 AI 放大产能、减少资源占用、缩短交付周期、提高客户或业务结果。</p>
+<p class="ordered">3. <strong>职级如何定义能力</strong>：从专业/管理身份分轨，转向复合能力、统一评价池、AI fluency、跨职能 ownership。</p>
+<p class="ordered">4. <strong>资源如何分配</strong>：headcount、奖金、晋升、股票、项目预算正在被更强地要求和 AI 产能、业务结果、人才密度、模型交付能力绑定。</p>
+<p>当前最有价值的组织情报判断是：<strong>AI 组织变革的关键不在“买了什么工具”，而在企业是否把 AI 能力嵌入权责、流程、绩效、晋升、职级、用人和资源审批。</strong></p>
+<h3 id="当前判断状态">当前判断状态</h3>
+<div class="table-wrap"><table><thead><tr>
+<th>状态</th>
+<th>组织情报判断</th>
+<th>代表公司</th>
+<th>当前证据</th>
+</tr></thead><tbody>
+<tr>
+<td>有定论</td>
+<td>AI 原生公司正在把“探索、规模化、安全、交付”拆成不同组织节奏和组织能力</td>
+<td>OpenAI、Anthropic</td>
+<td>OpenAI Deployment Company；Anthropic Labs/Product 与 RSP</td>
+</tr>
+<tr>
+<td>有定论</td>
+<td>公开透明的晋升、人才盘点、绩效校准仍是理解组织效率的关键基线</td>
+<td>GitLab、Netflix</td>
+<td>Handbook / 文化页 / 制度公开材料</td>
+</tr>
+<tr>
+<td>正在变化</td>
+<td>传统大厂正在把 AI 研发从实验室、专项团队推向模型产品线、平台组织和业务交付主干</td>
+<td>腾讯、阿里、百度、Microsoft</td>
+<td>媒体转述内部调整、组织升级、职级改革</td>
+</tr>
+<tr>
+<td>正在变化</td>
+<td>裁员、转岗、层级压缩和 AI 投入叙事正在绑定，但“效率已提升”还不能成立</td>
+<td>Meta、Cisco、Intuit、Salesforce</td>
+<td>官方公告、Reuters/权威媒体转述</td>
+</tr>
+<tr>
+<td>待确认</td>
+<td>Agent / coding infra / Harness 等新型组织单元是否成型</td>
+<td>DeepSeek、Mistral、国内模型公司</td>
+<td>招聘、媒体、社媒线索，组织边界不足</td>
+</tr>
+</tbody></table></div>
+<h2 id="1-本轮持续报告结构">1. 本轮持续报告结构</h2>
+<p>这份主报告沿用首轮深度报告的结构，只把每日扫描新增材料沉淀进去。每日扫描不是主叙事，而是证据链和日期索引。</p>
+<h3 id="1-1-当前变化雷达">1.1 当前变化雷达</h3>
+<p>每日扫描进入主报告时，先看是否命中以下变化：</p>
+<ul>
+<li>公司是否发生组织调整、BU 合并、汇报线变化。</li>
+<li>是否有绩效、晋升、职级、薪酬机制变化。</li>
+<li>是否有 AI 使用进入绩效、招聘、晋升或资源审批。</li>
+<li>是否出现干部年轻化、项目 owner、去中层化、人才密度、FDE、Agent Engineer、Post-training 等信号。</li>
+<li>是否有 Safety、Policy、Alignment、Preparedness、Red Team 等安全治理进入核心流程。</li>
+</ul>
+<h3 id="1-2-四主题总览">1.2 四主题总览</h3>
+<div class="table-wrap"><table><thead><tr>
+<th>主题</th>
+<th>研究问题</th>
+<th>当前状态</th>
+<th>本轮代表公司</th>
+</tr></thead><tbody>
+<tr>
+<td>组织扁平化 / 项目 owner</td>
+<td>管理权是否从固定层级转向项目、任务、pod、FDE？</td>
+<td>正在变化</td>
+<td>腾讯、Meta、OpenAI、Microsoft</td>
+</tr>
+<tr>
+<td>人才密度 / 高绩效</td>
+<td>高绩效是否被重新定义？AI 是否改变 headcount 与产能判断？</td>
+<td>正在变化</td>
+<td>Netflix、GitLab、Shopify、Salesforce、Intuit</td>
+</tr>
+<tr>
+<td>职级与岗位架构</td>
+<td>职级是否并轨、弱化 title、强化复合能力和 AI fluency？</td>
+<td>正在变化</td>
+<td>百度、阿里、蚂蚁、GitLab、AI 原生公司</td>
+</tr>
+<tr>
+<td>绩效晋升与激励</td>
+<td>AI 使用、业务结果、项目贡献是否进入评价、奖金和晋升？</td>
+<td>待确认到正在变化</td>
+<td>Shopify、Amazon、GitLab、阿里、字节</td>
+</tr>
+<tr>
+<td>AI 原生组织边界</td>
+<td>Research / Applied / Product / Infra / Safety / Delivery 如何分工？</td>
+<td>有定论到正在变化</td>
+<td>OpenAI、Anthropic、DeepSeek、Mistral</td>
+</tr>
+</tbody></table></div>
+<h3 id="1-3-公司现状卡片口径">1.3 公司现状卡片口径</h3>
+<p>每家公司统一用同一套结构沉淀，避免变成新闻摘抄：</p>
+<ul>
+<li>当前强信号。</li>
+<li>状态：有定论 / 正在变化 / 待确认。</li>
+<li>机制事实：可核验事实，不写推论。</li>
+<li>机制判断：这件事可能说明什么权责、流程、评价、资源变化。</li>
+<li>组织影响：对决策速度、协作成本、管理跨度、人才密度、绩效压力、职能边界或执行节奏的影响。</li>
+<li>证据等级。</li>
+<li>日期溯源。</li>
+<li>追踪问题。</li>
+</ul>
+<h3 id="1-4-机制对比矩阵">1.4 机制对比矩阵</h3>
+<div class="table-wrap"><table><thead><tr>
+<th>公司</th>
+<th>AI 落点</th>
+<th>组织落点</th>
+<th>人才 / 绩效落点</th>
+<th>当前风险</th>
+</tr></thead><tbody>
+<tr>
+<td>OpenAI</td>
+<td>Deployment Company / FDE</td>
+<td>交付能力组织化</td>
+<td>FDE 成为模型商业化关键岗位族群</td>
+<td>专业服务化是否可复制</td>
+</tr>
+<tr>
+<td>Anthropic</td>
+<td>Labs / Product / RSP</td>
+<td>探索、规模化、安全治理拆节奏</td>
+<td>安全门槛进入发布流程</td>
+<td>制度文本不等于执行质量</td>
+</tr>
+<tr>
+<td>Shopify</td>
+<td>AI baseline expectation</td>
+<td>headcount 审批前置 AI 证明</td>
+<td>AI 使用进入绩效/同侪反馈</td>
+<td>AI 使用质量如何评价</td>
+</tr>
+<tr>
+<td>GitLab</td>
+<td>暂无强 AI 新机制</td>
+<td>晋升、人才盘点、ACR 公开</td>
+<td>透明晋升与校准</td>
+<td>公开机制不等于适合所有阶段</td>
+</tr>
+<tr>
+<td>Meta</td>
+<td>AI-focused initiatives</td>
+<td>转岗、pods/cohorts、裁员</td>
+<td>AI 优先级进入人力配置</td>
+<td>组织震荡、士气、范围不清</td>
+</tr>
+<tr>
+<td>腾讯</td>
+<td>混元 / AI Lab 调整</td>
+<td>研究向模型产品线并轨；项目负责制线索</td>
+<td>年轻负责人、项目 owner 待核验</td>
+<td>旧 leader 换 title，权责未变</td>
+</tr>
+<tr>
+<td>百度</td>
+<td>大模型 / 复合人才</td>
+<td>数字职级并轨</td>
+<td>专业力 + 领导力</td>
+<td>专家路线被管理化</td>
+</tr>
+<tr>
+<td>阿里</td>
+<td>通义 / 技术委员会</td>
+<td>集团技术治理与激励口径变化</td>
+<td>年终奖结构、晋升窗口线索</td>
+<td>预算权和执行权不清</td>
+</tr>
+</tbody></table></div>
+<h3 id="1-5-证据分级与状态映射">1.5 证据分级与状态映射</h3>
+<div class="table-wrap"><table><thead><tr>
+<th>状态</th>
+<th>证据门槛</th>
+<th>可写成什么</th>
+</tr></thead><tbody>
+<tr>
+<td>有定论</td>
+<td>L3：一手材料或多源互证，机制含义清晰</td>
+<td>当前组织情报判断</td>
+</tr>
+<tr>
+<td>正在变化</td>
+<td>L2：事实观察较强，但机制边界、范围或长期影响不足</td>
+<td>趋势观察和追踪问题</td>
+</tr>
+<tr>
+<td>待确认</td>
+<td>L1 或以下：单源、转述、招聘、匿名、范围不清</td>
+<td>观察池和待核验池</td>
+</tr>
+</tbody></table></div>
+<h2 id="2-企业现状总览">2. 企业现状总览</h2>
+<h3 id="2-1-国内公司">2.1 国内公司</h3>
+<div class="table-wrap"><table><thead><tr>
+<th>公司</th>
+<th>状态</th>
+<th>当前强信号</th>
+<th>机制判断</th>
+<th>证据等级</th>
+<th>日期溯源</th>
+</tr></thead><tbody>
+<tr>
+<td>腾讯</td>
+<td>正在变化</td>
+<td>AI Lab 调整并入大模型/混元相关组织；项目负责制、弱化组长制线索</td>
+<td>AI 研发从实验室形态向模型产品线、平台化和交付节奏靠拢；基层管理权责是否改变仍待核验</td>
+<td>B/C</td>
+<td><a href="../daily-log/2026-05-26.html">2026-05-26</a>、<a href="../daily-log/2026-05-27.html">2026-05-27</a>、<a href="../daily-log/2026-05-29.html">2026-05-29</a></td>
+</tr>
+<tr>
+<td>百度</td>
+<td>正在变化</td>
+<td>中管层以下 T/P/E/Band/M 统一为数字职级，专业/管理双通道打通</td>
+<td>用统一评价语言适配复合型人才，可能走向同池评价</td>
+<td>B</td>
+<td><a href="../daily-log/2026-05-26.html">2026-05-26</a>、<a href="../daily-log/2026-05-28.html">2026-05-28</a></td>
+</tr>
+<tr>
+<td>阿里</td>
+<td>正在变化</td>
+<td>技术委员会、通义组织升级、十三薪并入年终奖口径</td>
+<td>技术治理和激励解释权正在重排，但强制执行权与预算协调权不足</td>
+<td>B/C</td>
+<td><a href="../daily-log/2026-05-27.html">2026-05-27</a>、<a href="../daily-log/2026-05-28.html">2026-05-28</a></td>
+</tr>
+<tr>
+<td>美团</td>
+<td>待确认</td>
+<td>核心本地商业整合、年轻负责人、AI Native 产品愿景</td>
+<td>组织整合信号强，但 AI 机制落点和绩效机制变化不足</td>
+<td>B/C</td>
+<td><a href="./2026-05-26-first-run-current-state.html">首轮深度报告</a></td>
+</tr>
+<tr>
+<td>字节</td>
+<td>待确认</td>
+<td>高绩效、高回报、懂车帝组织调整线索</td>
+<td>人才密度与商业闭环组织设计值得追踪，但缺组织机制细则</td>
+<td>B/C</td>
+<td><a href="./2026-05-26-first-run-current-state.html">首轮深度报告</a></td>
+</tr>
+<tr>
+<td>蚂蚁</td>
+<td>待确认</td>
+<td>M/S 序列、专业主管绩效权边界线索</td>
+<td>管理权与专业影响力可能拆分</td>
+<td>C</td>
+<td><a href="./2026-05-26-first-run-current-state.html">首轮深度报告</a></td>
+</tr>
+<tr>
+<td>DeepSeek</td>
+<td>待确认</td>
+<td>Harness 团队、代码智能体、招聘线索</td>
+<td>可能形成 coding agent / infra 新组织单元，但缺官方组织边界</td>
+<td>B/C</td>
+<td><a href="../daily-log/2026-05-28.html">2026-05-28</a></td>
+</tr>
+</tbody></table></div>
+<h3 id="2-2-国外传统科技公司">2.2 国外传统科技公司</h3>
+<div class="table-wrap"><table><thead><tr>
+<th>公司</th>
+<th>状态</th>
+<th>当前强信号</th>
+<th>机制判断</th>
+<th>证据等级</th>
+<th>日期溯源</th>
+</tr></thead><tbody>
+<tr>
+<td>GitLab</td>
+<td>有定论</td>
+<td>晋升、人才盘点、ACR、转岗机制高度公开</td>
+<td>最适合作为公开透明晋升与人才校准系统基线</td>
+<td>A</td>
+<td><a href="./2026-05-26-first-run-current-state.html">首轮深度报告</a></td>
+</tr>
+<tr>
+<td>Netflix</td>
+<td>有定论</td>
+<td>人才密度、高绩效文化、freedom &amp; responsibility</td>
+<td>高绩效文化基线；本轮 AI 机制变化不强</td>
+<td>A</td>
+<td><a href="./2026-05-26-first-run-current-state.html">首轮深度报告</a></td>
+</tr>
+<tr>
+<td>Shopify</td>
+<td>有定论</td>
+<td>AI 使用成为 baseline，进入 headcount 审批和绩效/同侪反馈</td>
+<td>AI fluency 进入人力资源机制的清晰样本</td>
+<td>B</td>
+<td><a href="./2026-05-26-first-run-current-state.html">首轮深度报告</a></td>
+</tr>
+<tr>
+<td>Meta</td>
+<td>正在变化</td>
+<td>AI-focused 转岗、pods/cohorts、裁员与管理层压缩叙事</td>
+<td>AI 优先级正在进入人力配置；正式机制和范围待验证</td>
+<td>B</td>
+<td><a href="../daily-log/2026-05-26.html">2026-05-26</a>、<a href="../daily-log/2026-05-28.html">2026-05-28</a>、<a href="../daily-log/2026-05-29.html">2026-05-29</a></td>
+</tr>
+<tr>
+<td>Microsoft</td>
+<td>正在变化</td>
+<td>Copilot / Office / AI 模型领导结构重排</td>
+<td>AI 产品平台化带动组织分工重排</td>
+<td>B/C</td>
+<td><a href="./2026-05-26-first-run-current-state.html">首轮深度报告</a></td>
+</tr>
+<tr>
+<td>Salesforce</td>
+<td>正在变化</td>
+<td>AI 工具提升工程产能，支撑工程 hiring freeze</td>
+<td>AI productivity 进入 workforce planning</td>
+<td>B/C</td>
+<td><a href="./2026-05-26-first-run-current-state.html">首轮深度报告</a></td>
+</tr>
+<tr>
+<td>Cisco</td>
+<td>正在变化</td>
+<td>裁员与战略投资并列，AI 进入资源再分配叙事</td>
+<td>成本结构与战略资源重新编排；机制细节不足</td>
+<td>A/L2</td>
+<td><a href="../daily-log/2026-05-29.html">2026-05-29</a></td>
+</tr>
+<tr>
+<td>Intuit</td>
+<td>正在变化</td>
+<td>裁员、简化运营、聚焦 AI</td>
+<td>可能压缩协调层或重写岗位边界，缺一手机制细节</td>
+<td>B</td>
+<td><a href="../daily-log/2026-05-28.html">2026-05-28</a>、<a href="../daily-log/2026-05-29.html">2026-05-29</a></td>
+</tr>
+<tr>
+<td>Amazon</td>
+<td>待确认</td>
+<td>AI 使用和工程产能被报道进入绩效/晋升讨论</td>
+<td>AI 指标化风险高，关键证据不足</td>
+<td>C</td>
+<td><a href="./2026-05-26-first-run-current-state.html">首轮深度报告</a></td>
+</tr>
+</tbody></table></div>
+<h3 id="2-3-ai-原生与模型公司">2.3 AI 原生与模型公司</h3>
+<div class="table-wrap"><table><thead><tr>
+<th>公司</th>
+<th>状态</th>
+<th>当前强信号</th>
+<th>机制判断</th>
+<th>证据等级</th>
+<th>日期溯源</th>
+</tr></thead><tbody>
+<tr>
+<td>OpenAI</td>
+<td>有定论</td>
+<td>Deployment Company、FDE、结构治理、SSC</td>
+<td>交付能力组织化；治理、资本、人才激励共同约束组织效率</td>
+<td>A/L3</td>
+<td><a href="../daily-log/2026-05-27.html">2026-05-27</a>、<a href="../daily-log/2026-05-28.html">2026-05-28</a>、<a href="../daily-log/2026-05-29.html">2026-05-29</a></td>
+</tr>
+<tr>
+<td>Anthropic</td>
+<td>有定论</td>
+<td>Labs / Product 拆分、RSP 版本化、安全门槛</td>
+<td>探索、规模化、安全治理分属不同节奏与门槛</td>
+<td>A/L3</td>
+<td><a href="../daily-log/2026-05-27.html">2026-05-27</a>、<a href="../daily-log/2026-05-28.html">2026-05-28</a></td>
+</tr>
+<tr>
+<td>Mistral</td>
+<td>待确认</td>
+<td>企业平台与 forward-deployed engineers 线索</td>
+<td>企业交付组织可能增强，但证据不足</td>
+<td>B/C</td>
+<td><a href="../daily-log/2026-05-28.html">2026-05-28</a></td>
+</tr>
+<tr>
+<td>xAI</td>
+<td>待确认</td>
+<td>并购/整合、领导层与人员流动报道</td>
+<td>组织整合与人才流失值得观察，但机制不清</td>
+<td>B/C</td>
+<td><a href="../daily-log/2026-05-28.html">2026-05-28</a></td>
+</tr>
+<tr>
+<td>Perplexity / Cohere / Runway / Anysphere 等</td>
+<td>待确认</td>
+<td>暂无本轮 L2+ 组织机制信号</td>
+<td>继续观察岗位族群、企业交付、安全治理、绩效机制</td>
+<td>C/D</td>
+<td>后续扫描补齐</td>
+</tr>
+</tbody></table></div>
+<h2 id="3-四个主题的深度观察">3. 四个主题的深度观察</h2>
+<h3 id="3-1-组织扁平化-从-管人层级-到-任务-owner">3.1 组织扁平化：从“管人层级”到“任务 owner”</h3>
+<p>本轮最强样本仍然是腾讯和 Meta，但证据强度不同。</p>
+<p>腾讯的项目负责制线索，真正要观察的不是“组长这个 title 是否被取消”，而是项目负责人是否拥有目标拆解权、资源协调权、绩效反馈权和奖金影响权。若这些权力没有改变，组织变化可能只是 title 替换。</p>
+<p>Meta 的 pods/cohorts 与 AI-focused initiatives，更像“AI 优先级写入人力配置”的组织动员机制。它可能缩短决策链路，但也可能把成本转移到组织信任、留任风险和新职责边界上。</p>
+<p>OpenAI 的 FDE 是另一种任务 owner：不是内部项目负责人，而是客户组织内的部署负责人。它说明 AI 原生组织的“项目 owner”可能直接跨到客户现场和客户流程里。</p>
+<p><strong>当前状态</strong>：正在变化。可以写成趋势观察，不能写成“扁平化已证明更高效”。</p>
+<h3 id="3-2-人才密度-从-保留人才-到-保留高产能人才">3.2 人才密度：从“保留人才”到“保留高产能人才”</h3>
+<p>Netflix 仍是高人才密度文化的基线，GitLab 是流程透明化样本，Shopify 是 AI fluency 进入管理机制的样本。</p>
+<p>AI 时代的人才密度正在从“聪明、勤奋、能打”扩展为“能否把 AI、工具、上下文、业务判断结合起来，显著放大单位产出”。Salesforce、Intuit、Cisco 等案例让“AI 产能”和 workforce planning 的关系更紧。</p>
+<p>但这里有一个反向解释：裁员、冻结招聘、转岗不必然意味着 AI 已经提升组织效率，也可能只是财务周期、利润率压力或资本市场叙事。</p>
+<p><strong>当前状态</strong>：有定论的是“人才密度定义正在扩展”；正在变化的是“AI 产能是否稳定进入编制和绩效系统”。</p>
+<h3 id="3-3-职级与岗位架构-从身份体系到能力组合">3.3 职级与岗位架构：从身份体系到能力组合</h3>
+<p>百度数字职级并轨是当前最值得跟踪的国内样本。它的组织含义不在“5-12 数字标签”，而在专业线和管理线是否进入同一个评价语言。</p>
+<p>阿里、蚂蚁、GitLab 给出的是不同侧面：</p>
+<ul>
+<li>阿里：技术委员会、通义组织升级、薪酬结构口径，指向集团技术治理与激励解释权。</li>
+<li>蚂蚁：管理权与专业影响力拆分线索。</li>
+<li>GitLab：晋升、人才盘点、ACR、Total Rewards 高度公开，适合作为制度基线。</li>
+</ul>
+<p><strong>当前状态</strong>：正在变化。可写成“职级正在从身份标签向能力组合移动”，但具体公司是否真正改了薪酬带宽、评审权和晋升名额，还要逐项验证。</p>
+<h3 id="3-4-绩效晋升与激励-ai-正在进入评价系统">3.4 绩效晋升与激励：AI 正在进入评价系统</h3>
+<p>Shopify 是当前最清晰的样本：AI 使用不只是倡导，而进入 headcount 审批、绩效反馈和同侪反馈。</p>
+<p>Amazon 线索更激进，但证据更弱；如果 AI usage、velocity、release 指标进入绩效和晋升，它会强力推动 AI adoption，也会产生指标异化风险。</p>
+<p>阿里十三薪并表属于激励口径变化线索，但目前不能写成“降薪”或“总激励变化”。更稳妥的机制判断是：薪酬结构解释权和绩效差异化空间可能被重排。</p>
+<p><strong>当前状态</strong>：Shopify 可作为相对强样本；Amazon、阿里等仍需更多制度证据。</p>
+<h3 id="3-5-ai-原生组织边界-research-product-safety-delivery-分化">3.5 AI 原生组织边界：Research / Product / Safety / Delivery 分化</h3>
+<p>OpenAI 和 Anthropic 给出的信号最清晰。</p>
+<p>OpenAI 把 Deployment Company 推出来，说明 Delivery / FDE 不只是销售支持，而可能成为模型公司连接客户流程、产品反馈和安全落地的组织能力。</p>
+<p>Anthropic 把 Labs、Product 和 RSP 都放到公开叙事里，说明探索、规模化和安全治理被拆成不同节奏。</p>
+<p><strong>当前状态</strong>：有定论。可写成 AI 原生公司组织机制的强样本，但不能直接迁移到成熟大厂。</p>
+<h2 id="4-关键公司卡片">4. 关键公司卡片</h2>
+<h3 id="4-1-腾讯">4.1 腾讯</h3>
+<ul>
+<li>状态：正在变化。</li>
+<li>当前强信号：AI Lab 调整并入大模型/混元相关组织；项目负责制、弱化组长制线索。</li>
+<li>机制事实：媒体多次提到腾讯 AI 研发组织归属变化，日报中已记录 2026-05-27 和 2026-05-29 两条相关线索。</li>
+<li>机制判断：研究议程、模型产品线、业务交付节奏可能被重新对齐。</li>
+<li>组织影响：若预算、人事、绩效评价同步变化，决策速度可能提升；若只是汇报线或品牌调整，机制变化有限。</li>
+<li>追踪问题：项目负责人是否真正拥有目标权、资源权、评价权和奖金影响权？混元是否承担更明确的对外交付/业务集成责任？</li>
+<li>溯源：<a href="../daily-log/2026-05-26.html">2026-05-26</a>、<a href="../daily-log/2026-05-27.html">2026-05-27</a>、<a href="../daily-log/2026-05-29.html">2026-05-29</a></li>
+</ul>
+<h3 id="4-2-百度">4.2 百度</h3>
+<ul>
+<li>状态：正在变化。</li>
+<li>当前强信号：中管层以下数字职级并轨，专业与管理通道打通。</li>
+<li>机制事实：媒体称百度自 2026-05-01 起统一数字职级。</li>
+<li>机制判断：统一评价语言可能降低跨序列协作摩擦，也可能提高晋升稀缺性和绩效压力。</li>
+<li>组织影响：若任职资格、薪酬带宽、评审主体同步变化，职级体系会从身份标签转向能力组合；否则可能只是标签更新。</li>
+<li>追踪问题：专业线和管理线是否真正同池校准？纯技术专家路径是否仍有天花板？</li>
+<li>溯源：<a href="../daily-log/2026-05-26.html">2026-05-26</a>、<a href="../daily-log/2026-05-28.html">2026-05-28</a></li>
+</ul>
+<h3 id="4-3-阿里">4.3 阿里</h3>
+<ul>
+<li>状态：正在变化。</li>
+<li>当前强信号：技术委员会、通义组织升级、十三薪并入年终奖口径。</li>
+<li>机制事实：媒体转述内部信和相关组织调整。</li>
+<li>机制判断：集团技术治理和薪酬激励解释权正在重排；但技术委员会的预算协调权、强制执行权、绩效影响权仍不清楚。</li>
+<li>组织影响：可能降低跨 BU 技术资源分散，也可能增加新的协调层。</li>
+<li>追踪问题：技术委员会是否能影响资源、晋升、预算和路线图优先级？</li>
+<li>溯源：<a href="../daily-log/2026-05-27.html">2026-05-27</a>、<a href="../daily-log/2026-05-28.html">2026-05-28</a></li>
+</ul>
+<h3 id="4-4-openai">4.4 OpenAI</h3>
+<ul>
+<li>状态：有定论。</li>
+<li>当前强信号：Deployment Company、FDE、结构治理、SSC。</li>
+<li>机制事实：OpenAI 官方宣布 Deployment Company，并公开结构治理叙事。</li>
+<li>机制判断：模型公司正在把交付、流程改造、安全落地和客户生产系统部署组织化。</li>
+<li>组织影响：Research / Product / Applied / Safety / Delivery 的边界会更显性；交付组织成为模型公司效率系统的一部分。</li>
+<li>反向解释：这也可能是商业化和收入确定性需求，不等于组织效率已被验证。</li>
+<li>溯源：<a href="../daily-log/2026-05-27.html">2026-05-27</a>、<a href="../daily-log/2026-05-28.html">2026-05-28</a>、<a href="../daily-log/2026-05-29.html">2026-05-29</a></li>
+</ul>
+<h3 id="4-5-anthropic">4.5 Anthropic</h3>
+<ul>
+<li>状态：有定论。</li>
+<li>当前强信号：Labs / Product 分工、RSP 版本化、安全门槛公开。</li>
+<li>机制事实：Anthropic 官方发布 Labs / Product 组织分工和 Responsible Scaling Policy 更新。</li>
+<li>机制判断：探索、规模化、安全治理不再靠同一组织节奏解决，而是拆成不同 motion。</li>
+<li>组织影响：有助于降低“创新速度”和“发布安全”之间的临时协调成本；风险是接口治理不清。</li>
+<li>溯源：<a href="../daily-log/2026-05-27.html">2026-05-27</a>、<a href="../daily-log/2026-05-28.html">2026-05-28</a></li>
+</ul>
+<h3 id="4-6-meta">4.6 Meta</h3>
+<ul>
+<li>状态：正在变化。</li>
+<li>当前强信号：AI-focused 转岗、pods/cohorts、裁员与管理层压缩叙事。</li>
+<li>机制事实：多家媒体转述 Meta 内部 memo，描述转岗、裁员、AI-focused initiatives。</li>
+<li>机制判断：AI 优先级正在进入人力配置和组织动员机制。</li>
+<li>组织影响：可能提升战略执行速度；也可能增加组织震荡、留任风险和职责不清。</li>
+<li>追踪问题：pods/cohorts 是否是正式机制？是否有绩效、晋升、RACI、管理跨度变化证据？</li>
+<li>溯源：<a href="../daily-log/2026-05-26.html">2026-05-26</a>、<a href="../daily-log/2026-05-28.html">2026-05-28</a>、<a href="../daily-log/2026-05-29.html">2026-05-29</a></li>
+</ul>
+<h3 id="4-7-gitlab">4.7 GitLab</h3>
+<ul>
+<li>状态：有定论。</li>
+<li>当前强信号：晋升、人才盘点、ACR、Total Rewards、转岗机制高度公开。</li>
+<li>机制事实：GitLab Handbook 提供大量制度材料。</li>
+<li>机制判断：它是“公开透明晋升系统”的基线样本，适合用来理解成熟组织如何降低黑箱和校准成本。</li>
+<li>组织影响：降低制度不确定性，提高员工对晋升和人才盘点的可预期性。</li>
+<li>溯源：<a href="./2026-05-26-first-run-current-state.html">首轮深度报告</a></li>
+</ul>
+<h3 id="4-8-shopify">4.8 Shopify</h3>
+<ul>
+<li>状态：有定论。</li>
+<li>当前强信号：AI baseline、headcount 审批前置 AI 证明、AI 使用进入绩效/同侪反馈。</li>
+<li>机制事实：多家媒体报道 CEO memo。</li>
+<li>机制判断：AI 不再是工具倡导，而进入资源申请和绩效反馈。</li>
+<li>组织影响：AI fluency 成为管理判断的一部分；风险是把 AI 变成编制收紧话术。</li>
+<li>溯源：<a href="./2026-05-26-first-run-current-state.html">首轮深度报告</a></li>
+</ul>
+<h3 id="4-9-cisco-intuit">4.9 Cisco / Intuit</h3>
+<ul>
+<li>状态：正在变化。</li>
+<li>当前强信号：裁员、简化运营、战略投资与 AI 叙事并列。</li>
+<li>机制事实：Cisco 有官方公告，Intuit 主要来自 Reuters 转述。</li>
+<li>机制判断：资源从存量组织向 AI 相关能力迁移的叙事增强。</li>
+<li>组织影响：短期协作成本可能上升；中期是否提升效率取决于岗位边界、管理层级和流程门禁是否同步改变。</li>
+<li>溯源：<a href="../daily-log/2026-05-28.html">2026-05-28</a>、<a href="../daily-log/2026-05-29.html">2026-05-29</a></li>
+</ul>
+<h2 id="5-时间线-每日扫描如何改变主判断">5. 时间线：每日扫描如何改变主判断</h2>
+<div class="table-wrap"><table><thead><tr>
+<th>日期</th>
+<th>新增情报</th>
+<th>对主报告的影响</th>
+<th>溯源</th>
+</tr></thead><tbody>
+<tr>
+<td>2026-05-26</td>
+<td>首轮形成四个底层机制：工作组织权、高绩效定义、职级能力、资源分配</td>
+<td>建立主报告框架</td>
+<td><a href="./2026-05-26-first-run-current-state.html">首轮深度报告</a>、<a href="../daily-log/2026-05-26.html">当日扫描</a></td>
+</tr>
+<tr>
+<td>2026-05-27</td>
+<td>腾讯 AI Lab 调整、Anthropic Labs / Product、OpenAI 结构治理</td>
+<td>增强“AI 组织归属与节奏治理”判断</td>
+<td><a href="../daily-log/2026-05-27.html">2026-05-27</a></td>
+</tr>
+<tr>
+<td>2026-05-28</td>
+<td>OpenAI Deployment Company、Anthropic RSP、百度数字职级、Meta 转岗</td>
+<td>增强“FDE 组织化”和“评价池/资源重配”判断</td>
+<td><a href="../daily-log/2026-05-28.html">2026-05-28</a></td>
+</tr>
+<tr>
+<td>2026-05-29</td>
+<td>OpenAI FDE 组织形态再次确认、腾讯 AI Lab 并轨混元、Cisco/Intuit/Meta 资源重配</td>
+<td>把顶部入口升级为当前大厂组织情报总报告</td>
+<td><a href="../daily-log/2026-05-29.html">2026-05-29</a></td>
+</tr>
+</tbody></table></div>
+<h2 id="6-不是新闻-是机制">6. 不是新闻，是机制</h2>
+<div class="table-wrap"><table><thead><tr>
+<th>外部事件</th>
+<th>组织机制</th>
+<th>效率含义</th>
+<th>当前状态</th>
+<th>反向解释</th>
+</tr></thead><tbody>
+<tr>
+<td>OpenAI 发布 Deployment Company</td>
+<td>FDE / 交付能力组织化</td>
+<td>可能降低模型落地和客户系统改造的协作成本</td>
+<td>有定论</td>
+<td>商业化和收入确定性需求</td>
+</tr>
+<tr>
+<td>Anthropic 拆分 Labs / Product 并版本化 RSP</td>
+<td>探索、规模化、安全治理拆节奏</td>
+<td>降低不同 motion 混在一起的组织内耗</td>
+<td>有定论</td>
+<td>制度文本不等于执行质量</td>
+</tr>
+<tr>
+<td>腾讯 AI Lab 并轨混元</td>
+<td>研究组织向模型产品线靠拢</td>
+<td>可能收敛路线图、资源和评价口径</td>
+<td>正在变化</td>
+<td>汇报线或品牌调整</td>
+</tr>
+<tr>
+<td>百度数字职级并轨</td>
+<td>专业/管理通道统一评价语言</td>
+<td>可能减少身份割裂，强化复合能力</td>
+<td>正在变化</td>
+<td>只改标签，不改评审权和薪酬</td>
+</tr>
+<tr>
+<td>Meta 转岗到 AI 相关组织</td>
+<td>组织动员与内部资源再配置</td>
+<td>可能提高战略执行速度</td>
+<td>正在变化</td>
+<td>成本压力下的 AI 叙事包装</td>
+</tr>
+<tr>
+<td>阿里十三薪并表</td>
+<td>激励结构解释权和绩效差异化空间</td>
+<td>可能改变奖金理解与校准压力</td>
+<td>待确认</td>
+<td>财务口径调整，不代表总激励变化</td>
+</tr>
+</tbody></table></div>
+<h2 id="7-证据链与可信度">7. 证据链与可信度</h2>
+<div class="table-wrap"><table><thead><tr>
+<th>条目</th>
+<th>主要证据</th>
+<th>证据等级</th>
+<th>置信度</th>
+<th>当前处理</th>
+</tr></thead><tbody>
+<tr>
+<td>OpenAI Deployment Company</td>
+<td>OpenAI 官方公告/业务页</td>
+<td>A</td>
+<td>高</td>
+<td>写入有定论</td>
+</tr>
+<tr>
+<td>Anthropic Labs / Product</td>
+<td>Anthropic 官方公告</td>
+<td>A</td>
+<td>高</td>
+<td>写入有定论</td>
+</tr>
+<tr>
+<td>Anthropic RSP</td>
+<td>Anthropic 官方政策页</td>
+<td>A</td>
+<td>高</td>
+<td>写入有定论</td>
+</tr>
+<tr>
+<td>GitLab 晋升机制</td>
+<td>GitLab Handbook</td>
+<td>A</td>
+<td>高</td>
+<td>作为制度基线</td>
+</tr>
+<tr>
+<td>Shopify AI baseline</td>
+<td>CEO memo 的多家媒体报道</td>
+<td>B</td>
+<td>中-高</td>
+<td>写入有定论，但保留执行边界</td>
+</tr>
+<tr>
+<td>百度数字职级</td>
+<td>界面/新浪/36氪等转述全员信</td>
+<td>B/C</td>
+<td>中</td>
+<td>写入正在变化</td>
+</tr>
+<tr>
+<td>腾讯 AI Lab / 混元</td>
+<td>财新、财经、二次转述</td>
+<td>B/C</td>
+<td>中</td>
+<td>写入正在变化</td>
+</tr>
+<tr>
+<td>Meta pods/cohorts / 转岗</td>
+<td>权威媒体转述 memo</td>
+<td>B</td>
+<td>中</td>
+<td>写入正在变化，机制细节待核验</td>
+</tr>
+<tr>
+<td>阿里十三薪并表</td>
+<td>媒体转述内部信</td>
+<td>C</td>
+<td>低-中</td>
+<td>放入待确认/观察池</td>
+</tr>
+<tr>
+<td>DeepSeek Harness</td>
+<td>媒体、招聘、社媒线索</td>
+<td>B/C</td>
+<td>低-中</td>
+<td>放入待确认/观察池</td>
+</tr>
+</tbody></table></div>
+<h2 id="8-去伪存真记录">8. 去伪存真记录</h2>
+<div class="table-wrap"><table><thead><tr>
+<th>被降级或限定的信息</th>
+<th>当前处理</th>
+<th>原因</th>
+</tr></thead><tbody>
+<tr>
+<td>“腾讯全面取消小组长”</td>
+<td>降级为“项目负责制/弱化组长制线索”</td>
+<td>当前证据更支持局部试点或媒体叙事，不支持集团全面机制</td>
+</tr>
+<tr>
+<td>“Meta 已经完成 AI-native 组织重构”</td>
+<td>降级为“转岗与 pods/cohorts 叙事”</td>
+<td>缺正式组织设计、RACI、绩效/晋升证据</td>
+</tr>
+<tr>
+<td>“阿里取消十三薪或变相降薪”</td>
+<td>降级为“薪酬结构口径变化”</td>
+<td>当前证据不支持总激励变化判断</td>
+</tr>
+<tr>
+<td>“AI 使用量可直接作为绩效指标”</td>
+<td>不写成结论</td>
+<td>易指标异化；应看结果、质量、周期和成本</td>
+</tr>
+<tr>
+<td>“裁员说明 AI 替代岗位已成立”</td>
+<td>不写成结论</td>
+<td>财务压力、PR 叙事、组织简化都可能产生相同外观</td>
+</tr>
+</tbody></table></div>
+<h2 id="9-观察池-待核验池">9. 观察池 / 待核验池</h2>
+<div class="table-wrap"><table><thead><tr>
+<th>线索</th>
+<th>当前状态</th>
+<th>为什么不够</th>
+<th>需要补齐的证据</th>
+</tr></thead><tbody>
+<tr>
+<td>腾讯项目负责制是否进入集团级机制</td>
+<td>待确认</td>
+<td>范围、权责、绩效和奖金机制不足</td>
+<td>官方制度、跨事业群互证、绩效/奖金口径</td>
+</tr>
+<tr>
+<td>DeepSeek Harness 是否形成正式组织单元</td>
+<td>待确认</td>
+<td>招聘和媒体线索强，缺组织边界</td>
+<td>官方招聘页、负责人表述、多源独立互证</td>
+</tr>
+<tr>
+<td>Meta pods/cohorts 是否正式制度化</td>
+<td>待确认</td>
+<td>memo 转述有描述，不清楚是否制度名</td>
+<td>RACI、组织图、绩效/晋升规则</td>
+</tr>
+<tr>
+<td>阿里十三薪并表是否改变绩效差异化</td>
+<td>待确认</td>
+<td>当前只是内部信转述</td>
+<td>制度文本、绩效档位、发放规则</td>
+</tr>
+<tr>
+<td>Cisco / Intuit 是否压缩管理层级</td>
+<td>待确认</td>
+<td>资源重配口径强，机制细节不足</td>
+<td>层级、岗位族群、流程门禁变化</td>
+</tr>
+<tr>
+<td>国内模型公司是否形成 FDE / Agent Engineer 稳定岗位族群</td>
+<td>待确认</td>
+<td>招聘线索分散</td>
+<td>岗位样本库、连续招聘趋势、汇报关系</td>
+</tr>
+</tbody></table></div>
+<h2 id="10-是否进入公开知识库">10. 是否进入公开知识库</h2>
+<ul>
+<li>可进入公开知识库：OpenAI Deployment Company、Anthropic Labs / Product、Anthropic RSP、GitLab 晋升流程、Shopify AI baseline、百度数字职级公开媒体线索。</li>
+<li>可脱敏进入：腾讯 AI Lab / 混元、项目负责制、阿里技术委员会与薪酬结构口径，必须保留证据等级和“不足以推出效率提升”的边界。</li>
+<li>暂不进入：DeepSeek Harness、Meta pods/cohorts 机制化、阿里十三薪总激励变化、Amazon AI 绩效指标化，只放观察池。</li>
+</ul>
+      </article>
+    </main>
+  </div>
+</body>
+</html>
