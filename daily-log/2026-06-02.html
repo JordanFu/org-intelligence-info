@@ -1,0 +1,609 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>每日扫描｜互联网大厂组织机制研究</title>
+  <style>
+    :root {
+      color-scheme: light;
+      --bg: #f6f7f1;
+      --paper: #fffdf8;
+      --ink: #172033;
+      --muted: #697181;
+      --line: #ded8c9;
+      --soft: #ece6d7;
+      --accent: #1f6f68;
+      --accent-2: #b45a34;
+      --code: #f1eee6;
+    }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "PingFang SC", "Microsoft YaHei", sans-serif;
+      color: var(--ink);
+      background: var(--bg);
+      line-height: 1.75;
+    }
+    .shell {
+      display: grid;
+      grid-template-columns: minmax(210px, 280px) minmax(0, 1fr);
+      min-height: 100vh;
+    }
+    aside {
+      position: sticky;
+      top: 0;
+      height: 100vh;
+      padding: 28px 22px;
+      border-right: 1px solid var(--line);
+      background: #ebe5d7;
+      overflow: auto;
+    }
+    main {
+      max-width: 1040px;
+      width: 100%;
+      padding: 56px 56px 90px;
+    }
+    .eyebrow {
+      color: var(--accent-2);
+      font-size: 13px;
+      font-weight: 800;
+      letter-spacing: .08em;
+      text-transform: uppercase;
+      margin: 0 0 10px;
+    }
+    h1 {
+      font-size: clamp(30px, 4vw, 48px);
+      line-height: 1.12;
+      margin: 0 0 18px;
+      letter-spacing: 0;
+    }
+    h2 {
+      font-size: 26px;
+      line-height: 1.32;
+      margin: 48px 0 14px;
+      padding-top: 18px;
+      border-top: 1px solid var(--line);
+    }
+    h3 {
+      font-size: 20px;
+      margin: 34px 0 10px;
+      color: #23314d;
+    }
+    h4 {
+      font-size: 17px;
+      margin: 26px 0 8px;
+    }
+    p, li {
+      font-size: 16px;
+      color: #2b3343;
+    }
+    p { margin: 10px 0; }
+    ul { padding-left: 1.2rem; }
+    li { margin: 7px 0; }
+    a { color: var(--accent); text-decoration-thickness: 1px; text-underline-offset: 3px; }
+    code {
+      background: var(--code);
+      border: 1px solid var(--line);
+      border-radius: 5px;
+      padding: 1px 5px;
+      font-size: .92em;
+    }
+    pre {
+      overflow: auto;
+      background: #fff9ec;
+      color: #202838;
+      border: 1px solid #d8ccb8;
+      border-radius: 8px;
+      padding: 18px;
+      box-shadow: inset 4px 0 0 var(--accent);
+      white-space: pre-wrap;
+      word-break: break-word;
+    }
+    pre code {
+      display: block;
+      padding: 0;
+      border: 0;
+      background: transparent;
+      color: inherit;
+      line-height: 1.7;
+      font-size: 14px;
+    }
+    blockquote {
+      margin: 24px 0;
+      padding: 14px 18px;
+      border-left: 4px solid var(--accent);
+      background: #eef4ee;
+      color: #344033;
+    }
+    .table-wrap {
+      overflow-x: auto;
+      margin: 18px 0 26px;
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      background: var(--paper);
+    }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      min-width: 720px;
+    }
+    th, td {
+      padding: 12px 14px;
+      border-bottom: 1px solid var(--line);
+      vertical-align: top;
+      text-align: left;
+      font-size: 14px;
+    }
+    th {
+      background: #e7e0cf;
+      color: #26324a;
+      font-weight: 800;
+      white-space: nowrap;
+    }
+    tr:last-child td { border-bottom: 0; }
+    .topbar {
+      display: flex;
+      gap: 10px;
+      align-items: center;
+      flex-wrap: wrap;
+      margin-bottom: 28px;
+    }
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 38px;
+      padding: 8px 12px;
+      border: 1px solid var(--line);
+      border-radius: 7px;
+      background: var(--paper);
+      color: var(--ink);
+      text-decoration: none;
+      font-weight: 750;
+      font-size: 14px;
+    }
+    .primary { background: var(--accent); border-color: var(--accent); color: white; }
+    .toc-title {
+      margin: 0 0 12px;
+      font-size: 14px;
+      font-weight: 850;
+      color: #273247;
+    }
+    .toc a {
+      display: block;
+      padding: 7px 0;
+      color: #465064;
+      text-decoration: none;
+      font-size: 14px;
+      line-height: 1.45;
+      border-bottom: 1px solid rgba(23,32,51,.08);
+    }
+    .toc a.level-3 { padding-left: 14px; font-size: 13px; color: #626b78; }
+    .meta {
+      color: var(--muted);
+      font-size: 14px;
+      margin-bottom: 24px;
+    }
+    @media (max-width: 900px) {
+      .shell { display: block; }
+      aside { position: relative; height: auto; border-right: 0; border-bottom: 1px solid var(--line); }
+      main { padding: 34px 20px 70px; }
+      .toc { columns: 1; }
+      table { min-width: 640px; }
+    }
+  </style>
+</head>
+<body>
+  <div class="shell">
+    <aside>
+      <p class="toc-title">目录</p>
+      <nav class="toc">
+        <a class="level-2" href="#今日结论">今日结论</a>
+        <a class="level-2" href="#今日组织机制信号">今日组织机制信号</a>
+        <a class="level-2" href="#传统大厂与-ai-原生组织分组观察">传统大厂与 AI 原生组织分组观察</a>
+        <a class="level-2" href="#高价值变化卡片">高价值变化卡片</a>
+        <a class="level-3" href="#百度-职级并轨-专业与管理通道合并为统一数字职级">百度 / 职级并轨 / 专业与管理通道合并为统一数字职级</a>
+        <a class="level-3" href="#deepseek-agent-harness-模型公司转向-coding-agent-工程闭环">DeepSeek / Agent Harness / 模型公司转向 coding agent 工程闭环</a>
+        <a class="level-3" href="#nvidia-agent-toolkit-openshell-作为企业-agent-治理运行时">NVIDIA / Agent Toolkit / OpenShell 作为企业 agent 治理运行时</a>
+        <a class="level-2" href="#不是新闻-而是机制">不是新闻，而是机制</a>
+        <a class="level-2" href="#组织情报结论卡">组织情报结论卡</a>
+        <a class="level-3" href="#结论卡-a-职级并轨正在成为传统大厂适配-ai-复合人才的制度入口">结论卡 A｜职级并轨正在成为传统大厂适配 AI 复合人才的制度入口</a>
+        <a class="level-3" href="#结论卡-b-ai-原生公司正在把-模型之外的工程运行时-变成组织边界">结论卡 B｜AI 原生公司正在把“模型之外的工程运行时”变成组织边界</a>
+        <a class="level-3" href="#结论卡-c-企业-agent-的规模化门槛从-工具可用-变成-治理运行时可控">结论卡 C｜企业 agent 的规模化门槛从“工具可用”变成“治理运行时可控”</a>
+        <a class="level-2" href="#证据链与可信度">证据链与可信度</a>
+        <a class="level-2" href="#去伪存真记录">去伪存真记录</a>
+        <a class="level-2" href="#渠道索引补充">渠道索引补充</a>
+        <a class="level-2" href="#观察池-待核验池">观察池 / 待核验池</a>
+        <a class="level-2" href="#公开知识库入库判断">公开知识库入库判断</a>
+        <a class="level-2" href="#关键反模式">关键反模式</a>
+      </nav>
+    </aside>
+    <main>
+      <div class="topbar">
+        <a class="btn primary" href="../index.html">返回研究源</a>
+        <a class="btn" href="./2026-06-02.md">查看 Markdown 原文</a>
+      </div>
+      <p class="eyebrow">Daily Scan</p>
+      <h1>2026-06-02 组织情报信息｜互联网大厂与 AI 原生组织机制扫描</h1>
+      <p class="meta">本页面由本地 Markdown 自动渲染生成，仍保留原始 md 文件作为知识库源文档。</p>
+      <article>
+        <blockquote>私有本地材料。仅用于本地知识库研究；公开分享前必须脱敏，并保留证据等级与不确定性。</blockquote>
+<h2 id="今日结论">今日结论</h2>
+<ul>
+<li><strong>百度职级并轨是今天国内传统大厂侧证据最完整的组织机制信号</strong>：多家媒体指向同一 L1 事实——百度自 2026-05-01 起，将中管层以下专业与管理双通道打通，取消 T/P/E/Band/M 等字母标签，统一为 5 至 12 级数字职级，并提出“专业力 + 领导力”的复合评价语言。机制含义不是“换个职级名”，而是把跨序列评价、跨岗位流动和复合型 AI 人才筛选放到同一个评价池里。证据：B/C；入库：L2 事实观察，机制结论仍需任职资格、薪酬带宽和评审权证据。</li>
+<li><strong>DeepSeek Harness 团队是国内 AI 原生公司从“模型优先”走向“模型 + 工程运行时 + 产品闭环”的强观察信号</strong>：AnySearch 与网页检索均命中 2026-05-20 前后多家媒体转述，称 DeepSeek 正在招聘 Agent Harness 产品经理和研发工程师，方向为 Code Harness / coding agent，并出现“Model + Harness = Agent”口径。机制含义是 coding agent 的组织边界可能从研究/模型团队外延到产品、工程、真实代码库反馈与开发者工作流。证据：B/C；入库：L2 事实观察，不写成组织结构定论。</li>
+<li><strong>NVIDIA 在 2026-05-31 把 Agent Toolkit / NemoClaw / OpenShell 推向企业软件生态，揭示“agent 组织化”的另一条路径：不是先改岗位，而是先把治理运行时变成跨组织协同底座</strong>。这条信息不是产品新闻，而是企业 agent 进入生产流程时的组织门槛：身份、权限、沙箱、审计、策略和工具调用必须被制度化，否则 agent 无法进入真实工作流。证据：A；入库：L2/L3 之间，事实为 L3 强，组织效率影响仍需客户侧落地证据。</li>
+<li><strong>腾讯 WXG 项目负责制与京东探索研究院实验室负责人任命具备组织观察价值，但今天不升格为核心结论</strong>。腾讯来自《中国企业家》转述并被中国经济网转载，JD 来自内部公告转述；二者都指向“AI/产品节奏下汇报线与项目 owner 更显性”，但缺少绩效权、资源权、奖金/晋升权和 RACI 证据。</li>
+<li><strong>“AI 使用进入绩效/晋升”在海外大厂继续强化，但指标异化反证也更强</strong>。WSJ 系列转述、HR Executive、Semafor、Fast Company 等材料显示 Google/Meta/Amazon 等在推动 AI 使用指标进入工作评价或管理关注；同时 Amazon “tokenmaxxing”类报道提示：若只考核使用量，会把组织效率问题变成指标游戏。</li>
+</ul>
+<h2 id="今日组织机制信号">今日组织机制信号</h2>
+<div class="table-wrap"><table><thead><tr>
+<th>公司</th>
+<th>信号</th>
+<th>机制标签</th>
+<th>证据等级</th>
+<th>阅读价值</th>
+</tr></thead><tbody>
+<tr>
+<td>百度</td>
+<td>中管层以下专业/管理双通道打通，统一 5-12 数字职级</td>
+<td>职级并轨 / 复合能力评价 / 同池校准</td>
+<td>B/C</td>
+<td>核心结论</td>
+</tr>
+<tr>
+<td>DeepSeek</td>
+<td>组建/招聘 Agent Harness 团队，对标 Claude Code 类 coding agent</td>
+<td>Agent Harness / 模型产品化 / 工程反馈闭环</td>
+<td>B/C</td>
+<td>核心结论</td>
+</tr>
+<tr>
+<td>NVIDIA</td>
+<td>发布/扩展 Agent Toolkit、NemoClaw、OpenShell 及企业软件伙伴生态</td>
+<td>Agent 治理运行时 / 安全门禁 / 生产化底座</td>
+<td>A</td>
+<td>核心结论</td>
+</tr>
+<tr>
+<td>腾讯 WXG / 混元</td>
+<td>WXG 多部门试行项目负责制；混元汇报线简化线索</td>
+<td>项目 owner / 弱化基层管理层级</td>
+<td>B/C</td>
+<td>持续观察</td>
+</tr>
+<tr>
+<td>京东</td>
+<td>探索研究院任命自然语言、多模态实验室负责人，向副院长段楠汇报</td>
+<td>AI 研究条线清晰化 / 专家负责制</td>
+<td>C</td>
+<td>持续观察</td>
+</tr>
+<tr>
+<td>Google / Meta / Amazon</td>
+<td>AI 使用被纳入绩效/管理关注的报道与反证并存</td>
+<td>AI fluency 评价 / 指标异化风险</td>
+<td>B/C</td>
+<td>背景参考</td>
+</tr>
+</tbody></table></div>
+<h2 id="传统大厂与-ai-原生组织分组观察">传统大厂与 AI 原生组织分组观察</h2>
+<ul>
+<li><strong>传统大厂</strong>：百度的职级并轨更像“评价语言重构”；腾讯、JD 更像“汇报线与项目 owner 重构”；Google/Meta/Amazon 更像“AI 使用从倡导进入绩效或管理度量”。三者共同指向：AI 不是独立工具，而是开始进入职级、汇报线、评价和资源分配。</li>
+<li><strong>AI 原生组织</strong>：DeepSeek Harness 与 OpenAI FDE 属于相邻信号：前者把模型能力接入开发者运行时，后者把模型能力接入客户生产系统；二者都在把“模型之外的落地能力”组织化。</li>
+<li><strong>正在趋同的地方</strong>：传统大厂和 AI 原生公司都在寻找“少层级、强 owner、高反馈密度”的组织语言。</li>
+<li><strong>正在分化的地方</strong>：传统大厂更多从既有职级/绩效/中层体系改造；AI 原生公司更多从新岗位族群、运行时、交付组织和产品反馈闭环开始长出组织边界。</li>
+</ul>
+<h2 id="高价值变化卡片">高价值变化卡片</h2>
+<h3 id="百度-职级并轨-专业与管理通道合并为统一数字职级">百度 / 职级并轨 / 专业与管理通道合并为统一数字职级</h3>
+<ul>
+<li>时间：2026-04-28 全员信公开转述；2026-05-01 生效口径。</li>
+<li>公司与组织范围：百度；中管层以下员工，覆盖专业、技术、产品、管理等原多序列。</li>
+<li>机制类型：职级体系、晋升评价、专业/管理双通道。</li>
+<li>机制理念：AI 时代需要“专业力 + 领导力”的复合型人才，而不是专业/管理身份分割。</li>
+<li>机制动作：取消 T/P/E/Band/M 等字母职级标签，统一替换为 5 至 12 级数字职级；同原职级员工按“唯一对应关系”套改；任职资格标准转向“专业力 + 领导力”。</li>
+<li>应用关系：可能影响晋升、调薪、跨序列流动、专家/管理同级校准；但公开证据尚未确认薪酬带宽、奖金、晋升名额是否同池。</li>
+<li>系统/工具：未见公开绩效系统或校准工具细节。</li>
+<li>组织影响：可能降低跨序列评价割裂和人才流动成本；也可能增加同级竞争、绩效压力和专业线被管理化的风险。</li>
+<li>来源与渠道：36氪《百度开启职级体系大变革：取消字母标签统一为数字》；钛媒体/新浪转载深度解读；AnySearch 命中多源。</li>
+<li>证据等级：B/C；有清晰公开转述，但未见百度官网一手制度文本。</li>
+<li>互证情况：36氪、钛媒体/新浪等多源一致；一手全员信未公开可核验。</li>
+<li>反向解释：可能是 AI 战略压力与人才流失压力下的制度重命名；若评审权、薪酬带宽和晋升名额不变，机制变化会弱于表述。</li>
+<li>与历史基线关系：验证 5 月下旬主报告中“国内大厂职级从身份标签向能力组合移动”的判断；证据等级从观察增强到 L2。</li>
+<li>组织发展关注点：职能边界、管理跨度、绩效压力、人才密度、跨序列协作成本。</li>
+<li>适用边界：仅能说明百度公开转述口径下的职级语言变化；不能推出“百度组织效率已提升”。</li>
+<li>待验证问题：专业线与管理线是否同池评审？同级薪酬带宽是否重叠？不带人专家是否能获得与同级管理者对等资源与影响力？</li>
+<li>公开策略：可脱敏公开来源索引与机制判断；不可写成内部制度定论。</li>
+<li>后续追踪问题：是否出现百度官方招聘、任职资格、技术博客署名、晋升材料或财报问答旁证？</li>
+</ul>
+<h3 id="deepseek-agent-harness-模型公司转向-coding-agent-工程闭环">DeepSeek / Agent Harness / 模型公司转向 coding agent 工程闭环</h3>
+<ul>
+<li>时间：2026-05-18 至 2026-05-21 前后职位与媒体转述集中出现。</li>
+<li>公司与组织范围：DeepSeek；Agent Harness / Code Harness 相关岗位，地点以北京为主。</li>
+<li>机制类型：AI 原生岗位族群、产品化组织、研发反馈闭环。</li>
+<li>机制理念：模型能力要通过 Harness 接入真实代码库、文件读写、终端执行、工具调用、测试反馈与用户修正，才能变成可生产使用的 agent。</li>
+<li>机制动作：招聘 Agent Harness 产品经理和研发工程师；公开转述中出现“对标 Claude Code”“Model + Harness = Agent”等口径。</li>
+<li>应用关系：可能把 Research、Product、Infra、Developer Workflow、Evaluation 的边界重新组合；招聘口径本身尚不能证明组织单元已正式成立。</li>
+<li>系统/工具：Code Harness、Agent Harness、开发者工具链、MCP/工具调用、测试与反馈闭环。</li>
+<li>组织影响：若成型，DeepSeek 的组织边界会从“模型研发”扩到“模型运行时 + 开发者产品 + 真实任务反馈”；这会增加跨职能协作，但也可能提高产品迭代速度与模型反馈密度。</li>
+<li>来源与渠道：甲子光年/新浪财经、雷峰网、Pandaily、InfoQ、站长之家等转述；AnySearch 命中招聘与社交媒体线索。</li>
+<li>证据等级：B/C；公开转述较多，但官方岗位页和社媒原帖需要继续留存核验。</li>
+<li>互证情况：多个来源指向同一招聘方向；但大多沿用同一信息链，独立性有限。</li>
+<li>反向解释：可能只是小规模产品试验或招聘预热，不代表 DeepSeek 已从研究组织转为产品组织；也可能是对 Claude Code 热度的战术跟进。</li>
+<li>与历史基线关系：把主报告中“Agent / coding infra / Harness 是否成型”的状态从“待确认”推进到“正在变化（L2 观察）”。</li>
+<li>组织发展关注点：职能边界、执行节奏、开发者生态、人才密度、模型反馈闭环。</li>
+<li>适用边界：只能作为“组织边界可能扩张”的观察，不能写成 DeepSeek 已完成产品化转型。</li>
+<li>待验证问题：Harness 团队是否有正式负责人？是否与模型策略、Infra、产品、开源社区形成固定接口？岗位是否持续开放并扩展？</li>
+<li>公开策略：可公开引用媒体与岗位线索；社媒截图和非公开招聘细节不入公开库。</li>
+<li>后续追踪问题：DeepSeek 是否发布 Code Harness 产品、开发者文档、开源仓库或客户/社区反馈机制？</li>
+</ul>
+<h3 id="nvidia-agent-toolkit-openshell-作为企业-agent-治理运行时">NVIDIA / Agent Toolkit / OpenShell 作为企业 agent 治理运行时</h3>
+<ul>
+<li>时间：2026-05-31 NVIDIA Newsroom 发布；2026-03 至 2026-05 有 OpenShell、NemoClaw、SAP、ServiceNow、Dell 等连续证据。</li>
+<li>公司与组织范围：NVIDIA；企业软件生态、agent runtime、合作伙伴平台。</li>
+<li>机制类型：系统与工具、AI 组织变革、安全治理、生产化门禁。</li>
+<li>机制理念：企业 agent 不是单个工具，而是需要身份、权限、沙箱、审计、策略、隐私控制和工具调用边界的“运行时治理系统”。</li>
+<li>机制动作：NVIDIA Agent Toolkit、NemoClaw、OpenShell、Nemotron、CUDA-X agent skills 与企业软件伙伴集成；OpenShell 被定位为 policy/privacy/security runtime。</li>
+<li>应用关系：这类底座会把 IT、Security、Legal/Compliance、Platform、业务流程 owner 拉入同一个 agent 生命周期管理流程。</li>
+<li>系统/工具：NVIDIA Agent Toolkit、NemoClaw、OpenShell、Nemotron、NIM、CUDA-X libraries、SAP Joule Studio、ServiceNow AI Control Tower、Dell AI Factory。</li>
+<li>组织影响：agent 从个人效率工具进入生产流程时，组织效率的瓶颈从“会不会用”转向“能否安全授权、审计、回滚、复用和规模化”；短期协作成本上升，长期可能降低每个团队重复搭建治理脚手架的成本。</li>
+<li>来源与渠道：NVIDIA Newsroom、NVIDIA Developer Blog、NVIDIA Blog、Dell 官方公告、SAP/ServiceNow 相关公告。</li>
+<li>证据等级：A；一手官方材料充足。</li>
+<li>互证情况：NVIDIA 官方主线 + Dell/SAP/ServiceNow 等生态伙伴公告互证；但客户侧效果尚未验证。</li>
+<li>反向解释：可能是生态锁定和平台扩张叙事，不等于客户组织已形成成熟 agent 治理机制。</li>
+<li>与历史基线关系：补强 2026-06-01 “混合/本地 + 治理上下文是 agent 规模化门槛”的判断。</li>
+<li>组织发展关注点：协作成本、职能边界、执行节奏、安全门禁、系统治理。</li>
+<li>适用边界：更适用于大型企业、受监管行业、复杂工程/IT 环境；对轻量个人工具或低风险工作流解释力有限。</li>
+<li>待验证问题：企业是否把 agent 操作日志、风险事件、审批边界、数据访问和绩效结果纳入统一治理？是否出现新的 Agent Platform Owner / AI Runtime Owner 岗位？</li>
+<li>公开策略：可公开来源索引和脱敏机制判断。</li>
+<li>后续追踪问题：OpenShell 是否成为事实标准？其与 Microsoft、Red Hat、Canonical、SAP、ServiceNow 的集成是否形成跨厂商治理规范？</li>
+</ul>
+<h2 id="不是新闻-而是机制">不是新闻，而是机制</h2>
+<ul>
+<li><strong>百度不是“改职级名称”，而是把专业/管理身份墙改成同一评价语言</strong>：事件 -&gt; 5-12 数字职级并轨；机制假设 -&gt; 同池校准和复合能力筛选；效率影响 -&gt; 可能降低跨序列协作成本，但提高晋升竞争与绩效压力。</li>
+<li><strong>DeepSeek 不是“要做一个编程产品”，而是模型公司开始组织化补齐模型之外的 Harness 能力</strong>：事件 -&gt; 招聘 Agent Harness PM/工程师；机制假设 -&gt; 真实工作流反馈成为模型与产品共同进化的组织接口；效率影响 -&gt; 产品迭代速度可能提升，但 Research/Product/Infra 边界会更复杂。</li>
+<li><strong>NVIDIA 不是“发了 agent 工具包”，而是在把企业 agent 的治理门槛平台化</strong>：事件 -&gt; OpenShell/NemoClaw/Agent Toolkit 进入企业软件生态；机制假设 -&gt; 安全、权限、审计和策略控制成为 agent 规模化的前置组织机制；效率影响 -&gt; 工具使用要转化为组织效率，必须先制度化运行时治理。</li>
+<li><strong>腾讯不是“取消组长”就等于扁平化</strong>：事件 -&gt; 项目负责制转述；机制假设 -&gt; 工作组织权可能从固定组长转向项目 owner；效率影响 -&gt; 只有绩效权、资源权、决策权同步变化，才可能降低管理层级摩擦。</li>
+</ul>
+<h2 id="组织情报结论卡">组织情报结论卡</h2>
+<h3 id="结论卡-a-职级并轨正在成为传统大厂适配-ai-复合人才的制度入口">结论卡 A｜职级并轨正在成为传统大厂适配 AI 复合人才的制度入口</h3>
+<ul>
+<li>L1 事实：多源转述百度全员信：中管层以下专业与管理通道打通，统一 5-12 数字职级，任职资格强调“专业力 + 领导力”。</li>
+<li>L2 机制判断：组织从身份分轨转向能力组合评价，可能降低跨序列墙，形成更统一的人才校准语言。</li>
+<li>L3 高层组织判断：只有当薪酬带宽、评审主体、晋升名额和项目资源权同步调整时，职级并轨才可能影响组织效率；否则只是标签简化。</li>
+<li>证据置信度：中。</li>
+<li>阅读价值：核心结论。</li>
+</ul>
+<h3 id="结论卡-b-ai-原生公司正在把-模型之外的工程运行时-变成组织边界">结论卡 B｜AI 原生公司正在把“模型之外的工程运行时”变成组织边界</h3>
+<ul>
+<li>L1 事实：DeepSeek Harness 招聘/组队线索多源出现；OpenAI FDE/Deployment Company 与 6 月前后 FDE 招聘持续强化“部署/生产化”岗位族群。</li>
+<li>L2 机制判断：模型公司开始将真实任务、客户/开发者工作流、工具调用、评测反馈和产品迭代组织化。</li>
+<li>L3 高层组织判断：AI 原生组织的效率竞争将从“研究能力”扩展到“反馈闭环组织能力”；这会抬高 Product/Infra/Applied/Delivery 的边界治理要求。</li>
+<li>证据置信度：中。</li>
+<li>阅读价值：核心结论。</li>
+</ul>
+<h3 id="结论卡-c-企业-agent-的规模化门槛从-工具可用-变成-治理运行时可控">结论卡 C｜企业 agent 的规模化门槛从“工具可用”变成“治理运行时可控”</h3>
+<ul>
+<li>L1 事实：NVIDIA 2026-05-31 官方发布企业 agent 生态材料；OpenShell/NemoClaw 与 Dell/SAP/ServiceNow 等连续集成。</li>
+<li>L2 机制判断：agent 进入真实工作流前，必须解决授权、沙箱、审计、隐私、策略和工具调用边界。</li>
+<li>L3 高层组织判断：组织效率的提升不来自“更多人用 agent”，而来自 agent 能否被纳入可复用、可审计、可治理的生产流程。</li>
+<li>证据置信度：高（事实高，效率影响中）。</li>
+<li>阅读价值：核心结论。</li>
+</ul>
+<h2 id="证据链与可信度">证据链与可信度</h2>
+<div class="table-wrap"><table><thead><tr>
+<th>条目</th>
+<th>主要来源</th>
+<th>证据等级</th>
+<th>置信度</th>
+<th>阅读价值</th>
+<th>入库等级</th>
+</tr></thead><tbody>
+<tr>
+<td>百度数字职级并轨</td>
+<td>36氪、钛媒体/新浪、AnySearch 多源</td>
+<td>B/C</td>
+<td>中</td>
+<td>核心结论</td>
+<td>L2</td>
+</tr>
+<tr>
+<td>DeepSeek Harness 招聘/组队</td>
+<td>甲子光年/新浪财经、雷峰网、Pandaily、InfoQ、AnySearch</td>
+<td>B/C</td>
+<td>中</td>
+<td>核心结论</td>
+<td>L2</td>
+</tr>
+<tr>
+<td>NVIDIA Agent Toolkit / OpenShell</td>
+<td>NVIDIA Newsroom、Developer Blog、Dell/SAP/ServiceNow 官方材料</td>
+<td>A</td>
+<td>高</td>
+<td>核心结论</td>
+<td>L2/L3</td>
+</tr>
+<tr>
+<td>腾讯 WXG 项目负责制</td>
+<td>中国企业家，经中国经济网转载</td>
+<td>B/C</td>
+<td>中低</td>
+<td>持续观察</td>
+<td>L1/L2</td>
+</tr>
+<tr>
+<td>京东 AI 实验室负责人任命</td>
+<td>新浪财经转述内部公告</td>
+<td>C</td>
+<td>中低</td>
+<td>持续观察</td>
+<td>L1</td>
+</tr>
+<tr>
+<td>AI 使用进入绩效</td>
+<td>WSJ 转述链、HR Executive、Semafor、Fast Company</td>
+<td>B/C</td>
+<td>中</td>
+<td>背景参考</td>
+<td>L1/L2</td>
+</tr>
+</tbody></table></div>
+<h2 id="去伪存真记录">去伪存真记录</h2>
+<ul>
+<li>AnySearch CLI：已优先使用；首次并行检索返回可用结果，后续重跑归档时出现 <code>Connection Error: Unable to reach the API endpoint.</code>，失败痕迹保留在 <code>archive/2026-06-02/anysearch_*.raw.txt</code>。</li>
+<li>事实验证：百度、DeepSeek、NVIDIA 三条均至少有两个来源或一手官方来源；腾讯/JD 因依赖内部公告转述，不升格核心结论。</li>
+<li>机制验证：所有候选信息均转成“事件 -&gt; 机制假设 -&gt; 效率影响”；未能说明权责、资源、评价、激励、岗位或流程变化的内容不进入核心区。</li>
+<li>趋势验证：百度与腾讯/JD 同属传统大厂“层级/职级/项目 owner”改造；DeepSeek 与 OpenAI/NVIDIA 同属“模型之外的运行时/交付/治理”组织化。</li>
+<li>反证检查：重点保留三类反向解释：财务或人才压力导致制度重命名；PR/招聘叙事不等于组织单元；AI 使用指标可能诱发指标游戏而非效率提升。</li>
+<li>边界审校：报告未输出处方、排期、责任人或执行清单；只保留结论、事实、机制判断、证据强度、反向解释、适用边界与待验证问题。</li>
+</ul>
+<h2 id="渠道索引补充">渠道索引补充</h2>
+<div class="table-wrap"><table><thead><tr>
+<th>渠道</th>
+<th>URL</th>
+<th>公司</th>
+<th>主题</th>
+<th>证据等级</th>
+<th>是否新增</th>
+</tr></thead><tbody>
+<tr>
+<td>36氪</td>
+<td><a href="https://36kr.com/p/3786193864383745" target="_blank" rel="noreferrer">https://36kr.com/p/3786193864383745</a></td>
+<td>百度</td>
+<td>职级并轨 / 数字职级</td>
+<td>B</td>
+<td>是</td>
+</tr>
+<tr>
+<td>钛媒体</td>
+<td><a href="https://www.tmtpost.com/7970999.html" target="_blank" rel="noreferrer">https://www.tmtpost.com/7970999.html</a></td>
+<td>百度</td>
+<td>职级并轨机制解读</td>
+<td>C</td>
+<td>是</td>
+</tr>
+<tr>
+<td>中国经济网转载中国企业家</td>
+<td><a href="https://www.ce.cn/xwzx/gnsz/gdxw/202605/t20260522_2982969.shtml" target="_blank" rel="noreferrer">https://www.ce.cn/xwzx/gnsz/gdxw/202605/t20260522_2982969.shtml</a></td>
+<td>腾讯</td>
+<td>WXG 项目负责制</td>
+<td>B/C</td>
+<td>是</td>
+</tr>
+<tr>
+<td>新浪财经转载</td>
+<td><a href="https://finance.sina.com.cn/roll/2026-05-19/doc-inhymivp7537961.shtml" target="_blank" rel="noreferrer">https://finance.sina.com.cn/roll/2026-05-19/doc-inhymivp7537961.shtml</a></td>
+<td>京东</td>
+<td>探索研究院实验室负责人</td>
+<td>C</td>
+<td>是</td>
+</tr>
+<tr>
+<td>新浪财经转载甲子光年</td>
+<td><a href="https://finance.sina.com.cn/roll/2026-05-20/doc-inhypnup6973662.shtml" target="_blank" rel="noreferrer">https://finance.sina.com.cn/roll/2026-05-20/doc-inhypnup6973662.shtml</a></td>
+<td>DeepSeek</td>
+<td>Harness 团队</td>
+<td>B/C</td>
+<td>是</td>
+</tr>
+<tr>
+<td>雷峰网</td>
+<td><a href="https://m.leiphone.com/category/yanxishe/s8qOo3KbXsfmFxb6.html" target="_blank" rel="noreferrer">https://m.leiphone.com/category/yanxishe/s8qOo3KbXsfmFxb6.html</a></td>
+<td>DeepSeek</td>
+<td>Harness 团队</td>
+<td>C</td>
+<td>是</td>
+</tr>
+<tr>
+<td>NVIDIA Newsroom</td>
+<td><a href="https://nvidianews.nvidia.com/news/enterprise-software-leaders-build-ai-agents-with-nvidia" target="_blank" rel="noreferrer">https://nvidianews.nvidia.com/news/enterprise-software-leaders-build-ai-agents-with-nvidia</a></td>
+<td>NVIDIA</td>
+<td>Enterprise agent ecosystem</td>
+<td>A</td>
+<td>是</td>
+</tr>
+<tr>
+<td>NVIDIA Developer Blog</td>
+<td><a href="https://developer.nvidia.com/blog/run-autonomous-self-evolving-agents-more-safely-with-nvidia-openshell/" target="_blank" rel="noreferrer">https://developer.nvidia.com/blog/run-autonomous-self-evolving-agents-more-safely-with-nvidia-openshell/</a></td>
+<td>NVIDIA</td>
+<td>OpenShell / agent runtime</td>
+<td>A</td>
+<td>是</td>
+</tr>
+<tr>
+<td>HR Executive</td>
+<td><a href="https://hrexecutive.com/google-meta-amazon-the-companies-making-ai-use-a-job-requirement/" target="_blank" rel="noreferrer">https://hrexecutive.com/google-meta-amazon-the-companies-making-ai-use-a-job-requirement/</a></td>
+<td>Google / Meta / Amazon</td>
+<td>AI 使用进入绩效</td>
+<td>B/C</td>
+<td>是</td>
+</tr>
+<tr>
+<td>Fast Company</td>
+<td><a href="https://www.fastcompany.com/91541586/amazon-workers-pressured-to-up-ai-use-extraneous-tasks" target="_blank" rel="noreferrer">https://www.fastcompany.com/91541586/amazon-workers-pressured-to-up-ai-use-extraneous-tasks</a></td>
+<td>Amazon</td>
+<td>AI 使用指标异化</td>
+<td>B/C</td>
+<td>是</td>
+</tr>
+</tbody></table></div>
+<h2 id="观察池-待核验池">观察池 / 待核验池</h2>
+<div class="table-wrap"><table><thead><tr>
+<th>线索</th>
+<th>当前证据</th>
+<th>为什么不够</th>
+<th>需要怎样的互证</th>
+</tr></thead><tbody>
+<tr>
+<td>腾讯 WXG 项目负责制与混元汇报线简化</td>
+<td>中国企业家/中国经济网转述，多名员工口径</td>
+<td>缺少腾讯一手制度文本，绩效权/资源权/晋升权未明</td>
+<td>内部正式公告可核验版本、负责人公开表述、项目负责人的 RACI 与绩效影响证据</td>
+</tr>
+<tr>
+<td>京东探索研究院实验室负责人任命</td>
+<td>新浪财经转述内部公告</td>
+<td>更像研究条线任命，不足以证明绩效/资源机制变化</td>
+<td>京东官方公告、组织架构页、研发路线和资源配置旁证</td>
+</tr>
+<tr>
+<td>DeepSeek Harness 团队</td>
+<td>多家媒体转述 + 招聘线索</td>
+<td>信息链可能同源，缺公开组织边界</td>
+<td>官方岗位页留存、负责人公开材料、产品/开源仓库、团队持续扩招</td>
+</tr>
+<tr>
+<td>AI 使用纳入绩效</td>
+<td>WSJ 转述链、HR 媒体、员工反证</td>
+<td>不同公司范围与权重不清，容易把“管理关注”误写为“正式绩效制度”</td>
+<td>官方 HR policy、绩效模板、经理沟通材料、反向报道</td>
+</tr>
+<tr>
+<td>Perplexity / Mistral / Cohere / xAI 岗位与薪酬</td>
+<td>招聘/薪酬网站与第三方统计</td>
+<td>样本小、估算多、缺组织机制</td>
+<td>官方招聘族群、组织负责人访谈、岗位持续变化数据</td>
+</tr>
+</tbody></table></div>
+<h2 id="公开知识库入库判断">公开知识库入库判断</h2>
+<ul>
+<li>百度职级并轨：进入本地私有知识源为 L2 事实观察；公开库只可脱敏记录“传统大厂职级从身份标签向复合能力评价移动”的主题结论与公开来源索引。</li>
+<li>DeepSeek Harness：进入本地私有知识源为 L2 观察；公开库只可记录“国内 AI 原生公司出现 Agent Harness 岗位族群线索”，不得把社媒截图、非公开招聘细节或个人信息外传。</li>
+<li>NVIDIA Agent Toolkit / OpenShell：进入本地私有知识源为 L2/L3 机制样本；公开库可记录“企业 agent 规模化需要治理运行时”的主题结论和官方来源。</li>
+<li>腾讯 WXG / JD 探索研究院：进入观察池；暂不作为公开知识库结论。</li>
+<li>AI 使用进入绩效：进入背景参考；在证据不足前不写成“AI 使用已成为大厂绩效标准”的结论。</li>
+</ul>
+<h2 id="关键反模式">关键反模式</h2>
+<ul>
+<li>不要把热闹当趋势：DeepSeek Harness 很重要，但目前仍是招聘/转述级信号，不是组织结构定论。</li>
+<li>不要把工具使用当组织变革：NVIDIA 的工具栈只有进入权限、审计、RACI、事故处理和流程治理，才真正改变组织机制。</li>
+<li>不要把单点案例当普适方法：百度职级并轨不能直接推出所有大厂都应并轨，也不能推出并轨必然提升效率。</li>
+<li>不要只比较快而不比较风险：项目 owner、agent runtime、AI 使用绩效化都可能提高速度，也可能带来治理、质量、指标异化和留任风险。</li>
+<li>不要替用户做决策：本报告只保留事实、机制判断、证据等级、反向解释、适用边界和待验证问题。</li>
+</ul>
+      </article>
+    </main>
+  </div>
+</body>
+</html>
