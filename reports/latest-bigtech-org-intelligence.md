@@ -115,7 +115,8 @@
 | 公司 | 状态 | 当前强信号 | 机制判断 | 证据等级 | 日期溯源 |
 |---|---|---|---|---|---|
 | OpenAI | 有定论 | Deployment Company、FDE、结构治理、SSC | 交付能力组织化；治理、资本、人才激励共同约束组织效率 | A/L3 | [2026-05-27](../daily-log/2026-05-27.html)、[2026-05-28](../daily-log/2026-05-28.html)、[2026-05-29](../daily-log/2026-05-29.html) |
-| Anthropic | 有定论 | Labs / Product 拆分、RSP 版本化、安全门槛 | 探索、规模化、安全治理分属不同节奏与门槛 | A/L3 | [2026-05-27](../daily-log/2026-05-27.html)、[2026-05-28](../daily-log/2026-05-28.html) |
+| Anthropic | 有定论 | Labs / Product 拆分、RSP 版本化、安全门槛、Applied AI / FDE 岗位簇 | 探索、规模化、安全治理与企业交付分属不同节奏与门槛，并继续制度化 | A/L3 | [2026-05-27](../daily-log/2026-05-27.html)、[2026-05-28](../daily-log/2026-05-28.html)、[2026-06-03](../daily-log/2026-06-03.html) |
+| MiniMax | 正在变化 | Agent Team、10x Team、跨边界招聘语言 | 多 Agent 协作、验收回路和外部专家共建可能正在长成正式组织边界 | A/B/L2-L3 | [2026-06-03](../daily-log/2026-06-03.html) |
 | Mistral | 待确认 | 企业平台与 forward-deployed engineers 线索 | 企业交付组织可能增强，但证据不足 | B/C | [2026-05-28](../daily-log/2026-05-28.html) |
 | xAI | 待确认 | 并购/整合、领导层与人员流动报道 | 组织整合与人才流失值得观察，但机制不清 | B/C | [2026-05-28](../daily-log/2026-05-28.html) |
 | Perplexity / Cohere / Runway / Anysphere 等 | 待确认 | 暂无本轮 L2+ 组织机制信号 | 继续观察岗位族群、企业交付、安全治理、绩效机制 | C/D | 后续扫描补齐 |
@@ -168,11 +169,13 @@ Amazon 线索更激进，但证据更弱；如果 AI usage、velocity、release 
 
 ### 3.5 AI 原生组织边界：Research / Product / Safety / Delivery 分化
 
-OpenAI 和 Anthropic 给出的信号最清晰。
+OpenAI 和 Anthropic 给出的信号最清晰，MiniMax 则开始提供国内 AI 原生公司的新样本。
 
 OpenAI 把 Deployment Company 推出来，说明 Delivery / FDE 不只是销售支持，而可能成为模型公司连接客户流程、产品反馈和安全落地的组织能力。
 
-Anthropic 把 Labs、Product 和 RSP 都放到公开叙事里，说明探索、规模化和安全治理被拆成不同节奏。
+Anthropic 把 Labs、Product 和 RSP 都放到公开叙事里，并通过 Applied AI / FDE / Technical Deployment 等岗位簇继续加厚企业落地层，说明探索、规模化、安全治理和行业交付被拆成不同节奏。
+
+MiniMax 的 Agent Team 与 10x Team 则提示，国内 AI 原生公司也开始把“谁拆任务、谁执行、谁验证、谁提供行业知识”显性组织化，而不再只是围绕单一模型能力叙事。
 
 **当前状态**：有定论。可写成 AI 原生公司组织机制的强样本，但不能直接迁移到成熟大厂。
 
