@@ -25,8 +25,13 @@ function copy(relativePath) {
   const target = path.join(publicRoot, relativePath);
   fs.mkdirSync(path.dirname(target), { recursive: true });
   let text = fs.readFileSync(source, "utf8");
+  text = stripPrivateAccessGate(text);
   text = text.replace(/知音楼\/石墨/g, "账号态内部链接");
   fs.writeFileSync(target, text);
+}
+
+function stripPrivateAccessGate(text) {
+  return text.replace(/<!-- PRIVATE_ACCESS_GATE_START -->[\s\S]*?<!-- PRIVATE_ACCESS_GATE_END -->/g, "");
 }
 
 function assertSafe() {
