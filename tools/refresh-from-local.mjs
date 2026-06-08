@@ -3,7 +3,7 @@ import path from "node:path";
 
 const publicRoot = process.cwd();
 const sourceRoot = path.resolve(publicRoot, "../research/private-industry-bigtech-watch");
-const today = new Date().toISOString().slice(0, 10);
+const runtimeDate = new Date().toISOString().slice(0, 10);
 
 const fixedFiles = [
   "framework.html",
@@ -85,6 +85,8 @@ const dailyDates = [...new Set(files
   .filter(Boolean))]
   .sort()
   .reverse();
+
+const today = dailyDates[0] ?? runtimeDate;
 
 const reportFiles = files
   .filter((file) => file.startsWith("reports/") && file.endsWith(".html"))
