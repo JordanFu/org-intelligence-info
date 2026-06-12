@@ -26,12 +26,19 @@ function copy(relativePath) {
   fs.mkdirSync(path.dirname(target), { recursive: true });
   let text = fs.readFileSync(source, "utf8");
   text = stripPrivateAccessGate(text);
+  text = stripLocalPaths(text);
   text = text.replace(/知音楼\/石墨/g, "账号态内部链接");
   fs.writeFileSync(target, text);
 }
 
 function stripPrivateAccessGate(text) {
   return text.replace(/<!-- PRIVATE_ACCESS_GATE_START -->[\s\S]*?<!-- PRIVATE_ACCESS_GATE_END -->/g, "");
+}
+
+function stripLocalPaths(text) {
+  return text
+    .replace(/file:\/\/\/Users\/[^\s"'`)<>\]]+/g, "本地文件")
+    .replace(/\/Users\/[^\s"'`)<>\]]+/g, "本地路径");
 }
 
 function assertSafe() {
