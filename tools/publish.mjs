@@ -1,9 +1,18 @@
 import { execFileSync } from "node:child_process";
+import path from "node:path";
 
-function run(command, args) {
-  return execFileSync(command, args, { encoding: "utf8", stdio: ["ignore", "pipe", "pipe"] }).trim();
+const publicRoot = process.cwd();
+const workspaceRoot = path.resolve(publicRoot, "..");
+
+function run(command, args, options = {}) {
+  return execFileSync(command, args, {
+    encoding: "utf8",
+    stdio: ["ignore", "pipe", "pipe"],
+    ...options,
+  }).trim();
 }
 
+run("node", ["research/private-industry-bigtech-watch/tools/render-report-html.mjs"], { cwd: workspaceRoot });
 run("node", ["tools/refresh-from-local.mjs"]);
 
 const status = run("git", ["status", "--short"]);
@@ -17,4 +26,3 @@ run("git", ["commit", "-m", `Sync organization intelligence ${new Date().toISOSt
 run("git", ["push"]);
 
 console.log("Published organization intelligence changes to GitHub Pages.");
-

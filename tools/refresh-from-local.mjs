@@ -28,7 +28,23 @@ function copy(relativePath) {
   text = stripPrivateAccessGate(text);
   text = stripLocalPaths(text);
   text = text.replace(/知音楼\/石墨/g, "账号态内部链接");
+  if (isSuspiciousReportRegression(relativePath, text, target)) return;
   fs.writeFileSync(target, text);
+}
+
+function isSuspiciousReportRegression(relativePath, nextText, target) {
+  if (relativePath !== "reports/latest-bigtech-org-intelligence.html") return false;
+  if (!fs.existsSync(target)) return false;
+  const currentText = fs.readFileSync(target, "utf8");
+  const currentLines = currentText.split(/\r?\n/).length;
+  const nextLines = nextText.split(/\r?\n/).length;
+  if (currentLines >= 800 && nextLines < currentLines * 0.75) {
+    console.warn(
+      `Skipped ${relativePath}: source HTML looks truncated (${nextLines}/${currentLines} lines).`,
+    );
+    return true;
+  }
+  return false;
 }
 
 function stripPrivateAccessGate(text) {
