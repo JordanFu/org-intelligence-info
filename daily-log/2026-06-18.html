@@ -1,0 +1,664 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>每日扫描｜互联网大厂组织机制研究</title>
+  <style>
+    :root {
+      color-scheme: light;
+      --bg: #f6f7f1;
+      --paper: #fffdf8;
+      --ink: #172033;
+      --muted: #697181;
+      --line: #ded8c9;
+      --soft: #ece6d7;
+      --accent: #1f6f68;
+      --accent-2: #b45a34;
+      --code: #f1eee6;
+    }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "PingFang SC", "Microsoft YaHei", sans-serif;
+      color: var(--ink);
+      background: var(--bg);
+      line-height: 1.75;
+    }
+    .shell {
+      display: grid;
+      grid-template-columns: minmax(210px, 280px) minmax(0, 1fr);
+      min-height: 100vh;
+    }
+    aside {
+      position: sticky;
+      top: 0;
+      height: 100vh;
+      padding: 28px 22px;
+      border-right: 1px solid var(--line);
+      background: #ebe5d7;
+      overflow: auto;
+    }
+    main {
+      max-width: 1040px;
+      width: 100%;
+      padding: 56px 56px 90px;
+    }
+    .eyebrow {
+      color: var(--accent-2);
+      font-size: 13px;
+      font-weight: 800;
+      letter-spacing: .08em;
+      text-transform: uppercase;
+      margin: 0 0 10px;
+    }
+    h1 {
+      font-size: clamp(30px, 4vw, 48px);
+      line-height: 1.12;
+      margin: 0 0 18px;
+      letter-spacing: 0;
+    }
+    h2 {
+      font-size: 26px;
+      line-height: 1.32;
+      margin: 48px 0 14px;
+      padding-top: 18px;
+      border-top: 1px solid var(--line);
+    }
+    h3 {
+      font-size: 20px;
+      margin: 34px 0 10px;
+      color: #23314d;
+    }
+    h4 {
+      font-size: 17px;
+      margin: 26px 0 8px;
+    }
+    p, li {
+      font-size: 16px;
+      color: #2b3343;
+    }
+    p { margin: 10px 0; }
+    ul { padding-left: 1.2rem; }
+    li { margin: 7px 0; }
+    a { color: var(--accent); text-decoration-thickness: 1px; text-underline-offset: 3px; }
+    code {
+      background: var(--code);
+      border: 1px solid var(--line);
+      border-radius: 5px;
+      padding: 1px 5px;
+      font-size: .92em;
+    }
+    pre {
+      overflow: auto;
+      background: #fff9ec;
+      color: #202838;
+      border: 1px solid #d8ccb8;
+      border-radius: 8px;
+      padding: 18px;
+      box-shadow: inset 4px 0 0 var(--accent);
+      white-space: pre-wrap;
+      word-break: break-word;
+    }
+    pre code {
+      display: block;
+      padding: 0;
+      border: 0;
+      background: transparent;
+      color: inherit;
+      line-height: 1.7;
+      font-size: 14px;
+    }
+    blockquote {
+      margin: 24px 0;
+      padding: 14px 18px;
+      border-left: 4px solid var(--accent);
+      background: #eef4ee;
+      color: #344033;
+    }
+    .table-wrap {
+      overflow-x: auto;
+      margin: 18px 0 26px;
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      background: var(--paper);
+    }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      min-width: 720px;
+    }
+    th, td {
+      padding: 12px 14px;
+      border-bottom: 1px solid var(--line);
+      vertical-align: top;
+      text-align: left;
+      font-size: 14px;
+    }
+    th {
+      background: #e7e0cf;
+      color: #26324a;
+      font-weight: 800;
+      white-space: nowrap;
+    }
+    tr:last-child td { border-bottom: 0; }
+    .topbar {
+      display: flex;
+      gap: 10px;
+      align-items: center;
+      flex-wrap: wrap;
+      margin-bottom: 28px;
+    }
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 38px;
+      padding: 8px 12px;
+      border: 1px solid var(--line);
+      border-radius: 7px;
+      background: var(--paper);
+      color: var(--ink);
+      text-decoration: none;
+      font-weight: 750;
+      font-size: 14px;
+    }
+    .primary { background: var(--accent); border-color: var(--accent); color: white; }
+    .toc-title {
+      margin: 0 0 12px;
+      font-size: 14px;
+      font-weight: 850;
+      color: #273247;
+    }
+    .toc a {
+      display: block;
+      padding: 7px 0;
+      color: #465064;
+      text-decoration: none;
+      font-size: 14px;
+      line-height: 1.45;
+      border-bottom: 1px solid rgba(23,32,51,.08);
+    }
+    .toc a.level-3 { padding-left: 14px; font-size: 13px; color: #626b78; }
+    .meta {
+      color: var(--muted);
+      font-size: 14px;
+      margin-bottom: 24px;
+    }
+    @media (max-width: 900px) {
+      .shell { display: block; }
+      aside { position: relative; height: auto; border-right: 0; border-bottom: 1px solid var(--line); }
+      main { padding: 34px 20px 70px; }
+      .toc { columns: 1; }
+      table { min-width: 640px; }
+    }
+  </style>
+</head>
+<body>
+  <div class="shell">
+    <aside>
+      <p class="toc-title">目录</p>
+      <nav class="toc">
+        <a class="level-2" href="#今日结论-只写结论与证据">今日结论（只写结论与证据）</a>
+        <a class="level-2" href="#今日组织机制信号">今日组织机制信号</a>
+        <a class="level-2" href="#传统大厂与-ai-原生组织分组观察">传统大厂与 AI 原生组织分组观察</a>
+        <a class="level-2" href="#高价值变化卡片">高价值变化卡片</a>
+        <a class="level-3" href="#anthropic-applied-ai-从角色簇推进到管理层-交付边界进入正式组织栈">Anthropic / Applied AI 从角色簇推进到管理层 / 交付边界进入正式组织栈</a>
+        <a class="level-3" href="#openai-deployment-从工程前线变成管理系统-伙伴与产品线边界继续加厚">OpenAI / Deployment 从工程前线变成管理系统 / 伙伴与产品线边界继续加厚</a>
+        <a class="level-3" href="#百度-评价池与商业化接口同时被重写-从职级并轨到场景化-ai-业务独立化">百度 / 评价池与商业化接口同时被重写 / 从职级并轨到场景化 AI 业务独立化</a>
+        <a class="level-3" href="#腾讯-ai-lab-撤销并入混元-研究岛向模型主干回收">腾讯 / AI Lab 撤销并入混元 / 研究岛向模型主干回收</a>
+        <a class="level-2" href="#不是新闻-而是机制">不是新闻，而是机制</a>
+        <a class="level-2" href="#组织情报结论卡">组织情报结论卡</a>
+        <a class="level-3" href="#结论卡-a-anthropic-的-applied-ai-已进入-管理化-分线化-阶段">结论卡 A｜Anthropic 的 Applied AI 已进入“管理化 + 分线化”阶段</a>
+        <a class="level-3" href="#结论卡-b-openai-的-deployment-已出现完整管理栈和伙伴化组织边界">结论卡 B｜OpenAI 的 deployment 已出现完整管理栈和伙伴化组织边界</a>
+        <a class="level-3" href="#结论卡-c-百度的-ai-组织适配同时发生在评价层和商业化接口层">结论卡 C｜百度的 AI 组织适配同时发生在评价层和商业化接口层</a>
+        <a class="level-3" href="#结论卡-d-腾讯研究岛向模型主干回收仍是国内大厂重要样本">结论卡 D｜腾讯研究岛向模型主干回收仍是国内大厂重要样本</a>
+        <a class="level-2" href="#证据链与可信度">证据链与可信度</a>
+        <a class="level-2" href="#去伪存真记录">去伪存真记录</a>
+        <a class="level-2" href="#渠道索引补充">渠道索引补充</a>
+        <a class="level-2" href="#观察池-待核验池">观察池 / 待核验池</a>
+      </nav>
+    </aside>
+    <main>
+      <div class="topbar">
+        <a class="btn primary" href="../index.html">返回研究源</a>
+        <a class="btn" href="./2026-06-18.md">查看 Markdown 原文</a>
+      </div>
+      <p class="eyebrow">Daily Scan</p>
+      <h1>2026-06-18 组织情报信息｜互联网大厂与 AI 原生组织机制扫描</h1>
+      <p class="meta">本页面由本地 Markdown 自动渲染生成，仍保留原始 md 文件作为知识库源文档。</p>
+      <article>
+        <blockquote>私有本地材料。仅用于本地知识库研究；公开分享前必须脱敏，并保留证据等级与不确定性。</blockquote>
+<h2 id="今日结论-只写结论与证据">今日结论（只写结论与证据）</h2>
+<ul>
+<li><strong>Anthropic 今天最值得升级的，不是“继续招 Applied AI”，而是官方岗位面已经把 Applied AI 从角色簇推进成带管理层、行业分线和区域分线的正式组织层。</strong> 截至 2026-06-18，Anthropic 官方 jobs 页面在 <code>Applied AI</code> 分类下同时公开 <code>Head of ANZ, Applied AI</code>、多条 <code>Manager of Applied AI Architecture</code>、<code>Manager of Solutions Architecture, Applied AI</code>、<code>Forward Deployed Engineer, Applied AI</code>、<code>Applied AI Architect</code>、<code>Partner Solutions Architect, Applied AI</code> 等岗位，且按 enterprise tech、partnerships、startups、government、national security、public sector、industries 和地域展开。这说明 Anthropic 的 Applied 层已不只是“研究成果落地支持”，而是在变成可管理、可分区、可分行业的交付与架构系统。证据：A；入库判断：L3 可信结论。</li>
+<li><strong>OpenAI 今天最值得保留的，不是某个 FDE 单岗，而是 deployment 已经长成带管理层、产品线、区域和伙伴生态的多层组织栈。</strong> 2026-06-18 复核 OpenAI 官方 careers 搜索页可见 36 个与 <code>AI Deployment Engineer</code> 相关岗位，其中不仅有 <code>AI Deployment Engineer | Codex</code>、<code>AI Deployment Engineer, Public Sector - Federal Civilian</code>、<code>Partner AI Deployment Engineer - AWS</code>，还出现 <code>AI Deployment Engineering Manager, Digital Natives</code>、<code>AI Deployment Engineering Manager, Startups</code>、<code>Manager, AI Deployment Engineering - Codex</code>、<code>Manager, Partner AI Deployment Engineering - AWS</code>。官方 <code>Partner AI Deployment Engineer - AWS</code> 页面进一步写明，该团队不仅做项目支持，还要定义 engagement model、可复用系统和 partner self-sufficiency。证据：A；入库判断：L3 可信结论。</li>
+<li><strong>国内传统大厂今天没有出现新的 L3 拐点，但百度的两条既有动作已经足以作为国内 AI 组织重写基线补录进核心知识源。</strong> 一条是 2026-04-28 全员信宣布自 2026-05-01 起打通中管层以下专业/管理双通道，统一为 <code>5-12</code> 数字职级；另一条是 2026-06-07 MEG 合并商业部与电商事业部、成立大商业事业部，并把数字人创新业务部升级为独立部门。前者重写评价池，后者重写 AI 商业化接口。证据：B/C；入库判断：L2 事实观察。</li>
+<li><strong>腾讯 <code>AI Lab 撤销并入混元</code> 继续成立，但今天更适合写成“研究岛向模型主干回收”的国内趋势样本，而不是写成效率结论。</strong> 2026-03-20 多家来源一致指向：腾讯撤销 AI Lab，原有部分人员并入混元并向姚顺雨汇报，产学研合作中心保留。这说明研究、模型与应用主干正在被收束，但对决策速度和协作成本的净影响仍缺后续证据。证据：B/C；入库判断：L2 事实观察。</li>
+<li><strong>国内 AI 原生公司今天仍以强叙事、弱制度为主。</strong> MiniMax 全职能期权、Kimi 高密度组织实验、DeepSeek 招聘扩张都具阅读价值，但当前仍主要来自 36 氪、人物稿或招聘转述，未过 L3。证据：C；入库判断：观察池。</li>
+</ul>
+<h2 id="今日组织机制信号">今日组织机制信号</h2>
+<div class="table-wrap"><table><thead><tr>
+<th>公司</th>
+<th>信号</th>
+<th>机制标签</th>
+<th>证据等级</th>
+<th>阅读价值</th>
+</tr></thead><tbody>
+<tr>
+<td>Anthropic</td>
+<td><code>Applied AI</code> 下出现 head / manager / architect / FDE / partner 架构全栈</td>
+<td>Applied 层管理化 / 行业与区域分线 / 交付组织显性化</td>
+<td>A</td>
+<td>核心结论</td>
+</tr>
+<tr>
+<td>OpenAI</td>
+<td><code>AI Deployment Engineering</code> 出现 manager 层、Codex 分线、AWS 伙伴分线与公共部门分线</td>
+<td>deployment 管理化 / 产品线分化 / 伙伴生态化 / 区域复制</td>
+<td>A</td>
+<td>核心结论</td>
+</tr>
+<tr>
+<td>百度</td>
+<td>数字职级并轨 + MEG 商业/e-commerce 合并 + 数字人独立化</td>
+<td>统一评价池 / AI 商业化接口重组 / 场景化业务独立化</td>
+<td>B/C</td>
+<td>持续观察</td>
+</tr>
+<tr>
+<td>腾讯</td>
+<td>AI Lab 撤销，研究人员并入混元主干</td>
+<td>研究岛回收 / 模型主干中心化 / 实验室边界收缩</td>
+<td>B/C</td>
+<td>持续观察</td>
+</tr>
+<tr>
+<td>国内 AI 原生组</td>
+<td>MiniMax / Kimi / DeepSeek 仍以单源叙事为主</td>
+<td>人才密度与激励叙事待制度互证</td>
+<td>C</td>
+<td>观察池</td>
+</tr>
+</tbody></table></div>
+<h2 id="传统大厂与-ai-原生组织分组观察">传统大厂与 AI 原生组织分组观察</h2>
+<ul>
+<li><strong>传统大厂</strong>：国内最有价值的不是“又有组织调整”，而是百度和腾讯都在把原本分散的评价结构、研究结构或商业化接口回收到更统一的 AI 主干里。只是公开证据还主要来自媒体转述和内部信转引，距离 L3 仍差一层。</li>
+<li><strong>AI 原生组织</strong>：OpenAI 和 Anthropic 今天给出的不是“继续扩招”，而是 deployment / applied 层已经进入可管理、可复制、可区域化扩张的阶段。</li>
+<li><strong>国内传统大厂</strong>：更像是在改“旧组织怎么适配 AI 时代”，包括职级并轨、实验室撤销、商业化接口重组。</li>
+<li><strong>国内 AI 原生组织</strong>：更像是在讲人才密度、期权激励、创始人直带和高压扩张，但公开材料仍缺正式岗位家族、职级和评估边界。</li>
+<li><strong>二者正在趋同的地方</strong>：都在把“技术能力如何穿过组织边界进入真实业务/客户场景”做成正式组织问题。</li>
+<li><strong>二者仍在分化的地方</strong>：AI 原生公司已把这层能力直接写进官方 jobs taxonomy；国内传统大厂更多还是通过组织调整报道和内部信间接外显。</li>
+</ul>
+<h2 id="高价值变化卡片">高价值变化卡片</h2>
+<h3 id="anthropic-applied-ai-从角色簇推进到管理层-交付边界进入正式组织栈">Anthropic / Applied AI 从角色簇推进到管理层 / 交付边界进入正式组织栈</h3>
+<ul>
+<li>时间：</li>
+<li>2026-06-18 本轮复核 Anthropic 官方 jobs 页面可见状态</li>
+<li>组织范围：</li>
+<li>Anthropic <code>Applied AI</code></li>
+<li>机制类型：Applied 层管理化、区域分线、行业分线、伙伴交付层显性化。</li>
+<li>机制理念：模型公司若把企业交付、行业架构、伙伴扩张与政府/国家安全场景视作长期战场，就必须把 Applied 层从“高手型 IC 团队”推进到“有经理、有区域 head、有架构 owner”的常设组织。</li>
+<li>机制动作：</li>
+<li>官方 jobs 页单列 <code>Applied AI</code>，显示 28 个 open roles。</li>
+<li>可见 <code>Head of ANZ, Applied AI</code>。</li>
+<li>可见 <code>Manager of Applied AI Architecture, Enterprise Tech (Cyber)</code>、<code>Manager of Applied AI Architecture, Partnerships</code>、<code>Manager of Applied AI Architecture, Startups</code>、<code>Manager of Solutions Architecture, Applied AI (Enterprise Tech)</code>。</li>
+<li>同时保留 <code>Forward Deployed Engineer, Applied AI</code>、<code>Applied AI Architect</code>、<code>Applied AI Claude Evangelist, Startups</code>、<code>Partner Solutions Architect, Applied AI</code>。</li>
+<li>岗位按 startups、partnerships、industries、government technology、national security、public sector 和多地区展开。</li>
+<li>应用关系：说明 Anthropic 不再只是用少量高手贴身部署，而是在建立可复制的行业架构、伙伴协同和区域扩张体系。</li>
+<li>系统/工具：Anthropic 官方 jobs taxonomy，Greenhouse 岗位页。</li>
+<li>组织影响：Applied 层从“交付前线”变成“管理和复制前线”，意味着客户反馈、架构模式、伙伴 enablement 与研究/产品主干之间的接口会更制度化。</li>
+<li>来源与渠道：</li>
+<li>官方 jobs 页：&lt;<a href="https://www.anthropic.com/careers/jobs&gt;" target="_blank" rel="noreferrer">https://www.anthropic.com/careers/jobs&gt;</a></li>
+<li>官方 FDE 岗位：&lt;<a href="https://job-boards.greenhouse.io/anthropic/jobs/4985877008&gt;" target="_blank" rel="noreferrer">https://job-boards.greenhouse.io/anthropic/jobs/4985877008&gt;</a></li>
+<li>证据等级：A。</li>
+<li>互证情况：</li>
+<li>官方 jobs taxonomy 与官方 Greenhouse 岗位互证。</li>
+<li>与 2026-06-14 已入库的 <code>Applied AI / FDE / Claude Corps</code> 主线形成时间序列互证。</li>
+<li>反向解释：</li>
+<li>招聘页代表组织意图，不等于所有岗位已经招满或协作机制已稳定运行。</li>
+<li>管理层扩充也可能带来新的协调成本，不自动等于效率更高。</li>
+<li>与历史基线关系：把此前“Applied AI 角色簇已成形”的结论，推进到“Applied AI 已出现正式管理栈与区域/行业分线”。</li>
+<li>组织发展关注点：交付复制速度、行业模板化、伙伴 enablement、Applied 层管理跨度、研究到客户现场回流。</li>
+<li>适用边界：适用于正在从模型能力竞争转向企业 adoption 和受监管场景扩张的 AI 原生公司；不适合直接类比仍在 PMF 早期的小团队。</li>
+<li>待验证问题：</li>
+<li><code>Applied AI</code> 的 manager 层是否拥有预算、人头和优先级决定权？</li>
+<li><code>Applied AI</code> 与 <code>Sales</code>、<code>Public Benefit</code>、<code>Policy</code> 的边界如何划分？</li>
+<li>公开策略：可公开写作“Anthropic 已把 Applied AI 推进到管理层与行业分线”；不可写成“该模式已验证最优”。</li>
+</ul>
+<h3 id="openai-deployment-从工程前线变成管理系统-伙伴与产品线边界继续加厚">OpenAI / Deployment 从工程前线变成管理系统 / 伙伴与产品线边界继续加厚</h3>
+<ul>
+<li>时间：</li>
+<li>2026-06-18 本轮复核 OpenAI 官方 careers 搜索页与官方岗位页可见状态</li>
+<li>组织范围：</li>
+<li>OpenAI <code>AI Deployment Engineering</code></li>
+<li><code>Codex</code></li>
+<li><code>Partner AI Deployment Engineering</code></li>
+<li><code>OpenAI for Gov</code></li>
+<li>机制类型：deployment 管理化、产品线分化、伙伴生态化、区域化复制。</li>
+<li>机制理念：当 deployment 成为主要商业化接口时，组织不再只是派工程师进场，而要同时管理产品线、区域、伙伴、公共部门和复用资产。</li>
+<li>机制动作：</li>
+<li>官方 careers 搜索页显示与 <code>AI Deployment Engineer</code> 相关的 36 个岗位。</li>
+<li>除 IC 岗位外，出现 <code>AI Deployment Engineering Manager, Digital Natives</code>、<code>AI Deployment Engineering Manager, Startups</code>、<code>Manager, AI Deployment Engineering - Codex</code>、<code>Manager, Partner AI Deployment Engineering - AWS</code>、<code>Manager, AI Deployment Engineering (Korea)</code>。</li>
+<li>同时按场景拆出 <code>AI Deployment Engineer | Codex</code>、<code>AI Deployment Engineer, Public Sector - Federal Civilian</code>、<code>Partner AI Deployment Engineer - AWS</code>、<code>AI Deployment Engineer, Large Enterprise</code>、<code>AI Deployment Engineer - Startups</code>。</li>
+<li>官方 <code>Partner AI Deployment Engineer - AWS</code> 页明确写到该角色要定义 <code>engagement models</code>、<code>repeatable systems</code>、<code>best practices</code>，并让 AWS 与合作伙伴获得 <code>self-sufficiency</code>。</li>
+<li>应用关系：deployment 不再只是“帮客户落地”，而是开始承担伙伴体系设计、区域规模化和产品反馈标准化。</li>
+<li>系统/工具：OpenAI 官方 careers 搜索页、官方岗位页、Ashby 申请系统。</li>
+<li>组织影响：说明 OpenAI 正在把 deployment 打造成一套管理系统，而不是少数 FDE 的精英工种。</li>
+<li>来源与渠道：</li>
+<li>官方 careers 搜索页：&lt;<a href="https://openai.com/careers/search/?q=ai+deployment+engineer&gt;" target="_blank" rel="noreferrer">https://openai.com/careers/search/?q=ai+deployment+engineer&gt;</a></li>
+<li>官方 AWS 岗位页：&lt;<a href="https://openai.com/careers/partner-ai-deployment-engineer-aws-san-francisco/&gt;" target="_blank" rel="noreferrer">https://openai.com/careers/partner-ai-deployment-engineer-aws-san-francisco/&gt;</a></li>
+<li>证据等级：A。</li>
+<li>互证情况：</li>
+<li>官方 careers 搜索页与官方岗位页互证。</li>
+<li>与 2026-06-15 已入库的 OpenAI deployment 岗位矩阵形成更强的管理层互证。</li>
+<li>反向解释：</li>
+<li>招聘规模说明意图和组织形态，不直接证明部署效率已被验证。</li>
+<li>伙伴自驱和标准化也可能意味着前线复杂度过高，需要靠中间层消化。</li>
+<li>与历史基线关系：把此前“deployment 岗位矩阵已显性化”的判断，推进到“deployment 已出现 manager 层与伙伴运营层”。</li>
+<li>组织发展关注点：伙伴生态、区域复制、交付复用、Codex 专项推进、公共部门边界、管理跨度。</li>
+<li>适用边界：适用于平台化、企业化和伙伴化同步推进的模型公司；不适用于纯研究导向或纯 API 自助路线团队。</li>
+<li>待验证问题：</li>
+<li><code>AI Deployment Engineering</code> 与 <code>Technical Success</code>、<code>Go To Market</code> 的预算和目标如何拆分？</li>
+<li><code>Codex</code> deployment 是产品专项临时峰值，还是长期独立条线？</li>
+<li>公开策略：可公开写作“OpenAI deployment 已出现 manager 层与伙伴分线”；不可写成“deployment 已成为最优商业组织形态”。</li>
+</ul>
+<h3 id="百度-评价池与商业化接口同时被重写-从职级并轨到场景化-ai-业务独立化">百度 / 评价池与商业化接口同时被重写 / 从职级并轨到场景化 AI 业务独立化</h3>
+<ul>
+<li>时间：</li>
+<li>2026-04-28 全员信披露职级体系调整，2026-05-01 生效</li>
+<li>2026-06-07 MEG 组织调整见诸媒体</li>
+<li>组织范围：</li>
+<li>百度中管层以下职级体系</li>
+<li>百度 <code>MEG</code></li>
+<li>商业部、电商事业部、数字人创新业务部</li>
+<li>机制类型：统一评价池、AI 商业化接口重组、场景化业务独立化。</li>
+<li>机制理念：AI 时代的组织适配不只发生在模型侧，也发生在“如何评价复合型人才”和“谁来承接商业化场景”两端。</li>
+<li>机制动作：</li>
+<li>统一中管层以下专业与管理双通道。</li>
+<li>取消 <code>T / P / E / Band / M</code> 字母标签，改为 <code>5-12</code> 数字职级。</li>
+<li>对外解释为为了适配“同时具备专业力和领导力”的复合型人才。</li>
+<li>6 月初 MEG 合并商业部与电商事业部，成立大商业事业部。</li>
+<li>数字人创新业务部升级为独立部门。</li>
+<li>应用关系：前者影响评价语言和跨序列流动，后者影响 AI 场景化商业化资源的集中与单元边界。</li>
+<li>系统/工具：全员信、MEG 组织调整、数字人平台 <code>百度一镜</code> 背景。</li>
+<li>组织影响：百度正在同时重写“人怎么被评价”和“AI 商业场景由谁承接”，这是比普通 BU 调整更值得保留的组合信号。</li>
+<li>来源与渠道：</li>
+<li>36 氪：&lt;<a href="https://36kr.com/p/3786193864383745&gt;" target="_blank" rel="noreferrer">https://36kr.com/p/3786193864383745&gt;</a></li>
+<li>财联社：&lt;<a href="https://www.cls.cn/detail/2357688&gt;" target="_blank" rel="noreferrer">https://www.cls.cn/detail/2357688&gt;</a></li>
+<li>新浪财经：&lt;<a href="https://finance.sina.com.cn/stock/t/2026-06-07/doc-iniapwhw6666091.shtml&gt;" target="_blank" rel="noreferrer">https://finance.sina.com.cn/stock/t/2026-06-07/doc-iniapwhw6666091.shtml&gt;</a></li>
+<li>证据等级：B/C。</li>
+<li>互证情况：</li>
+<li>职级并轨有 36 氪、财联社、界面、东财等多源互证。</li>
+<li>MEG 调整有新浪财经、36 氪快讯、腾讯新闻等多源互证。</li>
+<li>反向解释：</li>
+<li>职级并轨也可能主要是标签重写，若薪酬带宽、校准和晋升权不变，组织影响会弱很多。</li>
+<li>MEG 合并与数字人独立化也可能首先服务商业化冲量，而不是管理机制升级。</li>
+<li>与历史基线关系：今天不是新增事件，而是把两条此前分散的百度动作补录成一条更完整的国内基线。</li>
+<li>组织发展关注点：复合型人才评价、跨序列流动、AI 场景商业化 owner、资源集中方式。</li>
+<li>适用边界：适用于既有成熟大厂在 AI 时代重写评价池和商业化接口的观察；不适用于仍无复杂职级体系的创业公司。</li>
+<li>待验证问题：</li>
+<li>统一职级后，专家路径的上限与稀缺性如何变化？</li>
+<li>大商业事业部与数字人创新业务部是否拥有更明确的预算和产品节奏权？</li>
+<li>公开策略：可公开写作“百度同时重写评价池与 AI 商业化接口”；不可写成“百度已验证该机制能提升效率”。</li>
+</ul>
+<h3 id="腾讯-ai-lab-撤销并入混元-研究岛向模型主干回收">腾讯 / AI Lab 撤销并入混元 / 研究岛向模型主干回收</h3>
+<ul>
+<li>时间：</li>
+<li>2026-03-20 相关报道公开</li>
+<li>组织范围：</li>
+<li>腾讯 <code>TEG</code></li>
+<li><code>AI Lab</code></li>
+<li><code>混元</code></li>
+<li>产学研合作中心</li>
+<li>机制类型：研究岛回收、模型主干中心化、实验室边界收缩。</li>
+<li>机制理念：当模型研发和商业化节奏成为主线时，独立研究实验室的议程可能让位于更直接的模型主干和应用回路。</li>
+<li>机制动作：</li>
+<li>AI Lab 被撤销。</li>
+<li>部分人员并入混元并向姚顺雨汇报。</li>
+<li>产学研合作中心保留。</li>
+<li>多模态负责人向 TEG 总裁卢山汇报。</li>
+<li>应用关系：影响研究议程归属、模型资源集中、实验室与产品/模型主线的接口。</li>
+<li>系统/工具：腾讯新闻转载机器之心、IT 之家、36 氪。</li>
+<li>组织影响：这是典型的“从研究孤岛回到模型主干”的组织收束动作，可能降低研究与模型产品线之间的部门墙，但也可能压缩长期研究空间。</li>
+<li>来源与渠道：</li>
+<li>腾讯新闻：&lt;<a href="https://news.qq.com/rain/a/20260320A085Q900&gt;" target="_blank" rel="noreferrer">https://news.qq.com/rain/a/20260320A085Q900&gt;</a></li>
+<li>36 氪：&lt;<a href="https://36kr.com/p/3731173493702918&gt;" target="_blank" rel="noreferrer">https://36kr.com/p/3731173493702918&gt;</a></li>
+<li>IT 之家：&lt;<a href="https://www.ithome.com/0/931/165.htm&gt;" target="_blank" rel="noreferrer">https://www.ithome.com/0/931/165.htm&gt;</a></li>
+<li>证据等级：B/C。</li>
+<li>互证情况：</li>
+<li>机器之心线索被腾讯新闻、36 氪、IT 之家、新浪等复述。</li>
+<li>与腾讯此前 AI Infra / 混元集权主线相符。</li>
+<li>反向解释：</li>
+<li>实验室撤销并不自动意味着模型主干效率更高，也可能只是权力进一步中心化。</li>
+<li>若应用与研究接口仍未改善，组织债会从“实验室孤岛”转成“单一主干过载”。</li>
+<li>与历史基线关系：不是今天新信号，但与百度基线一起构成国内大厂“回收分散结构到 AI 主干”的同向样本。</li>
+<li>组织发展关注点：长期研究空间、模型主干中心化、跨部门接口、资源决策权。</li>
+<li>适用边界：适用于拥有多年研究实验室传统的大厂；不适用于原本就没有独立研究岛的公司。</li>
+<li>待验证问题：</li>
+<li>并入后研究主题选择权是否更贴近业务/模型节奏？</li>
+<li>混元主干是否因此减少协作成本，还是增加新的 bottleneck？</li>
+<li>公开策略：可公开写作“腾讯把研究岛进一步并回模型主干”；不可写成“腾讯因此一定更快”。</li>
+</ul>
+<h2 id="不是新闻-而是机制">不是新闻，而是机制</h2>
+<ul>
+<li><strong>Anthropic 不是“招聘更多架构师”，而是把 Applied AI 从前线高手层推进成有管理层、有区域 head、有行业 owner 的正式组织面。</strong> 事件 -&gt; 官方 jobs 页出现 head / manager / architect / FDE 全栈；机制假设 -&gt; Applied AI 已从个体能力变成可复制的交付系统；效率含义 -&gt; 客户反馈和行业模板更可能被规模化，但协调层也会变厚。</li>
+<li><strong>OpenAI 不是“又多了几个 deployment engineer”，而是 deployment 已进入管理系统和伙伴操作系统阶段。</strong> 事件 -&gt; 官方 careers 搜索页出现多条 manager 岗与 AWS 伙伴分线；机制假设 -&gt; deployment 已承担产品线推进、区域复制和生态 enablement；效率含义 -&gt; 单点高手依赖下降，但中间层复杂度上升。</li>
+<li><strong>百度 不是“换个职级名 + 调个 BU”，而是在同时重写评价池和 AI 商业化接口。</strong> 事件 -&gt; 数字职级统一 + MEG 大商业事业部 + 数字人独立化；机制假设 -&gt; 百度在把复合型人才筛选和 AI 场景 owner 收束到更统一的结构里；效率含义 -&gt; 有机会降低跨序列摩擦，但也可能只是更强集权。</li>
+<li><strong>腾讯 不是“实验室撤销”本身，而是研究主权向模型主干回收。</strong> 事件 -&gt; AI Lab 并入混元；机制假设 -&gt; 模型主干和应用主线获得更直接的组织支配权；效率含义 -&gt; 可能减少研究与模型产品线之间的脱节，也可能牺牲长期探索。</li>
+</ul>
+<h2 id="组织情报结论卡">组织情报结论卡</h2>
+<h3 id="结论卡-a-anthropic-的-applied-ai-已进入-管理化-分线化-阶段">结论卡 A｜Anthropic 的 Applied AI 已进入“管理化 + 分线化”阶段</h3>
+<ul>
+<li>L1 事实：Anthropic 官方 jobs 页把 <code>Applied AI</code> 单列为 28 个 open roles，并出现 <code>Head of ANZ, Applied AI</code>、多条 manager 岗、architect、FDE、partner solutions 岗位。</li>
+<li>L2 机制判断：Applied AI 已从单一高技能部署层升级为带管理层、区域和行业分工的正式组织层。</li>
+<li>L3 高层组织判断：Anthropic 的企业交付能力竞争，不再只靠模型和少数 FDE，而在向一套可复制的 Applied operating system 演进。</li>
+<li>证据置信度：高。</li>
+<li>阅读价值：核心结论。</li>
+</ul>
+<h3 id="结论卡-b-openai-的-deployment-已出现完整管理栈和伙伴化组织边界">结论卡 B｜OpenAI 的 deployment 已出现完整管理栈和伙伴化组织边界</h3>
+<ul>
+<li>L1 事实：OpenAI 官方 careers 搜索页列出 36 个相关岗位，包含多个 deployment manager、Codex manager、AWS partner deployment manager 和公共部门岗位；官方 AWS 岗位页要求定义 engagement model、复用系统和 partner self-sufficiency。</li>
+<li>L2 机制判断：deployment 已不只是前线工程角色，而是在承担组织复制、伙伴体系和产品线推进责任。</li>
+<li>L3 高层组织判断：OpenAI 正把 deployment 打造成公司的第二增长操作系统，而不只是研究成果的附属服务层。</li>
+<li>证据置信度：高。</li>
+<li>阅读价值：核心结论。</li>
+</ul>
+<h3 id="结论卡-c-百度的-ai-组织适配同时发生在评价层和商业化接口层">结论卡 C｜百度的 AI 组织适配同时发生在评价层和商业化接口层</h3>
+<ul>
+<li>L1 事实：百度统一数字职级、打通专业/管理双通道；随后 MEG 合并商业与电商、数字人业务独立化。</li>
+<li>L2 机制判断：百度在同时调整“怎么评价人”和“谁来承接 AI 场景商业化”。</li>
+<li>L3 高层组织判断：国内传统大厂的 AI 组织改造，不只是模型部门升级，而是评价体系与商业化 owner 一起重写。</li>
+<li>证据置信度：中。</li>
+<li>阅读价值：持续观察。</li>
+</ul>
+<h3 id="结论卡-d-腾讯研究岛向模型主干回收仍是国内大厂重要样本">结论卡 D｜腾讯研究岛向模型主干回收仍是国内大厂重要样本</h3>
+<ul>
+<li>L1 事实：AI Lab 被撤销，部分人员并入混元并向姚顺雨汇报。</li>
+<li>L2 机制判断：研究资源与模型主干正在进一步中心化。</li>
+<li>L3 高层组织判断：国内大厂的 AI 组织竞争，很可能首先表现为“谁把分散研究岛回收到可直接服务模型和产品节奏的主干”。</li>
+<li>证据置信度：中。</li>
+<li>阅读价值：持续观察。</li>
+</ul>
+<h2 id="证据链与可信度">证据链与可信度</h2>
+<div class="table-wrap"><table><thead><tr>
+<th>条目</th>
+<th>主要来源</th>
+<th>证据等级</th>
+<th>置信度</th>
+<th>阅读价值</th>
+<th>入库等级</th>
+</tr></thead><tbody>
+<tr>
+<td>Anthropic Applied AI 管理化 / 分线化</td>
+<td>Anthropic 官方 jobs + 官方 Greenhouse</td>
+<td>A</td>
+<td>高</td>
+<td>核心结论</td>
+<td>L3</td>
+</tr>
+<tr>
+<td>OpenAI deployment 管理栈 / 伙伴化</td>
+<td>OpenAI 官方 careers + 官方 AWS 岗位页</td>
+<td>A</td>
+<td>高</td>
+<td>核心结论</td>
+<td>L3</td>
+</tr>
+<tr>
+<td>百度评价池 + 商业化接口重写</td>
+<td>36 氪 + 财联社 + 新浪财经 + 腾讯新闻</td>
+<td>B/C</td>
+<td>中</td>
+<td>持续观察</td>
+<td>L2</td>
+</tr>
+<tr>
+<td>腾讯 AI Lab 回收至混元主干</td>
+<td>腾讯新闻 + 36 氪 + IT 之家</td>
+<td>B/C</td>
+<td>中</td>
+<td>持续观察</td>
+<td>L2</td>
+</tr>
+<tr>
+<td>国内 AI 原生强叙事 / 弱制度</td>
+<td>36 氪、人物稿、招聘站</td>
+<td>C</td>
+<td>中低</td>
+<td>观察池</td>
+<td>L1</td>
+</tr>
+</tbody></table></div>
+<h2 id="去伪存真记录">去伪存真记录</h2>
+<ul>
+<li>AnySearch 优先执行：</li>
+<li>已先调用本地 <code>python3 本地路径</code> 执行 4 组 batch search、若干定向 <code>search</code> 与部分 <code>extract</code>。</li>
+<li><code>Anthropic jobs</code> 的 AnySearch <code>extract</code> 成功返回完整 taxonomy。</li>
+<li><code>36kr</code> 与 <code>新浪财经</code> 的页面 <code>extract</code> 出现 <code>extract_fetch_failed</code>，因此改用搜索摘要与网页直接打开复核。</li>
+<li>事实验证：</li>
+<li>Anthropic 与 OpenAI 主结论只使用官方 jobs/careers 页面。</li>
+<li>百度与腾讯只保留能被多家媒体指向同一组织动作的部分，不把评论写法当事实。</li>
+<li>机制验证：</li>
+<li>只有能落到 manager 层、区域/行业分线、统一评价池、主干回收、伙伴自驱这些组织结构性动作的材料进入主报告。</li>
+<li>纯融资、模型发布、人才故事、薪酬传闻不升主报告。</li>
+<li>趋势验证：</li>
+<li>Anthropic / OpenAI 与 6 月上旬已入库的 <code>Applied / FDE / deployment</code> 主线形成连续互证。</li>
+<li>百度 / 腾讯 与国内大厂“AI 主干化、去孤岛化、统一评价语言”趋势形成同向互证。</li>
+<li>反证检查：</li>
+<li>Anthropic / OpenAI 招聘页证明组织形态，不直接证明效率结果。</li>
+<li>百度 / 腾讯 的媒体互证仍不足以推出净效率提升，只能说明组织动作已发生。</li>
+<li>边界审校：本报告只保留结论、事实、机制判断、证据强度、反向解释、适用边界和待验证问题，不输出动作建议。</li>
+</ul>
+<h2 id="渠道索引补充">渠道索引补充</h2>
+<div class="table-wrap"><table><thead><tr>
+<th>渠道</th>
+<th>URL</th>
+<th>公司</th>
+<th>主题</th>
+<th>证据等级</th>
+<th>是否新增</th>
+</tr></thead><tbody>
+<tr>
+<td>Anthropic 官方 jobs</td>
+<td><a href="https://www.anthropic.com/careers/jobs" target="_blank" rel="noreferrer">https://www.anthropic.com/careers/jobs</a></td>
+<td>Anthropic</td>
+<td>Applied AI 管理化 / 分线化</td>
+<td>A</td>
+<td>是</td>
+</tr>
+<tr>
+<td>Anthropic Greenhouse</td>
+<td><a href="https://job-boards.greenhouse.io/anthropic/jobs/4985877008" target="_blank" rel="noreferrer">https://job-boards.greenhouse.io/anthropic/jobs/4985877008</a></td>
+<td>Anthropic</td>
+<td>FDE in Applied AI</td>
+<td>A</td>
+<td>否，补强</td>
+</tr>
+<tr>
+<td>OpenAI 官方 careers</td>
+<td><a href="https://openai.com/careers/search/?q=ai+deployment+engineer" target="_blank" rel="noreferrer">https://openai.com/careers/search/?q=ai+deployment+engineer</a></td>
+<td>OpenAI</td>
+<td>deployment 管理栈 / 岗位矩阵</td>
+<td>A</td>
+<td>是</td>
+</tr>
+<tr>
+<td>OpenAI 官方岗位页</td>
+<td><a href="https://openai.com/careers/partner-ai-deployment-engineer-aws-san-francisco/" target="_blank" rel="noreferrer">https://openai.com/careers/partner-ai-deployment-engineer-aws-san-francisco/</a></td>
+<td>OpenAI</td>
+<td>伙伴 deployment 机制</td>
+<td>A</td>
+<td>是</td>
+</tr>
+<tr>
+<td>36 氪</td>
+<td><a href="https://36kr.com/p/3786193864383745" target="_blank" rel="noreferrer">https://36kr.com/p/3786193864383745</a></td>
+<td>百度</td>
+<td>数字职级并轨</td>
+<td>C</td>
+<td>补录</td>
+</tr>
+<tr>
+<td>财联社</td>
+<td><a href="https://www.cls.cn/detail/2357688" target="_blank" rel="noreferrer">https://www.cls.cn/detail/2357688</a></td>
+<td>百度</td>
+<td>数字职级并轨</td>
+<td>B/C</td>
+<td>补录</td>
+</tr>
+<tr>
+<td>新浪财经</td>
+<td><a href="https://finance.sina.com.cn/stock/t/2026-06-07/doc-iniapwhw6666091.shtml" target="_blank" rel="noreferrer">https://finance.sina.com.cn/stock/t/2026-06-07/doc-iniapwhw6666091.shtml</a></td>
+<td>百度</td>
+<td>MEG 大商业事业部 / 数字人独立化</td>
+<td>B/C</td>
+<td>补录</td>
+</tr>
+<tr>
+<td>腾讯新闻</td>
+<td><a href="https://news.qq.com/rain/a/20260320A085Q900" target="_blank" rel="noreferrer">https://news.qq.com/rain/a/20260320A085Q900</a></td>
+<td>腾讯</td>
+<td>AI Lab 撤销并入混元</td>
+<td>B/C</td>
+<td>补录</td>
+</tr>
+</tbody></table></div>
+<h2 id="观察池-待核验池">观察池 / 待核验池</h2>
+<ul>
+<li><strong>MiniMax / 全职能长期期权激励</strong></li>
+<li>当前判断：</li>
+<li>可说明激励从算法核心向更多职能扩散。</li>
+<li>但仍主要来自 36 氪单源稿件，缺制度文件和多源互证。</li>
+<li><strong>Kimi / 高密度组织实验</strong></li>
+<li>当前判断：</li>
+<li>对理解创始人直带、沟通协议和人才筛选有价值。</li>
+<li>但缺正式职级、绩效和岗位族群边界。</li>
+<li><strong>DeepSeek / 招聘扩张与 Agent 闭环</strong></li>
+<li>当前判断：</li>
+<li>说明研究-应用-数据策略线继续加厚。</li>
+<li>但仍缺官方 careers taxonomy 和更强一手链。</li>
+<li><strong>Microsoft / Amazon / Meta</strong></li>
+<li>当前判断：</li>
+<li>今天命中更多是评论稿、二手解读或既有基线回流。</li>
+<li>没有比已入库材料更高等级的新公开链路。</li>
+</ul>
+<h2 id="公开知识库入库判断">公开知识库入库判断</h2>
+<ul>
+<li><strong>可进入本地私有知识源核心区</strong>：</li>
+<li>Anthropic：以“Applied AI 已进入管理化与分线化阶段”为主题，按 L3 入库。</li>
+<li>OpenAI：以“deployment 已出现 manager 层和伙伴化组织边界”为主题，按 L3 入库。</li>
+<li><strong>可进入本地私有知识源观察区</strong>：</li>
+<li>百度：以“统一评价池 + AI 商业化接口重写”为主题，按 L2 入库。</li>
+<li>腾讯：以“AI Lab 回收至混元主干”为主题，按 L2 入库。</li>
+<li>MiniMax / Kimi / DeepSeek 相关叙事性材料。</li>
+<li><strong>不进入公开结论区</strong>：</li>
+<li>把招聘规模直接写成效率验证。</li>
+<li>把媒体人物稿里的文化标签直接写成组织机制。</li>
+<li>把单次 BU 调整直接上升为普适方法。</li>
+</ul>
+      </article>
+    </main>
+  </div>
+</body>
+</html>
