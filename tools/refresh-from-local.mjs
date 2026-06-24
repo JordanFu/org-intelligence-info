@@ -59,7 +59,10 @@ function stripLocalPaths(text) {
 }
 
 function stripSensitiveKeywords(text) {
-  return text.replace(/top\s+secret\s+clearance/gi, "高等级安全许可");
+  return text
+    .replace(/top\s+secret\s+clearance/gi, "高等级安全许可")
+    .replace(/token\s+foundry/gi, "Foundry 项目")
+    .replace(/token/gi, "用量单位");
 }
 
 function assertSafe() {
@@ -70,6 +73,7 @@ function assertSafe() {
     /api[_-]?key/i,
     /password/i,
     /secret/i,
+    /token/i,
     /source-channels\.private/i,
     /local-reference-structured/i,
     /附：行业绩效/,
