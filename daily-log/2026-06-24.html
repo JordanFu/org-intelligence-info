@@ -1,0 +1,690 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>每日扫描｜互联网大厂组织机制研究</title>
+  <style>
+    :root {
+      color-scheme: light;
+      --bg: #f6f7f1;
+      --paper: #fffdf8;
+      --ink: #172033;
+      --muted: #697181;
+      --line: #ded8c9;
+      --soft: #ece6d7;
+      --accent: #1f6f68;
+      --accent-2: #b45a34;
+      --code: #f1eee6;
+    }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "PingFang SC", "Microsoft YaHei", sans-serif;
+      color: var(--ink);
+      background: var(--bg);
+      line-height: 1.75;
+    }
+    .shell {
+      display: grid;
+      grid-template-columns: minmax(210px, 280px) minmax(0, 1fr);
+      min-height: 100vh;
+    }
+    aside {
+      position: sticky;
+      top: 0;
+      height: 100vh;
+      padding: 28px 22px;
+      border-right: 1px solid var(--line);
+      background: #ebe5d7;
+      overflow: auto;
+    }
+    main {
+      max-width: 1040px;
+      width: 100%;
+      padding: 56px 56px 90px;
+    }
+    .eyebrow {
+      color: var(--accent-2);
+      font-size: 13px;
+      font-weight: 800;
+      letter-spacing: .08em;
+      text-transform: uppercase;
+      margin: 0 0 10px;
+    }
+    h1 {
+      font-size: clamp(30px, 4vw, 48px);
+      line-height: 1.12;
+      margin: 0 0 18px;
+      letter-spacing: 0;
+    }
+    h2 {
+      font-size: 26px;
+      line-height: 1.32;
+      margin: 48px 0 14px;
+      padding-top: 18px;
+      border-top: 1px solid var(--line);
+    }
+    h3 {
+      font-size: 20px;
+      margin: 34px 0 10px;
+      color: #23314d;
+    }
+    h4 {
+      font-size: 17px;
+      margin: 26px 0 8px;
+    }
+    p, li {
+      font-size: 16px;
+      color: #2b3343;
+    }
+    p { margin: 10px 0; }
+    ul { padding-left: 1.2rem; }
+    li { margin: 7px 0; }
+    a { color: var(--accent); text-decoration-thickness: 1px; text-underline-offset: 3px; }
+    code {
+      background: var(--code);
+      border: 1px solid var(--line);
+      border-radius: 5px;
+      padding: 1px 5px;
+      font-size: .92em;
+    }
+    pre {
+      overflow: auto;
+      background: #fff9ec;
+      color: #202838;
+      border: 1px solid #d8ccb8;
+      border-radius: 8px;
+      padding: 18px;
+      box-shadow: inset 4px 0 0 var(--accent);
+      white-space: pre-wrap;
+      word-break: break-word;
+    }
+    pre code {
+      display: block;
+      padding: 0;
+      border: 0;
+      background: transparent;
+      color: inherit;
+      line-height: 1.7;
+      font-size: 14px;
+    }
+    blockquote {
+      margin: 24px 0;
+      padding: 14px 18px;
+      border-left: 4px solid var(--accent);
+      background: #eef4ee;
+      color: #344033;
+    }
+    .table-wrap {
+      overflow-x: auto;
+      margin: 18px 0 26px;
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      background: var(--paper);
+    }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      min-width: 720px;
+    }
+    th, td {
+      padding: 12px 14px;
+      border-bottom: 1px solid var(--line);
+      vertical-align: top;
+      text-align: left;
+      font-size: 14px;
+    }
+    th {
+      background: #e7e0cf;
+      color: #26324a;
+      font-weight: 800;
+      white-space: nowrap;
+    }
+    tr:last-child td { border-bottom: 0; }
+    .topbar {
+      display: flex;
+      gap: 10px;
+      align-items: center;
+      flex-wrap: wrap;
+      margin-bottom: 28px;
+    }
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 38px;
+      padding: 8px 12px;
+      border: 1px solid var(--line);
+      border-radius: 7px;
+      background: var(--paper);
+      color: var(--ink);
+      text-decoration: none;
+      font-weight: 750;
+      font-size: 14px;
+    }
+    .primary { background: var(--accent); border-color: var(--accent); color: white; }
+    .toc-title {
+      margin: 0 0 12px;
+      font-size: 14px;
+      font-weight: 850;
+      color: #273247;
+    }
+    .toc a {
+      display: block;
+      padding: 7px 0;
+      color: #465064;
+      text-decoration: none;
+      font-size: 14px;
+      line-height: 1.45;
+      border-bottom: 1px solid rgba(23,32,51,.08);
+    }
+    .toc a.level-3 { padding-left: 14px; font-size: 13px; color: #626b78; }
+    .meta {
+      color: var(--muted);
+      font-size: 14px;
+      margin-bottom: 24px;
+    }
+    @media (max-width: 900px) {
+      .shell { display: block; }
+      aside { position: relative; height: auto; border-right: 0; border-bottom: 1px solid var(--line); }
+      main { padding: 34px 20px 70px; }
+      .toc { columns: 1; }
+      table { min-width: 640px; }
+    }
+  </style>
+</head>
+<body>
+  <div class="shell">
+    <aside>
+      <p class="toc-title">目录</p>
+      <nav class="toc">
+        <a class="level-2" href="#今日结论">今日结论</a>
+        <a class="level-2" href="#今日组织机制信号">今日组织机制信号</a>
+        <a class="level-2" href="#传统大厂与-ai-原生组织分组观察">传统大厂与 AI 原生组织分组观察</a>
+        <a class="level-2" href="#高价值变化卡片">高价值变化卡片</a>
+        <a class="level-3" href="#deepseek-harness-agent-产品化新岗位族群进入公开招聘面">DeepSeek / Harness / Agent 产品化新岗位族群进入公开招聘面</a>
+        <a class="level-3" href="#mistral-applied-ai-fde-客户面对技术组织基线延续">Mistral / Applied AI FDE / 客户面对技术组织基线延续</a>
+        <a class="level-3" href="#cohere-sovereign-ai-fde-公共部门部署边界的弱观察">Cohere / Sovereign AI FDE / 公共部门部署边界的弱观察</a>
+        <a class="level-2" href="#不是新闻而是机制">不是新闻而是机制</a>
+        <a class="level-2" href="#组织情报结论卡">组织情报结论卡</a>
+        <a class="level-3" href="#结论卡-a-deepseek-harness-是-agent-产品化组织边界的-l2-观察">结论卡 A｜DeepSeek Harness 是 Agent 产品化组织边界的 L2 观察</a>
+        <a class="level-3" href="#结论卡-b-海外-fde-applied-deployment-岗位面继续形成-ai-原生组织基线">结论卡 B｜海外 FDE / Applied / Deployment 岗位面继续形成 AI 原生组织基线</a>
+        <a class="level-3" href="#结论卡-c-今日传统大厂扫描的主要价值是时间窗降噪">结论卡 C｜今日传统大厂扫描的主要价值是时间窗降噪</a>
+        <a class="level-2" href="#证据链与可信度">证据链与可信度</a>
+        <a class="level-2" href="#去伪存真记录">去伪存真记录</a>
+        <a class="level-2" href="#渠道索引补充">渠道索引补充</a>
+        <a class="level-2" href="#观察池-待核验池">观察池 / 待核验池</a>
+        <a class="level-2" href="#公开知识库入库判断">公开知识库入库判断</a>
+      </nav>
+    </aside>
+    <main>
+      <div class="topbar">
+        <a class="btn primary" href="../index.html">返回研究源</a>
+        <a class="btn" href="./2026-06-24.md">查看 Markdown 原文</a>
+      </div>
+      <p class="eyebrow">Daily Scan</p>
+      <h1>2026-06-24 组织情报信息｜互联网大厂与 AI 原生组织机制扫描</h1>
+      <p class="meta">本页面由本地 Markdown 自动渲染生成，仍保留原始 md 文件作为知识库源文档。</p>
+      <article>
+        <blockquote>私有本地材料。仅用于本地知识库研究；公开分享前必须脱敏，并保留证据等级与不确定性。</blockquote>
+<h2 id="今日结论">今日结论</h2>
+<ul>
+<li><strong>严格看 2026-06-23 至 2026-06-24，今天没有发现可升级为 L3 的新增组织机制变化。</strong> 多数高热命中是旧动作再传播、岗位页基线、融资/IPO 叙事、产品/生态发布或媒体复盘，不能写成今日组织重构。</li>
+<li><strong>今天最值得保留的是 DeepSeek Harness 招聘信号，但只按 L2 事实观察入库。</strong> 它能落到新团队语境、三类角色（Harness 研究员、工程师、产品经理）和 Agent / Code Harness 产品化方向；但证据仍主要来自负责人社交招聘线索和媒体互证，不足以说明公司级组织架构变化。</li>
+<li><strong>海外 AI 原生公司的组织边界基线继续清晰化，但不是今日新增。</strong> OpenAI 的 Agent Post-Training、Codex deployment，Mistral 的 Applied AI / FDE，Perplexity 的 Applied AI FDE，Cohere 的 Sovereign AI FDE，都强化“研究/模型能力到客户现场部署”的组织边界，但多数缺今日发布时间或完整一手正文。</li>
+<li><strong>传统大厂今天没有新增硬组织机制证据。</strong> 腾讯项目负责制、阿里 Token Foundry、百度职级并轨和大商业事业部、Meta Applied AI reorg 修复均为旧主线或窗口外补证。</li>
+<li><strong>今日报告的主要价值是降噪。</strong> 不能把招聘扩张、融资热度、技术发布、媒体评论或工具使用直接等同于组织效率变化。</li>
+</ul>
+<h2 id="今日组织机制信号">今日组织机制信号</h2>
+<div class="table-wrap"><table><thead><tr>
+<th>公司</th>
+<th>信号</th>
+<th>机制标签</th>
+<th>证据等级</th>
+<th>入库等级</th>
+<th>阅读价值</th>
+</tr></thead><tbody>
+<tr>
+<td>DeepSeek</td>
+<td>Harness 团队围绕 Agent / Code Harness 招研究员、工程师、产品经理</td>
+<td>Agent 产品化团队 / 研究-工程-产品三角</td>
+<td>B/C</td>
+<td>L2</td>
+<td>持续观察</td>
+</tr>
+<tr>
+<td>OpenAI</td>
+<td>Agent Post-Training 多岗位命中，覆盖 Personality、API &amp; Power-users、Context、Computer Use、Artifacts 等方向</td>
+<td>Agent 后训练按场景拆分</td>
+<td>A（摘要）</td>
+<td>L1-L2</td>
+<td>背景参考</td>
+</tr>
+<tr>
+<td>OpenAI</td>
+<td>AI Deployment Engineer / Codex 与 FDE 区域岗位继续可见</td>
+<td>Codex 前线部署 / 客户反馈回流</td>
+<td>A</td>
+<td>L2</td>
+<td>持续观察</td>
+</tr>
+<tr>
+<td>Mistral</td>
+<td>Applied AI FDE 官方岗位写明 customer-facing technical organization</td>
+<td>Applied AI / Solutions / FDE</td>
+<td>A</td>
+<td>L3 基线延续</td>
+<td>背景参考</td>
+</tr>
+<tr>
+<td>Cohere</td>
+<td>Forward Deployed Engineer, Sovereign AI 镜像页显示公共部门、私有部署、安全许可</td>
+<td>Sovereign AI / 公共部门 FDE</td>
+<td>C</td>
+<td>L1-L2</td>
+<td>观察池</td>
+</tr>
+<tr>
+<td>Meta</td>
+<td>Applied AI reorg 复盘和管理修复动作继续传播</td>
+<td>AI 重组组织债 / 管理跨度修复</td>
+<td>B/C</td>
+<td>L2 旧主线</td>
+<td>背景参考</td>
+</tr>
+<tr>
+<td>腾讯 / 阿里 / 百度</td>
+<td>项目负责制、Token Foundry、职级并轨等继续被引用</td>
+<td>旧组织调整再传播</td>
+<td>B/C</td>
+<td>不作今日新增</td>
+<td>暂不采纳</td>
+</tr>
+</tbody></table></div>
+<h2 id="传统大厂与-ai-原生组织分组观察">传统大厂与 AI 原生组织分组观察</h2>
+<ul>
+<li><strong>传统大厂：</strong> 今天没有发现新的公司级绩效、晋升、职级、干部或组织结构调整硬证据。中文命中多围绕腾讯 WXG 项目负责制、阿里 Token Foundry、百度职级并轨继续解释，但时间锚分别落在 2026 年 5 月、6 月上旬或更早。</li>
+<li><strong>AI 原生组织：</strong> 今天的有效信号仍集中在岗位族群，而不是制度公告。DeepSeek Harness 显示国内模型公司也在把 Agent 产品化拆成研究、工程、产品角色；海外公司则继续通过 FDE、Applied AI、Post-training、Safety/Sovereign AI 岗位面显性化组织边界。</li>
+<li><strong>趋同处：</strong> 国内外 AI 原生公司都在处理同一个组织问题：模型能力如何进入真实工作流，并在研究、工程、产品、客户现场之间建立翻译层。</li>
+<li><strong>分化处：</strong> 海外公司更常通过官方 careers / Ashby / Lever 岗位页暴露组织边界；国内公司今天更依赖负责人社交招聘和媒体转述，证据硬度较低。</li>
+</ul>
+<h2 id="高价值变化卡片">高价值变化卡片</h2>
+<h3 id="deepseek-harness-agent-产品化新岗位族群进入公开招聘面">DeepSeek / Harness / Agent 产品化新岗位族群进入公开招聘面</h3>
+<ul>
+<li>时间：2026-06-21 至 2026-06-23 附近公开扩散；本轮 2026-06-24 复核。</li>
+<li>组织范围：DeepSeek Harness 团队；报道指向北京、杭州招聘场景。</li>
+<li>机制类型：Agent 产品化团队、研究-工程-产品三角、Code Harness / coding agent 产品化。</li>
+<li>机制理念：当基础模型能力进入 Agent 场景，组织瓶颈从模型能力本身转向 harness、工具链、产品定义、工程架构和用户工作流适配。</li>
+<li>机制动作：</li>
+<li>多源报道显示 Harness 团队开放三类角色：Harness 研究员、Harness 工程师、Harness 产品经理。</li>
+<li>研究员角色被描述为探索 Harness 研究前沿和定义 DeepSeek 对 Harness 的理解。</li>
+<li>工程师角色被描述为参与技术架构、选型和产品开发。</li>
+<li>产品经理角色被描述为围绕 Agent / Harness 产品形态做定义和推进。</li>
+<li>应用关系：这不是传统单一算法招聘，而是把 Agent 能力产品化拆成研究、工程、产品三个接口。</li>
+<li>系统/工具：Code Harness、Agent Harness、coding agent、DeepSeek 模型与 API 生态。</li>
+<li>组织影响：该信号可能意味着 DeepSeek 正在为 Agent 产品化单独配置跨职能角色，从而降低“模型能力到可用产品”的接口摩擦；但公开证据还不能证明其已经形成公司级事业部或成熟管理体系。</li>
+<li>来源与渠道：</li>
+<li>36 氪 / 量子位：<a href="https://36kr.com/p/3863982620923141" target="_blank" rel="noreferrer">https://36kr.com/p/3863982620923141</a></li>
+<li>新浪财经 / 智东西：<a href="https://finance.sina.com.cn/wm/2026-06-22/doc-iniehwmn0151477.shtml" target="_blank" rel="noreferrer">https://finance.sina.com.cn/wm/2026-06-22/doc-iniehwmn0151477.shtml</a></li>
+<li>每日经济新闻：<a href="https://www.nbd.com.cn/articles/2026-06-23/4434664.html" target="_blank" rel="noreferrer">https://www.nbd.com.cn/articles/2026-06-23/4434664.html</a></li>
+<li>SCMP：<a href="https://www.scmp.com/tech/big-tech/article/3358077/deepseeks-harness-team-races-recruit-talent-booming-ai-agent-market" target="_blank" rel="noreferrer">https://www.scmp.com/tech/big-tech/article/3358077/deepseeks-harness-team-races-recruit-talent-booming-ai-agent-market</a></li>
+<li>负责人 LinkedIn 线索：<a href="https://cn.linkedin.com/posts/tianyicui_%E6%88%91%E6%89%80%E5%9C%A8%E7%9A%84-deepseek-harness-%E5%9B%A2%E9%98%9F%E6%8B%9B%E4%BA%BA%E7%9B%AE%E5%89%8D%E5%BC%80%E6%94%BE%E7%9A%84%E8%81%8C%E4%BD%8D%E5%8C%85%E6%8B%AC%E4%BA%A7%E5%93%81%E7%BB%8F%E7%90%86%E5%92%8C%E7%A0%94%E5%8F%91%E5%B7%A5%E7%A8%8B%E5%B8%88-activity-7462155484939079680-1lOI" target="_blank" rel="noreferrer">https://cn.linkedin.com/posts/tianyicui_%E6%88%91%E6%89%80%E5%9C%A8%E7%9A%84-deepseek-harness-%E5%9B%A2%E9%98%9F%E6%8B%9B%E4%BA%BA%E7%9B%AE%E5%89%8D%E5%BC%80%E6%94%BE%E7%9A%84%E8%81%8C%E4%BD%8D%E5%8C%85%E6%8B%AC%E4%BA%A7%E5%93%81%E7%BB%8F%E7%90%86%E5%92%8C%E7%A0%94%E5%8F%91%E5%B7%A5%E7%A8%8B%E5%B8%88-activity-7462155484939079680-1lOI</a></li>
+<li>证据等级：B/C。多源互证较强，但缺完整官方岗位页抽取和公司公告。</li>
+<li>互证情况：媒体报道、英文强媒体和负责人社交招聘线索互证；公司官网岗位页未完整抓取。</li>
+<li>反向解释：这可能只是单个新方向的招聘扩张，或招聘海报被媒体放大；不能直接推断 DeepSeek 已经发生公司级组织重构。</li>
+<li>与历史基线关系：延续国内 AI 原生公司此前“强研究、小团队、高人才密度”的基线，但新增了更清晰的 Agent 产品化角色切分。</li>
+<li>组织发展关注点：Agent 产品化是否会稳定形成研究、工程、产品的独立接口；产品定义权是否从模型研究自然延伸到工作流设计。</li>
+<li>适用边界：适合观察模型公司如何把 Agent 能力转成产品组织边界；不适合解读为 DeepSeek 管理体系、职级体系或绩效机制变化。</li>
+<li>待验证问题：</li>
+<li>官方招聘页是否持续开放三类岗位？</li>
+<li>Harness 团队与模型研究、产品、平台工程的汇报线如何连接？</li>
+<li>Harness 是否有独立产品目标、发布节奏和客户/开发者反馈闭环？</li>
+<li>公开策略：可脱敏公开为“DeepSeek Harness 招聘显示 Agent 产品化角色分工”；不可写成“DeepSeek 已完成 Agent 事业部化”。</li>
+</ul>
+<h3 id="mistral-applied-ai-fde-客户面对技术组织基线延续">Mistral / Applied AI FDE / 客户面对技术组织基线延续</h3>
+<ul>
+<li>时间：2026-06-24 本轮复核官方岗位页；页面缺今日发布时间。</li>
+<li>组织范围：Mistral <code>Solutions / Applied AI</code>。</li>
+<li>机制类型：Applied AI、Forward Deployed Machine Learning Engineer、客户部署、研究/产品反馈闭环。</li>
+<li>机制理念：前沿模型公司要把研究能力转化为企业场景，需要一个兼具 ML、产品、客户沟通和现场执行能力的技术组织。</li>
+<li>机制动作：</li>
+<li>官方岗位页把 Applied AI team 定义为 Mistral 的 customer-facing technical organization。</li>
+<li>工作范围覆盖 pre-sales、implementation、enterprise deployment 和 measurable business impact。</li>
+<li>角色需要与 researchers、AI engineers、product engineers 协作，并把 customer feedback 回流到 product/model capability。</li>
+<li>应用关系：FDE / Applied AI 不是单纯售前支持，而是跨研究、产品、工程、客户现场的技术翻译层。</li>
+<li>系统/工具：Mistral products、fine-tuning、LLM applications、open-source codebases、inference/fine-tuning tooling。</li>
+<li>组织影响：该岗位边界降低企业采用中的技术翻译成本，但会增加客户项目优先级、研究路线和产品路线之间的协调复杂度。</li>
+<li>来源与渠道：</li>
+<li>Mistral 官方 Lever：<a href="https://jobs.lever.co/mistral/77f6fd1b-65cf-45d8-9b68-594c62732f62" target="_blank" rel="noreferrer">https://jobs.lever.co/mistral/77f6fd1b-65cf-45d8-9b68-594c62732f62</a></li>
+<li>证据等级：A。</li>
+<li>互证情况：官方岗位正文可读；与 OpenAI、Anthropic、Perplexity、Cohere 的 FDE / Applied AI 主线同向。</li>
+<li>反向解释：岗位页代表组织意图，不证明团队规模、成熟度或交付效果。</li>
+<li>与历史基线关系：延续此前 Mistral <code>Solutions / Applied AI / FDE</code> L3 基线，不是今日新增。</li>
+<li>组织发展关注点：Applied AI 是否继续向 manager / technical lead / sovereign institutions 等分线加厚。</li>
+<li>适用边界：适用于企业客户复杂部署，不适用于低触达自助 API 场景。</li>
+<li>待验证问题：是否出现更明确的项目团队结构、技术负责人层级和客户分层。</li>
+<li>公开策略：可公开作为 Mistral FDE 基线，不写成今日新增组织变化。</li>
+</ul>
+<h3 id="cohere-sovereign-ai-fde-公共部门部署边界的弱观察">Cohere / Sovereign AI FDE / 公共部门部署边界的弱观察</h3>
+<ul>
+<li>时间：镜像页显示 2026-06-06 posted；本轮 2026-06-24 复核。</li>
+<li>组织范围：Cohere Engineering / Sovereign AI / Canadian public sector。</li>
+<li>机制类型：Sovereign AI、Forward Deployed Engineer、公共部门私有部署、安全许可。</li>
+<li>机制理念：公共部门和主权 AI 场景的组织瓶颈不只是模型能力，而是私有部署、敏感数据、合规、安全许可、客户现场集成。</li>
+<li>机制动作：</li>
+<li>镜像页显示岗位面向 Canadian public sector organizations。</li>
+<li>职责包括 North AI workspace platform 的 private cloud / on-premises deployment。</li>
+<li>要求覆盖 backend、infrastructure、agent development、RAG/agentic applications。</li>
+<li>页面提到 active 高等级安全许可 strongly preferred。</li>
+<li>应用关系：FDE 在 sovereign AI 场景中同时承担工程交付、客户现场、合规和安全接口。</li>
+<li>系统/工具：North AI workspace platform、private cloud、on-premises environments、RAG/agentic applications。</li>
+<li>组织影响：该信号可能说明 Sovereign AI 正在把交付团队从一般客户成功分离出来，形成更厚的公共部门部署接口；但证据还不够支撑组织层级结论。</li>
+<li>来源与渠道：</li>
+<li>Cohere Ashby 标题：<a href="https://jobs.ashbyhq.com/cohere/556467eb-3dc8-46e2-b015-277872210997" target="_blank" rel="noreferrer">https://jobs.ashbyhq.com/cohere/556467eb-3dc8-46e2-b015-277872210997</a></li>
+<li>OpenTalent 镜像：<a href="https://www.opentalent.in/jobs/forward-deployed-engineer-sovereign-ai-cohere" target="_blank" rel="noreferrer">https://www.opentalent.in/jobs/forward-deployed-engineer-sovereign-ai-cohere</a></li>
+<li>Cohere careers：<a href="https://cohere.com/careers" target="_blank" rel="noreferrer">https://cohere.com/careers</a></li>
+<li>证据等级：C。官方标题可见，但正文依赖镜像页。</li>
+<li>互证情况：Ashby 标题、镜像页、Cohere careers 的 enterprise / secure / scalable AI 叙事互证。</li>
+<li>反向解释：这可能是单岗位招聘，不代表 Cohere 已经形成成熟 Sovereign AI 组织线。</li>
+<li>与历史基线关系：补充海外 AI 原生公司从 FDE 走向 sovereign / public sector deployment 的观察。</li>
+<li>组织发展关注点：公共部门 AI adoption 是否需要更厚的部署、合规和安全人才组合。</li>
+<li>适用边界：适用于公共部门、敏感数据、私有部署和强合规场景；不宜类比普通企业 SaaS。</li>
+<li>待验证问题：官方岗位正文、发布时间、部门归属和管理层结构仍需复核。</li>
+<li>公开策略：只作为观察池，不作为核心结论。</li>
+</ul>
+<h2 id="不是新闻而是机制">不是新闻而是机制</h2>
+<div class="table-wrap"><table><thead><tr>
+<th>外部事件</th>
+<th>组织机制</th>
+<th>效率含义</th>
+<th>证据等级</th>
+<th>反向解释</th>
+</tr></thead><tbody>
+<tr>
+<td>DeepSeek Harness 招研究员、工程师、产品经理</td>
+<td>Agent 产品化拆成研究、工程、产品三类接口</td>
+<td>可能降低模型能力到产品工作流的转译成本</td>
+<td>B/C</td>
+<td>也可能只是阶段性招聘扩张，不是公司级重组</td>
+</tr>
+<tr>
+<td>Mistral Applied AI FDE 官方岗位</td>
+<td>客户面对技术组织连接售前、实施、研究/产品反馈</td>
+<td>降低企业部署中的技术翻译成本，但增加项目优先级协调</td>
+<td>A</td>
+<td>岗位页不证明团队规模或效果</td>
+</tr>
+<tr>
+<td>Cohere Sovereign AI FDE</td>
+<td>公共部门 AI 部署需要私有云、on-prem、安全许可和现场工程</td>
+<td>说明 sovereign AI 的组织接口比一般 API adoption 更厚</td>
+<td>C</td>
+<td>单岗位不能推出成熟组织线</td>
+</tr>
+<tr>
+<td>OpenAI Agent Post-Training 多岗位</td>
+<td>Agent 后训练按 Personality、Context、Computer Use 等场景切分</td>
+<td>Agent 能力可能进入更细的场景责任边界</td>
+<td>A（摘要）</td>
+<td>OpenAI 岗位正文抽取 403，缺发布时间</td>
+</tr>
+<tr>
+<td>腾讯/阿里/百度旧动作继续传播</td>
+<td>时间窗错配的信息污染</td>
+<td>今日价值在于避免把旧基线误判成新趋势</td>
+<td>B/C</td>
+<td>旧动作仍有机制价值，但不是今日新增</td>
+</tr>
+</tbody></table></div>
+<h2 id="组织情报结论卡">组织情报结论卡</h2>
+<h3 id="结论卡-a-deepseek-harness-是-agent-产品化组织边界的-l2-观察">结论卡 A｜DeepSeek Harness 是 Agent 产品化组织边界的 L2 观察</h3>
+<ul>
+<li>L1 事实：多源报道显示 DeepSeek Harness 团队开放 Harness 研究员、工程师、产品经理三类岗位，并由负责人公开招聘。</li>
+<li>L2 机制判断：Agent 能力产品化正在逼出比“模型研究”更细的工作单元，至少需要研究前沿定义、工程架构实现和产品形态定义三类接口。</li>
+<li>L3 组织判断：暂不成立。当前证据不足以证明公司级组织重构、事业部化或成熟管理体系。</li>
+<li>证据置信度：中。</li>
+<li>阅读价值：持续观察。</li>
+<li>适用边界：适合观察模型公司如何从模型能力进入 Agent 产品化，不适合推断绩效、职级、汇报线或管理机制变化。</li>
+<li>待验证问题：官方岗位页、团队归属、管理层和发布节奏。</li>
+<li>入库等级：L2。</li>
+</ul>
+<h3 id="结论卡-b-海外-fde-applied-deployment-岗位面继续形成-ai-原生组织基线">结论卡 B｜海外 FDE / Applied / Deployment 岗位面继续形成 AI 原生组织基线</h3>
+<ul>
+<li>L1 事实：OpenAI、Mistral、Perplexity、Cohere 等公司继续出现 FDE、Applied AI、AI Deployment Engineer、Sovereign AI 等岗位面。</li>
+<li>L2 机制判断：研究突破到企业采用之间正在形成前线技术组织，承担客户现场、产品反馈、工程集成和部署质量接口。</li>
+<li>L3 组织判断：作为长期基线成立；但 2026-06-24 未发现新的 L3 拐点。</li>
+<li>证据置信度：中高。</li>
+<li>阅读价值：背景参考 / 持续观察。</li>
+<li>适用边界：复杂企业部署、公共部门、私有化和高价值工作流；不适合泛化到所有 AI 产品。</li>
+<li>待验证问题：是否出现 manager 层、区域分线、客户分层和交付质量机制。</li>
+<li>入库等级：L2-L3 基线延续。</li>
+</ul>
+<h3 id="结论卡-c-今日传统大厂扫描的主要价值是时间窗降噪">结论卡 C｜今日传统大厂扫描的主要价值是时间窗降噪</h3>
+<ul>
+<li>L1 事实：腾讯项目负责制、阿里 Token Foundry、百度职级并轨等命中均可回溯到 2026 年 5 月或 6 月上旬。</li>
+<li>L2 机制判断：传统大厂 AI 组织调整仍有机制价值，但今天公开材料没有提供新的权责、资源、评价、岗位或流程变化。</li>
+<li>L3 组织判断：今天不新增传统大厂组织机制结论。</li>
+<li>证据置信度：高。</li>
+<li>阅读价值：暂不采纳为新增，作为反证记录。</li>
+<li>适用边界：适合维护历史基线和避免误判，不适合作为今日趋势判断。</li>
+<li>待验证问题：是否后续出现官方会议、财报、事业群调整或更多部门互证。</li>
+<li>入库等级：反证/背景。</li>
+</ul>
+<h2 id="证据链与可信度">证据链与可信度</h2>
+<div class="table-wrap"><table><thead><tr>
+<th>条目</th>
+<th>主要来源</th>
+<th>证据等级</th>
+<th>置信度</th>
+<th>阅读价值</th>
+<th>入库等级</th>
+</tr></thead><tbody>
+<tr>
+<td>DeepSeek Harness 招聘</td>
+<td>36 氪、量子位、每日经济新闻、SCMP、负责人社交招聘线索</td>
+<td>B/C</td>
+<td>中</td>
+<td>持续观察</td>
+<td>L2</td>
+</tr>
+<tr>
+<td>Mistral Applied AI FDE</td>
+<td>Mistral 官方 Lever</td>
+<td>A</td>
+<td>高</td>
+<td>背景参考</td>
+<td>L3 基线延续</td>
+</tr>
+<tr>
+<td>Cohere Sovereign AI FDE</td>
+<td>Ashby 标题、OpenTalent 镜像、Cohere careers</td>
+<td>C</td>
+<td>中低</td>
+<td>观察池</td>
+<td>L1-L2</td>
+</tr>
+<tr>
+<td>OpenAI Agent Post-Training</td>
+<td>OpenAI careers 搜索摘要</td>
+<td>A</td>
+<td>中</td>
+<td>背景参考</td>
+<td>L1-L2</td>
+</tr>
+<tr>
+<td>Meta Applied AI reorg 修复</td>
+<td>WIRED / BI 等强媒体二手链</td>
+<td>B/C</td>
+<td>中</td>
+<td>背景参考</td>
+<td>L2 旧主线</td>
+</tr>
+<tr>
+<td>腾讯/阿里/百度旧动作</td>
+<td>36 氪、第一财经、东方财富、转载链</td>
+<td>B/C</td>
+<td>中</td>
+<td>暂不采纳为今日新增</td>
+<td>背景</td>
+</tr>
+</tbody></table></div>
+<h2 id="去伪存真记录">去伪存真记录</h2>
+<ul>
+<li>AnySearch 优先执行：</li>
+<li>已调用 <code>python3 本地路径</code> 做 15+ 组中英文搜索。</li>
+<li>已对 OpenAI、Cohere、Perplexity、Mistral、WIRED 等 URL 做 <code>extract</code> 尝试。</li>
+<li>抽取异常：</li>
+<li>OpenAI 官方岗位页返回 <code>HTTP 403</code>。</li>
+<li>Cohere Ashby 和 WIRED 页面返回连接错误。</li>
+<li>Perplexity Ashby 仅返回标题。</li>
+<li>事实验证：</li>
+<li>DeepSeek Harness 有多家媒体和负责人社交招聘线索互证，但缺完整官方岗位页。</li>
+<li>Mistral Applied AI FDE 有官方岗位正文。</li>
+<li>Cohere Sovereign AI FDE 只能以官方标题和镜像页观察。</li>
+<li>机制验证：</li>
+<li>DeepSeek Harness 能落到研究、工程、产品三类接口。</li>
+<li>Mistral / OpenAI / Perplexity / Cohere 能落到 FDE / Applied / Deployment 边界。</li>
+<li>腾讯/阿里/百度命中未提供今日新增权责、资源、评价、岗位或流程变化。</li>
+<li>趋势验证：</li>
+<li>AI 原生公司共同强化“模型能力到工作流部署”的前线组织。</li>
+<li>国内 AI 原生公司的 Agent 产品化信号正在出现，但证据透明度弱于海外岗位页。</li>
+<li>反证检查：</li>
+<li>DeepSeek Harness 不能写成公司级重构。</li>
+<li>OpenAI Daybreak 和 Deployment Company 已在 6/23 报告处理，不重复写今日新增。</li>
+<li>Meta Applied AI 是窗口外主线补证。</li>
+<li>中文传统大厂命中多为旧链再传播。</li>
+<li>边界审校：</li>
+<li>本报告不输出决策建议、行动清单、排期、责任人或落地步骤。</li>
+<li>只保留事实、机制判断、证据强度、反向解释、适用边界和待验证问题。</li>
+</ul>
+<h2 id="渠道索引补充">渠道索引补充</h2>
+<div class="table-wrap"><table><thead><tr>
+<th>渠道</th>
+<th>URL</th>
+<th>公司</th>
+<th>主题</th>
+<th>证据等级</th>
+<th>是否新增</th>
+</tr></thead><tbody>
+<tr>
+<td>36 氪 / 量子位</td>
+<td><a href="https://36kr.com/p/3863982620923141" target="_blank" rel="noreferrer">https://36kr.com/p/3863982620923141</a></td>
+<td>DeepSeek</td>
+<td>Harness 研究员、工程师、产品经理招聘</td>
+<td>C</td>
+<td>是，观察</td>
+</tr>
+<tr>
+<td>新浪财经 / 智东西</td>
+<td><a href="https://finance.sina.com.cn/wm/2026-06-22/doc-iniehwmn0151477.shtml" target="_blank" rel="noreferrer">https://finance.sina.com.cn/wm/2026-06-22/doc-iniehwmn0151477.shtml</a></td>
+<td>DeepSeek</td>
+<td>Harness 团队缺人、三类岗位</td>
+<td>C</td>
+<td>是，观察</td>
+</tr>
+<tr>
+<td>每日经济新闻</td>
+<td><a href="https://www.nbd.com.cn/articles/2026-06-23/4434664.html" target="_blank" rel="noreferrer">https://www.nbd.com.cn/articles/2026-06-23/4434664.html</a></td>
+<td>DeepSeek</td>
+<td>Harness 招聘与“不招外国人”澄清</td>
+<td>C</td>
+<td>是，观察</td>
+</tr>
+<tr>
+<td>SCMP</td>
+<td><a href="https://www.scmp.com/tech/big-tech/article/3358077/deepseeks-harness-team-races-recruit-talent-booming-ai-agent-market" target="_blank" rel="noreferrer">https://www.scmp.com/tech/big-tech/article/3358077/deepseeks-harness-team-races-recruit-talent-booming-ai-agent-market</a></td>
+<td>DeepSeek</td>
+<td>Harness team recruiting in agent market</td>
+<td>B</td>
+<td>是，互证</td>
+</tr>
+<tr>
+<td>Mistral 官方 Lever</td>
+<td><a href="https://jobs.lever.co/mistral/77f6fd1b-65cf-45d8-9b68-594c62732f62" target="_blank" rel="noreferrer">https://jobs.lever.co/mistral/77f6fd1b-65cf-45d8-9b68-594c62732f62</a></td>
+<td>Mistral</td>
+<td>Applied AI / FDE / Solutions</td>
+<td>A</td>
+<td>否，基线延续</td>
+</tr>
+<tr>
+<td>Cohere Ashby</td>
+<td><a href="https://jobs.ashbyhq.com/cohere/556467eb-3dc8-46e2-b015-277872210997" target="_blank" rel="noreferrer">https://jobs.ashbyhq.com/cohere/556467eb-3dc8-46e2-b015-277872210997</a></td>
+<td>Cohere</td>
+<td>Sovereign AI FDE</td>
+<td>A/C</td>
+<td>是，待复核</td>
+</tr>
+<tr>
+<td>OpenTalent</td>
+<td><a href="https://www.opentalent.in/jobs/forward-deployed-engineer-sovereign-ai-cohere" target="_blank" rel="noreferrer">https://www.opentalent.in/jobs/forward-deployed-engineer-sovereign-ai-cohere</a></td>
+<td>Cohere</td>
+<td>Sovereign AI FDE 镜像正文</td>
+<td>C</td>
+<td>是，观察</td>
+</tr>
+<tr>
+<td>OpenAI careers</td>
+<td><a href="https://openai.com/careers/search/" target="_blank" rel="noreferrer">https://openai.com/careers/search/</a></td>
+<td>OpenAI</td>
+<td>Agent Post-Training / Deployment / Safety 岗位面</td>
+<td>A</td>
+<td>否，基线延续</td>
+</tr>
+</tbody></table></div>
+<h2 id="观察池-待核验池">观察池 / 待核验池</h2>
+<div class="table-wrap"><table><thead><tr>
+<th>线索</th>
+<th>来源</th>
+<th>为什么不够</th>
+<th>可能机制</th>
+<th>待验证问题</th>
+</tr></thead><tbody>
+<tr>
+<td>DeepSeek Harness</td>
+<td>36 氪、SCMP、每日经济新闻、负责人社交招聘线索</td>
+<td>缺完整官方岗位页、汇报线和公司公告</td>
+<td>Agent 产品化团队</td>
+<td>官方岗位页是否持续开放，团队归属如何定义</td>
+</tr>
+<tr>
+<td>OpenAI Agent Post-Training</td>
+<td>OpenAI careers 搜索摘要</td>
+<td>岗位正文抽取 403，缺发布时间</td>
+<td>Agent 后训练按场景拆分</td>
+<td>多岗位是否代表团队扩编还是命名细分</td>
+</tr>
+<tr>
+<td>Cohere Sovereign AI FDE</td>
+<td>Ashby 标题、OpenTalent 镜像</td>
+<td>官方正文抽取失败，缺组织归属</td>
+<td>公共部门 AI 私有部署</td>
+<td>是否有官方岗位正文、发布时间和团队结构</td>
+</tr>
+<tr>
+<td>Meta Applied AI reorg 修复</td>
+<td>WIRED / BI 二手链</td>
+<td>窗口外，且一手内部 memo 不公开</td>
+<td>AI 重组组织债修复</td>
+<td>是否出现官方组织调整或更多可验证员工流动</td>
+</tr>
+<tr>
+<td>Kimi 组织实验</td>
+<td>36 氪旧文和再传播</td>
+<td>不属于今日新增，缺制度页</td>
+<td>极低结构、高人才密度组织实验</td>
+<td>是否有独立访谈、招聘、制度或长期效果互证</td>
+</tr>
+</tbody></table></div>
+<h2 id="公开知识库入库判断">公开知识库入库判断</h2>
+<ul>
+<li><strong>可入私有知识源：</strong> DeepSeek Harness L2 观察、Mistral Applied AI 基线延续、Cohere Sovereign AI 观察池、OpenAI Agent Post-Training 观察池、传统大厂旧链反证。</li>
+<li><strong>可脱敏公开：</strong> “DeepSeek Harness 招聘显示 Agent 产品化开始出现研究/工程/产品角色切分”这一主题结论，但必须标注 L2 和待验证。</li>
+<li><strong>暂不公开为结论：</strong> Cohere Sovereign AI FDE、OpenAI Agent Post-Training 多岗位、Meta Applied AI reorg 修复。</li>
+<li><strong>不入库为方法：</strong> 任何“最佳实践”“应当学习”“可直接迁移”的说法。今天没有 L4 组织方法证据。</li>
+</ul>
+      </article>
+    </main>
+  </div>
+</body>
+</html>

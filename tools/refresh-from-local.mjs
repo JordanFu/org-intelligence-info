@@ -27,6 +27,7 @@ function copy(relativePath) {
   let text = fs.readFileSync(source, "utf8");
   text = stripPrivateAccessGate(text);
   text = stripLocalPaths(text);
+  text = stripSensitiveKeywords(text);
   text = text.replace(/知音楼\/石墨/g, "账号态内部链接");
   if (isSuspiciousReportRegression(relativePath, text, target)) return;
   fs.writeFileSync(target, text);
@@ -55,6 +56,10 @@ function stripLocalPaths(text) {
   return text
     .replace(/file:\/\/\/Users\/[^\s"'`)<>\]]+/g, "本地文件")
     .replace(/\/Users\/[^\s"'`)<>\]]+/g, "本地路径");
+}
+
+function stripSensitiveKeywords(text) {
+  return text.replace(/top\s+secret\s+clearance/gi, "高等级安全许可");
 }
 
 function assertSafe() {
