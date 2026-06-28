@@ -1,269 +1,73 @@
-# 2026-06-25 组织情报信息｜互联网大厂与 AI 原生组织机制扫描
+# 最新组织情报信息｜互联网大厂与 AI 原生组织机制扫描
 
-> 私有本地材料。仅用于本地知识库研究；公开分享前必须脱敏，并保留证据等级与不确定性。
+> 更新时间：2026-06-26。私有本地材料。仅用于本地知识库研究；公开分享前必须脱敏，并保留证据等级与不确定性。
 
 ## 今日结论
 
-- **今天没有发现足够硬的 2026-06-25 当日新增 L3 组织机制变化。** 窗口内较强材料集中在公开发言、媒体复核和岗位/招聘表面，适合写成 L2 事实观察或观察池，不适合写成组织方法。
-- **AWS 的 6 月 24 日公开访谈提供了一个高价值 L2 信号：AI 没有直接消灭初级岗位，而是在重写工程岗位的任务结构与评价口径。** Matt Garman 同时谈到 Amazon 今年招聘 11,000 名实习生和应届毕业生、工程师减少手写代码、更多指挥 agent、前移到产品判断与客户反馈，并承认曾因 AI 使用 leaderboard 测错指标而调整度量方式。它揭示的是“岗位任务重构 + AI 使用度量纠偏”，不是“裁员或扩招结论”。
-- **DeepSeek Harness 是国内 AI 原生组织今天最值得保留的观察。** SCMP 与中文媒体链显示 Harness 团队在 6 月 22-24 日附近快速招人，岗位覆盖研究员、工程师、产品经理；这说明 DeepSeek 可能在模型与 agent 产品之间补一层执行环境 / 工具调用 / 工作流中间层。但目前缺少官方组织公告、汇报线和团队边界，只入 L2 观察。
-- **火山引擎 MaaS 从“创新/产品业务”转为“基础业务”的公开口径值得入观察池。** 梁汝波在 FORCE 大会上的表述与多家媒体转述显示，字节正在把 AI 基础设施与企业服务能力上移为集团基础能力；但这仍是战略与业务口径，缺少正式组织结构文件，暂不升 L3。
-- **Anthropic Mythos / Project Glasswing 的政府安全测试是安全组织机制的窗口内强观察。** AP、Reuters、Euronews 等 6 月 23-24 日报道称 Mythos 在 classified U.S. government systems 测试中数小时发现漏洞。这更像 Safety / Red Team / Government interface 进入真实高敏系统的部署接口，而不是普通模型能力展示；但测试来源为匿名官员与媒体报道，不等于 Anthropic 内部组织结构公告。
+- **今天没有发现足够硬的 2026-06-26 当日新增 L3 单公司内部组织机制变化。**
+- **RAISE US 是今天最有价值的新信号：AI 公司正在把岗位冲击、转岗、再培训和雇主责任组织成外部劳动力适应基础设施。** OpenAI Foundation、Anthropic、Amazon、Microsoft 作为 anchor partners 参与，证据链可到 A/B，但实际效果仍待验证。
+- **美团 AI Transformation 是国内传统大厂 AI 进入核心业务一级接口的 L2 基线补录。** 原始动作主要锚定 2026-06-09，不是今日新增。
+- **Microsoft Copilot 四支柱重组是 L3 旧基线补录。** 其价值在于“组织边界向系统架构和产品形态对齐”，但官方发布时间是 2026-03-17。
 
 ## 今日组织机制信号
 
-| 公司 | 信号 | 机制标签 | 证据等级 | 阅读价值 |
+| 公司 / 组织 | 信号 | 机制标签 | 证据等级 | 阅读价值 |
 |---|---|---|---|---|
-| Amazon / AWS | Matt Garman 公开称 Amazon 仍招聘 11,000 名实习生和新毕业生，同时工程师工作从手写代码转向 agent 指挥、产品判断、客户反馈；AI 使用 leaderboard 已因测错指标而调整 | 岗位任务重构 / AI 使用度量纠偏 / 初级人才管道保留 | B | 核心结论，L2 |
-| DeepSeek | Harness 团队快速招人，岗位覆盖 Harness 研究员、工程师、产品经理 | 模型到 agent 产品的中间层 / 工具调用与执行环境组织化 | B/C | 持续观察，L2 |
-| 字节 / 火山引擎 | FORCE 大会称火山 MaaS 从创新/产品业务转为基础业务，资源向 AI 倾斜 | AI 基础设施上移 / 企业交付能力基础化 | B/C | 持续观察，L2 |
-| Anthropic | Mythos / Project Glasswing 在美国政府 classified systems 测试中发现漏洞 | Safety / Red Team 进入政府高敏部署接口 | B | 核心观察，L2 |
-| Google / OpenAI / Anthropic | Noam Shazeer、John Jumper、Andrej Karpathy 等顶级人才流动被 Business Insider 复盘 | 顶级人才密度竞争 / 明星研究员成为组织资产 | B/C | 背景参考 |
-| Meta | Applied AI 重组后士气与管理混乱二次报道继续扩散 | 大组织 AI 重组的组织债 / 管理跨度风险 | C | 观察池，旧线补证 |
-| 阿里 / 百度 / 腾讯 | Foundry 项目、百度数字职级并轨、腾讯 WXG 项目负责制继续被再传播 | 时间窗错配 / 旧组织动作再解读 | B/C | 暂不采纳为今日新增 |
-
-## 传统大厂与 AI 原生组织分组观察
-
-- **传统大厂：** 今日新增硬证据较少。Amazon / AWS 的材料不是组织架构调整，而是工程岗位、初级人才管道与 AI 使用度量的管理口径变化；字节 / 火山的材料更偏业务层级上移，仍需组织结构互证；国内阿里、百度、腾讯相关命中大多为 5 月至 6 月上旬旧动作再传播。
-- **AI 原生组织：** DeepSeek Harness 和 Anthropic Mythos 分别代表两类边界显性化：前者是模型到 agent 产品之间的执行中间层，后者是安全能力进入政府高敏系统测试接口。二者都显示 AI 原生公司正在把“模型能力”外接到更厚的任务环境、客户环境和安全环境。
-- **二者正在趋同的地方：** 传统大厂与 AI 原生公司都在把 AI 从工具使用升级为工作流、岗位任务与治理接口问题；区别在于 AI 原生公司更容易通过新岗位族群或项目层显性化边界。
-- **二者仍在分化的地方：** 传统大厂公开材料更常体现为高管口径、业务线调整或媒体解读；AI 原生公司更常通过岗位名、团队名、模型访问限制、安全测试和前线部署角色暴露组织边界。
-
-## 高价值变化卡片
-
-### Amazon / AWS / AI 时代保留初级人才管道与重写工程岗位任务结构
-
-- 时间：2026-06-24 Platformer 访谈发布；Fortune、Business Insider、CRN 同日或邻近窗口转述。
-- 组织范围：Amazon / AWS，主要涉及软件工程师、初级员工、招聘、AI coding 工具和内部 AI 使用度量。
-- 机制类型：岗位任务重构、初级人才管道、AI 使用度量纠偏、工程工作流转型。
-- 机制理念：AI 改变岗位任务，但不必直接取消初级人才入口；长期公司仍需要可学习、可塑造、能理解文化和新工具的人才池。
-- 机制动作：
-  - Matt Garman 称 Amazon 今年招聘 11,000 名实习生和新毕业生。
-  - 他把 “wipe out jobs” 与 “change jobs” 区分开，强调多数岗位会变化而非简单消失。
-  - 他称 Amazon 工程师正在减少手写代码，更多指挥 agent、理解系统、做架构判断、关注客户反馈和产品选择。
-  - 他承认内部 AI 使用 leaderboard 曾测错指标，后来改为测量其他输出。
-  - 他把 用量单位 / model choice 当作资源成本管理问题，强调暴露成本和让员工像 owner 一样使用。
-- 应用关系：AI 使用不只是研发工具推广，还进入招聘观、岗位设计、成本意识、工程绩效证据和内部度量系统。
-- 系统/工具：Amazon coding tool Kiro、agentic business suite Quick、Amazon Connect Talent、内部 agent 平台与 AI 使用度量。
-- 组织影响：工程岗位的价值重心从“写代码本身”向“定义问题、架构判断、agent 编排、客户反馈、部署与安全瓶颈处理”前移；初级人才不被简单取消，但训练路径必须面对 AI 原生工具环境。
-- 来源与渠道：
-  - Platformer：<https://www.platformer.news/matt-garman-aws-ceo-interview-ai-jobs/>
-  - Fortune：<https://fortune.com/2026/06/24/amazon-web-services-ceo-matt-garman-bullish-on-entry-level-gen-z-talent-hiring-thousands-interns-graduates/>
-  - Business Insider：<https://www.businessinsider.com/amazon-aws-ceo-matt-garman-white-collar-jobs-change-ai-2026-6>
-  - CRN：<https://www.crn.com/news/ai/2026/aws-ceo-says-ai-not-taking-away-jobs-as-company-plans-11-000-software-hires>
-- 证据等级：B。
-- 互证情况：Platformer 访谈为主证据，Fortune、Business Insider、CRN 互证 11,000 招聘与 AI 改变岗位口径。
-- 反向解释：这是高管叙事，不是公开制度文件；Amazon 同期仍有裁员与 Andy Jassy 关于 AI 将减少 corporate workforce 的公开口径，不能据此推出“AI 不会减少岗位”。
-- 与历史基线关系：延续近两周“AI coding 改变工程岗位”的主线，但今天新增的价值在于它把初级招聘、工程任务变化和 AI 度量失真放在同一套管理口径中。
-- 组织发展关注点：AI 使用指标是否会从“用量”转向“产出质量”；工程师评价是否更重视需求判断、系统理解、客户反馈和 agent 编排；初级人才管道如何在 AI 工具环境下保持学习曲线。
-- 适用边界：适用于拥有长期人才管道、成熟工程系统和大量客户反馈的规模型技术组织；不适合直接外推到现金流紧张或训练体系不足的小团队。
-- 待验证问题：
-  - AWS 是否会把 AI-native engineering 明确写入绩效、晋升或岗位能力模型？
-  - leaderboard 纠偏后使用哪些 output 指标衡量 AI adoption？
-  - 初级工程师在 agent 工作流下的培养路径是否会被制度化？
-- 公开策略：可公开写作“Amazon / AWS 把 AI 影响岗位解释为任务重构与度量问题”；不可写成“Amazon 已证明 AI 不会减少白领岗位”。
-
-### DeepSeek / Harness / 模型能力到 agent 产品之间出现执行中间层
-
-- 时间：2026-06-22 至 2026-06-24 附近公开扩散；SCMP 2026-06-23 报道，中文媒体 6 月 22-24 日复述。
-- 组织范围：DeepSeek Harness 团队，岗位线索包括 Harness 研究员、研发工程师、产品经理；地点涉及杭州和北京。
-- 机制类型：agent harness、模型到工具/执行环境的中间层、研究-工程-产品三角色组队。
-- 机制理念：当基础模型需要变成可执行 agent，组织边界会从“模型研究”外延到工具调用、上下文管理、文件读写、执行环境、产品体验与工作流协调。
-- 机制动作：
-  - 媒体称 Harness 团队负责人崔添翼公开表示团队缺人、频繁面试、持续招聘。
-  - 岗位线索覆盖 Agent Harness 研究员、Agent Harness 研发工程师、Agent Harness 产品经理。
-  - 相关报道把该团队与 Claude Code / coding agent 市场对标。
-- 应用关系：Harness 可能连接核心模型研究、工程平台、产品体验和开发者 / agent 场景。
-- 系统/工具：agent harness、工具调用、执行环境、文件读写、coding agent 工作流。
-- 组织影响：DeepSeek 若将 Harness 稳定化，模型能力到产品化 agent 的路径会更短；但也会带来模型团队、平台工程、产品团队之间的新接口与优先级协调成本。
-- 来源与渠道:
-  - SCMP：<https://www.scmp.com/tech/big-tech/article/3358077/deepseeks-harness-team-races-recruit-talent-booming-ai-agent-market>
-  - 新浪财经转载：<https://finance.sina.com.cn/jjxw/2026-06-23/doc-iniekvar6440698.shtml>
-  - 36 氪：<https://36kr.com/p/3864274464347400>
-- 证据等级：B/C。
-- 互证情况：SCMP 与中文媒体链互证招聘热度与岗位类型；但缺少公司官方组织公告、团队规模、汇报线和预算边界。
-- 反向解释：这可能只是快速扩张项目组或招聘缺口，不等于 DeepSeek 全公司组织重构；岗位齐全也不等于机制成熟。
-- 与历史基线关系：区别于此前 DeepSeek “小团队、淡化职级、扁平管理”的旧线；今天的新增价值是 agent 产品化层开始显性化。
-- 组织发展关注点：模型团队是否向产品执行层外接；agent 工程是否形成独立岗位族群；PM 是否进入模型到工具链之间的关键接口。
-- 适用边界：适用于 coding agent、autonomous agent、工具调用密集型场景；不可泛化为所有模型公司都需要同样团队形态。
-- 待验证问题：
-  - Harness 是否拥有独立路线图、产品指标或发布节奏？
-  - 它与核心模型团队、产品团队、开发者生态团队之间的资源排队关系如何？
-  - 招聘压力是否来自真实用户需求、竞品压力，还是短期市场叙事？
-- 公开策略：私有保留为 L2 观察；公开时只可写“DeepSeek 出现 agent harness 组织化线索”，不可写成“DeepSeek 已完成 agent 团队重组”。
-
-### 字节 / 火山 MaaS / AI 基础设施从产品业务转向基础业务口径
-
-- 时间：2026-06-23 至 2026-06-24 公开报道。
-- 组织范围：字节跳动、火山引擎、豆包大模型、MaaS、企业客户服务。
-- 机制类型：AI 基础设施上移、企业交付能力基础化、资源向 AI 倾斜。
-- 机制理念：当 MaaS 从创新产品变成基础业务，AI 不再只是新产品线，而是承载集团内部和外部客户工作流的底层能力。
-- 机制动作：
-  - 媒体称梁汝波在火山引擎 FORCE 大会上表示，字节近年收缩业务宽度，将资源向 AI 倾斜。
-  - 同期报道称火山 MaaS 正从创新 / 产品业务变成基础业务。
-  - 相关材料继续强调大模型、企业客户、云服务与 AI 交付的连接。
-- 应用关系：火山 MaaS 同时服务集团内部 AI 资源配置、外部企业客户和模型商业化。
-- 系统/工具：火山 MaaS、豆包大模型、火山引擎企业服务。
-- 组织影响：AI 基础设施一旦被基础业务化，研发、销售、解决方案、合规、交付和客户成功之间的接口会变厚；组织效率问题从模型能力转向交付稳定性、成本结构和客户场景复用。
-- 来源与渠道：
-  - 证券之星：<https://wap.stockstar.com/detail/IG2026062400044622>
-  - 网易转科创板日报：<https://www.163.com/dy/article/L04CGEFH0550B1DU.html>
-  - 36 氪：<https://www.36kr.com/p/3865662134958727>
-- 证据等级：B/C。
-- 互证情况：多家媒体转述同一会议口径；缺少正式组织架构、岗位边界和汇报线文件。
-- 反向解释：这可能首先是市场与战略叙事，不一定意味着组织结构、绩效机制或预算机制已经同步改变。
-- 与历史基线关系：延续字节 2026 年“提高人才密度、加大激励、Seed / 豆包收敛”的旧线，但今日材料的增量在于火山 MaaS 的基础业务定位。
-- 组织发展关注点：MaaS 是否成为集团级资源分配中枢；企业交付团队是否扩厚；模型产品和云基础设施之间的责任边界是否被重写。
-- 适用边界：适用于拥有云平台、模型能力和企业客户基础的技术组织；不适合类比纯应用层 AI 产品。
-- 待验证问题：
-  - 火山 MaaS 是否有新的组织层级、预算口径或负责人调整？
-  - 企业交付团队、解决方案团队和模型团队之间是否形成新的反馈闭环？
-  - “基础业务”是否进入绩效、资源分配和内部优先级体系？
-- 公开策略：可脱敏写作“火山 MaaS 基础业务化口径”；不可写成“字节已完成 AI 基础设施组织重构”。
-
-### Anthropic / Mythos / 政府高敏系统安全测试把 Safety 推向部署接口
-
-- 时间：2026-06-23 至 2026-06-24 媒体报道。
-- 组织范围：Anthropic Mythos、Project Glasswing、美国政府 / 情报机构测试环境，关联 Safety、Red Team、Policy、Government interface。
-- 机制类型：安全能力部署化、政府高敏系统接口、红队测试进入真实环境。
-- 机制理念：模型安全从发布前评估走向“受控访问 + 高敏系统测试 + 政府协作 + 使用限制”的运行期机制。
-- 机制动作：
-  - AP 报道称一名美国官员表示 Anthropic 的 Mythos 模型在 classified government computer systems 测试中发现漏洞。
-  - Reuters、CNBC、Euronews 等在 6 月 23-24 日转述 AP 报道。
-  - 报道链与 Project Glasswing、Fable / Mythos 访问限制、政府安全争议同处一条安全部署叙事。
-- 应用关系：Anthropic 的模型能力被放入政府高敏网络防御场景，而不是普通企业 SaaS 试用。
-- 系统/工具：Mythos、Project Glasswing、政府测试环境、受控模型访问机制。
-- 组织影响：Safety / Red Team / Policy 可能从内部审查职能变成外部部署接口；这会提高漏洞发现速度，但也会增加审批、访问控制、国籍限制、政府协作和模型暂停权等组织复杂度。
-- 来源与渠道：
-  - AP：<https://apnews.com/article/anthropic-mythos-ai-classified-systems-vulnerabilities-testing-3e8762c0527c4d8ed657cbe48c84a718>
-  - Reuters：<https://www.reuters.com/business/anthropics-mythos-model-found-vulnerabilities-classified-us-government-systems-2026-06-24/>
-  - CNBC：<https://www.cnbc.com/2026/06/23/anthropics-mythos-model-found-vulnerabilities-in-classified-us-government-systems-official-says.html>
-  - Euronews：<https://www.euronews.com/next/2026/06/24/anthropics-mythos-ai-found-flaws-in-classified-us-systems-within-hours-officials-say>
-- 证据等级：B。
-- 互证情况：AP 是源头，Reuters / CNBC / Euronews 主要转述；事实链仍依赖匿名美国官员，不是 Anthropic 官方组织公告。
-- 反向解释：漏洞发现不等于模型可直接利用漏洞；媒体报道不证明 Anthropic 内部已经完成 Safety / Red Team / Government 组织边界重构；测试最早可能已在 6 月中旬听证或报道中出现。
-- 与历史基线关系：延续 6 月以来 Anthropic `Safeguards / Claude Corps / Project Glasswing` 主线，但今天的新增是政府高敏系统测试场景被媒体强确认。
-- 组织发展关注点：安全团队是否进入客户部署流程；模型访问限制、暂停权和政府协作是否成为 AI 原生公司的核心流程；高敏部署是否要求不同的人员审查和权限机制。
-- 适用边界：适用于国家安全、关键基础设施、网络防御和高风险客户环境；不可直接外推到普通企业 AI 工具推广。
-- 待验证问题：
-  - Anthropic 内部由 Safeguards、Red Team、Policy 还是 Applied AI 持有这类政府接口？
-  - 高敏系统测试是否形成标准 deployment playbook？
-  - 模型限制、国籍审查、政府协作和客户交付之间的权责如何划分？
-- 公开策略：可公开写作“Anthropic 安全能力进入政府高敏系统测试场景”；不可写成“Anthropic 已建立成熟政府安全部署组织”。
+| RAISE US / OpenAI Foundation / Anthropic / Amazon / Microsoft | 发布跨公司 AI 劳动力适应组织，目标测试 retrain、redeploy、wage insurance、career navigation 等机制 | AI 劳动力适应基础设施 / 跨公司雇主联盟 | A/B | 核心结论，L2-L3 |
+| 美团 CLC | 新设 AI Transformation 部门，与外卖、闪购平行，负责人牧遥直报 CLC CEO 王莆中 | AI 进入核心业务一级接口 | B/C | L2 基线 |
+| Microsoft | Copilot 统一为 experience、platform、M365 apps、AI models 四个 pillars | 组织边界与系统架构对齐 | A/B | L3 旧基线 |
+| DeepSeek | Harness 团队招聘继续扩散，早期线索可追到 5 月 | agent 执行中间层 | B/C | L2 观察 |
+| Anthropic | Mythos / Project Glasswing 政府高敏系统测试继续互证与被质疑 | Safety / Red Team 外部部署接口 | B/C | L2 观察 |
 
 ## 不是新闻而是机制
 
 | 外部事件 | 组织机制 | 效率含义 | 证据等级 | 反向解释 |
 |---|---|---|---|---|
-| AWS CEO 公开谈 11,000 名初级招聘与工程师 agent 化 | 初级人才管道保留 + 工程任务重构 + AI 使用度量纠偏 | 决策与产品判断前移，手写代码占比下降；错误指标会扭曲 AI 使用行为 | B | 高管叙事不能抵消 Amazon 裁员与 workforce reduction 口径 |
-| DeepSeek Harness 团队扩招 | 模型到 agent 产品之间出现执行中间层 | 研究到产品转化可能缩短，但模型 / 工程 / 产品接口成本增加 | B/C | 可能只是招聘缺口或项目组，不是稳定组织单元 |
-| 火山 MaaS 基础业务化口径 | AI 基础设施上移为集团基础能力 | 企业交付、云基础设施和模型产品接口变厚 | B/C | 可能只是大会叙事，未证明组织结构同步变化 |
-| Anthropic Mythos 政府安全测试 | Safety / Red Team 进入高敏部署接口 | 漏洞发现周期缩短，但访问控制、审批和责任边界复杂化 | B | 匿名官员与媒体转述，不是公司组织公告 |
-| Google 顶级 AI 人才流向 OpenAI / Anthropic | 明星研究员成为组织竞争资产 | 顶级人才密度影响模型路线可信度与市场信心 | B/C | 单点人才流动不能证明组织能力整体迁移 |
-| Meta Applied AI 重组后遗症再传播 | AI 重组的组织债显性化 | 压缩层级若缺角色边界，会把成本转移到任务分配和职业发展 | C | 窗口内多为二手扩散，旧线补证价值大于新增价值 |
+| RAISE US 发布 | AI 劳动力适应外部基础设施 | 岗位重构压力从企业内部外溢到州政府、培训供给和雇主联盟 | A/B | 公共事务与社会许可成分明显，效果未验证 |
+| 美团 CLC 新设 AI Transformation | AI 进入核心业务一级接口 | 业务与 AI 团队距离可能缩短，AI to B 与内部变革可能共用接口 | B/C | 原始动作是 6/9 旧线，且缺官方组织文件 |
+| Microsoft Copilot 四支柱 | 组织边界反映系统架构和产品形态 | consumer / commercial、体验 / 平台 / 应用 / 模型边界更显性 | A/B | 3 月旧动作；四支柱也可能制造新接口成本 |
 
 ## 组织情报结论卡
 
-### 结论卡 A｜AI 工程岗位正在从“写代码”转向“编排 agent、定义问题和管理成本”
+### RAISE US｜AI 组织冲击正在外部化为劳动力适应基础设施
 
-- L1 事实：Matt Garman 于 2026-06-24 Platformer 访谈中称 Amazon 今年招聘 11,000 名实习生和新毕业生；工程师越来越少手写代码，更多指挥 agent、做系统与产品判断，并调整了曾被误用的 AI 使用 leaderboard。
-- L2 机制判断：AI adoption 的组织问题不是单纯是否裁撤工程师，而是岗位任务、培养路径、度量指标和成本责任如何重写。
-- L3 高层组织判断：尚不能升 L3。当前证据来自高管访谈与媒体互证，缺少绩效、晋升、岗位说明书或组织制度文件。
+- L1 事实：RAISE US 于 2026-06-25 发布，OpenAI Foundation、Anthropic、Amazon、Microsoft 是 anchor partners，工作面包括 state partnerships、employer coalition、education and training、policy lab。
+- L2 机制判断：AI 对岗位任务、转岗、培训和就业结果的影响，正在被组织成跨公司、州政府、培训机构和政策实验的协作机制。
+- L3 高层组织判断：接近 L3，但暂按 L2-L3 处理。事实链强，机制清楚，但实际就业和组织效率效果尚未验证。
 - 证据置信度：中高。
 - 阅读价值：核心结论。
-- 适用边界：适用于大型技术组织的工程岗位重构观察，不适用于判断全行业就业规模。
-- 待验证问题：AI-native engineering 是否进入 AWS 的正式绩效与晋升标准。
-- 入库等级：L2。
+- 入库等级：L2-L3。
 
-### 结论卡 B｜DeepSeek Harness 显示模型公司可能正在补“执行环境组织层”
+### 美团 CLC｜AI 从产品探索进入核心业务一级接口
 
-- L1 事实：SCMP 与中文媒体链显示 DeepSeek Harness 团队在窗口附近快速招聘，岗位覆盖研究、工程和产品。
-- L2 机制判断：模型公司从 base model 走向 agent 产品时，需要一层负责工具调用、上下文、执行环境和工作流的组织接口。
-- L3 高层组织判断：尚不能升 L3。当前无法证明 Harness 是正式组织单元、独立团队边界或公司级重构。
+- L1 事实：多家媒体报道美团 CLC 新设 AI Transformation 部门，负责人牧遥直报 CLC CEO 王莆中，并与外卖、闪购等平行。
+- L2 机制判断：AI 不再只是独立技术项目，而是在本地生活核心业务中出现一级组织接口。
+- L3 高层组织判断：不能升 L3。缺官方组织公告、预算、岗位和绩效边界；且原始时间锚点为 2026-06-09。
 - 证据置信度：中。
 - 阅读价值：持续观察。
-- 适用边界：仅适用于 agent / coding agent 场景，不代表 DeepSeek 全组织变化。
-- 待验证问题：Harness 是否拥有独立路线图、产品指标和模型资源优先级。
 - 入库等级：L2。
 
-### 结论卡 C｜Anthropic Mythos 显示 Safety 正在从内部评估进入外部高敏部署接口
+### Microsoft Copilot｜AI 产品系统化后，组织边界开始向系统架构对齐
 
-- L1 事实：AP、Reuters、CNBC、Euronews 6 月 23-24 日报道称 Anthropic Mythos 在美国政府 classified systems 测试中发现漏洞。
-- L2 机制判断：Safety / Red Team 不再只是发布前评估，而可能成为政府、关键基础设施和高风险客户部署的接口层。
-- L3 高层组织判断：尚不能升 L3。报道依赖匿名官员与媒体转述，缺少 Anthropic 官方组织边界披露。
-- 证据置信度：中。
-- 阅读价值：核心观察。
-- 适用边界：仅适用于高敏安全部署，不可泛化到普通企业 AI 落地。
-- 待验证问题：政府安全测试由 Anthropic 哪个组织持有，是否进入标准发布与部署流程。
-- 入库等级：L2。
+- L1 事实：Microsoft 官方 2026-03-17 发布 Copilot leadership update，统一 commercial 和 consumer Copilot，并划分 experience、platform、M365 applications、AI models 四个 pillars。
+- L2 机制判断：AI 产品从多个入口走向统一系统时，组织边界需要围绕体验、平台、应用和模型重新切分。
+- L3 高层组织判断：可作为 L3 旧基线，但非今日新增。
+- 证据置信度：高。
+- 阅读价值：背景参考 / 基线案例。
+- 入库等级：L3 基线。
 
 ## 证据链与可信度
 
 | 条目 | 主要来源 | 证据等级 | 置信度 | 阅读价值 | 入库等级 |
 |---|---|---:|---:|---|---|
-| AWS 工程岗位任务重构与初级招聘 | Platformer 访谈、Fortune、Business Insider、CRN | B | 中高 | 核心结论 | L2 |
-| DeepSeek Harness 扩招 | SCMP、36 氪、中文转载链 | B/C | 中 | 持续观察 | L2 |
-| 火山 MaaS 基础业务化 | FORCE 大会媒体报道、证券之星、网易、36 氪 | B/C | 中 | 持续观察 | L2 |
-| Anthropic Mythos 政府安全测试 | AP、Reuters、CNBC、Euronews | B | 中 | 核心观察 | L2 |
-| Google 顶级人才流动 | Business Insider、Search Engine Journal | B/C | 中 | 背景参考 | L1-L2 |
-| Meta Applied AI 重组后遗症 | Business Insider 旧线、Inc / 二手媒体 | C | 中低 | 观察池 | L1-L2 |
-| 阿里 / 百度 / 腾讯旧动作再传播 | 36 氪、钛媒体、财经转载链 | B/C | 中 | 暂不采纳为今日新增 | 基线复核 |
-
-## 去伪存真记录
-
-- AnySearch 优先执行：
-  - 已使用 `python3 本地路径` 跑四组主批量检索、四组国内定向检索、四组海外定向检索、三组 Anthropic Mythos 反证检索，并提取 Platformer、Business Insider、AP 等页面。
-  - AnySearch `extract` 对 36 氪 DeepSeek Harness 页面返回 `extract_fetch_failed`，因此该条只按 SCMP / 搜索摘要 / 中文媒体链降级处理。
-  - AP 页面提取成功但输出包含大量导航噪音；以 AnySearch 搜索摘要和多媒体互证定位事实。
-- 事实验证：
-  - AWS / Amazon 访谈锚定 2026-06-24。
-  - DeepSeek Harness 公开扩散锚定 2026-06-22 至 2026-06-24。
-  - 火山 MaaS 基础业务化口径锚定 2026-06-23 至 2026-06-24。
-  - Anthropic Mythos 报道锚定 2026-06-23 至 2026-06-24。
-  - 阿里 Foundry 项目、百度 BMC / 数字职级、腾讯 WXG 项目负责制、华为盘古负责人变化均为旧线，不作为今日新增。
-- 机制验证：
-  - 只有能落到岗位任务、组织边界、工作流、前线部署、安全治理、绩效/度量或资源分配的材料进入主报告。
-  - 单纯产品发布、模型能力、融资估值、人才流动、招聘聚合页不直接升为组织机制结论。
-- 趋势验证：
-  - AWS、DeepSeek、Anthropic 三条分别指向 AI 工作流的三个组织接口：工程岗位任务、agent 执行中间层、高敏安全部署接口。
-  - 今天没有出现足够互证的传统大厂 L3 新结构调整。
-- 反证检查：
-  - AWS 高管乐观口径与 Amazon 裁员 / workforce reduction 口径存在张力。
-  - DeepSeek Harness 缺公司官方组织公告。
-  - 火山 MaaS 缺正式组织结构文件。
-  - Anthropic Mythos 依赖匿名官员与媒体转述。
-  - Meta、阿里、腾讯、百度多为旧动作窗口内再传播。
-- 边界审校：本报告只保留结论、事实、机制判断、证据强度、反向解释、适用边界和待验证问题，不输出处方、排期、责任人或行动建议。
-
-## 渠道索引补充
-
-| 渠道 | URL | 公司 | 主题 | 证据等级 | 是否新增 |
-|---|---|---|---|---:|---|
-| Platformer | https://www.platformer.news/matt-garman-aws-ceo-interview-ai-jobs/ | Amazon / AWS | AI jobs、初级招聘、工程师任务重构、AI 使用度量 | B | 是 |
-| Fortune | https://fortune.com/2026/06/24/amazon-web-services-ceo-matt-garman-bullish-on-entry-level-gen-z-talent-hiring-thousands-interns-graduates/ | Amazon / AWS | 11,000 interns and graduates | B | 是，互证 |
-| Business Insider | https://www.businessinsider.com/amazon-aws-ceo-matt-garman-white-collar-jobs-change-ai-2026-6 | Amazon / AWS | white-collar jobs change / AI | B | 是，互证 |
-| SCMP | https://www.scmp.com/tech/big-tech/article/3358077/deepseeks-harness-team-races-recruit-talent-booming-ai-agent-market | DeepSeek | Harness team hiring | B | 是 |
-| 36 氪 | https://36kr.com/p/3864274464347400 | DeepSeek | Harness 团队缺人 / 三类岗位 | C | 是，观察池 |
-| 证券之星 | https://wap.stockstar.com/detail/IG2026062400044622 | 字节 / 火山 | MaaS 基础业务化 | C | 是 |
-| 网易转科创板日报 | https://www.163.com/dy/article/L04CGEFH0550B1DU.html | 字节 / 火山 | FORCE 大会 / 资源向 AI 倾斜 | C | 是 |
-| AP | https://apnews.com/article/anthropic-mythos-ai-classified-systems-vulnerabilities-testing-3e8762c0527c4d8ed657cbe48c84a718 | Anthropic | Mythos classified systems 测试 | B | 是 |
-| Reuters | https://www.reuters.com/business/anthropics-mythos-model-found-vulnerabilities-classified-us-government-systems-2026-06-24/ | Anthropic | Mythos 报道转述 | B | 是，互证 |
-| Business Insider | https://www.businessinsider.com/google-ai-talent-wars-anthropic-jumper-shazeer-karpathy-openai-2026-6 | Google / OpenAI / Anthropic | 顶级人才流动 | B/C | 是，背景参考 |
-
-## 观察池 / 待核验池
-
-| 线索 | 来源 | 为什么不够 | 可能机制 | 下一步怎么核 |
-|---|---|---|---|---|
-| DeepSeek Harness 是否成为正式团队 | SCMP、36 氪、负责人社媒转述 | 缺官方组织公告、汇报线、团队规模、预算边界 | agent 执行中间层 / 模型产品化接口 | 追踪 DeepSeek 官方招聘、团队负责人公开表述、岗位 JD 与产品发布 |
-| 火山 MaaS 基础业务化是否带来组织结构变化 | FORCE 大会媒体报道 | 缺组织架构、负责人、岗位和绩效口径 | AI 基础设施上移 / 企业交付基础化 | 追踪火山引擎组织任命、客户交付岗位、解决方案团队扩张 |
-| Anthropic Mythos 政府安全接口由谁持有 | AP / Reuters / CNBC | 匿名官员、媒体转述，非官方组织披露 | Safety / Red Team / Government interface | 追踪 Anthropic 官方发布、政府采购 / 合作文件、jobs taxonomy |
-| AWS AI 使用 output 指标 | Platformer 访谈 | 只知道 leaderboard 被调整，不知道新指标 | AI adoption 度量从用量转向产出 | 追踪内部工具公开演讲、AWS engineering blog、招聘能力模型 |
-| Google 顶级人才流动的组织影响 | Business Insider | 单点明星流动，不等于组织能力迁移 | 顶级人才密度竞争 / 模型路线可信度 | 追踪 OpenAI / Anthropic 对应团队归属、后续研究或产品产出 |
-| Meta Applied AI 重组后遗症 | BI 旧线与二手媒体 | 窗口内无新一手材料 | 管理跨度压缩后的组织债 | 追踪 Meta 官方、员工泄露材料、岗位/经理层变化 |
+| RAISE US 跨公司 AI 劳动力适应组织 | Rockefeller Foundation、AP、TNW、Axios 摘要 | A/B | 中高 | 核心结论 | L2-L3 |
+| 美团 CLC AI Transformation | 36 氪、腾讯新闻、DoNews、美团 Tabbit 官方页 | B/C | 中 | 持续观察 | L2 |
+| Microsoft Copilot 四支柱重组 | Microsoft 官方博客、CRN、CNBC | A/B | 高 | 背景参考 | L3 旧基线 |
+| DeepSeek Harness 扩招 | SCMP、36 氪、网易、东方财富、早期招聘帖 | B/C | 中 | 观察池 | L2 |
+| Anthropic Mythos / Glasswing | AP、Reuters、SecurityWeek、Schneier、IBTimes | B/C | 中 | 观察池 | L2 |
 
 ## 公开知识库入库判断
 
-- **可入私有知识源：** AWS 工程岗位任务重构、DeepSeek Harness 观察、火山 MaaS 基础业务化口径、Anthropic Mythos 政府安全测试、旧闻再传播反证记录。
-- **可脱敏公开：** AWS “AI 改变岗位任务而非简单替代”的公开口径、DeepSeek Harness 作为 agent 产品化中间层线索、Anthropic Mythos 作为高敏安全部署观察。
-- **暂不公开为结论：** DeepSeek Harness 正式组织重构、火山 MaaS 已完成组织上移、Anthropic 已形成成熟政府安全部署组织、Meta Applied AI 当前内部状态。
-- **不入库为方法：** 所有“应当保留初级岗位”“应建立 Harness 团队”“应学习 AWS / Anthropic”的说法。当前最高只到 L2 组织情报观察，不到 L3/L4 组织方法。
+- **可入私有知识源：** RAISE US、Microsoft Copilot 旧基线、美团 AI Transformation、DeepSeek Harness / Anthropic Mythos / Meta reassignment 反证记录。
+- **可脱敏公开：** RAISE US 作为 AI 劳动力适应基础设施案例；Microsoft Copilot 作为组织边界向系统架构对齐案例；美团作为 AI 进入核心业务一级接口线索。
+- **暂不公开为结论：** RAISE US 已解决 AI 岗位替代；美团完成集团级 AI 组织重构；DeepSeek Harness 成熟组织化；Anthropic 成熟政府安全部署组织。
