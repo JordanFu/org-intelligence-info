@@ -1,0 +1,722 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>每日扫描｜互联网大厂组织机制研究</title>
+  <style>
+    :root {
+      color-scheme: light;
+      --bg: #f6f7f1;
+      --paper: #fffdf8;
+      --ink: #172033;
+      --muted: #697181;
+      --line: #ded8c9;
+      --soft: #ece6d7;
+      --accent: #1f6f68;
+      --accent-2: #b45a34;
+      --code: #f1eee6;
+    }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "PingFang SC", "Microsoft YaHei", sans-serif;
+      color: var(--ink);
+      background: var(--bg);
+      line-height: 1.75;
+    }
+    .shell {
+      display: grid;
+      grid-template-columns: minmax(210px, 280px) minmax(0, 1fr);
+      min-height: 100vh;
+    }
+    aside {
+      position: sticky;
+      top: 0;
+      height: 100vh;
+      padding: 28px 22px;
+      border-right: 1px solid var(--line);
+      background: #ebe5d7;
+      overflow: auto;
+    }
+    main {
+      max-width: 1040px;
+      width: 100%;
+      padding: 56px 56px 90px;
+    }
+    .eyebrow {
+      color: var(--accent-2);
+      font-size: 13px;
+      font-weight: 800;
+      letter-spacing: .08em;
+      text-transform: uppercase;
+      margin: 0 0 10px;
+    }
+    h1 {
+      font-size: clamp(30px, 4vw, 48px);
+      line-height: 1.12;
+      margin: 0 0 18px;
+      letter-spacing: 0;
+    }
+    h2 {
+      font-size: 26px;
+      line-height: 1.32;
+      margin: 48px 0 14px;
+      padding-top: 18px;
+      border-top: 1px solid var(--line);
+    }
+    h3 {
+      font-size: 20px;
+      margin: 34px 0 10px;
+      color: #23314d;
+    }
+    h4 {
+      font-size: 17px;
+      margin: 26px 0 8px;
+    }
+    p, li {
+      font-size: 16px;
+      color: #2b3343;
+    }
+    p { margin: 10px 0; }
+    ul { padding-left: 1.2rem; }
+    li { margin: 7px 0; }
+    a { color: var(--accent); text-decoration-thickness: 1px; text-underline-offset: 3px; }
+    code {
+      background: var(--code);
+      border: 1px solid var(--line);
+      border-radius: 5px;
+      padding: 1px 5px;
+      font-size: .92em;
+    }
+    pre {
+      overflow: auto;
+      background: #fff9ec;
+      color: #202838;
+      border: 1px solid #d8ccb8;
+      border-radius: 8px;
+      padding: 18px;
+      box-shadow: inset 4px 0 0 var(--accent);
+      white-space: pre-wrap;
+      word-break: break-word;
+    }
+    pre code {
+      display: block;
+      padding: 0;
+      border: 0;
+      background: transparent;
+      color: inherit;
+      line-height: 1.7;
+      font-size: 14px;
+    }
+    blockquote {
+      margin: 24px 0;
+      padding: 14px 18px;
+      border-left: 4px solid var(--accent);
+      background: #eef4ee;
+      color: #344033;
+    }
+    .table-wrap {
+      overflow-x: auto;
+      margin: 18px 0 26px;
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      background: var(--paper);
+    }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      min-width: 720px;
+    }
+    th, td {
+      padding: 12px 14px;
+      border-bottom: 1px solid var(--line);
+      vertical-align: top;
+      text-align: left;
+      font-size: 14px;
+    }
+    th {
+      background: #e7e0cf;
+      color: #26324a;
+      font-weight: 800;
+      white-space: nowrap;
+    }
+    tr:last-child td { border-bottom: 0; }
+    .topbar {
+      display: flex;
+      gap: 10px;
+      align-items: center;
+      flex-wrap: wrap;
+      margin-bottom: 28px;
+    }
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 38px;
+      padding: 8px 12px;
+      border: 1px solid var(--line);
+      border-radius: 7px;
+      background: var(--paper);
+      color: var(--ink);
+      text-decoration: none;
+      font-weight: 750;
+      font-size: 14px;
+    }
+    .primary { background: var(--accent); border-color: var(--accent); color: white; }
+    .toc-title {
+      margin: 0 0 12px;
+      font-size: 14px;
+      font-weight: 850;
+      color: #273247;
+    }
+    .toc a {
+      display: block;
+      padding: 7px 0;
+      color: #465064;
+      text-decoration: none;
+      font-size: 14px;
+      line-height: 1.45;
+      border-bottom: 1px solid rgba(23,32,51,.08);
+    }
+    .toc a.level-3 { padding-left: 14px; font-size: 13px; color: #626b78; }
+    .meta {
+      color: var(--muted);
+      font-size: 14px;
+      margin-bottom: 24px;
+    }
+    @media (max-width: 900px) {
+      .shell { display: block; }
+      aside { position: relative; height: auto; border-right: 0; border-bottom: 1px solid var(--line); }
+      main { padding: 34px 20px 70px; }
+      .toc { columns: 1; }
+      table { min-width: 640px; }
+    }
+  </style>
+</head>
+<body>
+  <div class="shell">
+    <aside>
+      <p class="toc-title">目录</p>
+      <nav class="toc">
+        <a class="level-2" href="#今日结论">今日结论</a>
+        <a class="level-2" href="#今日组织机制信号">今日组织机制信号</a>
+        <a class="level-2" href="#传统大厂与-ai-原生组织分组观察">传统大厂与 AI 原生组织分组观察</a>
+        <a class="level-2" href="#高价值变化卡片">高价值变化卡片</a>
+        <a class="level-3" href="#amazon-ai-red-team-threat-operations-内的-ai-安全红队管理化">Amazon / AI Red Team / Threat Operations 内的 AI 安全红队管理化</a>
+        <a class="level-3" href="#anthropic-薪酬与岗位职能扩厚-研究公司向产品运营和-gtm-扩展">Anthropic / 薪酬与岗位职能扩厚 / 研究公司向产品运营和 GTM 扩展</a>
+        <a class="level-3" href="#ai-engineer-world-s-fair-forward-deployed-engineering-独立-track-岗位族群行业化">AI Engineer World's Fair / Forward Deployed Engineering 独立 track / 岗位族群行业化</a>
+        <a class="level-2" href="#不是新闻而是机制">不是新闻而是机制</a>
+        <a class="level-2" href="#组织情报结论卡">组织情报结论卡</a>
+        <a class="level-3" href="#结论卡-a-ai-安全红队正在从专家活动进入运营建制">结论卡 A｜AI 安全红队正在从专家活动进入运营建制</a>
+        <a class="level-3" href="#结论卡-b-ai-原生公司高价值职能正在从研究工程扩展到产品运营和-gtm">结论卡 B｜AI 原生公司高价值职能正在从研究工程扩展到产品运营和 GTM</a>
+        <a class="level-3" href="#结论卡-c-fde-从单家公司岗位变成-ai-企业化的行业公共语言">结论卡 C｜FDE 从单家公司岗位变成 AI 企业化的行业公共语言</a>
+        <a class="level-2" href="#证据链与可信度">证据链与可信度</a>
+        <a class="level-2" href="#去伪存真记录">去伪存真记录</a>
+        <a class="level-2" href="#渠道索引补充">渠道索引补充</a>
+        <a class="level-2" href="#观察池-待核验池">观察池 / 待核验池</a>
+        <a class="level-2" href="#公开知识库入库判断">公开知识库入库判断</a>
+      </nav>
+    </aside>
+    <main>
+      <div class="topbar">
+        <a class="btn primary" href="../index.html">返回研究源</a>
+        <a class="btn" href="./2026-06-29.md">查看 Markdown 原文</a>
+      </div>
+      <p class="eyebrow">Daily Scan</p>
+      <h1>2026-06-29 组织情报信息｜互联网大厂与 AI 原生组织机制扫描</h1>
+      <p class="meta">本页面由本地 Markdown 自动渲染生成，仍保留原始 md 文件作为知识库源文档。</p>
+      <article>
+        <blockquote>私有本地材料。仅用于本地知识库研究；公开分享前必须脱敏，并保留证据等级与不确定性。</blockquote>
+<h2 id="今日结论">今日结论</h2>
+<ul>
+<li><strong>严格看 2026-06-28 至 2026-06-29，今天仍没有发现足够硬的新增 L3 公司级组织机制变化。</strong> 今日价值主要在于识别近窗补证、旧线再传播和低阶候选，不把搜索命中时间误写成事件发生时间。</li>
+<li><strong>Amazon AI Red Team 是今天最硬的一手补证，按 L2-L3 基线入库。</strong> Amazon 官方岗位页显示 <code>Senior Manager, AI Red Team, Threat Operations</code>，申请截止日为 2026-07-04，职责包括建立 AI offensive security research program、管理安全工程师与研究员、覆盖 training pipelines、inference systems、model architectures 和 supporting infrastructure。机制含义是：传统大厂正在把 AI 安全红队从技术专家活动管理化、指标化，并嵌入 Threat Operations。</li>
+<li><strong>Anthropic 的薪酬与岗位扩厚只能进 L1-L2 观察池。</strong> 6/28 报道基于 H-1B 和二手链路，显示高薪覆盖研究、工程之外的 Product Operations、Research Operations、Technical Sales、Partnerships 等职能；官方岗位面可互证职能扩厚，但不能写成今日组织重构。</li>
+<li><strong>FDE 正从公司岗位变成行业议程，但这不是单家公司组织变化。</strong> AI Engineer World's Fair 2026 在 6/30 设置 <code>Forward Deployed Engineering</code> 独立 track，Cursor、Cognition、Sierra、Factory 等出现相关议题；机制价值在于 FDE 作为 AI 企业交付岗位族群正在行业化，但不等于任何一家公司今天调整了组织。</li>
+<li><strong>国内传统大厂和国内 AI 原生公司今天无新增 L3。</strong> DeepSeek 全部门扩招仍是 6/25-6/26 近窗强信号延续；腾讯项目负责制、阿里 Foundry 项目、百度 MEG、大商业与职级并轨、美团 AI Transformation 均为旧动作再传播或旧基线复核。</li>
+</ul>
+<h2 id="今日组织机制信号">今日组织机制信号</h2>
+<div class="table-wrap"><table><thead><tr>
+<th>公司 / 组织</th>
+<th>信号</th>
+<th>机制标签</th>
+<th>证据等级</th>
+<th>阅读价值</th>
+</tr></thead><tbody>
+<tr>
+<td>Amazon</td>
+<td>官方岗位页显示 AI Red Team 位于 Threat Operations，由 Senior Manager 建队并建立 AI offensive security research program</td>
+<td>AI 安全红队管理化 / Threat Operations 内嵌 / 跨产品安全风险度量</td>
+<td>A</td>
+<td>核心观察，L2-L3 基线</td>
+</tr>
+<tr>
+<td>Anthropic</td>
+<td>6/28 报道显示高薪职能覆盖 Product Operations、Research Operations、Technical Sales、Partnerships；官方岗位面可见产品、支持、运营和 Claude Code PM 角色</td>
+<td>研究型公司职能扩厚 / 产品与 GTM 能力增厚</td>
+<td>B/C + A</td>
+<td>观察池，L1-L2</td>
+</tr>
+<tr>
+<td>AI Engineer World's Fair</td>
+<td>6/30 设置 Forward Deployed Engineering 独立 track，Cursor、Cognition、Sierra、Factory 等分享 FDE 做法</td>
+<td>FDE 岗位族群行业化 / 企业交付机制显性化</td>
+<td>A/B</td>
+<td>背景参考，L1-L2</td>
+</tr>
+<tr>
+<td>Cursor / Anysphere</td>
+<td>官方 Regional Director, FDE 岗位继续可见，负责 6-8 名 FDE、partner FDE track、交付质量和产品反馈</td>
+<td>FDE 管理化 / 伙伴化 / 交付质量机制</td>
+<td>A</td>
+<td>旧基线补证，L2</td>
+</tr>
+<tr>
+<td>MiniMax</td>
+<td>港交所公告链显示 6/23 授出 1,168,776 份奖励，覆盖董事、员工、服务提供商；二手报道强调不设业绩目标</td>
+<td>长期股权激励 / 留才周期 / 资本化后激励治理</td>
+<td>A + C</td>
+<td>观察池，L2</td>
+</tr>
+<tr>
+<td>DeepSeek</td>
+<td>6/25 全部门扩招至少一倍继续被多源引用</td>
+<td>从研究小队向全链路平台型模型公司扩容</td>
+<td>B/C</td>
+<td>近窗强观察延续，L2-L3</td>
+</tr>
+</tbody></table></div>
+<h2 id="传统大厂与-ai-原生组织分组观察">传统大厂与 AI 原生组织分组观察</h2>
+<ul>
+<li><strong>传统大厂：</strong> Amazon 的 AI Red Team 岗位是今天最值得保留的传统大厂信号。它不是裁员、重组或绩效变化，而是 AI 安全能力被放入既有 Threat Operations 管理系统，带有建队、指标、跨组织安全改进和高管风险沟通要求。</li>
+<li><strong>AI 原生组织：</strong> Anthropic 的薪酬/岗位扩厚、Cursor FDE 管理化、AI Engineer World's Fair FDE track 均显示 AI 原生公司正在从研究/产品团队扩展到产品运营、技术销售、客户现场交付、伙伴交付和安全治理接口。但今天没有新的公司级组织公告。</li>
+<li><strong>二者正在趋同的地方：</strong> AI 组织变化越来越多通过岗位页、会议议程、薪酬披露、工程博客和安全职责暴露，而不是通过正式组织架构图发布。</li>
+<li><strong>二者仍在分化的地方：</strong> 传统大厂更倾向把 AI 新风险纳入既有安全、合规、运营体系；AI 原生公司更倾向通过 FDE、Applied AI、Product Operations、Research Operations 等新岗位族群补齐商业化和产品化能力。</li>
+</ul>
+<h2 id="高价值变化卡片">高价值变化卡片</h2>
+<h3 id="amazon-ai-red-team-threat-operations-内的-ai-安全红队管理化">Amazon / AI Red Team / Threat Operations 内的 AI 安全红队管理化</h3>
+<ul>
+<li>时间：岗位页本轮可抽取；申请截止日为 2026-07-04。搜索摘要曾显示 2026-06-29，本轮以官方抽取页为准。</li>
+<li>组织范围：Amazon Security / Threat Operations；岗位为 <code>Senior Manager, AI Red Team, Threat Operations</code>，地点包含美国远程。</li>
+<li>机制类型：安全红队、AI offensive security research、AI/ML 风险、跨组织安全项目、经理级建队。</li>
+<li>机制理念：AI 安全风险不再只是模型评测或专家渗透测试，而是要进入 Threat Operations 的持续研究、红队作战、指标报告和跨业务安全改进。</li>
+<li>机制动作：</li>
+<li>建立并领导由 security engineers 和 researchers 组成的 AI Red Team。</li>
+<li>建立 AI offensive security research program。</li>
+<li>针对 training pipelines、inference systems、model architectures 和 supporting infrastructure 做红队行动。</li>
+<li>将技术安全发现翻译成 senior leadership 可理解的业务影响和风险。</li>
+<li>建立 metrics and reporting frameworks，用于展示安全项目效果和持续改进。</li>
+<li>应用关系：连接 security leadership、business stakeholders、engineering organizations、product teams 和 research scientists。</li>
+<li>系统/工具：offensive security automation、AI-augmented testing tools、threat intelligence、security automation、AI/ML security。</li>
+<li>组织影响：AI Red Team 从专家型能力变成经理级建制，意味着管理跨度、人才结构、风险上报和跨产品安全改进被组织化；效率含义不是“更快发布”，而是让 AI 风险评估进入可持续的运营节奏。</li>
+<li>来源与渠道：</li>
+<li>Amazon Jobs：&lt;<a href="https://www.amazon.jobs/en/jobs/10379285/senior-manager-ai-red-team-threat-operations&gt;" target="_blank" rel="noreferrer">https://www.amazon.jobs/en/jobs/10379285/senior-manager-ai-red-team-threat-operations&gt;</a></li>
+<li>LinkedIn / Indeed / ZipRecruiter 等镜像搜索摘要仅作互证入口，不作为主证据。</li>
+<li>证据等级：A。</li>
+<li>互证情况：Amazon 官方岗位页可直接抽取；多个招聘镜像命中同一岗位。缺岗位首次发布日期和团队现有规模。</li>
+<li>反向解释：岗位页只能证明 Amazon 正在招聘/建制 AI Red Team 经理，不等于该团队已覆盖所有 Amazon AI 产品，也不等于已有正式发布 gate。</li>
+<li>与历史基线关系：延续 Anthropic FRT、Scale Safety Post-Training、OpenAI Daybreak 等“AI safety/security 从研究评测走向运营组织”的主线，但 Amazon 的特点是嵌入传统大厂 Threat Operations。</li>
+<li>组织发展关注点：安全职能边界、跨组织风险上报、AI/ML 安全人才密度、红队指标化、发布与运营之间的安全责任分配。</li>
+<li>适用边界：适用于 AI 产品组合广、基础设施复杂、客户信任风险高的大型科技组织；不能外推为所有组织都需要独立 AI Red Team。</li>
+<li>待验证问题：</li>
+<li>AI Red Team 覆盖 AWS、consumer AI、ads、devices 还是集团全产品？</li>
+<li>该团队是否参与模型/产品发布 gate？</li>
+<li>指标框架如何连接风险接受、修复优先级和高层决策？</li>
+<li>security engineers 与 research scientists 的协作边界如何定义？</li>
+<li>公开策略：可公开为官方岗位信号；不写成 Amazon 已完成 AI 安全组织重构。</li>
+</ul>
+<h3 id="anthropic-薪酬与岗位职能扩厚-研究公司向产品运营和-gtm-扩展">Anthropic / 薪酬与岗位职能扩厚 / 研究公司向产品运营和 GTM 扩展</h3>
+<ul>
+<li>时间：Business Today 报道发布时间为 2026-06-28；其链路基于 H-1B 披露与 Business Insider 报道。官方岗位页本轮可检索，但无明确当日发布时间。</li>
+<li>组织范围：Anthropic 研究、工程、Product Operations、Research Operations、Technical Sales、Partnerships、Claude Code PM 等职能。</li>
+<li>机制类型：岗位族群扩厚、薪酬带、产品运营、研究运营、技术销售、合作伙伴。</li>
+<li>机制理念：模型公司从研究密度竞争进入产品化、企业化和运营化阶段后，高价值岗位不只在研究/工程，也扩展到把模型能力变成产品、客户关系、合作伙伴和运营系统的职能。</li>
+<li>机制动作：</li>
+<li>媒体基于 H-1B / BI 链路显示高薪岗位覆盖非纯研究职能。</li>
+<li>官方岗位面显示 Product Management, Support, &amp; Operations 等类别。</li>
+<li>Claude Code 相关 PM / model performance 岗位显示产品线已有性能、体验和运营责任接口。</li>
+<li>应用关系：连接 Research、Applied AI、Product、Support、Operations、Technical Sales 和 Partnerships。</li>
+<li>系统/工具：公开信息不足；可见的是岗位族群，不是管理系统。</li>
+<li>组织影响：如果持续成立，Anthropic 的组织效率瓶颈可能从研究产出转向产品判断、客户采用、运营承接和跨团队校准；但当前不能证明绩效、晋升或汇报线变化。</li>
+<li>来源与渠道：</li>
+<li>Business Today：&lt;<a href="https://www.businesstoday.in/technology/news/story/from-engineers-to-product-managers-heres-how-much-anthropic-pays-with-salaries-up-to-rs13-02-crore-539575-2026-06-28&gt;" target="_blank" rel="noreferrer">https://www.businesstoday.in/technology/news/story/from-engineers-to-product-managers-heres-how-much-anthropic-pays-with-salaries-up-to-rs13-02-crore-539575-2026-06-28&gt;</a></li>
+<li>Anthropic Careers：&lt;<a href="https://www.anthropic.com/careers&gt;" target="_blank" rel="noreferrer">https://www.anthropic.com/careers&gt;</a></li>
+<li>证据等级：B/C + A。报道为二手薪酬链路，官方岗位页只能互证岗位表面。</li>
+<li>互证情况：媒体报道与官方岗位类别方向一致；缺一手组织公告、岗位发布时间和薪酬完整口径。</li>
+<li>反向解释：H-1B 薪酬样本不能代表全公司薪酬制度；高薪覆盖多个职能也可能只是美国签证样本偏差或关键岗位个案。</li>
+<li>与历史基线关系：延续 Anthropic Applied AI、Safeguards、Claude Code、Claude Corps 等既有组织边界扩厚主线。</li>
+<li>组织发展关注点：职能边界、产品化瓶颈、GTM 与研究之间的信息回流、非研究岗位的人才密度。</li>
+<li>适用边界：适用于观察 frontier AI 公司从研究驱动走向产品/企业/运营扩张；不能外推为 Anthropic 已重设绩效或职级体系。</li>
+<li>待验证问题：</li>
+<li>Product Operations / Research Operations 是否有正式管理层级和指标？</li>
+<li>Claude Code PM 是否拥有模型性能、产品体验和商业指标的统一权责？</li>
+<li>Technical Sales / Partnerships 与 Applied AI / FDE 如何分工？</li>
+<li>公开策略：观察池，可作为“职能扩厚”信号，不作为组织重构结论。</li>
+</ul>
+<h3 id="ai-engineer-world-s-fair-forward-deployed-engineering-独立-track-岗位族群行业化">AI Engineer World's Fair / Forward Deployed Engineering 独立 track / 岗位族群行业化</h3>
+<ul>
+<li>时间：AI Engineer World's Fair 2026 于 2026-06-29 至 2026-07-01 举办；6/30 日程中设置 Forward Deployed Engineering track。</li>
+<li>组织范围：行业会议；涉及 Factory、Cursor、Cognition、Sierra、Varick Agents、AssemblyAI 等 FDE / deployed engineering 议题。</li>
+<li>机制类型：岗位族群行业化、企业交付机制、AI coding / agent 产品落地接口。</li>
+<li>机制理念：FDE 不再只是少数 AI 原生公司的招聘标题，而开始成为 AI 工程生态讨论的独立实践领域，围绕如何嵌入客户 workflow、交付生产系统、沉淀 playbook 和回传产品问题展开。</li>
+<li>机制动作：</li>
+<li>日程中出现 <code>Forward Deployed Engineering</code> 独立 track。</li>
+<li>Cursor VP, Forward Deployed Engineering 讲 <code>How Forward Deployed Engineering is done at Cursor</code>。</li>
+<li>Cognition、Sierra、Factory 等公司也围绕 FDE / deployed engineering 分享。</li>
+<li>同场还出现 Context Engineering、Harness Engineering、Agent Quality Gates、Agent Security 等相邻岗位/机制议题。</li>
+<li>应用关系：连接产品、销售、解决方案、客户工程、伙伴交付和 agent / coding workflow 改造。</li>
+<li>系统/工具：会议日程不是组织系统；只能证明行业议题显性化。</li>
+<li>组织影响：FDE 作为岗位族群的知识边界在外部生态中成型，这会帮助解释为什么 OpenAI、Anthropic、Mistral、Perplexity、Cursor 等同时出现 Applied / Deployed / Field Engineering 角色。</li>
+<li>来源与渠道：</li>
+<li>AI Engineer World's Fair Schedule：&lt;<a href="https://www.ai.engineer/worldsfair/schedule?track=Local+AI&gt;" target="_blank" rel="noreferrer">https://www.ai.engineer/worldsfair/schedule?track=Local+AI&gt;</a></li>
+<li>证据等级：A/B。官方会议日程为 A，作为行业趋势证据为 B。</li>
+<li>互证情况：会议日程与多家公司官方岗位页互相补强；但它不是单家公司组织公告。</li>
+<li>反向解释：会议 track 可能反映行业营销与从业者兴趣，不等于 FDE 已成为成熟、标准化的组织职能。</li>
+<li>与历史基线关系：补强 6 月以来 OpenAI、Anthropic、Mistral、Perplexity、Cursor FDE / Applied AI 主线。</li>
+<li>组织发展关注点：岗位边界、客户现场知识回流、伙伴交付质量、企业采用速度与交付成本。</li>
+<li>适用边界：适合作为岗位族群行业化背景，不适合作为公司级组织变化结论。</li>
+<li>待验证问题：</li>
+<li>FDE 是否会沉淀为稳定职级、绩效标准和管理层？</li>
+<li>FDE 与 Sales Engineering、Solutions、Professional Services 的边界如何区分？</li>
+<li>现场交付经验是否能系统性回流模型、产品和评测体系？</li>
+<li>公开策略：背景参考，可公开但不要写成单公司新变化。</li>
+</ul>
+<h2 id="不是新闻而是机制">不是新闻而是机制</h2>
+<div class="table-wrap"><table><thead><tr>
+<th>外部事件</th>
+<th>组织机制</th>
+<th>效率含义</th>
+<th>证据等级</th>
+<th>反向解释</th>
+</tr></thead><tbody>
+<tr>
+<td>Amazon 招 Senior Manager 领导 AI Red Team</td>
+<td>AI 安全红队进入 Threat Operations 管理系统</td>
+<td>将 AI 风险研究、红队行动、指标报告和跨组织改进组织化，提升风险处理节奏而非单纯发布速度</td>
+<td>A</td>
+<td>岗位页不等于团队已覆盖全部 AI 产品或拥有发布 gate</td>
+</tr>
+<tr>
+<td>Anthropic 薪酬报道覆盖 PM、运营、技术销售、合作伙伴</td>
+<td>研究公司职能扩厚</td>
+<td>产品化和企业化瓶颈可能从模型研究转向运营、GTM 和产品判断</td>
+<td>B/C + A</td>
+<td>H-1B 样本有限，且官方岗位页无窗口日期</td>
+</tr>
+<tr>
+<td>AI Engineer World's Fair 设置 FDE track</td>
+<td>FDE 岗位族群行业化</td>
+<td>AI 产品进入企业复杂 workflow 后，需要现场交付、产品回流和伙伴质量机制</td>
+<td>A/B</td>
+<td>会议议程可能只是热度，不等于成熟组织制度</td>
+</tr>
+<tr>
+<td>MiniMax 授出股份奖励且报道称不设业绩目标</td>
+<td>长期归属替代短期 KPI 的激励观察</td>
+<td>绩效压力可能转移到留任周期、股权归属和资本化兑现</td>
+<td>A + C</td>
+<td>不设业绩目标不等于没有绩效压力，也不代表全面去 KPI</td>
+</tr>
+<tr>
+<td>DeepSeek 全部门扩招继续扩散</td>
+<td>小团队高密度向全链路平台化扩容</td>
+<td>管理跨度、协作成本、onboarding 与质量控制压力上升</td>
+<td>B/C</td>
+<td>可能是招聘窗口和雇主品牌释放，不等于组织治理成熟</td>
+</tr>
+<tr>
+<td>腾讯/阿里/百度/美团旧线再传播</td>
+<td>AI 组织重构被媒体周期性再包装</td>
+<td>说明市场关注组织效率，但不能作为新增事实</td>
+<td>C</td>
+<td>命中日期不是事件日期，不能写成今日变化</td>
+</tr>
+</tbody></table></div>
+<h2 id="组织情报结论卡">组织情报结论卡</h2>
+<h3 id="结论卡-a-ai-安全红队正在从专家活动进入运营建制">结论卡 A｜AI 安全红队正在从专家活动进入运营建制</h3>
+<ul>
+<li>L1 事实：Amazon 官方岗位显示 AI Red Team 位于 Threat Operations，由 Senior Manager 建队，覆盖 AI systems、infrastructure、training pipelines、inference systems、model architectures 等红队目标。</li>
+<li>L2 机制判断：AI 安全红队从一次性评测或专家小组，转向带经理、人才招聘、指标报告、跨组织安全改进的运营能力。</li>
+<li>L3 高层组织判断：作为传统大厂 AI security 组织化的 L2-L3 基线成立；但不能写成全公司安全组织已重构。</li>
+<li>证据置信度：高。</li>
+<li>阅读价值：核心观察。</li>
+<li>适用边界：适用于客户信任点多、AI 产品组合复杂的大型科技组织。</li>
+<li>待验证问题：团队覆盖范围、发布 gate 权限、指标与高层风险决策关系。</li>
+<li>入库等级：L2-L3。</li>
+</ul>
+<h3 id="结论卡-b-ai-原生公司高价值职能正在从研究工程扩展到产品运营和-gtm">结论卡 B｜AI 原生公司高价值职能正在从研究工程扩展到产品运营和 GTM</h3>
+<ul>
+<li>L1 事实：Anthropic 6/28 薪酬报道显示高薪岗位覆盖 Product Operations、Research Operations、Technical Sales、Partnerships；官方岗位页显示产品、支持、运营、Claude Code PM 等职能。</li>
+<li>L2 机制判断：frontier AI 公司规模化后，需要把研究产出转化为产品体验、客户采用、合作伙伴和运营系统，非研究职能的组织价值上升。</li>
+<li>L3 高层组织判断：只能作为 L1-L2 观察。薪酬报道与岗位面可互证方向，但缺组织公告、岗位时间戳和制度证据。</li>
+<li>证据置信度：中。</li>
+<li>阅读价值：持续观察。</li>
+<li>适用边界：用于观察模型公司从研究密度向产品/企业/运营密度扩展；不用于判断 Anthropic 绩效或职级变化。</li>
+<li>待验证问题：这些职能是否形成正式管理层、指标体系和与研究/Applied AI 的权责边界。</li>
+<li>入库等级：L1-L2。</li>
+</ul>
+<h3 id="结论卡-c-fde-从单家公司岗位变成-ai-企业化的行业公共语言">结论卡 C｜FDE 从单家公司岗位变成 AI 企业化的行业公共语言</h3>
+<ul>
+<li>L1 事实：AI Engineer World's Fair 2026 日程中出现 Forward Deployed Engineering 独立 track，Cursor、Cognition、Sierra、Factory 等围绕 FDE 分享做法。</li>
+<li>L2 机制判断：FDE 作为 AI 产品企业化落地的岗位族群正在外部生态显性化，连接客户现场 workflow、产品反馈、伙伴交付和技术销售。</li>
+<li>L3 高层组织判断：作为行业趋势背景成立，但不是单家公司组织机制结论。</li>
+<li>证据置信度：中高。</li>
+<li>阅读价值：背景参考。</li>
+<li>适用边界：适用于 AI coding、agent、企业 AI 工具进入复杂客户工程环境的场景。</li>
+<li>待验证问题：FDE 是否会形成稳定职级、绩效标准、管理层和伙伴认证体系。</li>
+<li>入库等级：L1-L2。</li>
+</ul>
+<h2 id="证据链与可信度">证据链与可信度</h2>
+<div class="table-wrap"><table><thead><tr>
+<th>条目</th>
+<th>主要来源</th>
+<th>证据等级</th>
+<th>置信度</th>
+<th>阅读价值</th>
+<th>入库等级</th>
+</tr></thead><tbody>
+<tr>
+<td>Amazon AI Red Team 管理化</td>
+<td>Amazon Jobs 官方岗位页</td>
+<td>A</td>
+<td>高</td>
+<td>核心观察</td>
+<td>L2-L3</td>
+</tr>
+<tr>
+<td>Anthropic 薪酬与职能扩厚</td>
+<td>Business Today、Anthropic Careers</td>
+<td>B/C + A</td>
+<td>中</td>
+<td>观察池</td>
+<td>L1-L2</td>
+</tr>
+<tr>
+<td>FDE 行业化议程</td>
+<td>AI Engineer World's Fair 官方日程、Cursor 官方岗位页</td>
+<td>A/B</td>
+<td>中高</td>
+<td>背景参考</td>
+<td>L1-L2</td>
+</tr>
+<tr>
+<td>Cursor FDE 管理化</td>
+<td>Cursor Regional Director, FDE 官方岗位页</td>
+<td>A</td>
+<td>中高</td>
+<td>旧基线补证</td>
+<td>L2</td>
+</tr>
+<tr>
+<td>MiniMax 股权激励</td>
+<td>HKEX 公告链接、IT之家/新浪/东方财富报道</td>
+<td>A + C</td>
+<td>中</td>
+<td>观察池</td>
+<td>L2</td>
+</tr>
+<tr>
+<td>DeepSeek 全部门扩招</td>
+<td>证券时报、21 财经、观察者网、世界互联网大会等</td>
+<td>B/C</td>
+<td>中高</td>
+<td>近窗强观察延续</td>
+<td>L2-L3</td>
+</tr>
+<tr>
+<td>国内大厂旧线</td>
+<td>36氪、财联社、钛媒体、DoNews 等</td>
+<td>C</td>
+<td>中</td>
+<td>旧线复核</td>
+<td>不作新增</td>
+</tr>
+</tbody></table></div>
+<h2 id="去伪存真记录">去伪存真记录</h2>
+<ul>
+<li>AnySearch 优先执行：</li>
+<li>使用 <code>python3 本地路径</code> 跑国内传统大厂、国内 AI 原生、海外 AI 原生、海外传统科技四组主批量检索。</li>
+<li>对 Amazon AI Red Team、Cursor FDE、MiniMax HKEX 公告、AI Engineer World's Fair、DeepSeek 扩招、Anthropic 薪酬/岗位做定向搜索或 URL extract。</li>
+<li>Amazon Jobs、Cursor Careers、AI Engineer World's Fair 页面抽取成功；HKEX PDF 返回 <code>extract_unsupported_content</code>，因此只保留官方 PDF URL 和搜索摘要，不把未抽取内容写成全文事实。</li>
+<li>交叉验证：</li>
+<li>国内扫描结论：本窗口国内无新增 L3，DeepSeek 是 6/25-6/26 近窗强观察延续，腾讯/阿里/百度/美团均为旧线再传播。</li>
+<li>海外溯源结论：本窗口海外无新增 L3；Anthropic 薪酬/PM/运营扩厚只到 L1-L2，Meta/Virtue AI 为 6/25 近窗强候选但不是今日新增。</li>
+<li>机制审校结论：必须区分 L1 事实、L2 机制假设、L3 组织判断；不把“搜索命中日期”写成“事件发生日期”。</li>
+<li>事实验证：</li>
+<li>Amazon AI Red Team 官方岗位页可抽取，申请截止日为 2026-07-04；搜索摘要中 2026-06-29 只说明当前窗口命中，不说明岗位首次发布日。</li>
+<li>Anthropic 薪酬报道发布时间为 2026-06-28，但薪酬样本来自 H-1B / BI 链路，不能代表完整制度。</li>
+<li>AI Engineer World's Fair FDE track 是会议日程，不是公司组织公告。</li>
+<li>MiniMax 股权激励原始公告日期为 2026-06-23，不是今日新增。</li>
+<li>DeepSeek 扩招原始招聘发布时间为 2026-06-25 晚，不是今日新增。</li>
+<li>机制验证：</li>
+<li>只有能落到岗位族群、管理层、组织范围、激励制度、安全职责、交付接口或运营系统的材料进入报告。</li>
+<li>纯产品发布、融资、估值、论坛热度、薪酬榜单和二手评论不进入核心区。</li>
+<li>反证检查：</li>
+<li>Amazon AI Red Team 可能只是招聘动作，不代表团队已经成熟运行。</li>
+<li>Anthropic 高薪职能样本可能受签证、岗位个案和报道选择偏差影响。</li>
+<li>FDE 会议 track 可能反映热度和商业叙事，不代表标准化职业体系已形成。</li>
+<li>MiniMax 不设业绩目标不等于没有绩效压力，压力可能转移到归属期、留任和资本化兑现。</li>
+<li>传统大厂旧线再传播不能作为当天新变化。</li>
+<li>边界审校：本报告只呈现事实、机制判断、证据强度、反向解释、适用边界和待验证问题，不输出处方、排期、执行清单、责任人或“应该做什么”。</li>
+</ul>
+<h2 id="渠道索引补充">渠道索引补充</h2>
+<div class="table-wrap"><table><thead><tr>
+<th>渠道</th>
+<th>URL</th>
+<th>公司 / 组织</th>
+<th>主题</th>
+<th>证据等级</th>
+<th>是否新增</th>
+</tr></thead><tbody>
+<tr>
+<td>Amazon Jobs</td>
+<td><a href="https://www.amazon.jobs/en/jobs/10379285/senior-manager-ai-red-team-threat-operations" target="_blank" rel="noreferrer">https://www.amazon.jobs/en/jobs/10379285/senior-manager-ai-red-team-threat-operations</a></td>
+<td>Amazon</td>
+<td>Senior Manager, AI Red Team, Threat Operations</td>
+<td>A</td>
+<td>今日核心补证</td>
+</tr>
+<tr>
+<td>Business Today</td>
+<td><a href="https://www.businesstoday.in/technology/news/story/from-engineers-to-product-managers-heres-how-much-anthropic-pays-with-salaries-up-to-rs13-02-crore-539575-2026-06-28" target="_blank" rel="noreferrer">https://www.businesstoday.in/technology/news/story/from-engineers-to-product-managers-heres-how-much-anthropic-pays-with-salaries-up-to-rs13-02-crore-539575-2026-06-28</a></td>
+<td>Anthropic</td>
+<td>H-1B 薪酬与岗位扩厚</td>
+<td>B/C</td>
+<td>今日观察池</td>
+</tr>
+<tr>
+<td>Anthropic Careers</td>
+<td><a href="https://www.anthropic.com/careers" target="_blank" rel="noreferrer">https://www.anthropic.com/careers</a></td>
+<td>Anthropic</td>
+<td>产品、支持、运营、Claude Code PM 等岗位面</td>
+<td>A</td>
+<td>互证入口</td>
+</tr>
+<tr>
+<td>AI Engineer World's Fair</td>
+<td><a href="https://www.ai.engineer/worldsfair/schedule?track=Local+AI" target="_blank" rel="noreferrer">https://www.ai.engineer/worldsfair/schedule?track=Local+AI</a></td>
+<td>行业会议</td>
+<td>Forward Deployed Engineering track</td>
+<td>A/B</td>
+<td>今日背景参考</td>
+</tr>
+<tr>
+<td>Cursor Careers</td>
+<td><a href="https://cursor.com/careers/regional-director-forward-deployed-engineering-new-york-remote-san-francisco" target="_blank" rel="noreferrer">https://cursor.com/careers/regional-director-forward-deployed-engineering-new-york-remote-san-francisco</a></td>
+<td>Cursor</td>
+<td>Regional Director, Forward Deployed Engineering</td>
+<td>A</td>
+<td>旧基线补证</td>
+</tr>
+<tr>
+<td>HKEXnews</td>
+<td><a href="https://www.hkexnews.hk/listedco/listconews/sehk/2026/0623/2026062301078_c.pdf" target="_blank" rel="noreferrer">https://www.hkexnews.hk/listedco/listconews/sehk/2026/0623/2026062301078_c.pdf</a></td>
+<td>MiniMax</td>
+<td>IPO 后股份激励计划授出奖励</td>
+<td>A</td>
+<td>近窗观察</td>
+</tr>
+<tr>
+<td>IT之家</td>
+<td><a href="https://www.ithome.com/0/968/063.htm" target="_blank" rel="noreferrer">https://www.ithome.com/0/968/063.htm</a></td>
+<td>MiniMax</td>
+<td>股权激励报道</td>
+<td>C</td>
+<td>互证</td>
+</tr>
+<tr>
+<td>证券时报</td>
+<td><a href="https://www.stcn.com/article/detail/3981317.html" target="_blank" rel="noreferrer">https://www.stcn.com/article/detail/3981317.html</a></td>
+<td>DeepSeek</td>
+<td>全部门扩招</td>
+<td>B/C</td>
+<td>旧近窗延续</td>
+</tr>
+<tr>
+<td>36氪</td>
+<td><a href="https://www.36kr.com/p/3818792805516167" target="_blank" rel="noreferrer">https://www.36kr.com/p/3818792805516167</a></td>
+<td>腾讯</td>
+<td>WXG 项目负责制旧线</td>
+<td>C</td>
+<td>不作新增</td>
+</tr>
+<tr>
+<td>财联社</td>
+<td><a href="https://www.cls.cn/detail/2393862" target="_blank" rel="noreferrer">https://www.cls.cn/detail/2393862</a></td>
+<td>阿里</td>
+<td>Foundry 项目 旧线</td>
+<td>C</td>
+<td>不作新增</td>
+</tr>
+</tbody></table></div>
+<h2 id="观察池-待核验池">观察池 / 待核验池</h2>
+<div class="table-wrap"><table><thead><tr>
+<th>线索</th>
+<th>来源</th>
+<th>为什么不够</th>
+<th>可能机制</th>
+<th>待验证问题</th>
+</tr></thead><tbody>
+<tr>
+<td>Amazon AI Red Team 覆盖范围</td>
+<td>Amazon Jobs</td>
+<td>岗位页未说明全产品覆盖和发布 gate</td>
+<td>AI 安全红队运营化</td>
+<td>覆盖 AWS、consumer AI、ads、devices 还是集团全产品</td>
+</tr>
+<tr>
+<td>Anthropic 非研究职能高薪</td>
+<td>Business Today、Anthropic Careers</td>
+<td>H-1B 样本和二手链路，不是制度公告</td>
+<td>产品运营 / GTM 职能扩厚</td>
+<td>是否形成正式管理层、指标和职级</td>
+</tr>
+<tr>
+<td>Anthropic Claude Code PM / model performance</td>
+<td>Anthropic Careers / Greenhouse</td>
+<td>缺岗位发布时间和汇报线</td>
+<td>AI coding 产品化责任接口</td>
+<td>PM 是否拥有模型性能和产品体验统一权责</td>
+</tr>
+<tr>
+<td>FDE 行业 track</td>
+<td>AI Engineer World's Fair</td>
+<td>会议议程不是组织制度</td>
+<td>FDE 岗位族群行业化</td>
+<td>是否形成标准职级、绩效标准和伙伴认证</td>
+</tr>
+<tr>
+<td>MiniMax 股权激励不设业绩目标</td>
+<td>HKEX、IT之家、东方财富</td>
+<td>激励细节不足，不能证明无绩效压力</td>
+<td>长期归属 / 留才机制</td>
+<td>是否与岗位族群、绩效等级、留任周期绑定</td>
+</tr>
+<tr>
+<td>Meta / Virtue AI 进入 MSL</td>
+<td>Axios、二手报道</td>
+<td>锚点为 2026-06-25，非今日新增</td>
+<td>AI safety 人才并入超级智能组织</td>
+<td>进入后是否形成独立 safety 责任线</td>
+</tr>
+<tr>
+<td>DeepSeek 扩招后组织边界</td>
+<td>多家中文媒体</td>
+<td>缺官方完整组织图和汇报线</td>
+<td>平台型模型公司扩容</td>
+<td>扩招是否带来管理层级、绩效和 onboarding 机制变化</td>
+</tr>
+</tbody></table></div>
+<h2 id="公开知识库入库判断">公开知识库入库判断</h2>
+<ul>
+<li><strong>可入私有知识源：</strong> Amazon AI Red Team L2-L3 基线；Anthropic 薪酬与职能扩厚 L1-L2 观察；FDE 行业 track L1-L2 背景；MiniMax 股权激励 L2 观察；DeepSeek 扩招旧近窗延续。</li>
+<li><strong>可脱敏公开：</strong> Amazon 官方岗位显示 AI 安全红队开始进入 Threat Operations 管理系统；AI 原生公司非研究职能正在扩厚；FDE 作为 AI 企业化岗位族群正在行业化。</li>
+<li><strong>暂不公开为结论：</strong> Amazon 已完成 AI 安全组织重构；Anthropic 已重设薪酬/职级制度；FDE 已成为所有 AI 公司标准组织形态；MiniMax 没有绩效压力。</li>
+<li><strong>不入库为方法：</strong> 所有“应该建立 AI Red Team”“应该设 FDE track”“应该照搬 Anthropic 职能扩厚”的说法。当前材料是组织情报观察和基线，不是内部方法或行动方案。</li>
+</ul>
+      </article>
+    </main>
+  </div>
+</body>
+</html>
