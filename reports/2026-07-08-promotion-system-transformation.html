@@ -1,0 +1,1129 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>晋升项目变革专题报告｜互联网大厂组织机制研究</title>
+  <style>
+    :root {
+      color-scheme: light;
+      --bg: #f6f7f1;
+      --paper: #fffdf8;
+      --ink: #172033;
+      --muted: #697181;
+      --line: #ded8c9;
+      --soft: #ece6d7;
+      --accent: #1f6f68;
+      --accent-2: #b45a34;
+      --code: #f1eee6;
+    }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "PingFang SC", "Microsoft YaHei", sans-serif;
+      color: var(--ink);
+      background: var(--bg);
+      line-height: 1.75;
+    }
+    .shell {
+      display: grid;
+      grid-template-columns: minmax(210px, 280px) minmax(0, 1fr);
+      min-height: 100vh;
+    }
+    aside {
+      position: sticky;
+      top: 0;
+      height: 100vh;
+      padding: 28px 22px;
+      border-right: 1px solid var(--line);
+      background: #ebe5d7;
+      overflow: auto;
+    }
+    main {
+      max-width: 1040px;
+      width: 100%;
+      padding: 56px 56px 90px;
+    }
+    .eyebrow {
+      color: var(--accent-2);
+      font-size: 13px;
+      font-weight: 800;
+      letter-spacing: .08em;
+      text-transform: uppercase;
+      margin: 0 0 10px;
+    }
+    h1 {
+      font-size: clamp(30px, 4vw, 48px);
+      line-height: 1.12;
+      margin: 0 0 18px;
+      letter-spacing: 0;
+    }
+    h2 {
+      font-size: 26px;
+      line-height: 1.32;
+      margin: 48px 0 14px;
+      padding-top: 18px;
+      border-top: 1px solid var(--line);
+    }
+    h3 {
+      font-size: 20px;
+      margin: 34px 0 10px;
+      color: #23314d;
+    }
+    h4 {
+      font-size: 17px;
+      margin: 26px 0 8px;
+    }
+    p, li {
+      font-size: 16px;
+      color: #2b3343;
+    }
+    p { margin: 10px 0; }
+    ul { padding-left: 1.2rem; }
+    li { margin: 7px 0; }
+    a { color: var(--accent); text-decoration-thickness: 1px; text-underline-offset: 3px; }
+    code {
+      background: var(--code);
+      border: 1px solid var(--line);
+      border-radius: 5px;
+      padding: 1px 5px;
+      font-size: .92em;
+    }
+    pre {
+      overflow: auto;
+      background: #fff9ec;
+      color: #202838;
+      border: 1px solid #d8ccb8;
+      border-radius: 8px;
+      padding: 18px;
+      box-shadow: inset 4px 0 0 var(--accent);
+      white-space: pre-wrap;
+      word-break: break-word;
+    }
+    pre code {
+      display: block;
+      padding: 0;
+      border: 0;
+      background: transparent;
+      color: inherit;
+      line-height: 1.7;
+      font-size: 14px;
+    }
+    blockquote {
+      margin: 24px 0;
+      padding: 14px 18px;
+      border-left: 4px solid var(--accent);
+      background: #eef4ee;
+      color: #344033;
+    }
+    .table-wrap {
+      overflow-x: auto;
+      margin: 18px 0 26px;
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      background: var(--paper);
+    }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      min-width: 720px;
+    }
+    th, td {
+      padding: 12px 14px;
+      border-bottom: 1px solid var(--line);
+      vertical-align: top;
+      text-align: left;
+      font-size: 14px;
+    }
+    th {
+      background: #e7e0cf;
+      color: #26324a;
+      font-weight: 800;
+      white-space: nowrap;
+    }
+    tr:last-child td { border-bottom: 0; }
+    .topbar {
+      display: flex;
+      gap: 10px;
+      align-items: center;
+      flex-wrap: wrap;
+      margin-bottom: 28px;
+    }
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 38px;
+      padding: 8px 12px;
+      border: 1px solid var(--line);
+      border-radius: 7px;
+      background: var(--paper);
+      color: var(--ink);
+      text-decoration: none;
+      font-weight: 750;
+      font-size: 14px;
+    }
+    .primary { background: var(--accent); border-color: var(--accent); color: white; }
+    .toc-title {
+      margin: 0 0 12px;
+      font-size: 14px;
+      font-weight: 850;
+      color: #273247;
+    }
+    .toc a {
+      display: block;
+      padding: 7px 0;
+      color: #465064;
+      text-decoration: none;
+      font-size: 14px;
+      line-height: 1.45;
+      border-bottom: 1px solid rgba(23,32,51,.08);
+    }
+    .toc a.level-3 { padding-left: 14px; font-size: 13px; color: #626b78; }
+    .meta {
+      color: var(--muted);
+      font-size: 14px;
+      margin-bottom: 24px;
+    }
+    @media (max-width: 900px) {
+      .shell { display: block; }
+      aside { position: relative; height: auto; border-right: 0; border-bottom: 1px solid var(--line); }
+      main { padding: 34px 20px 70px; }
+      .toc { columns: 1; }
+      table { min-width: 640px; }
+    }
+  </style>
+</head>
+<body>
+  <div class="shell">
+    <aside>
+      <p class="toc-title">目录</p>
+      <nav class="toc">
+        <a class="level-2" href="#0-核心结论">0. 核心结论</a>
+        <a class="level-2" href="#1-公司做法总览">1. 公司做法总览</a>
+        <a class="level-2" href="#2-绩效机制细节">2. 绩效机制细节</a>
+        <a class="level-3" href="#2-1-评价维度正在从-结果-行为-扩展到-结果-行为-杠杆">2.1 评价维度正在从“结果 + 行为”扩展到“结果 + 行为 + 杠杆”</a>
+        <a class="level-3" href="#2-2-档位与分布">2.2 档位与分布</a>
+        <a class="level-3" href="#2-3-反馈频率与校准">2.3 反馈频率与校准</a>
+        <a class="level-2" href="#3-晋升机制细节">3. 晋升机制细节</a>
+        <a class="level-3" href="#3-1-晋升触发与周期">3.1 晋升触发与周期</a>
+        <a class="level-3" href="#3-2-晋升材料与证据">3.2 晋升材料与证据</a>
+        <a class="level-3" href="#3-3-校准会机制">3.3 校准会机制</a>
+        <a class="level-3" href="#3-4-与薪酬-奖金-股票-调薪的关系">3.4 与薪酬、奖金、股票、调薪的关系</a>
+        <a class="level-2" href="#4-ai-时代新增评价变量">4. AI 时代新增评价变量</a>
+        <a class="level-3" href="#4-1-ai-fluency-不等于工具使用频率">4.1 AI fluency 不等于工具使用频率</a>
+        <a class="level-3" href="#4-2-ai-变量进入人才流程的四个入口">4.2 AI 变量进入人才流程的四个入口</a>
+        <a class="level-3" href="#4-3-agentic-delegation-与-verification">4.3 Agentic delegation 与 verification</a>
+        <a class="level-3" href="#4-4-评价变量的风险">4.4 评价变量的风险</a>
+        <a class="level-2" href="#5-近期变化卡片">5. 近期变化卡片</a>
+        <a class="level-3" href="#5-1-字节跳动-领导力原则进入管理者晋升和年度考核">5.1 字节跳动：领导力原则进入管理者晋升和年度考核</a>
+      </nav>
+    </aside>
+    <main>
+      <div class="topbar">
+        <a class="btn primary" href="../index.html">返回研究源</a>
+        <a class="btn" href="./2026-07-08-promotion-system-transformation.md">查看 Markdown 原文</a>
+      </div>
+      <p class="eyebrow">Promotion System Intelligence</p>
+      <h1>2026-07-08 组织情报信息｜晋升项目变革：绩效晋升机制与 AI 时代评价系统</h1>
+      <p class="meta">本页面由本地 Markdown 自动渲染生成，仍保留原始 md 文件作为知识库源文档。</p>
+      <article>
+        <blockquote>私有完整版。基于本地知识库、2026-05-26 至 2026-07-08 每日扫描、桌面参考文档结构化内容与 AnySearch 近窗补证。公开分享前必须脱敏；不要公开内部链接、访谈口径、截图、未授权附件或个人信息。</blockquote>
+<h2 id="0-核心结论">0. 核心结论</h2>
+<p>这份报告聚焦“晋升项目如何变革”的制度底稿，不是资讯综述。当前最清晰的判断是：<strong>晋升项目正在从“周期性评审一个人是否够格”，升级为“持续收集证据、跨层校准业务必要性、验证 AI 时代工作方式和更高层级职责是否已经发生”的管理系统。</strong></p>
+<p>可确认的变化有四类：</p>
+<p class="ordered">1. <strong>晋升证据从主管叙述走向可审计材料。</strong> GitLab 的 promotion document、Workday 提名、业务结果、价值观对齐、跨职能反馈、校准会和 ACR 链路，是目前最完整的 A 级公开样本。</p>
+<p class="ordered">2. <strong>绩效评价从结果回顾走向“结果 + 能力增长 + 组织杠杆”。</strong> GitLab 的 performance / growth potential matrix、Netflix 的人才密度与留任测试、Amazon/Shopify/Zapier 的 AI 使用与效率证据，都在把“是否能放大单位产出”放入评价语言。</p>
+<p class="ordered">3. <strong>AI 变量开始进入招聘、绩效、晋升和资源审批，但成熟度不同。</strong> Zapier 已把 AI fluency 拆成 mindset、strategy、building、accountability，并放入候选人四个触点；Shopify 把 AI 使用写入 performance / peer review 与 headcount request；Amazon 相关材料显示 AI 使用和效率问题进入绩效/晋升讨论，但证据链更依赖媒体转述。</p>
+<p class="ordered">4. <strong>国内大厂更像在重写管理者评价和职级边界。</strong> 字节把领导力原则纳入管理者晋升和年度考核，腾讯简化绩效和调整职级外显/停留时间，百度统一数字职级，美团强化人才盘点、SABC 与业务贡献联动。这些都不是单点晋升流程变化，而是在重写“什么样的人值得更高权责”。</p>
+<p>报告边界：以下内容只呈现事实、机制判断、制度部件、证据强度、反向解释和待验证问题；不替用户做组织决策，不输出执行排期、责任人或落地步骤。</p>
+<h2 id="1-公司做法总览">1. 公司做法总览</h2>
+<div class="table-wrap"><table><thead><tr>
+<th>公司</th>
+<th>绩效 / 晋升机制核心做法</th>
+<th>AI / 近窗变化</th>
+<th>证据等级</th>
+<th>当前可用性</th>
+</tr></thead><tbody>
+<tr>
+<td>GitLab</td>
+<td>半年度 promotion calibration、promotion document、Workday、ACR、talent assessment、9-box、跨职能反馈</td>
+<td>允许 AI 辅助 self-evaluation，但强调 human input and review</td>
+<td>A</td>
+<td>最完整的制度样本</td>
+</tr>
+<tr>
+<td>Zapier</td>
+<td>AI fluency rubric 进入每个候选人评估；manager 需证明带团队采用 AI</td>
+<td>2026-03-31 发布 V2，新增 accountability，强调 slope not snapshot</td>
+<td>A</td>
+<td>AI 评价变量样本</td>
+</tr>
+<tr>
+<td>Shopify</td>
+<td>AI 使用成为 baseline；performance / peer review 加 AI usage questions；headcount 前置 AI 证明</td>
+<td>2025 memo 仍是资源审批与绩效语言强基线</td>
+<td>B，X 原文为 A 但需外部抽取</td>
+<td>AI 与资源审批样本</td>
+</tr>
+<tr>
+<td>Stripe</td>
+<td>Forward Deployed AI Accelerator 嵌入约 20 人 marketing cohort；Developer Productivity AI 重塑工程 workflow</td>
+<td>AI-led performance / talent planning 岗位线索进入观察池</td>
+<td>A / L1-L2</td>
+<td>职能 AI 改造样本</td>
+</tr>
+<tr>
+<td>Amazon</td>
+<td>OV、promotion、Anytime Feedback 是长期基线；2026 媒体链显示 Clarity / Kiro / AI usage 进入绩效和晋升讨论</td>
+<td>AI usage、release velocity、more with fewer resources 可能进入评价</td>
+<td>C，部分 A/B 辅证</td>
+<td>高启发、高风险</td>
+</tr>
+<tr>
+<td>Google</td>
+<td>GRAD 一年一次评级、季度 check-ins、经理集体评议、晋升仍可多窗口</td>
+<td>本轮未见 AI 进入正式晋升规则的强证据</td>
+<td>A/B</td>
+<td>绩效减负与经理判断样本</td>
+</tr>
+<tr>
+<td>Meta</td>
+<td>绩效压力、管理层压缩、AI 转岗与重组；常与裁员/组织震荡并行</td>
+<td>AI reassignment 与组织气候成本是反证样本</td>
+<td>B/C</td>
+<td>风险与副作用样本</td>
+</tr>
+<tr>
+<td>Microsoft</td>
+<td>AI 投入期成本纪律、Frontier Company / FDE 组织化</td>
+<td>更强信号在部署组织，不在个人晋升制度</td>
+<td>A/B</td>
+<td>岗位族群外溢观察</td>
+</tr>
+<tr>
+<td>Netflix</td>
+<td>人才密度、留任测试、freedom &amp; responsibility、固定工资替代绩效奖金</td>
+<td>AI 新变量弱，但“Context over Control”影响字节</td>
+<td>A</td>
+<td>高绩效文化基线</td>
+</tr>
+<tr>
+<td>字节</td>
+<td>F/I/M-/M/M+/E/E+/O/O+、绩效/文化/投入度/领导力、通晒分布、调薪晋升联动</td>
+<td>2026 新领导力原则纳入管理者晋升和年度考核</td>
+<td>B/C + A 基线</td>
+<td>近窗最强国内变化</td>
+</tr>
+<tr>
+<td>腾讯</td>
+<td>O/G/U 三档、BG 分布、同级/下属反馈简化、晋升权下放、职级外显弱化</td>
+<td>项目 owner、AI 用量单位 动态配额为观察池</td>
+<td>B/C</td>
+<td>绩效简化与晋升权下放样本</td>
+</tr>
+<tr>
+<td>美团</td>
+<td>SABC、1261、Q1/Q3 人才盘点、组织系数、高职级专业委员会、晋升答辩</td>
+<td>AI Transformation / 组织压缩线索仍弱</td>
+<td>B/C</td>
+<td>人才盘点与绩效联动样本</td>
+</tr>
+<tr>
+<td>百度</td>
+<td>任务绩效 / 辐射绩效、三大档五小档、OKR 相关不等于完成度、5-12 数字职级并轨</td>
+<td>职级并轨适配复合能力，但薪酬与评审权变化未证实</td>
+<td>B/C</td>
+<td>职级语言重写样本</td>
+</tr>
+<tr>
+<td>阿里 / 蚂蚁</td>
+<td>P 序列细化、季度绩效、P8+ 组织任命、M/S 序列、管理权与专业影响力拆分</td>
+<td>近窗多为旧线与局部组织调整</td>
+<td>C</td>
+<td>序列与权责拆分样本</td>
+</tr>
+<tr>
+<td>OpenAI</td>
+<td>高人才密度、Codex agentic workflow、Deployment Company、FDE 岗位族</td>
+<td>缺公开绩效/晋升制度，更多是工作方式和岗位族群信号</td>
+<td>A/B</td>
+<td>AI 原生工作证据样本</td>
+</tr>
+<tr>
+<td>Anthropic</td>
+<td>Applied AI、FDE、Safety/RSP/FRT、公共部门部署岗位</td>
+<td>公开岗位细，但绩效/晋升 handbook 弱</td>
+<td>A/B</td>
+<td>岗位族群与安全治理样本</td>
+</tr>
+</tbody></table></div>
+<h2 id="2-绩效机制细节">2. 绩效机制细节</h2>
+<h3 id="2-1-评价维度正在从-结果-行为-扩展到-结果-行为-杠杆">2.1 评价维度正在从“结果 + 行为”扩展到“结果 + 行为 + 杠杆”</h3>
+<p>传统大厂绩效维度大体分为三类：</p>
+<div class="table-wrap"><table><thead><tr>
+<th>模式</th>
+<th>样本</th>
+<th>执行层字段</th>
+<th>机制含义</th>
+</tr></thead><tbody>
+<tr>
+<td>结果 / 价值贡献</td>
+<td>Amazon、百度、美团、GitLab</td>
+<td>业务结果、项目影响、客户价值、岗位职责达成、关键指标</td>
+<td>绩效不是完成任务，而是证明贡献与岗位层级匹配</td>
+</tr>
+<tr>
+<td>行为 / 价值观 / 领导力</td>
+<td>字节、GitLab、Netflix、腾讯</td>
+<td>领导力原则、价值观、协作方式、反馈质量、Context over Control、深入一线</td>
+<td>晋升不只看结果，还看是否用更高层级方式取得结果</td>
+</tr>
+<tr>
+<td>杠杆 / AI / 组织能力</td>
+<td>Zapier、Shopify、Stripe、Amazon、OpenAI</td>
+<td>AI workflow impact、repeatable systems、verification、headcount avoidance、team enablement</td>
+<td>AI 时代新增变量不是“用没用工具”，而是是否改变工作方式和单位产出</td>
+</tr>
+</tbody></table></div>
+<p>执行层启发不是“增加一个 AI 使用指标”，而是把证据改成可复核问题：工作是否更快、更稳、更少返工、更少等待、更少新增编制、更能让他人复用。</p>
+<h3 id="2-2-档位与分布">2.2 档位与分布</h3>
+<div class="table-wrap"><table><thead><tr>
+<th>公司</th>
+<th>档位 / 分布</th>
+<th>细节</th>
+<th>边界</th>
+</tr></thead><tbody>
+<tr>
+<td>腾讯</td>
+<td>O/G/U 三档；BG 层面分布；历史线索约 20/75/5</td>
+<td>从五星简化为 Outstanding / Good / Underperform，减少绩效消耗；反馈频率简化</td>
+<td>公开材料多为媒体链，具体比例和执行口径需以内部制度为准</td>
+</tr>
+<tr>
+<td>字节</td>
+<td>F/I/M-/M/M+/E/E+/O/O+；逐级通晒 Top / Bottom</td>
+<td>不强控分布但逐级校准结果比例；绩效、文化、投入度、领导力合流</td>
+<td>最新领导力原则进入晋升/考核，但具体打分 rubrics 未公开</td>
+</tr>
+<tr>
+<td>美团</td>
+<td>SABC，1261 分布</td>
+<td>S/A/B/C 与组织系数、年终激励、人才盘点连接</td>
+<td>强机制样本，但具体规则来自本地参考和媒体链，公开引用需脱敏</td>
+</tr>
+<tr>
+<td>百度</td>
+<td>三大档五小档；271 分布线索</td>
+<td>任务绩效与辐射绩效，OKR 与绩效相关但不等于完成度</td>
+<td>职级并轨明确，绩效规则是否同步变化需后续验证</td>
+</tr>
+<tr>
+<td>GitLab</td>
+<td>Developing / Performing / Exceeding；Performance x Growth Potential 9-box</td>
+<td>performance 与 growth potential 分开，校准 outliers；expected distribution 不是 forced distribution</td>
+<td>A 级公开，适合作为制度模板参考</td>
+</tr>
+<tr>
+<td>Netflix</td>
+<td>无传统绩效奖金，强调高人才密度与留任测试</td>
+<td>高绩效文化通过管理者判断、反馈和离职补偿维持</td>
+<td>不是评分制模板，适用边界强</td>
+</tr>
+<tr>
+<td>Google</td>
+<td>GRAD 一年一次评级，季度 check-ins</td>
+<td>减少高频 perf 负担，强化 manager 判断和集体评议</td>
+<td>AI 新变量未见强制度证据</td>
+</tr>
+</tbody></table></div>
+<h3 id="2-3-反馈频率与校准">2.3 反馈频率与校准</h3>
+<div class="table-wrap"><table><thead><tr>
+<th>公司</th>
+<th>反馈与校准做法</th>
+<th>执行细节</th>
+</tr></thead><tbody>
+<tr>
+<td>GitLab</td>
+<td>Talent Assessment 与 Q2 promotion nomination 合并；Workday Assess My Team；Leadership calibration</td>
+<td>2026 周期：1 月 self-assessment，1 月 manager assessment + nominations，2 月 calibration，3 月 ACR，5 月生效</td>
+</tr>
+<tr>
+<td>GitLab Security</td>
+<td>Promotion feedback touchpoint</td>
+<td>候选人与 manager 对齐；promotion document 完成；选择至少 2 名反馈人；Staff+ 要求跨职能反馈；反馈聚焦 business results</td>
+</tr>
+<tr>
+<td>腾讯</td>
+<td>同级反馈、下属反馈简化为一年一次；绩效从五星简化为三档</td>
+<td>机制目标是降低绩效系统消耗，给 BG 更多执行权限</td>
+</tr>
+<tr>
+<td>德勤</td>
+<td>performance snapshot、项目/季度小评、每周 check-in</td>
+<td>不问抽象能力评分，而问管理者会采取什么行动，降低评价偏差</td>
+</tr>
+<tr>
+<td>Google</td>
+<td>季度 check-ins + 年度评级</td>
+<td>以更低频率减少校准成本，但保留晋升窗口</td>
+</tr>
+</tbody></table></div>
+<h2 id="3-晋升机制细节">3. 晋升机制细节</h2>
+<h3 id="3-1-晋升触发与周期">3.1 晋升触发与周期</h3>
+<div class="table-wrap"><table><thead><tr>
+<th>公司</th>
+<th>晋升触发</th>
+<th>周期 / 系统</th>
+<th>关键限制</th>
+</tr></thead><tbody>
+<tr>
+<td>GitLab</td>
+<td>已在下一层级持续表现；有 business need；promotion document 完整</td>
+<td>半年度 calibration；Workday 处理；内部流动走 Greenhouse</td>
+<td>通常同 job family 至少 12 个月；内部转管理岗必须公开岗位并正常面试</td>
+</tr>
+<tr>
+<td>GitLab Sales Development</td>
+<td>job family 有特定标准</td>
+<td>月度 review</td>
+<td>与半年度流程对齐但节奏更短</td>
+</tr>
+<tr>
+<td>腾讯</td>
+<td>职级发展、绿色通道、特殊申报</td>
+<td>2024 线索：8 级以下仍上下半年两次申报；所有职级最短停留统一 1 年</td>
+<td>目标职级 8 级及以下停留从 0.5 年延长至 1 年；Outstanding 可绿色通道</td>
+</tr>
+<tr>
+<td>字节</td>
+<td>绩效、文化、投入度、领导力、业务贡献</td>
+<td>半年/年度绩效与晋升联动</td>
+<td>2026 新原则进入管理者晋升和年度考核，但细则未公开</td>
+</tr>
+<tr>
+<td>美团</td>
+<td>绩效、人才盘点、高职级专业委员会、答辩</td>
+<td>Q1/Q3 人才盘点；高职级跨专业委员会</td>
+<td>晋升与组织系数和业务贡献连接</td>
+</tr>
+<tr>
+<td>百度</td>
+<td>职级并轨后统一数字等级</td>
+<td>2026-05-01 生效的 5-12 数字职级基线</td>
+<td>评审流程、薪酬带宽、晋升名额变化未公开</td>
+</tr>
+<tr>
+<td>阿里 / 淘天</td>
+<td>季度绩效、高 P 组织任命</td>
+<td>P8+ 更依赖组织任命和业务规模</td>
+<td>公开材料多为转述</td>
+</tr>
+</tbody></table></div>
+<h3 id="3-2-晋升材料与证据">3.2 晋升材料与证据</h3>
+<p>GitLab 是最完整的公开样本。其 promotion document 不超过三页，核心包含：</p>
+<div class="table-wrap"><table><thead><tr>
+<th>材料字段</th>
+<th>作用</th>
+</tr></thead><tbody>
+<tr>
+<td>Promotion Summary</td>
+<td>3-5 句概述候选人如何具备下一层级能力</td>
+</tr>
+<tr>
+<td>Business Results / Impact</td>
+<td>3 个最有影响力的结果，证明已在下一层级交付</td>
+</tr>
+<tr>
+<td>Values Alignment</td>
+<td>证明取得结果的方式符合价值观</td>
+</tr>
+<tr>
+<td>Business Justification</td>
+<td>说明组织为什么需要这个更高层级角色，而不是只奖励个人</td>
+</tr>
+<tr>
+<td>Stakeholder Feedback</td>
+<td>对 business results 和 collaboration 的外部证据</td>
+</tr>
+<tr>
+<td>Compensation / ACR linkage</td>
+<td>晋升获批后进入薪酬规划和 Total Rewards 流程</td>
+</tr>
+</tbody></table></div>
+<p>这类材料对晋升项目的启发是：晋升材料不应只是“过往成绩陈列”，而应同时回答三个问题：候选人是否已经在更高层级工作、组织是否需要这个更高层级角色、晋升后团队工作方式和成本结构会如何变化。</p>
+<h3 id="3-3-校准会机制">3.3 校准会机制</h3>
+<div class="table-wrap"><table><thead><tr>
+<th>校准对象</th>
+<th>样本</th>
+<th>关键动作</th>
+</tr></thead><tbody>
+<tr>
+<td>rating outliers</td>
+<td>GitLab Talent Assessment</td>
+<td>Box 1 和 Box 9 是 live calibration baseline；也可扩展到 close to promotion、rating changed、key talent</td>
+</tr>
+<tr>
+<td>senior promotions</td>
+<td>GitLab Senior Director+ / VP</td>
+<td>Senior Director 由 Divisional VP+ 校准；VP 由 E-group 校准；材料至少提前 2 周可见</td>
+</tr>
+<tr>
+<td>peer / stakeholder evidence</td>
+<td>GitLab Security</td>
+<td>反馈人需直接参与 business results；Staff+ 要求跨职能反馈；反馈人应在目标层级或以上</td>
+</tr>
+<tr>
+<td>business unit calibration</td>
+<td>腾讯、美团、字节</td>
+<td>逐级通晒、BG 分布、专业委员会或管理者评价标准进入校准</td>
+<td>公开细节弱于 GitLab</td>
+</tr>
+</tbody></table></div>
+<p>校准会的机制价值在于减少单 manager 偏差，但副作用是会议成本和政治化。GitLab 的做法值得注意：不是所有人都 live calibration，而是聚焦 outliers、promotion close cases、key talent 和评级变化。</p>
+<h3 id="3-4-与薪酬-奖金-股票-调薪的关系">3.4 与薪酬、奖金、股票、调薪的关系</h3>
+<div class="table-wrap"><table><thead><tr>
+<th>公司</th>
+<th>关系</th>
+</tr></thead><tbody>
+<tr>
+<td>GitLab</td>
+<td>晋升可能带来 compensation change 和/或 promotional stock grant；一般 promotion compensation change 目标为 5-10%；FP&amp;A 追踪 budget impact；promotion budget 在 division leader 层</td>
+</tr>
+<tr>
+<td>美团</td>
+<td>绩效、组织系数、年终激励和人才盘点联动；高职级由专业委员会拉通</td>
+</tr>
+<tr>
+<td>字节</td>
+<td>高绩效与高激励、调薪和期权/RSU 投入持续关联；2026 领导力原则强化管理者评价</td>
+</tr>
+<tr>
+<td>腾讯</td>
+<td>三档绩效与 BG 权限、晋升窗口、职级改革、薪酬区间调整有关联</td>
+</tr>
+<tr>
+<td>Netflix</td>
+<td>固定工资替代绩效奖金，强调市场化薪酬与高人才密度</td>
+</tr>
+<tr>
+<td>MiniMax / AI 原生</td>
+<td>股权激励与留才周期是强观察，但绩效关系未公开</td>
+</tr>
+</tbody></table></div>
+<h2 id="4-ai-时代新增评价变量">4. AI 时代新增评价变量</h2>
+<h3 id="4-1-ai-fluency-不等于工具使用频率">4.1 AI fluency 不等于工具使用频率</h3>
+<p>Zapier V2 把 AI fluency 拆成四个评价组件：</p>
+<div class="table-wrap"><table><thead><tr>
+<th>组件</th>
+<th>执行层含义</th>
+</tr></thead><tbody>
+<tr>
+<td>Mindset</td>
+<td>是否默认思考 AI 如何改变工作，而不是偶尔使用工具</td>
+</tr>
+<tr>
+<td>Strategy</td>
+<td>是否能判断哪些工作适合 AI、哪些不适合、如何取舍</td>
+</tr>
+<tr>
+<td>Building</td>
+<td>是否能构建 repeatable workflows、agents、templates、systems</td>
+</tr>
+<tr>
+<td>Accountability</td>
+<td>是否定义“好”的标准，评估输出，发现错误，并对 AI workflow 结果负责</td>
+</tr>
+</tbody></table></div>
+<p>Zapier 的“最低合格”从“用过 AI 并能描述影响”升级为：AI embedded into core work、repeatable systems、clear impact on quality / efficiency / outcomes。它还明确看 slope not snapshot，即候选人 AI fluency 的成长曲线，而不是某一刻会不会用几个工具。</p>
+<h3 id="4-2-ai-变量进入人才流程的四个入口">4.2 AI 变量进入人才流程的四个入口</h3>
+<div class="table-wrap"><table><thead><tr>
+<th>入口</th>
+<th>样本</th>
+<th>具体做法</th>
+</tr></thead><tbody>
+<tr>
+<td>招聘</td>
+<td>Zapier</td>
+<td>application、initial screen、skills test、executive interview 四个触点评估 AI fluency</td>
+</tr>
+<tr>
+<td>绩效 / 同侪反馈</td>
+<td>Shopify</td>
+<td>AI usage questions 进入 performance and peer review questionnaire</td>
+</tr>
+<tr>
+<td>资源审批</td>
+<td>Shopify</td>
+<td>申请 headcount / resources 前证明 AI 不能完成目标</td>
+</tr>
+<tr>
+<td>管理者评价</td>
+<td>Zapier、字节、Amazon 线索</td>
+<td>manager 需要证明如何带团队采用 AI；字节管理者要下沉一线和实质产出；Amazon 线索中 manager 被问如何用 AI 做到 more with fewer resources</td>
+</tr>
+</tbody></table></div>
+<h3 id="4-3-agentic-delegation-与-verification">4.3 Agentic delegation 与 verification</h3>
+<p>OpenAI Codex、Zapier V2、Stripe Developer Productivity AI 和 MiniMax Agent Team 共同显示：AI 时代晋升证据不应只问“候选人有没有使用 AI”，而要看：</p>
+<div class="table-wrap"><table><thead><tr>
+<th>新变量</th>
+<th>可观察证据</th>
+</tr></thead><tbody>
+<tr>
+<td>Task packaging</td>
+<td>是否能把复杂任务拆成可委派给 agent 或团队的明确目标、约束、上下文</td>
+</tr>
+<tr>
+<td>Context quality</td>
+<td>是否能给 AI / 团队足够上下文，而不是靠控制审批</td>
+</tr>
+<tr>
+<td>Verification</td>
+<td>是否有验收标准、测试、审查、guardrails、错误捕捉</td>
+</tr>
+<tr>
+<td>Reusable systems</td>
+<td>是否沉淀 prompts、skills、agents、playbooks、dashboards、automation</td>
+</tr>
+<tr>
+<td>Team leverage</td>
+<td>是否让团队其他人更快、更稳，而不是个人效率秀</td>
+</tr>
+<tr>
+<td>Workflow impact</td>
+<td>是否减少周期、缺陷、等待、返工、手工汇总或新增 HC</td>
+</tr>
+</tbody></table></div>
+<h3 id="4-4-评价变量的风险">4.4 评价变量的风险</h3>
+<div class="table-wrap"><table><thead><tr>
+<th>风险</th>
+<th>来源样本</th>
+<th>反向解释</th>
+</tr></thead><tbody>
+<tr>
+<td>AI 使用量误当绩效</td>
+<td>Amazon Clarity / Kiro 线索</td>
+<td>使用频率高可能是刷指标或工具质量限制，不等于业务价值</td>
+</tr>
+<tr>
+<td>口号合规</td>
+<td>字节领导力原则</td>
+<td>管理者可能写出符合原则的叙述，但真实一线判断没有改善</td>
+</tr>
+<tr>
+<td>工具偏好扭曲</td>
+<td>Amazon internal tool 线索</td>
+<td>强制使用内部工具可能牺牲最佳模型/工具选择</td>
+</tr>
+<tr>
+<td>隐性不公平</td>
+<td>Zapier / Shopify</td>
+<td>候选人和员工获得 AI 工具、训练、数据权限不同，会影响评价公平</td>
+</tr>
+<tr>
+<td>职能边界混乱</td>
+<td>Stripe FDA</td>
+<td>AI accelerator 可能变成影子 IT / 影子流程 owner</td>
+</tr>
+</tbody></table></div>
+<h2 id="5-近期变化卡片">5. 近期变化卡片</h2>
+<h3 id="5-1-字节跳动-领导力原则进入管理者晋升和年度考核">5.1 字节跳动：领导力原则进入管理者晋升和年度考核</h3>
+<ul>
+<li>L1 事实：2026-06-29 梁汝波全员信更新 10 条领导力原则。36 氪英文/中文链、北京日报、证券时报等材料显示，新原则将纳入管理者晋升和年度考核核心标准，不符合者岗位权责可能调整。</li>
+<li>制度动作：把“做有高度的事”“敢于设定高目标”“外部视角”“深入一线”“Context over Control”“实质产出”从文化语言推进到管理者评价语言。</li>
+<li>对晋升项目的机制含义：管理者晋升不只看团队规模和协调能力，而是看是否能减少控制、提供上下文、深入一线、设定长期高目标并拿到实质产出。</li>
+<li>证据等级：B/C + ByteDance Culture 官网 A 级基线；入库 L2-L3 观察。</li>
+<li>反向解释：尚未看到正式绩效模板、评分 rubrics、校准规则或真实任免结果；可能仍有文化宣导和口号合规风险。</li>
+<li>待验证：半年度/年度绩效校准中是否影响评级、晋升、调薪、岗位权责和干部任免。</li>
+</ul>
+<h3 id="5-2-zapier-ai-fluency-rubric-v2-成为招聘与管理者评价样本">5.2 Zapier：AI Fluency Rubric V2 成为招聘与管理者评价样本</h3>
+<ul>
+<li>L1 事实：Zapier 2026-03-31 官方发布 V2。每个候选人通过 application、screen、skills test、executive interview 四个触点评估 AI fluency。V2 新增 accountability，并要求 manager 展示如何带团队采用 AI。</li>
+<li>制度动作：把 AI fluency 拆为 mindset、strategy、building、accountability，并按 Capable / Adoptive / Transformative 描述不同职能的行为证据。</li>
+<li>对晋升项目的机制含义：AI 能力可以从抽象素质变成 rubrics、行为证据、职能差异化标准和 manager responsibility。</li>
+<li>证据等级：A；入库 L2 制度基线。</li>
+<li>反向解释：Zapier 是 AI-first 远程公司，组织土壤特殊；公开材料是公司自述，外部效果验证有限。</li>
+<li>待验证：这些 rubric 是否进入内部绩效、晋升、调薪、PIP 或 talent review，而不仅是 hiring。</li>
+</ul>
+<h3 id="5-3-stripe-forward-deployed-ai-accelerator-把职能-ai-改造岗位化">5.3 Stripe：Forward Deployed AI Accelerator 把职能 AI 改造岗位化</h3>
+<ul>
+<li>L1 事实：Stripe 官方岗位显示 Forward Deployed AI Accelerator 嵌入约 20 名 marketers 的 cohort，衡量成功的标准是永久改变多少 workflow，以及小组成员是否从任务开始就默认使用 AI。Developer Productivity AI 团队负责部署 LLM agents 和 tools，自动化大块 engineering workflow。</li>
+<li>制度动作：AI adoption 不是培训课，而是嵌入式角色、maturity model、coaching journey、workflow documentation、pattern reuse 和 cohort progress tracking。</li>
+<li>对晋升项目的机制含义：未来绩效/晋升材料可能出现“workflow transformation evidence”：候选人是否把自己的 AI 能力变成团队可复用系统。</li>
+<li>证据等级：A / L1-L2。</li>
+<li>反向解释：岗位页是招聘意图，不证明机制已规模化运行；Head of Performance &amp; Talent Planning 的 AI-led 线索仍需抽取成功或官方文本补证。</li>
+<li>待验证：AI-led performance planning 是否进入正式绩效、job architecture、succession 和 calibration。</li>
+</ul>
+<h3 id="5-4-shopify-ai-baseline-连接绩效-同侪反馈和-headcount-审批">5.4 Shopify：AI baseline 连接绩效、同侪反馈和 headcount 审批</h3>
+<ul>
+<li>L1 事实：Tobi Lutke 公开内部 memo，CNBC / BetaKit 等报道互证。员工在申请更多 headcount / resources 前要证明为什么不能用 AI 完成；AI usage questions 将进入 performance and peer review questionnaire。</li>
+<li>制度动作：把 AI 从“建议使用”变成 baseline expectation，并将资源审批前置到 AI 证明。</li>
+<li>对晋升项目的机制含义：晋升和绩效证据可能从“我带了多少人/申请了多少资源”转向“我如何用 AI 和系统杠杆避免增加资源仍实现结果”。</li>
+<li>证据等级：B，X 原始 memo 为一手但正文抽取依赖媒体；入库 L2。</li>
+<li>反向解释：Shopify 未公布效果数据，不能证明生产力提升；AI usage question 的评分细则未公开。</li>
+<li>待验证：AI 使用问题如何打分、如何防止使用量异化、是否影响晋升和薪酬。</li>
+</ul>
+<h3 id="5-5-amazon-ai-使用进入绩效-晋升讨论的高风险样本">5.5 Amazon：AI 使用进入绩效/晋升讨论的高风险样本</h3>
+<ul>
+<li>L1 事实：The Information / Business Insider / Asia Business Daily 等链路称 Amazon 使用 Clarity / Kiro 等系统追踪 AI 工具使用，部分团队绩效或晋升问题中出现“如何使用 AI 提升创新、客户体验、运营效率”“如何用更少资源达成更多”等问题。</li>
+<li>制度动作：AI adoption、release velocity、more with fewer resources 进入管理讨论。</li>
+<li>对晋升项目的机制含义：AI 指标化可以加速采用，但也最容易产生 Goodhart effect。</li>
+<li>证据等级：C，部分来自付费墙和二手摘要；只作观察池或高启发，不写硬结论。</li>
+<li>反向解释：可能只是特定团队试点、媒体转述、内部工具推广或管理压力，不代表 Amazon 全公司晋升规则。</li>
+<li>待验证：正式 performance template、promotion document、manager guidance、员工申诉与质量指标。</li>
+</ul>
+<h3 id="5-6-aws-microsoft-cursor-fde-岗位晋升标准的外溢影响">5.6 AWS / Microsoft / Cursor FDE：岗位晋升标准的外溢影响</h3>
+<ul>
+<li>L1 事实：AWS 10 亿美元 FDE 组织、Microsoft Frontier Company 25 亿美元 / 6,000 人、Cursor FDE / AI Deployment / Field Engineering 岗位矩阵，均显示 FDE 和 deployment 正在成为显性岗位族群。</li>
+<li>制度动作：客户现场工程、业务结果、deployment quality、runbook、knowledge graph、partner enablement、customer adoption 等成为岗位职责。</li>
+<li>对晋升项目的机制含义：AI 时代新岗位族群的晋升证据会更强调 customer outcome、cross-functional deployment、eval、governance、product feedback，而不只是内部技术产出。</li>
+<li>证据等级：A/B；入库 L2-L3。</li>
+<li>反向解释：FDE 化也可能意味着 AI 落地仍高度人工密集，不自动证明效率提升。</li>
+<li>待验证：FDE 是否形成正式 career ladder、绩效指标、晋升委员会和质量标准。</li>
+</ul>
+<h2 id="6-可迁移机制拆解">6. 可迁移机制拆解</h2>
+<p>以下不是处方，而是从样本中抽出的制度部件与边界。</p>
+<div class="table-wrap"><table><thead><tr>
+<th>机制部件</th>
+<th>来源样本</th>
+<th>可保留的制度颗粒</th>
+<th>适用边界</th>
+</tr></thead><tbody>
+<tr>
+<td>Promotion document</td>
+<td>GitLab</td>
+<td>3 页内，包含 summary、business results、values alignment、business justification、feedback</td>
+<td>适合需要透明、公平、跨团队校准的组织</td>
+</tr>
+<tr>
+<td>Workday / HRIS 提名</td>
+<td>GitLab</td>
+<td>manager 在系统中提交 promotion nominations，后续进入 calibration 和 ACR</td>
+<td>适合流程成熟、需审计预算影响的组织</td>
+</tr>
+<tr>
+<td>9-box + promotion 合并</td>
+<td>GitLab</td>
+<td>performance / growth potential 与 Q2 promotion nominations 同窗处理</td>
+<td>适合人才盘点与晋升预算要联动的组织</td>
+</tr>
+<tr>
+<td>跨职能反馈</td>
+<td>GitLab Security</td>
+<td>至少 2 名反馈人，Staff+ 要求跨职能，反馈人最好在目标层级或以上</td>
+<td>适合高职级、跨团队影响较强岗位</td>
+</tr>
+<tr>
+<td>AI fluency rubric</td>
+<td>Zapier</td>
+<td>Mindset / Strategy / Building / Accountability；Capable / Adoptive / Transformative</td>
+<td>适合 AI adoption 已成为基础能力的组织</td>
+</tr>
+<tr>
+<td>AI resource gate</td>
+<td>Shopify</td>
+<td>headcount / resources 前证明 AI 不能完成目标</td>
+<td>适合资源增量严格、AI 工具可用性较高的组织</td>
+</tr>
+<tr>
+<td>Internal FDE / AI accelerator</td>
+<td>Stripe</td>
+<td>约 1 人支持 20 人 cohort，跟踪 maturity model 和 workflow transformation</td>
+<td>适合想把 AI 从培训推入职能流程的组织</td>
+</tr>
+<tr>
+<td>管理者评价原则化</td>
+<td>字节</td>
+<td>一线下沉、Context over Control、高目标、实质产出进入晋升/年度考核</td>
+<td>适合大组织治理中层空转和信息过滤</td>
+</tr>
+<tr>
+<td>职级语言统一</td>
+<td>百度</td>
+<td>多序列身份标签收敛为统一数字等级</td>
+<td>适合跨序列协作成本高、复合岗位增加的组织</td>
+</tr>
+<tr>
+<td>绩效减负</td>
+<td>腾讯 / Google</td>
+<td>评级简化、反馈频率减少、经理判断和校准保留</td>
+<td>适合绩效流程消耗过高的组织</td>
+</tr>
+</tbody></table></div>
+<h2 id="7-反向解释与风险">7. 反向解释与风险</h2>
+<div class="table-wrap"><table><thead><tr>
+<th>风险</th>
+<th>具体表现</th>
+<th>相关样本</th>
+<th>控制边界</th>
+</tr></thead><tbody>
+<tr>
+<td>指标异化</td>
+<td>刷 AI 使用量、刷 用量单位、追 velocity 不追质量</td>
+<td>Amazon</td>
+<td>AI 指标只能作为证据之一，必须绑定结果、质量和复核</td>
+</tr>
+<tr>
+<td>口号合规</td>
+<td>材料写满“Context / AI / 高目标”，但真实决策不变</td>
+<td>字节、Shopify</td>
+<td>看校准结果、岗位权责、实际任免和业务结果</td>
+</tr>
+<tr>
+<td>晋升公平性下降</td>
+<td>有数据权限、工具权限、好项目的人更容易举证</td>
+<td>Zapier、Stripe、GitLab</td>
+<td>记录上下文、机会差异和反馈来源，不只看产出绝对值</td>
+</tr>
+<tr>
+<td>中层压力转嫁</td>
+<td>要求 manager 下沉一线、少控制、多结果，但授权边界不清</td>
+<td>字节、腾讯</td>
+<td>区分管理者可控变量与组织系统约束</td>
+</tr>
+<tr>
+<td>隐性层级</td>
+<td>取消 title / 职级外显但权力和薪酬仍按旧结构运行</td>
+<td>腾讯、Cars24、百度</td>
+<td>区分身份标签变化和预算/任免/绩效权变化</td>
+</tr>
+<tr>
+<td>AI 质量风险</td>
+<td>AI 产出未经验证进入绩效材料或客户交付</td>
+<td>Zapier、OpenAI、Stripe</td>
+<td>accountability、verification、guardrails 必须进入评价</td>
+</tr>
+<tr>
+<td>预算错配</td>
+<td>晋升代表更高成本，但团队没有更高层级工作</td>
+<td>GitLab</td>
+<td>business justification 需要回答角色变化和团队工作变化</td>
+</tr>
+</tbody></table></div>
+<h2 id="8-待验证问题与证据缺口">8. 待验证问题与证据缺口</h2>
+<h3 id="8-1-公司级证据缺口">8.1 公司级证据缺口</h3>
+<div class="table-wrap"><table><thead><tr>
+<th>公司</th>
+<th>缺口</th>
+</tr></thead><tbody>
+<tr>
+<td>字节</td>
+<td>新版领导力原则的正式评分表、绩效系统字段、校准会规则、晋升材料模板、岗位权责调整案例</td>
+</tr>
+<tr>
+<td>Shopify</td>
+<td>AI usage questions 的具体问卷、评分方式、peer review 样本、与晋升/调薪的关系</td>
+</tr>
+<tr>
+<td>Amazon</td>
+<td>Clarity / Kiro 数据如何进入正式 review；AI 使用和 promotion eligibility 的制度原文</td>
+</tr>
+<tr>
+<td>Stripe</td>
+<td>Head of Performance &amp; Talent Planning 官方正文；AI-led performance planning 是否进入 job architecture 和 succession</td>
+</tr>
+<tr>
+<td>Zapier</td>
+<td>AI Fluency Rubric V2 是否进入现有员工绩效、晋升、调薪和管理者考核</td>
+</tr>
+<tr>
+<td>GitLab</td>
+<td>AI 工具辅助 self-evaluation 是否会演化为正式 AI fluency 维度</td>
+</tr>
+<tr>
+<td>腾讯</td>
+<td>项目 owner 是否拥有预算、人事、绩效、奖金影响权；职级改革后的薪酬区间变化</td>
+</tr>
+<tr>
+<td>百度</td>
+<td>数字职级并轨后评审委员会、薪酬带宽、晋升名额和专家/管理路径是否变化</td>
+</tr>
+<tr>
+<td>美团</td>
+<td>人才盘点、SABC、专业委员会与 AI 项目/Native AI 岗位的连接</td>
+</tr>
+<tr>
+<td>OpenAI / Anthropic</td>
+<td>是否公开 leveling、performance、promotion、FDE career ladder 或 Applied AI 晋升标准</td>
+</tr>
+</tbody></table></div>
+<h3 id="8-2-晋升项目需要补齐的制度字段">8.2 晋升项目需要补齐的制度字段</h3>
+<p>这些字段来自外部样本的交集，不是行动建议：</p>
+<div class="table-wrap"><table><thead><tr>
+<th>字段</th>
+<th>来源样本</th>
+<th>目的</th>
+</tr></thead><tbody>
+<tr>
+<td>当前层级职责证据</td>
+<td>GitLab、腾讯、百度</td>
+<td>判断是否已稳定胜任当前层级</td>
+</tr>
+<tr>
+<td>下一层级业务结果</td>
+<td>GitLab</td>
+<td>判断是否已经在下一层级交付</td>
+</tr>
+<tr>
+<td>业务必要性 / role need</td>
+<td>GitLab</td>
+<td>避免把晋升仅做成个人奖励</td>
+</tr>
+<tr>
+<td>跨职能反馈</td>
+<td>GitLab Security、美团</td>
+<td>验证影响力是否超出直属团队</td>
+</tr>
+<tr>
+<td>AI workflow impact</td>
+<td>Zapier、Shopify、Stripe</td>
+<td>判断是否改变工作方式和单位产出</td>
+</tr>
+<tr>
+<td>Verification / accountability</td>
+<td>Zapier、OpenAI Codex</td>
+<td>防止 AI 输出质量风险</td>
+</tr>
+<tr>
+<td>资源杠杆证据</td>
+<td>Shopify、Amazon、Stripe</td>
+<td>看是否减少等待、返工、手工流程或新增编制</td>
+</tr>
+<tr>
+<td>管理者一线连接</td>
+<td>字节</td>
+<td>防止管理者只做信息传递和流程控制</td>
+</tr>
+<tr>
+<td>校准层级</td>
+<td>GitLab、腾讯、美团</td>
+<td>控制 manager bias 和跨团队公平</td>
+</tr>
+<tr>
+<td>薪酬 / 股票 / 预算影响</td>
+<td>GitLab、美团、字节、腾讯</td>
+<td>让晋升和成本、激励、保留策略联动</td>
+</tr>
+</tbody></table></div>
+<h2 id="9-证据链与可信度">9. 证据链与可信度</h2>
+<div class="table-wrap"><table><thead><tr>
+<th>结论</th>
+<th>主证据</th>
+<th>辅证</th>
+<th>证据等级</th>
+<th>入库判断</th>
+</tr></thead><tbody>
+<tr>
+<td>GitLab 是最完整公开晋升制度样本</td>
+<td>GitLab Promotions and Transfers、Talent Assessment handbook</td>
+<td>5/26 首轮报告、本地参考页</td>
+<td>A</td>
+<td>L3 制度基线</td>
+</tr>
+<tr>
+<td>Zapier 提供 AI fluency 评价变量样本</td>
+<td>Zapier 官方 V2 rubric</td>
+<td>Matchr podcast、LinkedIn 二级传播</td>
+<td>A/B</td>
+<td>L2 制度观察</td>
+</tr>
+<tr>
+<td>Shopify 把 AI 接到绩效和资源审批</td>
+<td>Tobi Lutke X memo 搜索链、CNBC、BetaKit</td>
+<td>本地首轮报告</td>
+<td>B</td>
+<td>L2 观察</td>
+</tr>
+<tr>
+<td>Stripe 把职能 AI 改造岗位化</td>
+<td>Stripe FDA、Developer Productivity AI 官方岗位</td>
+<td>7/8 日报</td>
+<td>A</td>
+<td>L1-L2 观察</td>
+</tr>
+<tr>
+<td>字节领导力原则进入管理者晋升/考核</td>
+<td>36 氪 / 证券时报 / 北京日报 / 字节 Culture 官网</td>
+<td>6/30、7/2 日报</td>
+<td>B/C + A 基线</td>
+<td>L2-L3 观察</td>
+</tr>
+<tr>
+<td>腾讯绩效简化与职级改革</td>
+<td>南都、钛媒体、本地参考文档</td>
+<td>5/26 首轮报告</td>
+<td>B/C</td>
+<td>L2 事实观察</td>
+</tr>
+<tr>
+<td>百度职级并轨</td>
+<td>多媒体链、本地日报复核</td>
+<td>5/26、6/2 日报</td>
+<td>B/C</td>
+<td>L2 事实观察</td>
+</tr>
+<tr>
+<td>Amazon AI 使用进入绩效/晋升讨论</td>
+<td>The Information 摘要、Business Insider 摘要、Asia Business Daily</td>
+<td>本地首轮报告</td>
+<td>C</td>
+<td>观察池</td>
+</tr>
+</tbody></table></div>
+<h2 id="10-去伪存真记录">10. 去伪存真记录</h2>
+<ul>
+<li>使用 AnySearch CLI 优先检索，覆盖 Zapier、Stripe、Shopify、GitLab、Amazon、ByteDance、百度、腾讯八组关键词。</li>
+<li>对 Zapier 官方博客、GitLab handbook、Stripe 官方岗位进行了正文抽取。</li>
+<li>Shopify 使用 CNBC、BetaKit、The Founders Report 与 X 原始 memo 搜索链互证，因 X 正文抽取不稳定，证据标为 B。</li>
+<li>Amazon AI usage 使用 The Information / Business Insider / Asia Business Daily 二手链，证据降级为 C，不作为制度结论。</li>
+<li>腾讯、百度、字节国内材料中，凡涉及内部信、员工口径、公众号分析，均保留 B/C/D 分层，不写成 L3 方法。</li>
+<li>本报告引用“本地参考文档”和“私有渠道索引”时，不公开内部链接，只保留机制摘要。</li>
+</ul>
+<h2 id="11-观察池">11. 观察池</h2>
+<div class="table-wrap"><table><thead><tr>
+<th>线索</th>
+<th>当前判断</th>
+<th>后续核验</th>
+</tr></thead><tbody>
+<tr>
+<td>Stripe AI-led performance / talent planning</td>
+<td>官方岗位摘要级强线索，正文抽取不足</td>
+<td>找到完整岗位页或官方 People 系统材料</td>
+</tr>
+<tr>
+<td>Amazon Clarity / Kiro 与 promotion eligibility</td>
+<td>高启发但弱证据</td>
+<td>找 manager guidance、performance template 或公司回应</td>
+</tr>
+<tr>
+<td>字节半年度绩效后结果</td>
+<td>近窗强观察</td>
+<td>追踪是否出现岗位权责调整、晋升校准或干部任免案例</td>
+</tr>
+<tr>
+<td>腾讯项目 owner 与晋升权</td>
+<td>L2 组织观察</td>
+<td>验证 owner 是否影响绩效、奖金和晋升</td>
+</tr>
+<tr>
+<td>OpenAI / Anthropic FDE career ladder</td>
+<td>岗位族群强，制度弱</td>
+<td>追踪 leveling、performance、promotion 或 manager 岗位 JD</td>
+</tr>
+<tr>
+<td>国内 AI 原生公司股权激励</td>
+<td>留才机制观察</td>
+<td>追踪授予条件、归属期、绩效关系和回购条款</td>
+</tr>
+</tbody></table></div>
+<h2 id="12-公开知识库入库判断">12. 公开知识库入库判断</h2>
+<ul>
+<li>可脱敏公开：GitLab 晋升流程公开样本、Zapier AI Fluency Rubric V2、Shopify AI baseline 与 headcount gate、Stripe FDA 作为内部 AI enablement 角色、字节领导力原则进入管理者评价。</li>
+<li>仅私有保留：桌面参考文档、私有渠道索引、内部链接、截图、未授权附件、员工口径、具体内部制度原文。</li>
+<li>暂不写成方法：用 AI 使用量评价绩效、复制 Shopify headcount gate、复制 Zapier rubric、复制 GitLab 流程、直接取消职级或强推项目 owner。当前材料支持机制拆解，不支持处方化 playbook。</li>
+</ul>
+      </article>
+    </main>
+  </div>
+</body>
+</html>
