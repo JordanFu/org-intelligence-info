@@ -1,0 +1,416 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>每日扫描｜互联网大厂组织机制研究</title>
+  <style>
+    :root {
+      color-scheme: light;
+      --bg: #f6f7f1;
+      --paper: #fffdf8;
+      --ink: #172033;
+      --muted: #697181;
+      --line: #ded8c9;
+      --soft: #ece6d7;
+      --accent: #1f6f68;
+      --accent-2: #b45a34;
+      --code: #f1eee6;
+    }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "PingFang SC", "Microsoft YaHei", sans-serif;
+      color: var(--ink);
+      background: var(--bg);
+      line-height: 1.75;
+    }
+    .shell {
+      display: grid;
+      grid-template-columns: minmax(210px, 280px) minmax(0, 1fr);
+      min-height: 100vh;
+    }
+    aside {
+      position: sticky;
+      top: 0;
+      height: 100vh;
+      padding: 28px 22px;
+      border-right: 1px solid var(--line);
+      background: #ebe5d7;
+      overflow: auto;
+    }
+    main {
+      max-width: 1040px;
+      width: 100%;
+      padding: 56px 56px 90px;
+    }
+    .eyebrow {
+      color: var(--accent-2);
+      font-size: 13px;
+      font-weight: 800;
+      letter-spacing: .08em;
+      text-transform: uppercase;
+      margin: 0 0 10px;
+    }
+    h1 {
+      font-size: clamp(30px, 4vw, 48px);
+      line-height: 1.12;
+      margin: 0 0 18px;
+      letter-spacing: 0;
+    }
+    h2 {
+      font-size: 26px;
+      line-height: 1.32;
+      margin: 48px 0 14px;
+      padding-top: 18px;
+      border-top: 1px solid var(--line);
+    }
+    h3 {
+      font-size: 20px;
+      margin: 34px 0 10px;
+      color: #23314d;
+    }
+    h4 {
+      font-size: 17px;
+      margin: 26px 0 8px;
+    }
+    p, li {
+      font-size: 16px;
+      color: #2b3343;
+    }
+    p { margin: 10px 0; }
+    ul { padding-left: 1.2rem; }
+    li { margin: 7px 0; }
+    a { color: var(--accent); text-decoration-thickness: 1px; text-underline-offset: 3px; }
+    code {
+      background: var(--code);
+      border: 1px solid var(--line);
+      border-radius: 5px;
+      padding: 1px 5px;
+      font-size: .92em;
+    }
+    pre {
+      overflow: auto;
+      background: #fff9ec;
+      color: #202838;
+      border: 1px solid #d8ccb8;
+      border-radius: 8px;
+      padding: 18px;
+      box-shadow: inset 4px 0 0 var(--accent);
+      white-space: pre-wrap;
+      word-break: break-word;
+    }
+    pre code {
+      display: block;
+      padding: 0;
+      border: 0;
+      background: transparent;
+      color: inherit;
+      line-height: 1.7;
+      font-size: 14px;
+    }
+    blockquote {
+      margin: 24px 0;
+      padding: 14px 18px;
+      border-left: 4px solid var(--accent);
+      background: #eef4ee;
+      color: #344033;
+    }
+    .table-wrap {
+      overflow-x: auto;
+      margin: 18px 0 26px;
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      background: var(--paper);
+    }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      min-width: 720px;
+    }
+    th, td {
+      padding: 12px 14px;
+      border-bottom: 1px solid var(--line);
+      vertical-align: top;
+      text-align: left;
+      font-size: 14px;
+    }
+    th {
+      background: #e7e0cf;
+      color: #26324a;
+      font-weight: 800;
+      white-space: nowrap;
+    }
+    tr:last-child td { border-bottom: 0; }
+    .topbar {
+      display: flex;
+      gap: 10px;
+      align-items: center;
+      flex-wrap: wrap;
+      margin-bottom: 28px;
+    }
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 38px;
+      padding: 8px 12px;
+      border: 1px solid var(--line);
+      border-radius: 7px;
+      background: var(--paper);
+      color: var(--ink);
+      text-decoration: none;
+      font-weight: 750;
+      font-size: 14px;
+    }
+    .primary { background: var(--accent); border-color: var(--accent); color: white; }
+    .toc-title {
+      margin: 0 0 12px;
+      font-size: 14px;
+      font-weight: 850;
+      color: #273247;
+    }
+    .toc a {
+      display: block;
+      padding: 7px 0;
+      color: #465064;
+      text-decoration: none;
+      font-size: 14px;
+      line-height: 1.45;
+      border-bottom: 1px solid rgba(23,32,51,.08);
+    }
+    .toc a.level-3 { padding-left: 14px; font-size: 13px; color: #626b78; }
+    .meta {
+      color: var(--muted);
+      font-size: 14px;
+      margin-bottom: 24px;
+    }
+    @media (max-width: 900px) {
+      .shell { display: block; }
+      aside { position: relative; height: auto; border-right: 0; border-bottom: 1px solid var(--line); }
+      main { padding: 34px 20px 70px; }
+      .toc { columns: 1; }
+      table { min-width: 640px; }
+    }
+  </style>
+</head>
+<body>
+  <div class="shell">
+    <aside>
+      <p class="toc-title">目录</p>
+      <nav class="toc">
+        <a class="level-2" href="#今日结论">今日结论</a>
+        <a class="level-2" href="#今日组织机制信号">今日组织机制信号</a>
+        <a class="level-2" href="#传统大厂与-ai-原生组织分组观察">传统大厂与 AI 原生组织分组观察</a>
+        <a class="level-2" href="#高价值变化卡片">高价值变化卡片</a>
+        <a class="level-3" href="#字节跳动-管理原则更新-历史基线复核-非本期新增">字节跳动 / 管理原则更新 / 历史基线复核（非本期新增）</a>
+        <a class="level-3" href="#deepseek-harness-与规模招聘-组织边界观察-非本期新增">DeepSeek / Harness 与规模招聘 / 组织边界观察（非本期新增）</a>
+        <a class="level-2" href="#不是新闻-是机制">不是新闻，是机制</a>
+        <a class="level-2" href="#组织情报结论卡">组织情报结论卡</a>
+        <a class="level-2" href="#证据链与可信度">证据链与可信度</a>
+        <a class="level-2" href="#去伪存真记录">去伪存真记录</a>
+        <a class="level-2" href="#渠道索引补充">渠道索引补充</a>
+        <a class="level-2" href="#观察池-待核验池">观察池 / 待核验池</a>
+        <a class="level-2" href="#公开知识库入库判断">公开知识库入库判断</a>
+      </nav>
+    </aside>
+    <main>
+      <div class="topbar">
+        <a class="btn primary" href="../index.html">返回研究源</a>
+        <a class="btn" href="./2026-07-17.md">查看 Markdown 原文</a>
+      </div>
+      <p class="eyebrow">Daily Scan</p>
+      <h1>2026-07-17 组织情报信息：大厂与 AI 原生组织日常扫描</h1>
+      <p class="meta">本页面由本地 Markdown 自动渲染生成，仍保留原始 md 文件作为知识库源文档。</p>
+      <article>
+        <blockquote>扫描窗口：2026-07-16 至 2026-07-17（北京时间）。本期未发现主追踪名单内达到 L2 且可确认发生于本窗口的新增组织机制变化；因此不制造“今日趋势”，并将有效但过窗、范围不明或单源的材料置于观察池。</blockquote>
+<h2 id="今日结论">今日结论</h2>
+<ul>
+<li><strong>无新增 L3 组织效率结论。</strong> 传统大厂与 AI 原生公司本窗口的检索结果多为 6 月至 7 月上旬旧线的再传播、无发布日期的招聘页，或将产品/融资叙事外推为组织变化的二手报道。</li>
+<li>字节跳动 6 月 29 日更新领导力原则、将 <code>Context over Control</code>、深入一线与实质产出纳入管理者评价的报道，能够支持一项<strong>历史 L2 事实观察</strong>，但不属于本窗口新变动；亦不能据此断言已压缩管理层级或改善决策效率。</li>
+<li>DeepSeek 的 Harness 招聘与规模扩张线仍缺少窗口内公司制度、组织图或人员到岗证据；它只说明研究型团队正在补充 Agent 产品化相关岗位的可能性，维持 L1-L2 历史观察，不升级为公司级重组。</li>
+</ul>
+<h2 id="今日组织机制信号">今日组织机制信号</h2>
+<div class="table-wrap"><table><thead><tr>
+<th>公司</th>
+<th>本窗口核验结果</th>
+<th>机制标签</th>
+<th>证据等级</th>
+<th>入库等级与阅读价值</th>
+</tr></thead><tbody>
+<tr>
+<td>字节跳动</td>
+<td>6 月 29 日管理原则更新被再次传播；无 7 月 16-17 日新公告</td>
+<td>管理者评价、授权与上下文共享</td>
+<td>B/C</td>
+<td>历史 L2；背景参考</td>
+</tr>
+<tr>
+<td>DeepSeek</td>
+<td>Harness/扩招为既有招聘线，未见本窗口新制度或组织范围证据</td>
+<td>研究—产品化岗位边界</td>
+<td>B/C</td>
+<td>L1-L2；持续观察</td>
+</tr>
+<tr>
+<td>OpenAI / Anthropic</td>
+<td>OpenAI 安全团队调整为 7 月 11 日旧线；Anthropic 招聘为 7 月 15 日已观察线</td>
+<td>安全/部署组织边界</td>
+<td>B（旧线）/A-（岗位背景）</td>
+<td>L1 背景；不作本期新增</td>
+</tr>
+<tr>
+<td>腾讯、阿里、百度、美团、京东等</td>
+<td>未检出可独立核验的窗口内组织机制变动</td>
+<td>—</td>
+<td>—</td>
+<td>无新增入库</td>
+</tr>
+</tbody></table></div>
+<h2 id="传统大厂与-ai-原生组织分组观察">传统大厂与 AI 原生组织分组观察</h2>
+<ul>
+<li><strong>传统大厂</strong>：本窗口未见能够独立确认的绩效、晋升、干部、层级或汇报线变化。字节管理原则更新已在 6 月 30 日对外报道，不能以本周二次解读包装为新一轮管理改革。</li>
+<li><strong>AI 原生组织</strong>：招聘页继续呈现部署、安全、后训练、Agent 工程等岗位族群，但页面快照通常不含首发时间、编制、汇报线或到岗信息；岗位存在不能证明组织单元已成立或运行有效。</li>
+<li><strong>分化/趋同判断</strong>：本期没有足以新增支持“传统大厂扁平化”或“AI 原生组织已验证 FDE 模式”的证据。公开叙事的密度高于可验证的机制变化密度。</li>
+</ul>
+<h2 id="高价值变化卡片">高价值变化卡片</h2>
+<h3 id="字节跳动-管理原则更新-历史基线复核-非本期新增">字节跳动 / 管理原则更新 / 历史基线复核（非本期新增）</h3>
+<ul>
+<li><strong>时间</strong>：2026-06-29 全员信；2026-06-30 公开报道。</li>
+<li><strong>组织范围</strong>：管理者群体；公开报道未给出覆盖层级、业务线或实施节奏。</li>
+<li><strong>机制类型与动作</strong>：新版领导力原则强调 <code>Context over Control</code>、深入一线、减少无效审批/会议/报表，并称纳入管理者晋升和年度考核核心标准。</li>
+<li><strong>L1 事实</strong>：<a href="<a href="https://www.stcn.com/article/detail/3989035.html" target="_blank" rel="noreferrer">https://www.stcn.com/article/detail/3989035.html</a>">证券时报转引界面新闻</a> 与 <a href="<a href="https://eu.36kr.com/en/p/3875167002154249" target="_blank" rel="noreferrer">https://eu.36kr.com/en/p/3875167002154249</a>">36氪英文转载</a> 均描述了全员信和原则内容。</li>
+<li><strong>L2 机制判断</strong>：若评价与岗位权责确按公开表述联动，这把“共享上下文、贴近一线、实质产出”从文化语言接入管理者评价接口；其直接影响仍是待验证假设，而非已证效率结果。</li>
+<li><strong>L3 组织判断</strong>：无管理跨度、审批周期、评价分布、岗位权责调整数量或业务结果数据，不成立。</li>
+<li><strong>互证、反向解释与边界</strong>：B/C，历史 L2。媒体均依赖同一内部信链，不能视为独立机制效果验证；也可能是文化重申或纠偏表达。仅可用于理解管理理念的公开基线，不可外推至全公司去中层化或 AI 替代管理岗位。</li>
+<li><strong>待验证问题</strong>：评价细则、校准方式、实际岗位权责调整、不同业务线执行差异及结果数据。</li>
+<li><strong>公开策略</strong>：可公开为脱敏历史基线；不列作今日新增。</li>
+</ul>
+<h3 id="deepseek-harness-与规模招聘-组织边界观察-非本期新增">DeepSeek / Harness 与规模招聘 / 组织边界观察（非本期新增）</h3>
+<ul>
+<li><strong>时间</strong>：负责人公开招聘线索主要在 2026-06-21 至 06-25；本窗口未见新公告。</li>
+<li><strong>组织范围</strong>：Harness 研究员、工程师、产品经理等岗位，以及公司招聘入口；组织汇报线未公开。</li>
+<li><strong>机制类型与动作</strong>：Agent/Harness 岗位从泛研发招聘中被显性列出；媒体转述称公司扩展多个部门与职能。</li>
+<li><strong>L1 事实</strong>：<a href="<a href="https://www.ithome.com/0/967/380.htm" target="_blank" rel="noreferrer">https://www.ithome.com/0/967/380.htm</a>">IT之家</a> 转述负责人公开招聘；<a href="<a href="https://www.nbd.com.cn/articles/2026-06-26/4438435.html" target="_blank" rel="noreferrer">https://www.nbd.com.cn/articles/2026-06-26/4438435.html</a>">每日经济新闻</a> 转引公开招聘信息。两者均非本窗口公司制度公告。</li>
+<li><strong>L2 机制判断</strong>：这与“研究能力之外补齐 Agent 产品化、工程与产品接口”的方向相符，但只能视为岗位边界正在显性化的事实观察。</li>
+<li><strong>L3 组织判断</strong>：无证据显示部门正式设立、管理结构、决策权、编制规模或交付效率发生变化。</li>
+<li><strong>反向解释与适用边界</strong>：也可能只是短期项目招募或人才市场传播；不能据此判断人才密度、组织层级或商业化团队已成形。</li>
+<li><strong>待验证问题</strong>：岗位实际录用、负责人和汇报线、研究/产品/基础设施的责任边界及持续时间。</li>
+<li><strong>公开策略</strong>：本地私有观察池；不沉淀为组织方法。</li>
+</ul>
+<h2 id="不是新闻-是机制">不是新闻，是机制</h2>
+<div class="table-wrap"><table><thead><tr>
+<th>外部事件</th>
+<th>可支持的机制语言</th>
+<th>效率含义（非结果宣称）</th>
+<th>证据状态</th>
+<th>反向解释</th>
+</tr></thead><tbody>
+<tr>
+<td>字节历史管理原则更新</td>
+<td>文化原则尝试接入管理者评价与权责接口</td>
+<td>若执行，可能改变信息共享与授权方式；没有结果数据</td>
+<td>历史 L2</td>
+<td>文化重申、单信源效果叙事</td>
+</tr>
+<tr>
+<td>DeepSeek Harness 招聘</td>
+<td>Agent 产品化岗位边界被招聘语言显性化</td>
+<td>可能增加研究—工程—产品协作接口，也可能增加协调成本</td>
+<td>历史 L1-L2</td>
+<td>短期项目或招聘传播</td>
+</tr>
+<tr>
+<td>安全/部署岗位页</td>
+<td>安全、交付与工程职能在招聘分类中可见</td>
+<td>仅显示能力意图，不能说明控制权或组织成效</td>
+<td>L1 背景</td>
+<td>职位长期挂网、岗位未实际填补</td>
+</tr>
+</tbody></table></div>
+<h2 id="组织情报结论卡">组织情报结论卡</h2>
+<p><strong>核心结论</strong>：本期最重要的信息是证据边界，而非又一条“AI 重组”新闻。公开招聘、管理口号和产品更新可以揭示待验证的组织接口，但若缺少发生时间、范围、权责与结果数据，就不能被写成组织效率结论。</p>
+<div class="table-wrap"><table><thead><tr>
+<th>维度</th>
+<th>已确认</th>
+<th>尚不能确认</th>
+</tr></thead><tbody>
+<tr>
+<td>管理系统</td>
+<td>字节曾公开更新管理原则</td>
+<td>实施程度、评价分布与管理跨度变化</td>
+</tr>
+<tr>
+<td>AI 岗位边界</td>
+<td>DeepSeek/海外模型公司可见 Harness、部署、安全等岗位语言</td>
+<td>新组织、编制、汇报线与交付成效</td>
+</tr>
+<tr>
+<td>组织效率</td>
+<td>无</td>
+<td>决策周期、协作成本、人效或风险结果</td>
+</tr>
+</tbody></table></div>
+<h2 id="证据链与可信度">证据链与可信度</h2>
+<ul>
+<li><strong>事实验证</strong>：对字节条目取得两家媒体对全员信内容的交叉描述；DeepSeek 条目为负责人公开招聘与媒体转引的两条二手链。</li>
+<li><strong>机制验证</strong>：两条均只能支持条件式机制假设；没有获得正式组织图、岗位说明书版本历史、预算、评价数据或长期结果。</li>
+<li><strong>趋势验证</strong>：与此前“管理者从信息中转转向一线问题解决”“模型公司显性化产品化岗位边界”的既有观察一致，但不是本期新增趋势证据。</li>
+</ul>
+<h2 id="去伪存真记录">去伪存真记录</h2>
+<ul>
+<li><strong>时间错配</strong>：字节管理原则首发在 6 月 29-30 日；DeepSeek Harness 招聘集中在 6 月下旬，均不作为 7 月 16-17 日新变化。</li>
+<li><strong>时间错配 OpenAI 安全团队调整</strong>：Wired、Bloomberg、Engadget 对 7 月 11 日调整已有报道；它早于本窗口，且缺少公开组织图与运行结果，故仅作为旧线背景，不重复列入今日新增。</li>
+<li><strong>排除 FDE 职位页外推</strong>：无首发时间、实际到岗或运行指标的岗位页只能提供背景，不证明 FDE 已成为可复制组织方法。</li>
+<li><strong>排除融资/薪酬叙事</strong>：DeepSeek 的融资、芯片及高薪实习传闻未取得公司回应或独立强证据，不能用作扩编或组织升级的因果证据。</li>
+</ul>
+<h2 id="渠道索引补充">渠道索引补充</h2>
+<ul>
+<li><a href="<a href="https://www.stcn.com/article/detail/3989035.html" target="_blank" rel="noreferrer">https://www.stcn.com/article/detail/3989035.html</a>">字节管理原则：证券时报/界面新闻</a>；<a href="<a href="https://eu.36kr.com/en/p/3875167002154249" target="_blank" rel="noreferrer">https://eu.36kr.com/en/p/3875167002154249</a>">36氪英文转载</a></li>
+<li><a href="<a href="https://www.ithome.com/0/967/380.htm" target="_blank" rel="noreferrer">https://www.ithome.com/0/967/380.htm</a>">DeepSeek Harness：IT之家</a>；<a href="<a href="https://www.nbd.com.cn/articles/2026-06-26/4438435.html" target="_blank" rel="noreferrer">https://www.nbd.com.cn/articles/2026-06-26/4438435.html</a>">每日经济新闻</a></li>
+<li><a href="<a href="https://www.channelnewsasia.com/business/indias-tata-consultancy-services-plans-up-8900-ai-deployment-engineers-seeks-ai-acquisitions-6249086" target="_blank" rel="noreferrer">https://www.channelnewsasia.com/business/indias-tata-consultancy-services-plans-up-8900-ai-deployment-engineers-seeks-ai-acquisitions-6249086</a>">TCS 的 FDE 计划（范围外对照，非核心结论）</a></li>
+</ul>
+<h2 id="观察池-待核验池">观察池 / 待核验池</h2>
+<div class="table-wrap"><table><thead><tr>
+<th>条目</th>
+<th>当前等级</th>
+<th>保留原因</th>
+<th>不可推出</th>
+</tr></thead><tbody>
+<tr>
+<td>DeepSeek Harness/扩招</td>
+<td>L1-L2 历史观察</td>
+<td>两条公开转述链；时间不在本窗口</td>
+<td>正式部门、规模翻倍、效率提升</td>
+</tr>
+<tr>
+<td>OpenAI/Anthropic 安全与部署岗位</td>
+<td>L1 背景</td>
+<td>官方页面可见但缺首发和运行信息</td>
+<td>新重组、独立组织或治理成效</td>
+</tr>
+<tr>
+<td>TCS FDE 计划</td>
+<td>L2，范围外对照</td>
+<td>Reuters 链获多家媒体转述；非主追踪公司</td>
+<td>AI 原生公司 FDE 模式已验证或可迁移</td>
+</tr>
+<tr>
+<td>DeepSeek 融资、芯片、高薪实习</td>
+<td>L0-L1</td>
+<td>匿名/二手/公司未回应</td>
+<td>融资完成、组织扩张或激励机制事实</td>
+</tr>
+</tbody></table></div>
+<h2 id="公开知识库入库判断">公开知识库入库判断</h2>
+<ul>
+<li>本期无新增可公开沉淀为主追踪公司组织结论的 L3/L4 信息。</li>
+<li>字节管理原则与 DeepSeek Harness 仅作为私有历史基线/观察池维护，且明确标注时间边界与未证部分。</li>
+<li>TCS 仅作范围外 FDE 组织形态对照，不进入主追踪结论。</li>
+<li>二次验证入口：本地私有阅读页 <code>research/private-industry-bigtech-watch/index.html</code>（沿用用户既定本地访问控制）。</li>
+</ul>
+      </article>
+    </main>
+  </div>
+</body>
+</html>
