@@ -1,0 +1,462 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>每日扫描｜互联网大厂组织机制研究</title>
+  <style>
+    :root {
+      color-scheme: light;
+      --bg: #f6f7f1;
+      --paper: #fffdf8;
+      --ink: #172033;
+      --muted: #697181;
+      --line: #ded8c9;
+      --soft: #ece6d7;
+      --accent: #1f6f68;
+      --accent-2: #b45a34;
+      --code: #f1eee6;
+    }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "PingFang SC", "Microsoft YaHei", sans-serif;
+      color: var(--ink);
+      background: var(--bg);
+      line-height: 1.75;
+    }
+    .shell {
+      display: grid;
+      grid-template-columns: minmax(210px, 280px) minmax(0, 1fr);
+      min-height: 100vh;
+    }
+    aside {
+      position: sticky;
+      top: 0;
+      height: 100vh;
+      padding: 28px 22px;
+      border-right: 1px solid var(--line);
+      background: #ebe5d7;
+      overflow: auto;
+    }
+    main {
+      max-width: 1040px;
+      width: 100%;
+      padding: 56px 56px 90px;
+    }
+    .eyebrow {
+      color: var(--accent-2);
+      font-size: 13px;
+      font-weight: 800;
+      letter-spacing: .08em;
+      text-transform: uppercase;
+      margin: 0 0 10px;
+    }
+    h1 {
+      font-size: clamp(30px, 4vw, 48px);
+      line-height: 1.12;
+      margin: 0 0 18px;
+      letter-spacing: 0;
+    }
+    h2 {
+      font-size: 26px;
+      line-height: 1.32;
+      margin: 48px 0 14px;
+      padding-top: 18px;
+      border-top: 1px solid var(--line);
+    }
+    h3 {
+      font-size: 20px;
+      margin: 34px 0 10px;
+      color: #23314d;
+    }
+    h4 {
+      font-size: 17px;
+      margin: 26px 0 8px;
+    }
+    p, li {
+      font-size: 16px;
+      color: #2b3343;
+    }
+    p { margin: 10px 0; }
+    ul { padding-left: 1.2rem; }
+    li { margin: 7px 0; }
+    a { color: var(--accent); text-decoration-thickness: 1px; text-underline-offset: 3px; }
+    code {
+      background: var(--code);
+      border: 1px solid var(--line);
+      border-radius: 5px;
+      padding: 1px 5px;
+      font-size: .92em;
+    }
+    pre {
+      overflow: auto;
+      background: #fff9ec;
+      color: #202838;
+      border: 1px solid #d8ccb8;
+      border-radius: 8px;
+      padding: 18px;
+      box-shadow: inset 4px 0 0 var(--accent);
+      white-space: pre-wrap;
+      word-break: break-word;
+    }
+    pre code {
+      display: block;
+      padding: 0;
+      border: 0;
+      background: transparent;
+      color: inherit;
+      line-height: 1.7;
+      font-size: 14px;
+    }
+    blockquote {
+      margin: 24px 0;
+      padding: 14px 18px;
+      border-left: 4px solid var(--accent);
+      background: #eef4ee;
+      color: #344033;
+    }
+    .table-wrap {
+      overflow-x: auto;
+      margin: 18px 0 26px;
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      background: var(--paper);
+    }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      min-width: 720px;
+    }
+    th, td {
+      padding: 12px 14px;
+      border-bottom: 1px solid var(--line);
+      vertical-align: top;
+      text-align: left;
+      font-size: 14px;
+    }
+    th {
+      background: #e7e0cf;
+      color: #26324a;
+      font-weight: 800;
+      white-space: nowrap;
+    }
+    tr:last-child td { border-bottom: 0; }
+    .topbar {
+      display: flex;
+      gap: 10px;
+      align-items: center;
+      flex-wrap: wrap;
+      margin-bottom: 28px;
+    }
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 38px;
+      padding: 8px 12px;
+      border: 1px solid var(--line);
+      border-radius: 7px;
+      background: var(--paper);
+      color: var(--ink);
+      text-decoration: none;
+      font-weight: 750;
+      font-size: 14px;
+    }
+    .primary { background: var(--accent); border-color: var(--accent); color: white; }
+    .toc-title {
+      margin: 0 0 12px;
+      font-size: 14px;
+      font-weight: 850;
+      color: #273247;
+    }
+    .toc a {
+      display: block;
+      padding: 7px 0;
+      color: #465064;
+      text-decoration: none;
+      font-size: 14px;
+      line-height: 1.45;
+      border-bottom: 1px solid rgba(23,32,51,.08);
+    }
+    .toc a.level-3 { padding-left: 14px; font-size: 13px; color: #626b78; }
+    .meta {
+      color: var(--muted);
+      font-size: 14px;
+      margin-bottom: 24px;
+    }
+    @media (max-width: 900px) {
+      .shell { display: block; }
+      aside { position: relative; height: auto; border-right: 0; border-bottom: 1px solid var(--line); }
+      main { padding: 34px 20px 70px; }
+      .toc { columns: 1; }
+      table { min-width: 640px; }
+    }
+  </style>
+</head>
+<body>
+  <div class="shell">
+    <aside>
+      <p class="toc-title">目录</p>
+      <nav class="toc">
+        <a class="level-2" href="#今日结论">今日结论</a>
+        <a class="level-2" href="#今日组织机制信号">今日组织机制信号</a>
+        <a class="level-2" href="#传统大厂与-ai-原生组织分组观察">传统大厂与 AI 原生组织分组观察</a>
+        <a class="level-2" href="#高价值变化卡片">高价值变化卡片</a>
+        <a class="level-3" href="#openai-cto-compute-任命-算力责任域显性化-l2-事实观察">OpenAI / CTO, Compute 任命 / 算力责任域显性化（L2 事实观察）</a>
+        <a class="level-3" href="#meta-anthropic-潜在算力租赁谈判-l1-观察-非已落地机制">Meta / Anthropic / 潜在算力租赁谈判（L1 观察，非已落地机制）</a>
+        <a class="level-3" href="#moonshot-ai-kimi-k3-发布-产品信号降级-不构成组织变革">Moonshot AI / Kimi K3 发布 / 产品信号降级（不构成组织变革）</a>
+        <a class="level-2" href="#不是新闻-是机制">不是新闻，是机制</a>
+        <a class="level-2" href="#组织情报结论卡">组织情报结论卡</a>
+        <a class="level-2" href="#证据链与可信度">证据链与可信度</a>
+        <a class="level-2" href="#去伪存真记录">去伪存真记录</a>
+        <a class="level-2" href="#渠道索引补充">渠道索引补充</a>
+        <a class="level-2" href="#观察池-待核验池">观察池 / 待核验池</a>
+        <a class="level-2" href="#公开知识库入库判断">公开知识库入库判断</a>
+      </nav>
+    </aside>
+    <main>
+      <div class="topbar">
+        <a class="btn primary" href="../index.html">返回研究源</a>
+        <a class="btn" href="./2026-07-19.md">查看 Markdown 原文</a>
+      </div>
+      <p class="eyebrow">Daily Scan</p>
+      <h1>2026-07-19 组织情报信息：大厂与 AI 原生组织日常扫描</h1>
+      <p class="meta">本页面由本地 Markdown 自动渲染生成，仍保留原始 md 文件作为知识库源文档。</p>
+      <article>
+        <blockquote>扫描窗口：2026-07-18 至 2026-07-19（北京时间）。AnySearch CLI 已优先尝试，但服务端连接失败；本期改用公开网页检索并在归档保留该限制。未发现主追踪名单内达到 L2、且可确认发生于本窗口的新增组织机制变化。</blockquote>
+<h2 id="今日结论">今日结论</h2>
+<ul>
+<li><strong>无新增 L3 组织效率结论；但有一项可入库的 L2 事实观察。</strong> OpenAI 计算基础设施负责人 Uday Ruddarraju 于 7 月 16 日公开其 <code>CTO, Compute</code> 任命；该信息把 Compute 责任域以 CTO 头衔显性化，但尚不能证明新建部门、汇报线或效率结果。</li>
+<li><strong>AI 原生公司的公开信号仍更像“产品—安全接口”而非“组织变革”。</strong> OpenAI 的家长通知功能与 Moonshot Kimi K3 发布分别显示面向未成年人安全和长程任务的产品动作；没有公开组织范围、汇报线、编制或运行指标，不能外推为 Safety/Policy 或研究—产品组织已重构。</li>
+<li><strong>基础设施谈判不等于组织整合。</strong> Reuters 单源称 Meta 与 Anthropic 讨论算力租赁，至多说明模型公司可能继续外部化算力供给；尚不能推出双方形成联合基础设施组织、成本效率已改善或依赖关系已经落地。</li>
+</ul>
+<h2 id="今日组织机制信号">今日组织机制信号</h2>
+<div class="table-wrap"><table><thead><tr>
+<th>公司</th>
+<th>本窗口核验结果</th>
+<th>机制标签</th>
+<th>证据等级</th>
+<th>入库等级与阅读价值</th>
+</tr></thead><tbody>
+<tr>
+<td>OpenAI</td>
+<td>7 月 16 日计算基础设施负责人公开 <code>CTO, Compute</code> 任命，媒体于 17—18 日转述</td>
+<td>Compute/Infra 责任中心、算力产能</td>
+<td>B/A-</td>
+<td>L2 事实观察；核心结论</td>
+</tr>
+<tr>
+<td>Moonshot AI / Kimi</td>
+<td>7 月 18 日发布 K3，公开材料是模型与服务覆盖描述</td>
+<td>研究—产品—商业化接口（待验证）</td>
+<td>B/A-</td>
+<td>L1 背景；暂不采纳为机制变化</td>
+</tr>
+<tr>
+<td>OpenAI</td>
+<td>已见面向未成年人暴力风险的家长通知产品更新；无组织公告</td>
+<td>产品安全流程、Policy/Safety 接口（待验证）</td>
+<td>B</td>
+<td>L1 背景；持续观察</td>
+</tr>
+<tr>
+<td>Meta / Anthropic</td>
+<td>Reuters 单源称双方洽谈最高 100 亿美元算力租赁</td>
+<td>外部算力供给、Infra 边界（待验证）</td>
+<td>B</td>
+<td>L1；观察池</td>
+</tr>
+<tr>
+<td>腾讯、阿里、字节、美团、百度、京东及国内模型公司</td>
+<td>未检出窗口内可独立核验的绩效、晋升、干部、组织结构或岗位族群机制变化</td>
+<td>—</td>
+<td>—</td>
+<td>无新增入库</td>
+</tr>
+</tbody></table></div>
+<h2 id="传统大厂与-ai-原生组织分组观察">传统大厂与 AI 原生组织分组观察</h2>
+<ul>
+<li><strong>传统大厂</strong>：未发现可核验的管理层级、绩效、晋升、人才盘点或 AI 工作流治理制度更新。不能将内部工具替换、外部模型限制或模型发布包装为集团组织改造。</li>
+<li><strong>AI 原生组织</strong>：公开信息更密集地披露模型能力、用户覆盖和安全产品控制；其背后的 Research、Product、Safety、Policy、Infra 责任分界仍缺少可验证材料。</li>
+<li><strong>分化/趋同判断</strong>：本期不能新增支持“模型公司已把安全纳入核心流程”或“算力合作正在重塑组织边界”的结论。产品发布和商业谈判是可能的前置条件，不是机制成效。</li>
+</ul>
+<h2 id="高价值变化卡片">高价值变化卡片</h2>
+<h3 id="openai-cto-compute-任命-算力责任域显性化-l2-事实观察">OpenAI / CTO, Compute 任命 / 算力责任域显性化（L2 事实观察）</h3>
+<ul>
+<li><strong>时间</strong>：2026-07-16 本人公开任命；7 月 17—18 日出现媒体转述。</li>
+<li><strong>组织范围</strong>：OpenAI Compute Infrastructure；公开描述涉及 compute、network、storage、ML systems 及数据中心相关工程招聘，未披露汇报线、预算或团队规模。</li>
+<li><strong>机制类型与动作</strong>：将既有计算基础设施负责人提升或表述为 <code>CTO, Compute</code>。公开材料支持责任域与职务头衔，不支持“新建 Compute 部门”。</li>
+<li><strong>L1 事实</strong>：<a href="<a href="https://www.linkedin.com/posts/udaykumarraju_im-excited-to-share-that-im-stepping-into-activity-7483625848621895680-_8Tx" target="_blank" rel="noreferrer">https://www.linkedin.com/posts/udaykumarraju_im-excited-to-share-that-im-stepping-into-activity-7483625848621895680-_8Tx</a>">Uday Ruddarraju 本人 LinkedIn 公告</a> 自述出任该职；<a href="<a href="https://www.storyboard18.com/brand-makers/openai-names-uday-ruddarraju-cto-compute-ws-l-104695.htm" target="_blank" rel="noreferrer">https://www.storyboard18.com/brand-makers/openai-names-uday-ruddarraju-cto-compute-ws-l-104695.htm</a>">Storyboard18 转述</a> 与 <a href="<a href="https://www.exchange4media.com/people-movement-news/uday-ruddarraju-elevated-as-open-ai-cto-of-compute-156451.html" target="_blank" rel="noreferrer">https://www.exchange4media.com/people-movement-news/uday-ruddarraju-elevated-as-open-ai-cto-of-compute-156451.html</a>">Exchange4Media 转述</a> 对任命和团队覆盖范围作同向报道。</li>
+<li><strong>L2 机制判断</strong>：这把训练/推理产能、网络、存储、ML 系统和数据中心等高耦合依赖置于更清晰的技术责任域；若职责权限相应集中，可能减少模型研究、产品部署与基础设施扩容之间的跨团队协调接口。该影响为机制假设，不是已证结果。</li>
+<li><strong>L3 组织判断</strong>：不成立。没有公开组织图、预算授权、直接下属、决策权迁移、上线周期或可靠性/单位成本数据。</li>
+<li><strong>互证、反向解释与边界</strong>：第一来源为个人公告，媒体报道主要回引该公告，故事实可作 L2 观察但互证独立性有限；也可能只是职称调整或既有 Compute 团队的对外命名，并非组织新建或权力上收。只适用于理解前沿模型公司将算力供给视作高层责任域的信号，不可外推为所有 AI 公司都需同类职务。</li>
+<li><strong>待验证问题</strong>：该头衔的汇报关系与预算边界、Compute 与 Research/Deployment 的接口、是否伴随团队整合、容量/可靠性/单位成本的可观察结果。</li>
+<li><strong>公开策略</strong>：可公开为脱敏 L2 事实观察及其来源索引；机制与效率部分保留条件式表述。</li>
+</ul>
+<h3 id="meta-anthropic-潜在算力租赁谈判-l1-观察-非已落地机制">Meta / Anthropic / 潜在算力租赁谈判（L1 观察，非已落地机制）</h3>
+<ul>
+<li><strong>时间</strong>：Reuters 报道于 2026-07-18；报道称提议始于 6 月，未披露签约或生效时间。</li>
+<li><strong>组织范围</strong>：Meta 基础设施/商业化相关团队与 Anthropic 算力采购/训练推理相关团队的推定接口；双方未公开组织范围或责任人。</li>
+<li><strong>机制类型与动作</strong>：外部算力供给谈判。报道指向一项至多 100 亿美元、两年的潜在租赁，而非组织公告。</li>
+<li><strong>L1 事实</strong>：<a href="<a href="https://www.arabnews.com/node/2651353/world" target="_blank" rel="noreferrer">https://www.arabnews.com/node/2651353/world</a>">Reuters 转载</a> 报道谈判存在且仍复杂；尚无双方公告、合同、财报或独立第二来源。</li>
+<li><strong>L2 机制判断</strong>：若最终实施，可能把部分算力供给从单一云/自建路径扩展为外部合作接口，并提高供应链协调与治理要求；当前只是条件式假设。</li>
+<li><strong>L3 组织判断</strong>：不成立。没有签约、容量、成本、控制权、SLA、数据隔离、团队编制或效率结果。</li>
+<li><strong>反向解释与适用边界</strong>：这也可能是谈判筹码、商业试探或媒体提前披露；即使签约，也不必然改变 Anthropic 内部 Infra 边界。仅适合作为高算力依赖公司供应链组织设计的待验证线索。</li>
+<li><strong>待验证问题</strong>：双方是否公开确认、合同是否签署、服务边界、数据/模型治理、内部团队是否发生迁移。</li>
+<li><strong>公开策略</strong>：仅脱敏保留为私有观察；不进入公开知识库结论。</li>
+</ul>
+<h3 id="moonshot-ai-kimi-k3-发布-产品信号降级-不构成组织变革">Moonshot AI / Kimi K3 发布 / 产品信号降级（不构成组织变革）</h3>
+<ul>
+<li><strong>时间</strong>：2026-07-18。</li>
+<li><strong>组织范围</strong>：Kimi 面向消费者、办公、编码与 API 的服务面；未公开研究、产品、商业化或基础设施团队的权责。</li>
+<li><strong>机制类型与动作</strong>：模型发布与服务覆盖扩展；不是公开的绩效、岗位、组织结构或流程制度变动。</li>
+<li><strong>L1 事实</strong>：<a href="<a href="https://global.chinadaily.com.cn/a/202607/18/WS6a5ad297a310986e2b465f8a.html" target="_blank" rel="noreferrer">https://global.chinadaily.com.cn/a/202607/18/WS6a5ad297a310986e2b465f8a.html</a>">中国日报</a> 报道 K3 发布及其服务覆盖；该材料可验证产品事实。</li>
+<li><strong>L2 机制判断</strong>：没有足以支撑的证据。产品同时覆盖多场景，不能推出团队合并、端到端 squad、模型商业化组织已形成或研发协作成本下降。</li>
+<li><strong>反向解释与适用边界</strong>：多入口上线也可能是既有产品矩阵的版本更新；性能、价格和开源计划均不是组织效率指标。</li>
+<li><strong>待验证问题</strong>：各产品线共享何种平台、发布决策权如何分配、研究与应用团队的接口是否变化。</li>
+<li><strong>公开策略</strong>：不入组织情报核心区；仅留检索记录以防后续组织材料出现时失去时间基线。</li>
+</ul>
+<h2 id="不是新闻-是机制">不是新闻，是机制</h2>
+<div class="table-wrap"><table><thead><tr>
+<th>外部事件</th>
+<th>可支持的机制语言</th>
+<th>效率含义（非结果宣称）</th>
+<th>证据状态</th>
+<th>反向解释</th>
+</tr></thead><tbody>
+<tr>
+<td>Meta—Anthropic 算力谈判</td>
+<td>潜在的外部算力供给接口</td>
+<td>若落地，可能改变供给协调与治理负荷；尚无效率结果</td>
+<td>L1 / B</td>
+<td>谈判筹码或未签约商业机会</td>
+</tr>
+<tr>
+<td>OpenAI 家长通知更新</td>
+<td>面向风险场景的产品控制接口</td>
+<td>只能说明控制功能迭代，不能证明 Safety/Policy 组织或流程已重构</td>
+<td>L1 / B</td>
+<td>常规产品政策更新</td>
+</tr>
+<tr>
+<td>OpenAI <code>CTO, Compute</code> 任命</td>
+<td>Compute/Infra 的高层责任域显性化</td>
+<td>若权限随之集中，可能缩短扩容与部署协调链；尚无结果数据</td>
+<td>L2 / A-B</td>
+<td>职称调整或既有团队对外命名</td>
+</tr>
+<tr>
+<td>Kimi K3 发布</td>
+<td>模型能力进入多服务入口</td>
+<td>不能据产品覆盖判断组织边界或协同效果</td>
+<td>L1 / B</td>
+<td>常规版本发布</td>
+</tr>
+</tbody></table></div>
+<h2 id="组织情报结论卡">组织情报结论卡</h2>
+<p><strong>核心结论</strong>：本期唯一可升级的组织信号是 OpenAI 将 Compute 以 CTO 责任域显性化；其余模型能力发布、安全功能更新与算力谈判，只有在出现组织范围、责任接口、资源配置和持续运行证据后，才可能成为组织机制信号。</p>
+<div class="table-wrap"><table><thead><tr>
+<th>维度</th>
+<th>已确认</th>
+<th>尚不能确认</th>
+</tr></thead><tbody>
+<tr>
+<td>产品与安全</td>
+<td>Kimi 发布新模型；OpenAI 更新家长通知功能</td>
+<td>Safety/Policy 的汇报关系、流程权责与治理效果</td>
+</tr>
+<tr>
+<td>Compute/Infra</td>
+<td>OpenAI 出现 <code>CTO, Compute</code> 的本人公开任命</td>
+<td>汇报线、预算、团队整合与供给效率</td>
+</tr>
+<tr>
+<td>算力供给</td>
+<td>有媒体称 Meta 与 Anthropic 在谈租赁</td>
+<td>签约、控制权、数据治理与组织迁移</td>
+</tr>
+<tr>
+<td>组织效率</td>
+<td>无</td>
+<td>决策周期、协作成本、管理跨度、人才密度或执行节奏变化</td>
+</tr>
+</tbody></table></div>
+<h2 id="证据链与可信度">证据链与可信度</h2>
+<ul>
+<li><strong>事实验证</strong>：OpenAI CTO, Compute 任命有当事人公开声明及两家媒体转述；Kimi 发布由中国日报报道；Meta—Anthropic 谈判只有 Reuters 单源；OpenAI 家长通知为 Engadget 对产品更新的报道。</li>
+<li><strong>机制验证</strong>：CTO 任命可支持“责任域显性化”，但与其余材料一样缺少组织图、预算/编制、制度文本或实际运行数据。</li>
+<li><strong>趋势验证</strong>：模型公司持续把能力、产品安全与算力供给并行推进，但本期材料不足以验证它们已被组织化为稳定、可比较的机制。</li>
+</ul>
+<h2 id="去伪存真记录">去伪存真记录</h2>
+<ul>
+<li><strong>排除“模型发布＝组织升级”</strong>：Kimi K3 的参数、上下文窗口、价格与服务入口均为产品信息，未提供组织边界证据。</li>
+<li><strong>排除“安全功能＝Safety 组织重构”</strong>：OpenAI 家长通知可支持产品控制能力更新，不支持团队规模、流程控制权或风险治理效果的结论。</li>
+<li><strong>单源降级</strong>：Meta—Anthropic 算力谈判来自 Reuters 单源，且双方未公开确认；只入 L1 观察池。</li>
+<li><strong>避免把职务任命写成重组</strong>：OpenAI <code>CTO, Compute</code> 的个人公告与二手转述未证明新部门、汇报线或预算权变化，故只写责任域显性化。</li>
+<li><strong>历史线不重复升级</strong>：阿里限制 Claude Code（7 月 3 日披露、7 月 10 日生效）、MiniMax 创始人股权激励承诺（约 7 月 10 日披露）早于本窗口；即使报道链较强，也不写作本期新增。</li>
+<li><strong>渠道限制</strong>：AnySearch CLI 返回连接错误，已改用公开网页检索；此限制不降低已链接页面的来源分级，但降低了检索覆盖的完整性。</li>
+</ul>
+<h2 id="渠道索引补充">渠道索引补充</h2>
+<ul>
+<li><a href="<a href="https://www.arabnews.com/node/2651353/world" target="_blank" rel="noreferrer">https://www.arabnews.com/node/2651353/world</a>">Reuters 转载：Meta 与 Anthropic 的算力租赁谈判</a></li>
+<li><a href="<a href="https://global.chinadaily.com.cn/a/202607/18/WS6a5ad297a310986e2b465f8a.html" target="_blank" rel="noreferrer">https://global.chinadaily.com.cn/a/202607/18/WS6a5ad297a310986e2b465f8a.html</a>">中国日报：Moonshot Kimi K3</a></li>
+<li><a href="<a href="https://www.engadget.com/2218076/openai-notify-parents-teen-banned-chatgpt-violence/" target="_blank" rel="noreferrer">https://www.engadget.com/2218076/openai-notify-parents-teen-banned-chatgpt-violence/</a>">Engadget：OpenAI 家长通知功能</a></li>
+<li><a href="<a href="https://www.linkedin.com/posts/udaykumarraju_im-excited-to-share-that-im-stepping-into-activity-7483625848621895680-_8Tx" target="_blank" rel="noreferrer">https://www.linkedin.com/posts/udaykumarraju_im-excited-to-share-that-im-stepping-into-activity-7483625848621895680-_8Tx</a>">OpenAI CTO, Compute 的当事人公开说明</a></li>
+<li><a href="<a href="https://openai.com/careers/product-manager-families-san-francisco/" target="_blank" rel="noreferrer">https://openai.com/careers/product-manager-families-san-francisco/</a>">OpenAI 家庭产品经理岗位</a>：无首发时间与组织规模，仅作岗位背景。</li>
+</ul>
+<h2 id="观察池-待核验池">观察池 / 待核验池</h2>
+<div class="table-wrap"><table><thead><tr>
+<th>条目</th>
+<th>当前等级</th>
+<th>保留原因</th>
+<th>不可推出</th>
+</tr></thead><tbody>
+<tr>
+<td>Meta—Anthropic 算力租赁</td>
+<td>L1</td>
+<td>Reuters 单源、金额与期限明确但尚未确认签约</td>
+<td>联合组织、成本优势或执行成效</td>
+</tr>
+<tr>
+<td>OpenAI <code>CTO, Compute</code></td>
+<td>L2 事实观察</td>
+<td>当事人声明加媒体转述；未获公司组织公告</td>
+<td>新部门、权力上收或效率改善</td>
+</tr>
+<tr>
+<td>OpenAI 家庭产品/家长通知</td>
+<td>L1 背景</td>
+<td>官方岗位页与产品更新可见</td>
+<td>新建团队、Safety 组织重构或风险下降</td>
+</tr>
+<tr>
+<td>Kimi K3 多服务入口</td>
+<td>L1 背景</td>
+<td>产品发布可确认</td>
+<td>研究—产品—商业化边界已整合</td>
+</tr>
+<tr>
+<td>阿里 Claude Code 限制</td>
+<td>历史 L2 候选</td>
+<td>多家媒体转述内部通知，但不在本窗口</td>
+<td>全集团 AI 工具治理成效或研发效率提升</td>
+</tr>
+<tr>
+<td>MiniMax 创始人激励承诺</td>
+<td>历史 L1-L2</td>
+<td>内部信被媒体报道，待公司/交易所材料补证</td>
+<td>长期留才效果、全员激励已落地</td>
+</tr>
+</tbody></table></div>
+<h2 id="公开知识库入库判断">公开知识库入库判断</h2>
+<ul>
+<li>本期无新增可公开沉淀的 L3/L4 组织机制结论；OpenAI <code>CTO, Compute</code> 可作为脱敏 L2 事实观察入库，但不沉淀为组织效率结论或方法。</li>
+<li>Meta—Anthropic、OpenAI、Kimi 材料均仅在本地私有观察池保留，且明确区分产品/商业事件与组织机制。</li>
+<li>二次验证入口：本地私有阅读页 <code>research/private-industry-bigtech-watch/index.html</code>（沿用用户既定本地访问控制）。</li>
+</ul>
+      </article>
+    </main>
+  </div>
+</body>
+</html>
