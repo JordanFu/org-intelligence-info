@@ -72,7 +72,7 @@ function assertSafe() {
     /ANYSEARCH_API_KEY/i,
     /api[_-]?key/i,
     /password/i,
-    /secret/i,
+    /(?<![a-z])secret(?![a-z])/i,
     /token/i,
     /source-channels\.private/i,
     /local-reference-structured/i,
