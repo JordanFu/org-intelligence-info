@@ -1,0 +1,635 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>每日扫描｜互联网大厂组织机制研究</title>
+  <style>
+    :root {
+      color-scheme: light;
+      --bg: #f6f7f1;
+      --paper: #fffdf8;
+      --ink: #172033;
+      --muted: #697181;
+      --line: #ded8c9;
+      --soft: #ece6d7;
+      --accent: #1f6f68;
+      --accent-2: #b45a34;
+      --code: #f1eee6;
+    }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "PingFang SC", "Microsoft YaHei", sans-serif;
+      color: var(--ink);
+      background: var(--bg);
+      line-height: 1.75;
+    }
+    .shell {
+      display: grid;
+      grid-template-columns: minmax(210px, 280px) minmax(0, 1fr);
+      min-height: 100vh;
+    }
+    aside {
+      position: sticky;
+      top: 0;
+      height: 100vh;
+      padding: 28px 22px;
+      border-right: 1px solid var(--line);
+      background: #ebe5d7;
+      overflow: auto;
+    }
+    main {
+      max-width: 1040px;
+      width: 100%;
+      padding: 56px 56px 90px;
+    }
+    .eyebrow {
+      color: var(--accent-2);
+      font-size: 13px;
+      font-weight: 800;
+      letter-spacing: .08em;
+      text-transform: uppercase;
+      margin: 0 0 10px;
+    }
+    h1 {
+      font-size: clamp(30px, 4vw, 48px);
+      line-height: 1.12;
+      margin: 0 0 18px;
+      letter-spacing: 0;
+    }
+    h2 {
+      font-size: 26px;
+      line-height: 1.32;
+      margin: 48px 0 14px;
+      padding-top: 18px;
+      border-top: 1px solid var(--line);
+    }
+    h3 {
+      font-size: 20px;
+      margin: 34px 0 10px;
+      color: #23314d;
+    }
+    h4 {
+      font-size: 17px;
+      margin: 26px 0 8px;
+    }
+    p, li {
+      font-size: 16px;
+      color: #2b3343;
+    }
+    p { margin: 10px 0; }
+    ul { padding-left: 1.2rem; }
+    li { margin: 7px 0; }
+    a { color: var(--accent); text-decoration-thickness: 1px; text-underline-offset: 3px; }
+    code {
+      background: var(--code);
+      border: 1px solid var(--line);
+      border-radius: 5px;
+      padding: 1px 5px;
+      font-size: .92em;
+    }
+    pre {
+      overflow: auto;
+      background: #fff9ec;
+      color: #202838;
+      border: 1px solid #d8ccb8;
+      border-radius: 8px;
+      padding: 18px;
+      box-shadow: inset 4px 0 0 var(--accent);
+      white-space: pre-wrap;
+      word-break: break-word;
+    }
+    pre code {
+      display: block;
+      padding: 0;
+      border: 0;
+      background: transparent;
+      color: inherit;
+      line-height: 1.7;
+      font-size: 14px;
+    }
+    blockquote {
+      margin: 24px 0;
+      padding: 14px 18px;
+      border-left: 4px solid var(--accent);
+      background: #eef4ee;
+      color: #344033;
+    }
+    .table-wrap {
+      overflow-x: auto;
+      margin: 18px 0 26px;
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      background: var(--paper);
+    }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      min-width: 720px;
+    }
+    th, td {
+      padding: 12px 14px;
+      border-bottom: 1px solid var(--line);
+      vertical-align: top;
+      text-align: left;
+      font-size: 14px;
+    }
+    th {
+      background: #e7e0cf;
+      color: #26324a;
+      font-weight: 800;
+      white-space: nowrap;
+    }
+    tr:last-child td { border-bottom: 0; }
+    .topbar {
+      display: flex;
+      gap: 10px;
+      align-items: center;
+      flex-wrap: wrap;
+      margin-bottom: 28px;
+    }
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 38px;
+      padding: 8px 12px;
+      border: 1px solid var(--line);
+      border-radius: 7px;
+      background: var(--paper);
+      color: var(--ink);
+      text-decoration: none;
+      font-weight: 750;
+      font-size: 14px;
+    }
+    .primary { background: var(--accent); border-color: var(--accent); color: white; }
+    .toc-title {
+      margin: 0 0 12px;
+      font-size: 14px;
+      font-weight: 850;
+      color: #273247;
+    }
+    .toc a {
+      display: block;
+      padding: 7px 0;
+      color: #465064;
+      text-decoration: none;
+      font-size: 14px;
+      line-height: 1.45;
+      border-bottom: 1px solid rgba(23,32,51,.08);
+    }
+    .toc a.level-3 { padding-left: 14px; font-size: 13px; color: #626b78; }
+    .meta {
+      color: var(--muted);
+      font-size: 14px;
+      margin-bottom: 24px;
+    }
+    @media (max-width: 900px) {
+      .shell { display: block; }
+      aside { position: relative; height: auto; border-right: 0; border-bottom: 1px solid var(--line); }
+      main { padding: 34px 20px 70px; }
+      .toc { columns: 1; }
+      table { min-width: 640px; }
+    }
+  </style>
+</head>
+<body>
+  <div class="shell">
+    <aside>
+      <p class="toc-title">目录</p>
+      <nav class="toc">
+        <a class="level-2" href="#今日结论">今日结论</a>
+        <a class="level-2" href="#今日组织机制信号">今日组织机制信号</a>
+        <a class="level-2" href="#传统大厂与-ai-原生组织分组观察">传统大厂与 AI 原生组织分组观察</a>
+        <a class="level-2" href="#高价值变化卡片">高价值变化卡片</a>
+        <a class="level-3" href="#salesforce-marketing-ai-指标治理-从开放查询到认证语义路径">Salesforce / Marketing AI 指标治理 / 从开放查询到认证语义路径</a>
+        <a class="level-3" href="#midjourney-co-star-收购-用并购补齐消费产品组织接口">Midjourney / Co–Star 收购 / 用并购补齐消费产品组织接口</a>
+        <a class="level-2" href="#不是新闻-而是机制">不是新闻，而是机制</a>
+        <a class="level-2" href="#组织情报结论卡">组织情报结论卡</a>
+        <a class="level-3" href="#主题">主题</a>
+        <a class="level-3" href="#组织情报结论">组织情报结论</a>
+        <a class="level-3" href="#外部信号">外部信号</a>
+        <a class="level-3" href="#证据边界">证据边界</a>
+        <a class="level-3" href="#适用边界">适用边界</a>
+        <a class="level-3" href="#待验证问题">待验证问题</a>
+        <a class="level-2" href="#证据链与可信度">证据链与可信度</a>
+        <a class="level-2" href="#去伪存真记录">去伪存真记录</a>
+        <a class="level-2" href="#渠道索引补充">渠道索引补充</a>
+        <a class="level-2" href="#观察池-待核验池">观察池 / 待核验池</a>
+      </nav>
+    </aside>
+    <main>
+      <div class="topbar">
+        <a class="btn primary" href="../index.html">返回研究源</a>
+        <a class="btn" href="./2026-07-26.md">查看 Markdown 原文</a>
+      </div>
+      <p class="eyebrow">Daily Scan</p>
+      <h1>2026-07-26 组织情报信息</h1>
+      <p class="meta">本页面由本地 Markdown 自动渲染生成，仍保留原始 md 文件作为知识库源文档。</p>
+      <article>
+        <blockquote>扫描窗口：2026-07-25 08:40 CST—2026-07-26 08:31 CST；过去 72 小时只用于补漏、追溯第一来源和识别二次传播。AnySearch CLI 为首选检索入口，部分窄查询连接异常后使用公开 Web 补核。本文只呈现结论、事实、机制判断、证据强度、反向解释、适用边界和待验证问题。</blockquote>
+<h2 id="今日结论">今日结论</h2>
+<ul>
+<li><strong>严格窗口内没有新增可升级为 L2 或 L3 的组织结构、绩效、职级、干部、薪酬或岗位体系硬事实。</strong> 唯一值得保留的窗口内新增披露，是 Salesforce 对 Marketing 内部 AI 指标查询治理的复盘；它是单一公司、单一业务域的官方自述，知识门槛为 L1。</li>
+<li><strong>核心观察｜Salesforce 披露的失败案例显示，企业 AI 的组织瓶颈可能从“员工能否调用模型”转向“谁定义口径、谁认证数据、哪些组织知识能进入代理执行路径”。</strong> Marketing 的 Slackbot 对同一指标给出两个不同答案，均不等于认证看板；其后描述的受控路径把 AI Skill、Tableau MCP 语义模型、认证数据集以及 Chief Data Office—Marketing 的协作边界连接起来。该机制只能支持 L1-L2 假设，不能证明准确率、人效或决策速度已经改善。</li>
+<li><strong>补录结论｜Midjourney 首次收购 Co–Star 的结构事实达到 L2，但不是本窗口新增动作。</strong> 收购在 2026 年春季完成，官方与独立媒体于 7 月 24 日披露，发布时间落在上一扫描窗口。Co–Star CEO Banu Guler 出任 Midjourney Chief Design Officer，并组建设计、产品、前端跨职能团队；Co–Star 继续由其独立控制。它显示模型实验室在补齐消费产品接口，同时保留被收购产品的自治边界；整合效果与组织效率未知。</li>
+<li><strong>国内新增信息仍停留在角色口径与招聘活动层。</strong> 阿里 AI 治理负责人在 7 月 25 日采访中重申全生命周期与敏捷治理，能够确认研究 / 政策知识接口存在，不能确认其拥有模型发布、产品准入或风险否决权。华为“大模型与 Agent”人才活动属于 5 月启动行动的延续，不能证明新增岗位族群或扩编。</li>
+<li><strong>本期没有形成行业趋势或可迁移方法。</strong> Salesforce 是业务指标控制层实例，Midjourney 是上一窗口的产品组织补录，两者处理的组织冲突不同；共同出现不构成 AI 组织统一演化方向。</li>
+</ul>
+<h2 id="今日组织机制信号">今日组织机制信号</h2>
+<div class="table-wrap"><table><thead><tr>
+<th>公司</th>
+<th>时间归属</th>
+<th>信号</th>
+<th>机制标签</th>
+<th>L1 事实 / L2 机制 / L3 判断</th>
+<th>证据与置信度</th>
+<th>阅读价值</th>
+</tr></thead><tbody>
+<tr>
+<td>Salesforce</td>
+<td>本窗口新增披露；机制上线时间未披露</td>
+<td>Marketing 的 Slackbot 对同一 MQL 指标返回两个错误且不一致的答案；官方描述 AI Skill—Tableau MCP—认证数据集路径</td>
+<td>指标定义权、语义控制层、认证数据、CDO—业务边界</td>
+<td>L1：官方案例；L2：控制层假设；L3：效率结果不成立</td>
+<td>A 单源 / L1 / 中</td>
+<td>核心结论、持续观察</td>
+</tr>
+<tr>
+<td>Midjourney</td>
+<td>上一窗口漏项；收购在春季完成</td>
+<td>收购 Co–Star；其 CEO 出任 CDO，组建设计、产品、前端跨职能团队；Co–Star 保持自治</td>
+<td>产品化接口、并购式补位、跨职能团队、双重运行边界</td>
+<td>L1：角色与团队；L2：结构事实；L3：整合效果不成立</td>
+<td>A+B+B / L2 / 高</td>
+<td>核心补录</td>
+</tr>
+<tr>
+<td>阿里巴巴</td>
+<td>本窗口直接采访；角色并非新设</td>
+<td>科技伦理委员会研究组负责人兼 AI 治理中心主任重申全生命周期与敏捷治理</td>
+<td>研究 / 政策知识接口、服务层治理</td>
+<td>L1：角色与公开主张；L2：内部权责不可确认</td>
+<td>B + 历史 A / L1 / 中</td>
+<td>持续观察</td>
+</tr>
+<tr>
+<td>Amazon / WBD</td>
+<td>本窗口媒体更新；诉讼于 7 月 21 日提交</td>
+<td>WBD 指控 Amazon 违规挖走或接触两名高管</td>
+<td>高管人才争夺、竞业与法律边界</td>
+<td>诉讼存在为事实；指控未裁决；组织变化不可确认</td>
+<td>B+B / L1 / 中低</td>
+<td>背景参考</td>
+</tr>
+<tr>
+<td>华为</td>
+<td>本窗口举办；行动始于 5 月</td>
+<td>“大模型与 Agent”顶尖人才系列活动</td>
+<td>关键人才漏斗、研究岗位品牌</td>
+<td>活动事实为 L1；新增 HC、岗位族与团队不可确认</td>
+<td>A+C / L1 / 中低</td>
+<td>观察池</td>
+</tr>
+</tbody></table></div>
+<h2 id="传统大厂与-ai-原生组织分组观察">传统大厂与 AI 原生组织分组观察</h2>
+<ul>
+<li><strong>国内传统互联网 / 科技大厂</strong>：阿里治理访谈与华为招聘活动是仅有的窗口内可核验增量，均未达到 L2。腾讯、字节、美团、百度、京东、快手、小米、网易、拼多多、蚂蚁、飞书 / 火山、B站、滴滴、携程未发现窗口内新增 L2 以上硬信号。</li>
+<li><strong>国外传统科技与高透明度公司</strong>：Salesforce 提供一个 Marketing AI 指标治理实例，但没有机制上线日期与独立效果验证。Amazon / WBD 线是旧诉讼的窗口内报道，不构成 Amazon 新组织动作。Google、Meta、Microsoft、Apple、Netflix、Adobe、Nvidia、Shopify、Atlassian、GitLab、Stripe、Canva、Zapier未发现严格窗口内新增 L2 以上事实。</li>
+<li><strong>国内 AI 原生与模型公司</strong>：DeepSeek、Kimi / 月之暗面、智谱 AI、MiniMax、百川、阶跃星辰、零一万物、商汤日日新、面壁智能、昆仑万维 / 天工、秘塔、无问芯穹、硅基流动均未发现严格窗口内新增 L2 以上组织事实。DeepSeek 实习薪酬、Kimi K3、百川离任与商汤算力材料均为旧线或缺乏组织权责证据。</li>
+<li><strong>国外 AI 原生与模型公司</strong>：Midjourney 收购为上一窗口漏收的 L2 结构事实，已补入历史基线，不计作今日新动作。OpenAI、Anthropic、Perplexity、Mistral、Cohere、xAI、Character.AI、Inflection、Adept、Runway、ElevenLabs、Harvey、Anysphere、Replit、Scale AI 未发现严格窗口内新增 L2 以上组织事实。</li>
+<li><strong>类型差异</strong>：Salesforce 面对的是既有企业数据与指标口径如何进入代理执行链；Midjourney 面对的是模型能力如何获得消费产品、设计与前端接口。两者分别影响知识治理成本与产品协作边界，不能相互证明效率结果。</li>
+</ul>
+<h2 id="高价值变化卡片">高价值变化卡片</h2>
+<h3 id="salesforce-marketing-ai-指标治理-从开放查询到认证语义路径">Salesforce / Marketing AI 指标治理 / 从开放查询到认证语义路径</h3>
+<ul>
+<li><strong>时间</strong>：官方博客发布于 2026 年 7 月 25 日 18:00 UTC，即 7 月 26 日 02:00 CST，属于严格窗口；案例发生在 Salesforce FY27 Q1 Marketing 季度复盘，上线与整改时间未披露。</li>
+<li><strong>公司与组织范围</strong>：Salesforce Marketing；涉及 Marketing、Chief Data Office、Slackbot、Tableau 与 Marketing Data Warehouse，不代表公司全部业务域。</li>
+<li><strong>机制名称</strong>：AI Skill、语义模型、认证数据集三层查询控制；指标定义权机器可读化。</li>
+<li><strong>机制理念</strong>：代理可访问数据不等于代理理解组织口径。稳定回答依赖把数据源、过滤器、业务规则、指标定义和认证责任写入可执行控制层。</li>
+<li><strong>机制变化</strong>：季度复盘中，Slackbot 对同一 MQL 问题先后返回 378,591 和 291,256，均不等于认证 Leads Dashboard 的 492,298。官方随后描述 <code>Leads_Skill → Tableau MCP 语义模型 → MDW 认证数据集</code> 的查询路径；认证数据集由 Chief Data Office 与 Marketing 共同开发、验证与治理。</li>
+<li><strong>应用关系</strong>：业务用户通过 Slackbot提出问题；AI Skill限定数据源、过滤器与业务规则；Tableau MCP提供语义模型；MDW提供认证数据。最终例外处理、人工复核与指标变更审批未披露。</li>
+<li><strong>系统 / 工具</strong>：Slackbot、AI Skill、Tableau MCP、Marketing Data Warehouse、Leads Dashboard。</li>
+<li><strong>组织影响</strong>：控制层将 Marketing 的指标定义权与 Chief Data Office 的认证责任连接到代理查询路径，可能减少口径歧义与跨团队反复核对；也可能增加语义模型维护、审批与变更同步成本。决策速度、协作成本与准确率净变化未知。</li>
+<li><strong>L1 事实层</strong>：两位 Salesforce 数据负责人在官方博客中披露错误数字、受控查询路径和 CDO—Marketing 共同治理关系。</li>
+<li><strong>L2 机制判断层</strong>：指标口径、认证数据与组织知识开始从人际解释转成机器可执行的访问边界；这是单案例机制假设，不是公司级制度结论。</li>
+<li><strong>L3 组织判断层</strong>：不成立。没有独立审计、持续准确率、前后周期、人力变化、覆盖范围或用户决策质量数据。</li>
+<li><strong>来源与渠道</strong>：Salesforce 官方博客 <a href="https://www.salesforce.com/blog/ai-agent-answer-accuracy/。" target="_blank" rel="noreferrer">https://www.salesforce.com/blog/ai-agent-answer-accuracy/。</a></li>
+<li><strong>证据等级</strong>：A 单源；知识门槛 L1；事实中高置信，机制解释中等置信；阅读价值“核心结论、持续观察”。</li>
+<li><strong>互证情况</strong>：事实、流程与结果声明均来自同一公司；反向搜索未发现员工记录、技术审计或独立媒体验证。</li>
+<li><strong>反向解释</strong>：案例可能是单一 Marketing 用例，也可能承担 Salesforce 产品营销功能；错误数字首先证明开放查询存在不一致，不能反向证明后续方案“每次正确”。语义控制层还可能把错误业务定义稳定地复制给更多用户。</li>
+<li><strong>与历史基线对比</strong>：传统数据治理把口径集中在看板、数据字典与分析人员；本案例新增的是让代理沿认证语义和指定数据集回答。何时上线、覆盖多广仍未知。</li>
+<li><strong>公开策略</strong>：可公开官方案例、脱敏机制判断和来源索引；不沉淀为已验证方法。</li>
+<li><strong>组织发展关注点</strong>：指标定义权、CDO与业务团队边界、组织知识编码、例外审批、变更同步、人工复核和决策节奏。</li>
+<li><strong>适用边界</strong>：仅限 Salesforce Marketing 披露的 MQL 查询案例；不能外推 Salesforce 全公司、其他指标、全部 Slackbot回答或其他企业。</li>
+<li><strong>待验证问题</strong>：上线日期与覆盖人群；指标规则变更由谁批准；语义层与认证数据不一致时谁裁决；人工复核率；持续错误率；维护成本；对复盘周期与分析岗位分工的真实影响。</li>
+</ul>
+<h3 id="midjourney-co-star-收购-用并购补齐消费产品组织接口">Midjourney / Co–Star 收购 / 用并购补齐消费产品组织接口</h3>
+<ul>
+<li><strong>时间</strong>：收购在 2026 年春季完成；官方与独立媒体在 7 月 24 日至 25 日凌晨对外披露，均早于本窗口 7 月 25 日 08:40 CST 起点。它属于上一扫描窗口漏项，不是本窗口新动作。</li>
+<li><strong>公司与组织范围</strong>：Midjourney 与 Co–Star 约 24 人团队；涉及设计、产品、前端与消费应用，不代表模型研究、训练基础设施或安全团队调整。</li>
+<li><strong>机制名称</strong>：并购式产品能力补位；Chief Design Officer责任位；跨职能产品团队；被收购产品自治。</li>
+<li><strong>机制理念</strong>：模型实验室通过吸收一支已经共同交付消费产品的团队，缩短从模型能力到用户产品的组织接口；同时保留原产品的独立运行边界。</li>
+<li><strong>机制变化</strong>：Co–Star CEO Banu Guler 出任 Midjourney Chief Design Officer，并组建设计、产品、前端跨职能团队，覆盖 Midjourney 各项工作；Co–Star 应用继续由她完整控制。独立媒体报道约 24 名员工加入 Midjourney。</li>
+<li><strong>应用关系</strong>：新团队被描述为 Midjourney 首批应用的建设力量，包括图像应用；Research、Model、Infra、Safety 与新产品团队的签核、优先级和资源接口未披露。</li>
+<li><strong>系统 / 工具</strong>：没有披露新的组织系统、绩效机制、项目管理工具或产品评审门控。</li>
+<li><strong>组织影响</strong>：结构上增加了统一设计责任位和一支共同工作过的跨职能团队，可能减少模型研究与消费产品之间的交接成本；保留 Co–Star 自治也可能造成资源、品牌与优先级的双重边界。整合速度、管理跨度与人才稳定性未知。</li>
+<li><strong>L1 事实层</strong>：Midjourney 官方确认收购、CDO角色、团队构成和 Co–Star 自治；The Verge 与 TechCrunch 独立报道收购时间、团队规模与应用方向。</li>
+<li><strong>L2 机制判断层</strong>：Midjourney 正在用并购获得消费产品组织接口，并采用“跨职能整合 + 原产品自治”的双重边界。</li>
+<li><strong>L3 组织判断层</strong>：不成立。没有交付周期、产品采用、留任、资源配置、汇报线或模型商业化结果。</li>
+<li><strong>来源与渠道</strong>：Midjourney 官方公告 <a href="https://updates.midjourney.com/midjourneys-first-acquisition/；官方" target="_blank" rel="noreferrer">https://updates.midjourney.com/midjourneys-first-acquisition/；官方</a> X <a href="https://x.com/midjourney/status/2080671833322672148；The" target="_blank" rel="noreferrer">https://x.com/midjourney/status/2080671833322672148；The</a> Verge <a href="https://www.theverge.com/ai-artificial-intelligence/970894/midjourney-co-star-acquisition；TechCrunch" target="_blank" rel="noreferrer">https://www.theverge.com/ai-artificial-intelligence/970894/midjourney-co-star-acquisition；TechCrunch</a> <a href="https://techcrunch.com/2026/07/24/midjourney-acquired-the-astrology-app-co-star/。" target="_blank" rel="noreferrer">https://techcrunch.com/2026/07/24/midjourney-acquired-the-astrology-app-co-star/。</a></li>
+<li><strong>证据等级</strong>：A+B+B；知识门槛 L2；结构事实高置信，机制解释中等置信；阅读价值“核心补录”。</li>
+<li><strong>互证情况</strong>：官方与两家独立媒体互证收购、角色和产品方向；交易在春季完成的准确日期、汇报线与资源关系未公开。</li>
+<li><strong>反向解释</strong>：它也可能只是人才收购、品牌组合扩张或首次应用发布前的产品补课，不代表 Midjourney 从研究导向转成产品导向；Co–Star 自治可能意味着整合深度有限。</li>
+<li><strong>与历史基线对比</strong>：Midjourney 过去以模型和 Discord交互见长；此次首次收购明确引入 CDO 与设计—产品—前端完整团队。是否改变研究团队权重仍无证据。</li>
+<li><strong>公开策略</strong>：可公开收购、角色、团队边界和来源索引；不把它写成已验证的产品组织范式。</li>
+<li><strong>组织发展关注点</strong>：Research / Product 边界、产品优先级、双品牌自治、关键人依赖、管理跨度、交付节奏与团队留任。</li>
+<li><strong>适用边界</strong>：只适用于 Midjourney 对 Co–Star 的首次收购与公开团队安排；不能外推其他 AI 模型公司或并购整合。</li>
+<li><strong>待验证问题</strong>：CDO汇报线与决策权；团队是否完整转入；Co–Star 与 Midjourney 的预算、绩效和项目边界；研究团队与产品团队的冲突升级接口；首批应用交付与留任结果。</li>
+</ul>
+<h2 id="不是新闻-而是机制">不是新闻，而是机制</h2>
+<div class="table-wrap"><table><thead><tr>
+<th>外部事件</th>
+<th>组织机制</th>
+<th>效率含义</th>
+<th>证据等级</th>
+<th>反向解释</th>
+</tr></thead><tbody>
+<tr>
+<td>Salesforce AI 对同一 MQL 指标给出两个错误答案</td>
+<td>指标定义、语义模型、认证数据和组织责任进入代理查询控制层</td>
+<td>可能减少口径争议，也增加语义维护与审批成本；净效果未知</td>
+<td>L1，机制假设 L1-L2</td>
+<td>单一 Marketing 案例或产品营销；后续正确率未独立验证</td>
+</tr>
+<tr>
+<td>Midjourney 收购 Co–Star 并设 CDO</td>
+<td>用并购获得设计—产品—前端团队，同时保留原应用自治</td>
+<td>可能缩短研究到消费产品的交接，也形成双重资源边界</td>
+<td>L2，上一窗口补录</td>
+<td>人才收购或产品补课，不代表研究—产品权重已改变</td>
+</tr>
+<tr>
+<td>阿里治理负责人公开谈全生命周期治理</td>
+<td>研究 / 政策知识接口对外可见</td>
+<td>能提供治理框架，不能证明进入模型发布权或产品否决权</td>
+<td>L1</td>
+<td>行业政策表达，不是内部机制变化</td>
+</tr>
+<tr>
+<td>WBD 对 Amazon 提起高管挖角诉讼</td>
+<td>高管人才获取受到合同与法律边界约束</td>
+<td>可能影响领导岗位补位节奏；诉讼结果与组织影响未知</td>
+<td>L1观察</td>
+<td>单一法律争议，指控未裁决</td>
+</tr>
+<tr>
+<td>华为举办大模型与 Agent 人才活动</td>
+<td>关键人才漏斗与雇主品牌</td>
+<td>招聘触达不等于新增岗位族、团队扩编或人才密度变化</td>
+<td>L1</td>
+<td>既有招聘项目的常规场次</td>
+</tr>
+</tbody></table></div>
+<h2 id="组织情报结论卡">组织情报结论卡</h2>
+<h3 id="主题">主题</h3>
+<p>代理进入业务流程后，指标定义权正在成为新的组织控制点</p>
+<h3 id="组织情报结论">组织情报结论</h3>
+<p>Salesforce 案例支持一个窄化机制假设：当员工通过代理直接查询业务指标时，模型访问权不再是唯一瓶颈，指标定义、认证数据、语义模型与组织知识的所有权会共同决定答案能否进入决策流程。把这些内容编码为 AI Skill 与语义路径，等于把 CDO—业务团队之间原本依靠人员解释的边界转成机器可执行边界。当前只有一个公司、一个业务域的官方案例，不能上升为行业趋势、组织效率结论或通用方法。</p>
+<h3 id="外部信号">外部信号</h3>
+<ul>
+<li>Salesforce 官方公开了错误答案、认证看板与受控查询路径之间的差异。</li>
+<li>Chief Data Office 与 Marketing 被明确写入认证数据集的共同开发、验证与治理关系。</li>
+<li>官方没有披露规则变更权、例外权、人工复核、长期准确率和决策周期。</li>
+<li>Midjourney 补录显示另一类 AI 组织瓶颈在研究—产品接口，但它不验证 Salesforce 的指标控制机制。</li>
+</ul>
+<h3 id="证据边界">证据边界</h3>
+<ul>
+<li>Salesforce 为 A 级官方自述、知识门槛 L1；机制解释只到 L1-L2。</li>
+<li>“指标定义权成为控制点”来自失败案例与流程结构，不代表机制已经提升效率。</li>
+<li>Midjourney 为 A+B+B、L2 结构事实，但披露属于上一窗口、交易发生于春季。</li>
+<li>国内两条线均为 L1；Amazon / WBD 仅是法律争议观察。</li>
+</ul>
+<h3 id="适用边界">适用边界</h3>
+<ul>
+<li>只适用于指标口径复杂、认证数据与语义层已经存在的企业查询场景。</li>
+<li>不能外推非结构化研究、创意工作、模型训练、全部 Agent 工作流或跨公司比较。</li>
+<li>控制点更强可能降低解释成本，也可能提高维护成本和审批延迟；当前没有运行数据区分两者。</li>
+</ul>
+<h3 id="待验证问题">待验证问题</h3>
+<ul>
+<li>指标定义、语义规则与认证数据分别由谁拥有最终修改权。</li>
+<li>代理输出进入经营复盘前是否存在人工复核、异常升级和回滚。</li>
+<li>口径变更能否同步到技能、语义层、看板和下游应用。</li>
+<li>控制层对查询周期、争议次数、错误率、分析岗位分工和管理节奏的实际影响。</li>
+</ul>
+<h2 id="证据链与可信度">证据链与可信度</h2>
+<div class="table-wrap"><table><thead><tr>
+<th>判断</th>
+<th>事实验证</th>
+<th>机制验证</th>
+<th>趋势验证</th>
+<th>置信度</th>
+</tr></thead><tbody>
+<tr>
+<td>Salesforce Marketing 存在错误回答与受控查询路径</td>
+<td>官方负责人给出数字、组件与治理关系</td>
+<td>路径连接 Skill、MCP语义层、认证数据和 CDO—Marketing</td>
+<td>无独立样本</td>
+<td>中</td>
+</tr>
+<tr>
+<td>Salesforce 已经提高准确率与决策效率</td>
+<td>只有公司自述</td>
+<td>无测试设计、持续周期、人工复核与成本数据</td>
+<td>无</td>
+<td>低，不作结论</td>
+</tr>
+<tr>
+<td>Midjourney 收购 Co–Star 并设 CDO与跨职能团队</td>
+<td>官方公告 + The Verge + TechCrunch</td>
+<td>角色、团队构成与原产品自治支持双重边界判断</td>
+<td>与其消费应用方向一致</td>
+<td>高</td>
+</tr>
+<tr>
+<td>Midjourney 已缩短产品交付或提高商业化效率</td>
+<td>无周期、采用、留任或资源数据</td>
+<td>无运行接口与前后对照</td>
+<td>无</td>
+<td>低，不作结论</td>
+</tr>
+<tr>
+<td>阿里存在 AI 治理研究 / 政策接口</td>
+<td>每日经济新闻直接采访 + 历史官方报告</td>
+<td>角色和公开主张可见，内部发布权不可见</td>
+<td>与既有治理架构一致</td>
+<td>中</td>
+</tr>
+<tr>
+<td>严格窗口内没有新增 L2 / L3 硬信号</td>
+<td>全名单、多语种、强媒体、官方页与反向搜索</td>
+<td>命中多为旧动作、单源自述或非组织信息</td>
+<td>不代表真实世界没有变化</td>
+<td>中</td>
+</tr>
+</tbody></table></div>
+<h2 id="去伪存真记录">去伪存真记录</h2>
+<ul>
+<li><strong>动作时间与披露时间分开</strong>：Salesforce 文章在窗口内发布，但机制上线时间未知；Midjourney 收购在春季完成、7 月 24 日披露，属于上一窗口漏项；Amazon / WBD 诉讼于 7 月 21 日提交，本窗口只有媒体更新。</li>
+<li><strong>单源官方不自动升 L2</strong>：Salesforce 提供可复核的数字和流程，但同一公司自述不能独立验证效果，知识门槛保持 L1。</li>
+<li><strong>错误案例不反推整改成功</strong>：Slackbot 两次答错能证明开放查询存在问题，不能证明 AI Skill与语义控制层随后“每次正确”。</li>
+<li><strong>角色存在不等于有否决权</strong>：阿里科技伦理委员会研究组与治理中心负责人的公开身份，不足以证明 Safety / Policy 进入模型训练、发布或产品准入核心流程。</li>
+<li><strong>招聘活动不等于扩编</strong>：华为活动可确认人才触达，不能确认新增 HC、岗位族群、团队或签字费。</li>
+<li><strong>法律指控不当事实</strong>：WBD 的挖角主张是诉讼指控，未经裁决；不据此判断 Amazon 违反合同或组织补位失败。</li>
+<li><strong>转载不重复计数</strong>：网易、金融界等对每日经济新闻的转发不构成阿里线独立互证。</li>
+<li><strong>搜索噪声排除</strong>：所谓 Cursor 被 SpaceX 收购、Nvidia “Project Meridian”、Meta FAIR 重命名等缺乏第一来源或与公开事实冲突的结果均未进入观察池。</li>
+<li><strong>旧线排除</strong>：Amazon 旧金山 AGI Lab关闭、腾讯混元重组、Zapier 用量单位治理、Anthropic Opus 5、OpenAI Achiam离任、百川旧离任、Kimi K3 与商汤旧材料不重复计作今日变化。</li>
+<li><strong>无硬信号不等于无变化</strong>：公开网页存在披露延迟、付费墙、索引遗漏和招聘页更新时间不透明；结论只适用于本次公开证据集。</li>
+</ul>
+<h2 id="渠道索引补充">渠道索引补充</h2>
+<div class="table-wrap"><table><thead><tr>
+<th>渠道</th>
+<th>URL</th>
+<th>公司</th>
+<th>主题</th>
+<th>证据等级</th>
+<th>是否新增</th>
+</tr></thead><tbody>
+<tr>
+<td>Salesforce</td>
+<td><a href="https://www.salesforce.com/blog/ai-agent-answer-accuracy/" target="_blank" rel="noreferrer">https://www.salesforce.com/blog/ai-agent-answer-accuracy/</a></td>
+<td>Salesforce</td>
+<td>Marketing AI 指标查询控制层</td>
+<td>A</td>
+<td>是</td>
+</tr>
+<tr>
+<td>Midjourney Updates</td>
+<td><a href="https://updates.midjourney.com/midjourneys-first-acquisition/" target="_blank" rel="noreferrer">https://updates.midjourney.com/midjourneys-first-acquisition/</a></td>
+<td>Midjourney</td>
+<td>首次收购、CDO与跨职能团队</td>
+<td>A</td>
+<td>上一窗口补录</td>
+</tr>
+<tr>
+<td>Midjourney X</td>
+<td><a href="https://x.com/midjourney/status/2080671833322672148" target="_blank" rel="noreferrer">https://x.com/midjourney/status/2080671833322672148</a></td>
+<td>Midjourney</td>
+<td>团队与 Co–Star 自治边界</td>
+<td>A</td>
+<td>上一窗口补录</td>
+</tr>
+<tr>
+<td>The Verge</td>
+<td><a href="https://www.theverge.com/ai-artificial-intelligence/970894/midjourney-co-star-acquisition" target="_blank" rel="noreferrer">https://www.theverge.com/ai-artificial-intelligence/970894/midjourney-co-star-acquisition</a></td>
+<td>Midjourney</td>
+<td>收购时间与产品方向互证</td>
+<td>B</td>
+<td>上一窗口补录</td>
+</tr>
+<tr>
+<td>TechCrunch</td>
+<td><a href="https://techcrunch.com/2026/07/24/midjourney-acquired-the-astrology-app-co-star/" target="_blank" rel="noreferrer">https://techcrunch.com/2026/07/24/midjourney-acquired-the-astrology-app-co-star/</a></td>
+<td>Midjourney</td>
+<td>约 24 人团队与收购互证</td>
+<td>B</td>
+<td>上一窗口补录</td>
+</tr>
+<tr>
+<td>每日经济新闻</td>
+<td><a href="https://www.nbd.com.cn/articles/2026-07-25/4511947.html" target="_blank" rel="noreferrer">https://www.nbd.com.cn/articles/2026-07-25/4511947.html</a></td>
+<td>阿里巴巴</td>
+<td>AI 治理角色与公开框架</td>
+<td>B</td>
+<td>是</td>
+</tr>
+<tr>
+<td>Huawei Careers</td>
+<td><a href="https://career.huawei.com/cn/news-and-updates/top-talent-series-events" target="_blank" rel="noreferrer">https://career.huawei.com/cn/news-and-updates/top-talent-series-events</a></td>
+<td>华为</td>
+<td>顶尖人才系列活动</td>
+<td>A</td>
+<td>活动延续</td>
+</tr>
+<tr>
+<td>TechCrunch</td>
+<td><a href="https://techcrunch.com/2026/07/25/warner-bros-lawsuit-accuses-amazon-of-illegally-poaching-executives/" target="_blank" rel="noreferrer">https://techcrunch.com/2026/07/25/warner-bros-lawsuit-accuses-amazon-of-illegally-poaching-executives/</a></td>
+<td>Amazon / WBD</td>
+<td>高管挖角诉讼更新</td>
+<td>B</td>
+<td>是，旧诉讼</td>
+</tr>
+<tr>
+<td>Deadline</td>
+<td><a href="https://deadline.com/2026/07/amazon-poaching-lawsuit-warner-bros-discovery-pia-barlow-1237002763/" target="_blank" rel="noreferrer">https://deadline.com/2026/07/amazon-poaching-lawsuit-warner-bros-discovery-pia-barlow-1237002763/</a></td>
+<td>Amazon / WBD</td>
+<td>起诉时间与任命背景</td>
+<td>B</td>
+<td>历史补证</td>
+</tr>
+</tbody></table></div>
+<h2 id="观察池-待核验池">观察池 / 待核验池</h2>
+<div class="table-wrap"><table><thead><tr>
+<th>线索</th>
+<th>当前证据</th>
+<th>为什么不够</th>
+<th>可能机制</th>
+<th>待验证问题</th>
+</tr></thead><tbody>
+<tr>
+<td>Salesforce 语义控制层的运行效果</td>
+<td>官方博客</td>
+<td>单源、无上线时间与前后对照</td>
+<td>指标定义权机器可读化</td>
+<td>覆盖、错误率、维护成本、复核、规则修改权</td>
+</tr>
+<tr>
+<td>Midjourney 新产品团队的整合深度</td>
+<td>官方 + 两家媒体</td>
+<td>无汇报线、预算、绩效与留任数据</td>
+<td>并购式产品补位、双重自治</td>
+<td>权责、项目优先级、资源冲突、交付与留任</td>
+</tr>
+<tr>
+<td>阿里 AI 治理职能的内部接口</td>
+<td>直接采访 + 历史官方报告</td>
+<td>公开主张不等于内部流程</td>
+<td>研究 / Policy / Safety 知识接口</td>
+<td>发布签核、风险否决、升级和产品准入权</td>
+</tr>
+<tr>
+<td>华为大模型与 Agent 人才活动</td>
+<td>官方活动页 + 社区信息</td>
+<td>无新增职位、HC和组织归属</td>
+<td>关键人才漏斗</td>
+<td>具体岗位族、团队、级别、录用与留任</td>
+</tr>
+<tr>
+<td>Amazon 高管人才争议</td>
+<td>两家媒体与诉讼背景</td>
+<td>指控未裁决、动作早于窗口</td>
+<td>创意领导补位与法律边界</td>
+<td>任命是否完成、诉讼结果、领导团队边界</td>
+</tr>
+<tr>
+<td>Amazon AGI Lab关闭</td>
+<td>7 月 24 日旧报道</td>
+<td>首发早于窗口，组织细节仍少</td>
+<td>研究资源收缩或项目清理</td>
+<td>团队去向、项目迁移、领导责任与资源重配</td>
+</tr>
+</tbody></table></div>
+<h2 id="公开知识库入库判断">公开知识库入库判断</h2>
+<ul>
+<li><strong>私有知识源</strong>：Salesforce 以 L1 治理实例入库，机制结论保持 L1-L2；Midjourney 以 L2 结构事实补入历史基线；阿里、华为与 Amazon / WBD 进入观察池。</li>
+<li><strong>公开知识库</strong>：本轮没有新增 L3 / L4 组织机制结论，不沉淀为组织方法、效率判断或最佳实践。Salesforce 与 Midjourney 只保留脱敏主题结论和公开来源索引。</li>
+<li><strong>信息边界</strong>：本文未使用、上传或公开 <code>本地路径</code>、内部链接、访谈口径、截图、未授权附件或个人信息。</li>
+<li><strong>二次验证入口</strong>：本地私有研究入口 <code>research/private-industry-bigtech-watch/index.html</code>；密码沿用用户已指定的本地密码，本文不复述。</li>
+</ul>
+      </article>
+    </main>
+  </div>
+</body>
+</html>
