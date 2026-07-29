@@ -1,0 +1,593 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>每日扫描｜互联网大厂组织机制研究</title>
+  <style>
+    :root {
+      color-scheme: light;
+      --bg: #f6f7f1;
+      --paper: #fffdf8;
+      --ink: #172033;
+      --muted: #697181;
+      --line: #ded8c9;
+      --soft: #ece6d7;
+      --accent: #1f6f68;
+      --accent-2: #b45a34;
+      --code: #f1eee6;
+    }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "PingFang SC", "Microsoft YaHei", sans-serif;
+      color: var(--ink);
+      background: var(--bg);
+      line-height: 1.75;
+    }
+    .shell {
+      display: grid;
+      grid-template-columns: minmax(210px, 280px) minmax(0, 1fr);
+      min-height: 100vh;
+    }
+    aside {
+      position: sticky;
+      top: 0;
+      height: 100vh;
+      padding: 28px 22px;
+      border-right: 1px solid var(--line);
+      background: #ebe5d7;
+      overflow: auto;
+    }
+    main {
+      max-width: 1040px;
+      width: 100%;
+      padding: 56px 56px 90px;
+    }
+    .eyebrow {
+      color: var(--accent-2);
+      font-size: 13px;
+      font-weight: 800;
+      letter-spacing: .08em;
+      text-transform: uppercase;
+      margin: 0 0 10px;
+    }
+    h1 {
+      font-size: clamp(30px, 4vw, 48px);
+      line-height: 1.12;
+      margin: 0 0 18px;
+      letter-spacing: 0;
+    }
+    h2 {
+      font-size: 26px;
+      line-height: 1.32;
+      margin: 48px 0 14px;
+      padding-top: 18px;
+      border-top: 1px solid var(--line);
+    }
+    h3 {
+      font-size: 20px;
+      margin: 34px 0 10px;
+      color: #23314d;
+    }
+    h4 {
+      font-size: 17px;
+      margin: 26px 0 8px;
+    }
+    p, li {
+      font-size: 16px;
+      color: #2b3343;
+    }
+    p { margin: 10px 0; }
+    ul { padding-left: 1.2rem; }
+    li { margin: 7px 0; }
+    a { color: var(--accent); text-decoration-thickness: 1px; text-underline-offset: 3px; }
+    code {
+      background: var(--code);
+      border: 1px solid var(--line);
+      border-radius: 5px;
+      padding: 1px 5px;
+      font-size: .92em;
+    }
+    pre {
+      overflow: auto;
+      background: #fff9ec;
+      color: #202838;
+      border: 1px solid #d8ccb8;
+      border-radius: 8px;
+      padding: 18px;
+      box-shadow: inset 4px 0 0 var(--accent);
+      white-space: pre-wrap;
+      word-break: break-word;
+    }
+    pre code {
+      display: block;
+      padding: 0;
+      border: 0;
+      background: transparent;
+      color: inherit;
+      line-height: 1.7;
+      font-size: 14px;
+    }
+    blockquote {
+      margin: 24px 0;
+      padding: 14px 18px;
+      border-left: 4px solid var(--accent);
+      background: #eef4ee;
+      color: #344033;
+    }
+    .table-wrap {
+      overflow-x: auto;
+      margin: 18px 0 26px;
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      background: var(--paper);
+    }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      min-width: 720px;
+    }
+    th, td {
+      padding: 12px 14px;
+      border-bottom: 1px solid var(--line);
+      vertical-align: top;
+      text-align: left;
+      font-size: 14px;
+    }
+    th {
+      background: #e7e0cf;
+      color: #26324a;
+      font-weight: 800;
+      white-space: nowrap;
+    }
+    tr:last-child td { border-bottom: 0; }
+    .topbar {
+      display: flex;
+      gap: 10px;
+      align-items: center;
+      flex-wrap: wrap;
+      margin-bottom: 28px;
+    }
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 38px;
+      padding: 8px 12px;
+      border: 1px solid var(--line);
+      border-radius: 7px;
+      background: var(--paper);
+      color: var(--ink);
+      text-decoration: none;
+      font-weight: 750;
+      font-size: 14px;
+    }
+    .primary { background: var(--accent); border-color: var(--accent); color: white; }
+    .toc-title {
+      margin: 0 0 12px;
+      font-size: 14px;
+      font-weight: 850;
+      color: #273247;
+    }
+    .toc a {
+      display: block;
+      padding: 7px 0;
+      color: #465064;
+      text-decoration: none;
+      font-size: 14px;
+      line-height: 1.45;
+      border-bottom: 1px solid rgba(23,32,51,.08);
+    }
+    .toc a.level-3 { padding-left: 14px; font-size: 13px; color: #626b78; }
+    .meta {
+      color: var(--muted);
+      font-size: 14px;
+      margin-bottom: 24px;
+    }
+    @media (max-width: 900px) {
+      .shell { display: block; }
+      aside { position: relative; height: auto; border-right: 0; border-bottom: 1px solid var(--line); }
+      main { padding: 34px 20px 70px; }
+      .toc { columns: 1; }
+      table { min-width: 640px; }
+    }
+  </style>
+</head>
+<body>
+  <div class="shell">
+    <aside>
+      <p class="toc-title">目录</p>
+      <nav class="toc">
+        <a class="level-2" href="#今日结论">今日结论</a>
+        <a class="level-2" href="#今日组织机制信号">今日组织机制信号</a>
+        <a class="level-2" href="#传统大厂与-ai-原生组织分组观察">传统大厂与 AI 原生组织分组观察</a>
+        <a class="level-2" href="#高价值变化卡片">高价值变化卡片</a>
+        <a class="level-3" href="#openai-特定模型暂停训练-安全缺陷开始影响研发节奏">OpenAI / 特定模型暂停训练 / 安全缺陷开始影响研发节奏</a>
+        <a class="level-3" href="#pacing-the-frontier-跨公司员工联署-协调问题从公司内外溢">Pacing the Frontier / 跨公司员工联署 / 协调问题从公司内外溢</a>
+        <a class="level-2" href="#不是新闻-而是机制">不是新闻，而是机制</a>
+        <a class="level-2" href="#组织情报结论卡">组织情报结论卡</a>
+        <a class="level-3" href="#主题">主题</a>
+        <a class="level-3" href="#组织情报结论">组织情报结论</a>
+        <a class="level-3" href="#外部信号">外部信号</a>
+        <a class="level-3" href="#与传统大厂和-ai-原生组织的关系">与传统大厂和 AI 原生组织的关系</a>
+        <a class="level-3" href="#适用边界">适用边界</a>
+        <a class="level-3" href="#待验证问题">待验证问题</a>
+        <a class="level-3" href="#入库判断">入库判断</a>
+        <a class="level-2" href="#证据链与可信度">证据链与可信度</a>
+        <a class="level-2" href="#去伪存真记录">去伪存真记录</a>
+        <a class="level-2" href="#渠道索引补充">渠道索引补充</a>
+      </nav>
+    </aside>
+    <main>
+      <div class="topbar">
+        <a class="btn primary" href="../index.html">返回研究源</a>
+        <a class="btn" href="./2026-07-29.md">查看 Markdown 原文</a>
+      </div>
+      <p class="eyebrow">Daily Scan</p>
+      <h1>2026-07-29 组织情报信息</h1>
+      <p class="meta">本页面由本地 Markdown 自动渲染生成，仍保留原始 md 文件作为知识库源文档。</p>
+      <article>
+        <blockquote>扫描窗口：2026-07-28 10:04 CST—2026-07-29 08:36 CST；过去 72 小时仅用于第一来源追溯、历史基线与反证。AnySearch CLI 为首选检索入口，辅以公司原文、TechCrunch、The Verge、NBC、Reuters/CNBC 与反向搜索。本文只呈现结论、事实、机制判断、证据强度、反向解释、适用边界和待验证问题。</blockquote>
+<h2 id="今日结论">今日结论</h2>
+<ul>
+<li><strong>本窗口没有新增 L3 / L4 组织效率结论或组织方法。</strong> 两条达到 L2 的窄化信号均围绕前沿 AI 的研发节奏治理：媒体新增披露 OpenAI 因 sandbox 安全事故暂停涉事特定模型训练，结合公司此前“牺牲研究速度”的官方措施与 CEO 新访谈，可支持局部节奏门控判断；1,171 名前沿 AI 公司员工联署，将单家公司难以单边减速的协调问题推向政府和国际治理层。</li>
+<li><strong>OpenAI 的变化是局部 stop/go 事实，不是全公司减速。</strong> CEO 只说未来“可能需要”调整开发节奏，同时警惕监管俘获和实验室合谋；公开证据没有显示 Safety 获得稳定否决权、正式 gate 或新的签核链。</li>
+<li><strong>“Pacing the Frontier”是跨公司非正式专业联盟，不是公司间治理机构。</strong> 联署覆盖 OpenAI、Anthropic、Google、Meta、Mistral 等公司的研究、安全与高层人员，但主站明确个人评论不必然代表公司；没有协议、预算、owner、执行规则或实际减速结果。</li>
+<li><strong>传统大厂与国内公司均无 L2+ 新机制事实。</strong> Amazon 的模型组合收敛、国内“初级岗位收缩 / 全栈化”材料都只有单一事实链，进入观察池；OpenAI Ads、常驻招聘页和窗口内旧闻再解读不算新增组织动作。</li>
+</ul>
+<h2 id="今日组织机制信号">今日组织机制信号</h2>
+<div class="table-wrap"><table><thead><tr>
+<th>公司 / 组织</th>
+<th>时间</th>
+<th>信号</th>
+<th>机制标签</th>
+<th>L1 事实 / L2 机制 / L3 判断</th>
+<th>证据与置信度</th>
+<th>阅读价值</th>
+</tr></thead><tbody>
+<tr>
+<td>OpenAI</td>
+<td>7 月 29 日 04:17 CST 报道</td>
+<td>涉事特定模型训练暂停，直到 sandbox 安全问题得到加固</td>
+<td>研发节奏 stop/go、安全—Infra门控</td>
+<td>暂停报道 L1；结合旧官方措施的局部门控 L2；长期权力变化未到 L3</td>
+<td>官方旧基线 A + CEO访谈 A + TechCrunch B / 中高</td>
+<td>核心结论</td>
+</tr>
+<tr>
+<td>跨公司前沿 AI 员工网络</td>
+<td>7 月 29 日 03:46 CST 首批强媒体报道</td>
+<td>1,171 名经企业邮箱或雇佣证明验证的员工联署，请求建设可协调研发节奏的国际工具</td>
+<td>非正式专业联盟、跨公司治理接口</td>
+<td>联署事实 L2；正式治理与结果未到 L3</td>
+<td>主站直接来源 + The Verge + NBC / 高</td>
+<td>核心结论</td>
+</tr>
+<tr>
+<td>Amazon AGI</td>
+<td>7 月 28 日披露</td>
+<td>媒体称多模型资源向单一 frontier model 项目集中</td>
+<td>模型组合治理、资源集中</td>
+<td>单一首发 L1；Reuters同源转述不算互证</td>
+<td>BI + Amazon局部回应 / 中低</td>
+<td>持续观察</td>
+</tr>
+<tr>
+<td>国内人才市场</td>
+<td>7 月 28 日 15:35 CST</td>
+<td>文章称初级标准化任务减少、跨栈闭环和现场经验溢价提高</td>
+<td>岗位边界、人才筛选信号</td>
+<td>市场趋势背景 L2；阿里 / 菜鸟案例 L1</td>
+<td>36氪 + 旧智联数据 / 中低</td>
+<td>背景参考</td>
+</tr>
+</tbody></table></div>
+<h2 id="传统大厂与-ai-原生组织分组观察">传统大厂与 AI 原生组织分组观察</h2>
+<ul>
+<li><strong>国内传统大厂与 AI 原生组织</strong>：未发现窗口内 L2+ 公司级组织机制新变化。36氪的新材料强化既有“标准化初级任务空间收缩、跨栈闭环能力溢价”观察，但阿里 / 菜鸟实施案例仍为单源，AI 因果也未排除宏观招聘收缩。</li>
+<li><strong>国外传统科技公司</strong>：Amazon 可能继续把 AGI 资源从多模型组合向单一 frontier model 线收敛，但事实仍回到 Business Insider 单源；其余目标公司无新增 L2+ 信号。</li>
+<li><strong>国外 AI 原生公司</strong>：OpenAI 特定模型训练暂停与跨公司联署形成“公司内局部 stop/go—公司外协调倡议”两层信号。Anthropic 新入职者横跨 pretraining 与 societal impacts 只是一名单点复合型 IC 观察。</li>
+<li><strong>趋同与分化</strong>：安全问题已经能够局部打断模型研发节奏；跨公司协调仍停留在倡议层。正式权力、资源和执行机制的可见度远低于价值立场的可见度。</li>
+</ul>
+<h2 id="高价值变化卡片">高价值变化卡片</h2>
+<h3 id="openai-特定模型暂停训练-安全缺陷开始影响研发节奏">OpenAI / 特定模型暂停训练 / 安全缺陷开始影响研发节奏</h3>
+<ul>
+<li><strong>时间</strong>：TechCrunch 2026-07-28 13:17 PDT，即 2026-07-29 04:17 CST。</li>
+<li><strong>组织范围</strong>：涉事特定模型及其训练、安全 sandbox、研究基础设施；不代表 OpenAI 全部模型、Safety 或发布流程。</li>
+<li><strong>机制名称</strong>：事件触发式 stop/go；研发速度与安全可靠性的显性权衡。</li>
+<li><strong>机制动作</strong>：TechCrunch 报道研究人员暂停该模型训练，等待 sandbox 加固；Sam Altman 表示未来可能需要调整 AI 开发节奏。</li>
+<li><strong>组织影响</strong>：安全 / Infra 缺陷在本次事件中实际打断研发节奏；训练周期、恢复标准、签核角色、资源代价和长期制度化程度未知。</li>
+<li><strong>L1 事实层</strong>：TechCrunch 报道暂停涉事模型训练；CEO 条件式表达“可能需要 pace”。</li>
+<li><strong>L2 机制判断层</strong>：至少在该事件中，安全与基础设施问题获得局部 stop/go 影响。</li>
+<li><strong>L3 组织判断层</strong>：不成立；没有证据显示 Safety 拥有稳定独立否决权或全公司减速。</li>
+<li><strong>来源</strong>：<a href="<a href="https://colossus.com/episode/how-to-make-an-abundant-future/" target="_blank" rel="noreferrer">https://colossus.com/episode/how-to-make-an-abundant-future/</a>">Sam Altman 主访谈</a>、<a href="<a href="https://techcrunch.com/2026/07/28/sam-altman-is-ready-to-decelerate/" target="_blank" rel="noreferrer">https://techcrunch.com/2026/07/28/sam-altman-is-ready-to-decelerate/</a>">TechCrunch</a>。</li>
+<li><strong>证据等级</strong>：官方旧基线 A + CEO访谈 A + TechCrunch B；暂停报道本身 L1，局部节奏门控 L2；长期机制中低置信。</li>
+<li><strong>反向解释</strong>：重大事故后的临时技术处置、监管沟通或声誉修复；标题中的“ready to decelerate”强于原话。</li>
+<li><strong>适用边界</strong>：仅限公开确认的涉事模型与 sandbox 事件，不能外推模型发布、全公司研发或行业节奏。</li>
+<li><strong>待验证问题</strong>：暂停决定由谁发起和解除；恢复标准；是否进入正式 gate；对训练周期、资源和评测流程的影响。</li>
+<li><strong>公开策略</strong>：可公开窄化事实和来源；不沉淀为效率方法。</li>
+</ul>
+<h3 id="pacing-the-frontier-跨公司员工联署-协调问题从公司内外溢">Pacing the Frontier / 跨公司员工联署 / 协调问题从公司内外溢</h3>
+<ul>
+<li><strong>时间</strong>：The Verge 2026-07-28 19:46 UTC，即 2026-07-29 03:46 CST；主站人数在扫描时为 1,171。</li>
+<li><strong>组织范围</strong>：多家前沿 AI 公司员工的个人联署；不是公司董事会、管理层共同决议或行业协会。</li>
+<li><strong>机制名称</strong>：跨公司非正式专业联盟；外部治理接口；竞争压力下的协调失败表达。</li>
+<li><strong>机制动作</strong>：联署请求美国支持建立能够协调自动化 AI 研发节奏的国际技术和治理工具；签署需企业邮箱或雇佣证明。</li>
+<li><strong>组织影响</strong>：Research、Safety、Policy 与部分高层人员形成跨公司表达面，将公司内难以单边处理的节奏冲突外移；决策权、执行责任和企业内部约束均不存在。</li>
+<li><strong>L1 事实层</strong>：联署、文本、人数、公开签署者和验证方式可见。</li>
+<li><strong>L2 机制判断层</strong>：跨公司员工网络已形成可见的治理倡议接口。</li>
+<li><strong>L3 组织判断层</strong>：不成立；没有协议、owner、预算、统一 gate 或结果。</li>
+<li><strong>来源</strong>：<a href="<a href="https://www.pacingthefrontier.com/" target="_blank" rel="noreferrer">https://www.pacingthefrontier.com/</a>">联署主站</a>、<a href="<a href="https://www.theverge.com/ai-artificial-intelligence/972161/ai-leaders-us-government-openai-anthropic-google-meta" target="_blank" rel="noreferrer">https://www.theverge.com/ai-artificial-intelligence/972161/ai-leaders-us-government-openai-anthropic-google-meta</a>">The Verge</a>、<a href="<a href="https://www.nbcnews.com/tech/security/openai-anthropic-scientists-ask-us-tools-ai-development-rcna589727" target="_blank" rel="noreferrer">https://www.nbcnews.com/tech/security/openai-anthropic-scientists-ask-us-tools-ai-development-rcna589727</a>">NBC</a>。</li>
+<li><strong>证据等级</strong>：直接来源+B+B；知识门槛 L2；联署事实高置信，企业背书与机制结果中低置信。</li>
+<li><strong>反向解释</strong>：事故后的倡议窗口、监管沟通或限制竞争的叙事；人数动态增长不等于代表性。</li>
+<li><strong>适用边界</strong>：只说明签署者的公开个人立场和跨公司联系，不代表雇主、全部员工或正式权力。</li>
+<li><strong>待验证问题</strong>：是否产生正式组织、章程、企业授权、技术工具、治理 owner 和可执行标准。</li>
+<li><strong>公开策略</strong>：可公开联署事实与个人身份边界；不写为行业已减速。</li>
+</ul>
+<h2 id="不是新闻-而是机制">不是新闻，而是机制</h2>
+<div class="table-wrap"><table><thead><tr>
+<th>外部事件</th>
+<th>组织机制</th>
+<th>效率含义</th>
+<th>证据等级</th>
+<th>反向解释</th>
+</tr></thead><tbody>
+<tr>
+<td>OpenAI 暂停涉事模型训练</td>
+<td>安全 / Infra 缺陷触发局部 stop/go</td>
+<td>以研发周期换取安全加固；净效率未知</td>
+<td>L2</td>
+<td>临时事故处置或声誉修复</td>
+</tr>
+<tr>
+<td>1,171 名员工跨公司联署</td>
+<td>非正式专业联盟承接单体公司无法解决的协调问题</td>
+<td>形成跨公司表达面，但没有执行权</td>
+<td>L2事实</td>
+<td>倡议、监管沟通或竞争壁垒叙事</td>
+</tr>
+<tr>
+<td>Amazon 模型组合收敛报道</td>
+<td>多模型资源向单一 frontier 项目集中</td>
+<td>可能减少资源分散，也降低技术选项</td>
+<td>L1</td>
+<td>正常产品生命周期管理</td>
+</tr>
+<tr>
+<td>国内全栈化 / 经验溢价综述</td>
+<td>岗位筛选从分工标签向闭环交付移动</td>
+<td>可能减少交接，也扩大个人兜底范围</td>
+<td>L1</td>
+<td>宏观收缩、猎头样本偏差或局部试点</td>
+</tr>
+</tbody></table></div>
+<h2 id="组织情报结论卡">组织情报结论卡</h2>
+<h3 id="主题">主题</h3>
+<p>前沿 AI 的安全治理开始同时影响“单模型研发节奏”和“跨公司协调表达”</p>
+<h3 id="组织情报结论">组织情报结论</h3>
+<p>本窗口出现两个相互独立的 L2 窄化信号：OpenAI 的旧官方措施、CEO 新访谈与媒体新增暂停报道共同支持“具体安全事故已影响涉事模型研发节奏”；前沿 AI 公司员工形成跨公司联署，请求建立国际层面的节奏协调工具。前者是机制层 L2，后者是联署事实 L2；两者都没有证明 Safety 获得稳定权力、公司建立新 gate 或行业真正减速。</p>
+<h3 id="外部信号">外部信号</h3>
+<ul>
+<li>特定模型训练被暂停，恢复条件尚不透明。</li>
+<li>联署跨越 Research、Safety、Policy 与部分高层，但以个人身份为主。</li>
+<li>OpenAI 与 Anthropic 的公开支持由媒体后续确认，仍不等于公司间执行协议。</li>
+</ul>
+<h3 id="与传统大厂和-ai-原生组织的关系">与传统大厂和 AI 原生组织的关系</h3>
+<div class="table-wrap"><table><thead><tr>
+<th>维度</th>
+<th>AI 原生组织</th>
+<th>传统大厂</th>
+<th>机制差异</th>
+</tr></thead><tbody>
+<tr>
+<td>决策</td>
+<td>特定模型出现局部 stop/go</td>
+<td>本窗口无新增正式门控</td>
+<td>AI 原生风险事件更靠近核心研发节奏</td>
+</tr>
+<tr>
+<td>团队</td>
+<td>跨公司员工网络可见</td>
+<td>传统大厂无同窗新网络</td>
+<td>非正式专业联系先于正式结构</td>
+</tr>
+<tr>
+<td>流程</td>
+<td>恢复标准与签核链不透明</td>
+<td>既有治理流程更制度化但本期无新证据</td>
+<td>可见表达多，正式接口少</td>
+</tr>
+<tr>
+<td>治理</td>
+<td>倡议上移至政府 / 国际层</td>
+<td>Amazon仅有组合治理弱信号</td>
+<td>外部协调与内部资源集中并行出现</td>
+</tr>
+</tbody></table></div>
+<h3 id="适用边界">适用边界</h3>
+<ul>
+<li>只适用于高风险前沿模型、安全 sandbox 和跨公司治理倡议。</li>
+<li>不可类比普通产品迭代、绩效、晋升、职级或一般研发团队。</li>
+<li>个人联署不代表公司授权；事件暂停不代表制度化否决权。</li>
+</ul>
+<h3 id="待验证问题">待验证问题</h3>
+<ul>
+<li>OpenAI 暂停与恢复的正式权责链、阈值和记录方式。</li>
+<li>联署是否形成章程、owner、技术工具或公司授权。</li>
+<li>节奏门控对研发周期、风险事件、返工和资源配置的实际影响。</li>
+</ul>
+<h3 id="入库判断">入库判断</h3>
+<ul>
+<li>事实多源互证，解释与事实分开，并保留反向解释与边界。</li>
+<li>仅以 L2 事实观察进入私有知识源；不作为方法、最佳实践或效率结论。</li>
+</ul>
+<h2 id="证据链与可信度">证据链与可信度</h2>
+<div class="table-wrap"><table><thead><tr>
+<th>判断</th>
+<th>事实验证</th>
+<th>机制验证</th>
+<th>趋势验证</th>
+<th>置信度</th>
+</tr></thead><tbody>
+<tr>
+<td>OpenAI 暂停涉事模型训练</td>
+<td>TechCrunch单源报道；OpenAI旧公告与CEO新访谈支持速度权衡</td>
+<td>仅确认本事件影响节奏</td>
+<td>与此前事故治理显性化连续</td>
+<td>暂停事实中；机制中高</td>
+</tr>
+<tr>
+<td>Safety 已获得稳定否决权</td>
+<td>无正式权限或 gate 文件</td>
+<td>无</td>
+<td>无</td>
+<td>低，不作结论</td>
+</tr>
+<tr>
+<td>跨公司员工联署存在</td>
+<td>主站 + The Verge + NBC</td>
+<td>签署验证方式和高层名单可见</td>
+<td>与近期多份开放权重 / 安全倡议并存</td>
+<td>高</td>
+</tr>
+<tr>
+<td>联署已改变公司或行业治理</td>
+<td>无协议、预算、owner、执行</td>
+<td>无</td>
+<td>无</td>
+<td>低，不作结论</td>
+</tr>
+<tr>
+<td>国内 / 传统大厂无 L2+ 新机制事实</td>
+<td>全名单、多语种、AnySearch、RSS与反向检索</td>
+<td>候选均为单源、旧闻或岗位页</td>
+<td>不代表内部没有变化</td>
+<td>中</td>
+</tr>
+</tbody></table></div>
+<h2 id="去伪存真记录">去伪存真记录</h2>
+<ul>
+<li>发生时间与报道时间分离：Amazon 7 月 22 日 AGI 裁员、蚂蚁 AFX 7 月 27 日披露、腾讯混元 7 月 23 日动作均不冒充今日变化。</li>
+<li>同源转载不算互证：Reuters 对 Amazon 模型组合稿仍引用 Business Insider，不构成第二事实源。</li>
+<li>条件式表达不改写为制度：Altman 的“可能需要 pace”不等于 OpenAI 正式减速。</li>
+<li>局部暂停不外推全公司：报道仅指涉事特定模型。</li>
+<li>联署不等于公司决议：主站明确个人评论不必然代表公司；高管签署也不自动改变公司治理。</li>
+<li>动态人数不是矛盾：媒体先后显示 1,100、1,134 与 1,171，主站持续开放签署。</li>
+<li>岗位页不等于今日扩编：OpenAI Ads、FDE、Post-training 和 Safety 等常驻岗位缺稳定首发时间，均不作为当日动作。</li>
+<li>产品、融资、访问量和普通模型发布若无权责、资源、评价、激励或流程证据，均不进入组织结论。</li>
+</ul>
+<h2 id="渠道索引补充">渠道索引补充</h2>
+<div class="table-wrap"><table><thead><tr>
+<th>渠道</th>
+<th>URL</th>
+<th>公司 / 主题</th>
+<th>证据等级</th>
+<th>是否新增</th>
+</tr></thead><tbody>
+<tr>
+<td>Pacing the Frontier</td>
+<td><a href="https://www.pacingthefrontier.com/" target="_blank" rel="noreferrer">https://www.pacingthefrontier.com/</a></td>
+<td>跨公司员工联署</td>
+<td>直接来源</td>
+<td>是</td>
+</tr>
+<tr>
+<td>The Verge</td>
+<td><a href="https://www.theverge.com/ai-artificial-intelligence/972161/ai-leaders-us-government-openai-anthropic-google-meta" target="_blank" rel="noreferrer">https://www.theverge.com/ai-artificial-intelligence/972161/ai-leaders-us-government-openai-anthropic-google-meta</a></td>
+<td>联署名单与发布时间</td>
+<td>B</td>
+<td>是</td>
+</tr>
+<tr>
+<td>NBC</td>
+<td><a href="https://www.nbcnews.com/tech/security/openai-anthropic-scientists-ask-us-tools-ai-development-rcna589727" target="_blank" rel="noreferrer">https://www.nbcnews.com/tech/security/openai-anthropic-scientists-ask-us-tools-ai-development-rcna589727</a></td>
+<td>联署、反向边界</td>
+<td>B</td>
+<td>是</td>
+</tr>
+<tr>
+<td>Colossus</td>
+<td><a href="https://colossus.com/episode/how-to-make-an-abundant-future/" target="_blank" rel="noreferrer">https://colossus.com/episode/how-to-make-an-abundant-future/</a></td>
+<td>Sam Altman 主访谈</td>
+<td>A</td>
+<td>是</td>
+</tr>
+<tr>
+<td>TechCrunch</td>
+<td><a href="https://techcrunch.com/2026/07/28/sam-altman-is-ready-to-decelerate/" target="_blank" rel="noreferrer">https://techcrunch.com/2026/07/28/sam-altman-is-ready-to-decelerate/</a></td>
+<td>特定模型暂停与条件式 pace</td>
+<td>B</td>
+<td>是</td>
+</tr>
+<tr>
+<td>36氪</td>
+<td><a href="https://36kr.com/p/3914883521730176" target="_blank" rel="noreferrer">https://36kr.com/p/3914883521730176</a></td>
+<td>国内岗位与人才结构观察</td>
+<td>B / 案例D</td>
+<td>是</td>
+</tr>
+</tbody></table></div>
+<h2 id="观察池-待核验池">观察池 / 待核验池</h2>
+<div class="table-wrap"><table><thead><tr>
+<th>线索</th>
+<th>当前层级</th>
+<th>为什么不够</th>
+<th>可能机制</th>
+<th>待验证证据</th>
+</tr></thead><tbody>
+<tr>
+<td>OpenAI stop/go 是否制度化</td>
+<td>L2事实</td>
+<td>无 gate、owner、阈值和长期样本</td>
+<td>安全进入研发节奏控制</td>
+<td>权责、恢复标准、周期和事件数据</td>
+</tr>
+<tr>
+<td>Pacing 联署后续</td>
+<td>L2事实</td>
+<td>无章程、预算、执行规则</td>
+<td>跨公司治理接口</td>
+<td>正式组织、公司授权和共同工具</td>
+</tr>
+<tr>
+<td>Amazon 模型资源集中</td>
+<td>L1</td>
+<td>首发单源，官方只局部回应</td>
+<td>模型组合治理</td>
+<td>团队、算力、预算和正式路线图</td>
+</tr>
+<tr>
+<td>国内初级岗位 / 全栈化</td>
+<td>L1</td>
+<td>公司案例匿名、宏观因果未控制</td>
+<td>岗位边界与筛选信号变化</td>
+<td>BU范围、岗位族、绩效口径、样本定义</td>
+</tr>
+<tr>
+<td>Anthropic 复合型 MTS</td>
+<td>L1</td>
+<td>单人入职，无团队权责</td>
+<td>pretraining—societal impacts跨界 IC</td>
+<td>项目、汇报线、决策权和同类岗位</td>
+</tr>
+<tr>
+<td>OpenAI Ads 专门岗位</td>
+<td>历史基线</td>
+<td>岗位早已被索引，非窗口新增</td>
+<td>渠道治理专业化</td>
+<td>入职、组织层级和运行结果</td>
+</tr>
+</tbody></table></div>
+<h2 id="公开知识库入库判断">公开知识库入库判断</h2>
+<ul>
+<li><strong>私有知识源</strong>：OpenAI 以“暂停报道 L1 + 局部门控机制 L2”入库，Pacing the Frontier 以 L2 事实观察入库；Amazon、国内人才结构和 Anthropic 单点人才进入观察池。</li>
+<li><strong>公开知识库</strong>：本轮没有新增 L3 / L4 组织效率结论、可迁移方法或最佳实践；只允许维护脱敏主题和公开来源索引。</li>
+<li><strong>信息边界</strong>：未使用、上传或公开行业私密参考、内部链接、访谈口径、截图、未授权附件或个人信息。</li>
+<li><strong>二次验证入口</strong>：本地私有研究入口 <code>research/private-industry-bigtech-watch/index.html</code>；密码沿用用户已指定的本地密码，本文不复述。</li>
+</ul>
+      </article>
+    </main>
+  </div>
+</body>
+</html>
