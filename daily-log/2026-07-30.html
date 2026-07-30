@@ -1,0 +1,802 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>每日扫描｜互联网大厂组织机制研究</title>
+  <style>
+    :root {
+      color-scheme: light;
+      --bg: #f6f7f1;
+      --paper: #fffdf8;
+      --ink: #172033;
+      --muted: #697181;
+      --line: #ded8c9;
+      --soft: #ece6d7;
+      --accent: #1f6f68;
+      --accent-2: #b45a34;
+      --code: #f1eee6;
+    }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "PingFang SC", "Microsoft YaHei", sans-serif;
+      color: var(--ink);
+      background: var(--bg);
+      line-height: 1.75;
+    }
+    .shell {
+      display: grid;
+      grid-template-columns: minmax(210px, 280px) minmax(0, 1fr);
+      min-height: 100vh;
+    }
+    aside {
+      position: sticky;
+      top: 0;
+      height: 100vh;
+      padding: 28px 22px;
+      border-right: 1px solid var(--line);
+      background: #ebe5d7;
+      overflow: auto;
+    }
+    main {
+      max-width: 1040px;
+      width: 100%;
+      padding: 56px 56px 90px;
+    }
+    .eyebrow {
+      color: var(--accent-2);
+      font-size: 13px;
+      font-weight: 800;
+      letter-spacing: .08em;
+      text-transform: uppercase;
+      margin: 0 0 10px;
+    }
+    h1 {
+      font-size: clamp(30px, 4vw, 48px);
+      line-height: 1.12;
+      margin: 0 0 18px;
+      letter-spacing: 0;
+    }
+    h2 {
+      font-size: 26px;
+      line-height: 1.32;
+      margin: 48px 0 14px;
+      padding-top: 18px;
+      border-top: 1px solid var(--line);
+    }
+    h3 {
+      font-size: 20px;
+      margin: 34px 0 10px;
+      color: #23314d;
+    }
+    h4 {
+      font-size: 17px;
+      margin: 26px 0 8px;
+    }
+    p, li {
+      font-size: 16px;
+      color: #2b3343;
+    }
+    p { margin: 10px 0; }
+    ul { padding-left: 1.2rem; }
+    li { margin: 7px 0; }
+    a { color: var(--accent); text-decoration-thickness: 1px; text-underline-offset: 3px; }
+    code {
+      background: var(--code);
+      border: 1px solid var(--line);
+      border-radius: 5px;
+      padding: 1px 5px;
+      font-size: .92em;
+    }
+    pre {
+      overflow: auto;
+      background: #fff9ec;
+      color: #202838;
+      border: 1px solid #d8ccb8;
+      border-radius: 8px;
+      padding: 18px;
+      box-shadow: inset 4px 0 0 var(--accent);
+      white-space: pre-wrap;
+      word-break: break-word;
+    }
+    pre code {
+      display: block;
+      padding: 0;
+      border: 0;
+      background: transparent;
+      color: inherit;
+      line-height: 1.7;
+      font-size: 14px;
+    }
+    blockquote {
+      margin: 24px 0;
+      padding: 14px 18px;
+      border-left: 4px solid var(--accent);
+      background: #eef4ee;
+      color: #344033;
+    }
+    .table-wrap {
+      overflow-x: auto;
+      margin: 18px 0 26px;
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      background: var(--paper);
+    }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      min-width: 720px;
+    }
+    th, td {
+      padding: 12px 14px;
+      border-bottom: 1px solid var(--line);
+      vertical-align: top;
+      text-align: left;
+      font-size: 14px;
+    }
+    th {
+      background: #e7e0cf;
+      color: #26324a;
+      font-weight: 800;
+      white-space: nowrap;
+    }
+    tr:last-child td { border-bottom: 0; }
+    .topbar {
+      display: flex;
+      gap: 10px;
+      align-items: center;
+      flex-wrap: wrap;
+      margin-bottom: 28px;
+    }
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 38px;
+      padding: 8px 12px;
+      border: 1px solid var(--line);
+      border-radius: 7px;
+      background: var(--paper);
+      color: var(--ink);
+      text-decoration: none;
+      font-weight: 750;
+      font-size: 14px;
+    }
+    .primary { background: var(--accent); border-color: var(--accent); color: white; }
+    .toc-title {
+      margin: 0 0 12px;
+      font-size: 14px;
+      font-weight: 850;
+      color: #273247;
+    }
+    .toc a {
+      display: block;
+      padding: 7px 0;
+      color: #465064;
+      text-decoration: none;
+      font-size: 14px;
+      line-height: 1.45;
+      border-bottom: 1px solid rgba(23,32,51,.08);
+    }
+    .toc a.level-3 { padding-left: 14px; font-size: 13px; color: #626b78; }
+    .meta {
+      color: var(--muted);
+      font-size: 14px;
+      margin-bottom: 24px;
+    }
+    @media (max-width: 900px) {
+      .shell { display: block; }
+      aside { position: relative; height: auto; border-right: 0; border-bottom: 1px solid var(--line); }
+      main { padding: 34px 20px 70px; }
+      .toc { columns: 1; }
+      table { min-width: 640px; }
+    }
+  </style>
+</head>
+<body>
+  <div class="shell">
+    <aside>
+      <p class="toc-title">目录</p>
+      <nav class="toc">
+        <a class="level-2" href="#今日结论">今日结论</a>
+        <a class="level-2" href="#今日组织机制信号">今日组织机制信号</a>
+        <a class="level-2" href="#传统大厂与-ai-原生组织分组观察">传统大厂与 AI 原生组织分组观察</a>
+        <a class="level-2" href="#高价值变化卡片">高价值变化卡片</a>
+        <a class="level-3" href="#openai-lilian-weng-回归-rsi-成为具名领导的跨研究协调面">OpenAI / Lilian Weng 回归 / RSI 成为具名领导的跨研究协调面</a>
+        <a class="level-3" href="#meta-企业-ai-gtm-从广告关系延伸到新的企业能力">Meta / 企业 AI GTM / 从广告关系延伸到新的企业能力</a>
+        <a class="level-3" href="#meta-约-8-000-人缩减-公告-离场与统计口径不同步">Meta / 约 8,000 人缩减 / 公告、离场与统计口径不同步</a>
+        <a class="level-3" href="#openai-gpt-5-6-推理栈-模型进入自身-infra-持续优化闭环">OpenAI / GPT-5.6 推理栈 / 模型进入自身 Infra 持续优化闭环</a>
+        <a class="level-2" href="#不是新闻-而是机制">不是新闻，而是机制</a>
+        <a class="level-2" href="#组织情报结论卡">组织情报结论卡</a>
+        <a class="level-3" href="#主题">主题</a>
+        <a class="level-3" href="#组织情报结论">组织情报结论</a>
+        <a class="level-3" href="#外部信号">外部信号</a>
+        <a class="level-3" href="#与传统大厂的对照">与传统大厂的对照</a>
+        <a class="level-3" href="#适用边界">适用边界</a>
+        <a class="level-3" href="#可观察指标">可观察指标</a>
+        <a class="level-3" href="#证据等级">证据等级</a>
+        <a class="level-3" href="#入库判断">入库判断</a>
+      </nav>
+    </aside>
+    <main>
+      <div class="topbar">
+        <a class="btn primary" href="../index.html">返回研究源</a>
+        <a class="btn" href="./2026-07-30.md">查看 Markdown 原文</a>
+      </div>
+      <p class="eyebrow">Daily Scan</p>
+      <h1>2026-07-30 组织情报信息</h1>
+      <p class="meta">本页面由本地 Markdown 自动渲染生成，仍保留原始 md 文件作为知识库源文档。</p>
+      <article>
+        <blockquote>扫描窗口：2026-07-29 08:36 CST—2026-07-30 08:36 CST；过去 72 小时仅用于第一来源追溯、历史基线、late-catch 与反证。AnySearch CLI 为首选检索入口，辅以公司投资者材料、公司原文、AP、FT 与反向搜索。本文只呈现结论、事实、机制判断、证据强度、反向解释、适用边界和待验证问题。</blockquote>
+<h2 id="今日结论">今日结论</h2>
+<ul>
+<li><strong>本窗口没有新增 L3 / L4 组织效率结论或组织方法。</strong> 最强的新组织信号是 OpenAI 确认 Lilian Weng 回归并领导一个支持跨研究 recursive self-improvement（RSI）的 top-level team；它达到 L2 事实观察，但没有团队规模、权责、资源或结果，不能写成研究组织重构完成。</li>
+<li><strong>Meta 的企业 AI 商业化边界正在扩张，但组织尚未公开成形。</strong> 现有广告主和中小企业可沿用销售与合作伙伴关系；API、企业生产力、算力和非营销场景客户需要不同能力。公开材料没有负责人、岗位矩阵、汇报线、FDE / Solutions 编制或正式组织公告，只能作为 L1 高价值机制信号。</li>
+<li><strong>Meta 的裁员公告、人员离场与财务确认存在季度级时间差。</strong> 6 月 30 日员工数为 75,472，仍包含约 8,000 名受 5 月缩减影响的员工，多数预计到第三季度末才不再计入。该事实达到 L2，可说明重组仍处执行期；不能说明最终净裁员、人效、管理跨度或 AI 团队净增员。</li>
+<li><strong>AI 原生组织新增三条 L2 工作边界信号。</strong> OpenAI 公开“生产流量—模型辅助诊断 / 改码—验证—上线—继续测量”的 Research / Infra / Product 闭环；Perplexity 将 Agent 安全拆成跨 harness 的端点监控—阻断—审计层；OpenAI 以免费席位、专家支持和反馈渠道搭建外部科研 adoption loop。厂商披露的 20% / 15% 效率数字没有独立审计，不写成效率结论。</li>
+<li><strong>国内公司没有新增 L2+ 组织机制事实。</strong> 滴滴职位刷新仅为 L1；腾讯混元为 7 月 23 日旧事件复盘；华为“AI 软件部”和 DeepSeek 实习生日薪均无第一来源，不进入核心区。</li>
+</ul>
+<h2 id="今日组织机制信号">今日组织机制信号</h2>
+<div class="table-wrap"><table><thead><tr>
+<th>公司 / 组织</th>
+<th>时间</th>
+<th>信号</th>
+<th>机制标签</th>
+<th>L1 事实 / L2 机制 / L3 判断</th>
+<th>证据与置信度</th>
+<th>阅读价值</th>
+</tr></thead><tbody>
+<tr>
+<td>OpenAI 跨研究 RSI</td>
+<td>7 月 30 日 02:57 / 05:07 CST 报道</td>
+<td>公司确认 Lilian Weng 回归并领导 top-level team，支持跨研究 RSI</td>
+<td>跨研究协调、automated AI research</td>
+<td>回归与职责 L2事实；组织权责与效率未到 L3</td>
+<td>BI B + TechCrunch B，均获公司确认 / 高</td>
+<td>核心结论</td>
+</tr>
+<tr>
+<td>Meta 企业 AI</td>
+<td>7 月 30 日 04:30 CST 电话会</td>
+<td>CEO 称非营销类企业客户需要补建历史上不具备的 “new muscle”</td>
+<td>企业 GTM 边界、商业化能力建设</td>
+<td>表述事实 L1；组织尚未公开；效率未到 L3</td>
+<td>官方电话会 A + 同场转录 B / 中高</td>
+<td>核心结论</td>
+</tr>
+<tr>
+<td>Meta 全公司</td>
+<td>7 月 30 日 04:01 CST 财报</td>
+<td>75,472 人仍包含约 8,000 名受 5 月缩减影响员工，多数到 Q3 末退出口径</td>
+<td>重组执行节奏、人员离场时滞</td>
+<td>数字与执行期 L2；效率结果不成立</td>
+<td>官方财报 A + AP B / 高</td>
+<td>核心结论</td>
+</tr>
+<tr>
+<td>OpenAI Research / Infra / Product</td>
+<td>7 月 29 日官方工程文</td>
+<td>GPT-5.6 参与生产流量分析、kernel / speculator 优化与 agent harness 设计</td>
+<td>模型参与自身 Infra、Context / Harness Engineering</td>
+<td>机制 L2；20% / 15% 为厂商自报 L1结果；替代工程师不成立</td>
+<td>OpenAI A + The New Stack B / 中高</td>
+<td>核心结论</td>
+</tr>
+<tr>
+<td>Perplexity Numbat</td>
+<td>7 月 30 日 01:01 CST 官方发布</td>
+<td>开源跨 Agent harness 的端点监控、阻断与审计层</td>
+<td>Product / Infra / Safety 边界平台化</td>
+<td>代码与发布 L2事实；效果与新团队不成立</td>
+<td>官方研究页 + GitHub + 官方账号 A / 中高</td>
+<td>持续观察</td>
+</tr>
+<tr>
+<td>OpenAI Academic Researchers</td>
+<td>7 月 30 日 01:19 CST 官方发布</td>
+<td>先覆盖 1 万、计划 2027 年覆盖 10 万研究者，含培训、专家支持与反馈</td>
+<td>外部科研 adoption / feedback loop</td>
+<td>计划设计 L2；科研效率与 10 万覆盖未成立</td>
+<td>OpenAI A + Axios B / 中高</td>
+<td>持续观察</td>
+</tr>
+<tr>
+<td>Microsoft AI Infra</td>
+<td>7 月 30 日 05:30 CST 电话会</td>
+<td>新 GPU <code>dock-to-live</code> 时间同比口径缩短近 50%，但组织动作未披露</td>
+<td>基础设施交付节奏</td>
+<td>结果事实 L1；组织因果未验证</td>
+<td>官方电话会 A / 中</td>
+<td>持续观察</td>
+</tr>
+<tr>
+<td>Google DeepMind / AlphaFold</td>
+<td>FT 页面标注 7 月 28 日，窗口外 late-catch</td>
+<td>原 AlphaFold 专队多数成员在过去一年转向 Gemini / 其他科学项目，部分离职</td>
+<td>专题项目制向平台化科研</td>
+<td>单一首发 B / L1；产品与数据库仍运行</td>
+<td>FT + 同源转述 / 中低</td>
+<td>持续观察</td>
+</tr>
+</tbody></table></div>
+<h2 id="传统大厂与-ai-原生组织分组观察">传统大厂与 AI 原生组织分组观察</h2>
+<ul>
+<li><strong>国内传统大厂与 AI 原生组织</strong>：严格窗口内没有 L2+ 新增。滴滴职位页把 LLM / RAG / Prompt / Agent 经验列为国际客服产品岗加分项，但可能只是旧岗位刷新；华为与 DeepSeek 传闻均为 D / E 级线索。</li>
+<li><strong>国外传统科技公司</strong>：Meta 同时出现“新能力尚待搭建”和“旧缩减尚未完成结算”两种组织阶段；Microsoft 只披露基础设施结果，没有足以解释结果的组织机制。Google AlphaFold 为窗口外 late-catch，不能作为今日新增。</li>
+<li><strong>国外 AI 原生公司</strong>：OpenAI 同日把 RSI 设为具名领导的跨研究协调面，并披露模型参与自身推理栈的持续优化闭环；Perplexity 把 Agent 安全做成跨 harness 的端点层；OpenAI 学术计划把外部研究者变成规模化使用与反馈渠道。Pacing the Frontier 未见章程、预算、企业授权或执行工具等新证据。</li>
+<li><strong>趋同与分化</strong>：传统大厂的可见信号更多出现在财报、人员口径和商业化能力缺口；AI 原生组织的新边界更多出现在跨研究协调、模型—Infra 协作、安全控制层和外部反馈网络。两组都没有达到 L3 的效率结果。</li>
+</ul>
+<h2 id="高价值变化卡片">高价值变化卡片</h2>
+<h3 id="openai-lilian-weng-回归-rsi-成为具名领导的跨研究协调面">OpenAI / Lilian Weng 回归 / RSI 成为具名领导的跨研究协调面</h3>
+<ul>
+<li><strong>时间</strong>：Business Insider 于 2026-07-30 02:57 CST、TechCrunch 于 05:07 CST 报道。</li>
+<li><strong>组织范围</strong>：OpenAI 跨研究工作；recursive self-improvement、内部 AI research acceleration；具体团队成员与汇报线未公开。</li>
+<li><strong>机制名称</strong>：跨研究协调面；automated AI research；具名 top-level team。</li>
+<li><strong>机制理念</strong>：把 AI 辅助内部 AI 研究从单点议题提升为需要跨研究支持与具名负责人的工作面。</li>
+<li><strong>机制动作</strong>：OpenAI 向两家媒体确认 Lilian Weng 回归，并将领导一个支持跨研究 RSI 的 top-level team。</li>
+<li><strong>应用关系</strong>：可能连接模型研究、研究工具、评测和安全经验；绩效、职级、预算、决策权与发布责任均未披露。</li>
+<li><strong>组织影响</strong>：潜在影响是减少研究主题之间的工具、实验与评测协调；没有周期、规模、自动化贡献率、质量或风险结果。</li>
+<li><strong>L1 事实层</strong>：Weng 回归、团队层级与职责由公司发言人确认。</li>
+<li><strong>L2 机制判断层</strong>：OpenAI 正把 automated AI research 组织成具名领导的跨研究协调面。</li>
+<li><strong>L3 组织判断层</strong>：不成立；不能判断是否为新设实体、是否整合 Safety、是否集中权力或已提高研究效率。</li>
+<li><strong>来源与渠道</strong>：<a href="<a href="https://www.businessinsider.com/lilian-weng-returns-to-openai-after-leaving-thinking-machines-lab-2026-7" target="_blank" rel="noreferrer">https://www.businessinsider.com/lilian-weng-returns-to-openai-after-leaving-thinking-machines-lab-2026-7</a>">Business Insider</a>、<a href="<a href="https://techcrunch.com/2026/07/29/thinking-machines-co-founder-lilian-weng-left-the-company-citing-health-reasons-then-joined-openai/" target="_blank" rel="noreferrer">https://techcrunch.com/2026/07/29/thinking-machines-co-founder-lilian-weng-left-the-company-citing-health-reasons-then-joined-openai/</a>">TechCrunch</a>。</li>
+<li><strong>证据等级</strong>：B + B，均获得 OpenAI 直接确认；L2 事实观察；职责高置信，组织机制中置信。</li>
+<li><strong>互证情况</strong>：两家媒体分别报道并获公司确认；原始信源同为 OpenAI，尚无组织图或团队侧独立证据。</li>
+<li><strong>反向解释</strong>：高端人才回流、健康条件下的 scoped role 或人才竞争叙事；不一定意味着大规模新组织。</li>
+<li><strong>与历史基线关系</strong>：Weng 2018—2024 年在 OpenAI 领导 Applied AI Research 与 Safety Systems；RSI / automated AI research 不是新议题，新意是具名 top-level team 与跨研究支持面。</li>
+<li><strong>组织发展关注点</strong>：Research 边界、跨研究协作、人才留存、研究节奏、评测与安全接口。</li>
+<li><strong>适用边界</strong>：只适用于 OpenAI 对该团队职责的公开确认；不能外推为前沿实验室普遍组织模板。</li>
+<li><strong>待验证问题</strong>：团队成员、负责人授权、汇报线、资源、研究工具、与 Safety / Infra / Product 的边界和结果指标。</li>
+<li><strong>公开策略</strong>：可公开窄化事实与来源；不写“安全权力回归”或“RSI 已实现”。</li>
+</ul>
+<h3 id="meta-企业-ai-gtm-从广告关系延伸到新的企业能力">Meta / 企业 AI GTM / 从广告关系延伸到新的企业能力</h3>
+<ul>
+<li><strong>时间</strong>：Meta Q2 2026 电话会于 2026-07-29 13:30 PT，即 2026-07-30 04:30 CST。</li>
+<li><strong>组织范围</strong>：Meta 企业 AI 商业化；现有广告主与中小企业关系、Business Agents、API、企业生产力工具、算力及其他大型企业服务。</li>
+<li><strong>机制名称</strong>：企业 GTM 能力边界扩张；现有渠道复用与新能力补建并存。</li>
+<li><strong>机制理念</strong>：面向营销和客户触达的商业关系可延展，但服务非营销类企业场景需要不同的销售、产品、交付和反馈闭环。</li>
+<li><strong>机制动作</strong>：CEO 明确称这是 Meta 历史上没有的、需要建设的 “somewhat different / new muscle”，并称具体方式稍后披露。</li>
+<li><strong>应用关系</strong>：与 Business Agents、模型 API、企业生产力服务和潜在算力销售相连；未披露绩效、薪酬、职级或负责人安排。</li>
+<li><strong>系统 / 工具</strong>：公开材料提及 Business Agents、API、内部 coding / productivity tools；没有正式 GTM 系统或组织图。</li>
+<li><strong>组织影响</strong>：如果后续落地，客户需求到产品 / 模型反馈链可能缩短；同时会新增销售—产品—Research—Infra 的接口。两种影响均为机制假设，不是效果事实。</li>
+<li><strong>L1 事实层</strong>：Meta 承认需要补建新的企业能力，并将在后续披露组织方式。</li>
+<li><strong>L2 机制判断层</strong>：企业服务边界正在从广告和商家关系外扩；组织设计尚不可见。</li>
+<li><strong>L3 组织判断层</strong>：不成立；没有组织公告、负责人、HC、岗位矩阵、授权或运行结果。</li>
+<li><strong>来源与渠道</strong>：<a href="<a href="https://investor.atmeta.com/investor-events/event-details/2026/Q2-2026-Earnings-Call/default.aspx" target="_blank" rel="noreferrer">https://investor.atmeta.com/investor-events/event-details/2026/Q2-2026-Earnings-Call/default.aspx</a>">Meta Q2 官方电话会</a>、<a href="<a href="https://www.investing.com/news/transcripts/earnings-call-transcript-meta-misses-eps-in-q2-2026-as-stock-sinks-after-hours-93CH-4821910" target="_blank" rel="noreferrer">https://www.investing.com/news/transcripts/earnings-call-transcript-meta-misses-eps-in-q2-2026-as-stock-sinks-after-hours-93CH-4821910</a>">电话会转录</a>。</li>
+<li><strong>证据等级</strong>：A + B，但事实来自同一电话会；知识门槛 L1；事实高置信，组织形态低置信。</li>
+<li><strong>互证情况</strong>：7 月 1 日对外出售 AI 算力报道可互证战略方向，不能互证企业 GTM 已成立。</li>
+<li><strong>反向解释</strong>：可能是财报中的商业化叙事或资本开支解释；“将建设”“稍后披露”本身说明组织尚未成形。</li>
+<li><strong>与历史基线关系</strong>：Meta 以广告主和中小企业为核心的商业关系成熟；直接服务广义企业客户是边界外扩，不等同于现有销售团队改名。</li>
+<li><strong>组织发展关注点</strong>：职能边界、跨职能协作成本、客户反馈路径、企业交付责任。</li>
+<li><strong>适用边界</strong>：只支持 Meta 对能力缺口的公开判断，不能类比为所有消费互联网公司都需要独立企业 AI 组织。</li>
+<li><strong>待验证问题</strong>：负责人、汇报线、岗位族群、Solutions / FDE / Support 边界、客户 owner、收入归属和 Research 反馈接口。</li>
+<li><strong>公开策略</strong>：可公开事实和来源；不沉淀为 GTM 方法。</li>
+</ul>
+<h3 id="meta-约-8-000-人缩减-公告-离场与统计口径不同步">Meta / 约 8,000 人缩减 / 公告、离场与统计口径不同步</h3>
+<ul>
+<li><strong>时间</strong>：Meta Q2 结果于 2026-07-29 16:01 ET，即 2026-07-30 04:01 CST。</li>
+<li><strong>组织范围</strong>：Meta 全公司；关联 2026 年 5 月 headcount reduction。</li>
+<li><strong>机制名称</strong>：大规模缩减的分阶段执行与统计确认。</li>
+<li><strong>机制动作</strong>：Q2 确认 11.8 亿美元遣散费用；6 月 30 日员工数 75,472，仍包含约 8,000 名受缩减影响员工，多数预计 Q3 末不再反映。</li>
+<li><strong>应用关系</strong>：人员离场、遣散费用、员工口径与后续组织稳态；没有公开绩效分布、岗位族群、团队边界或 AI 调岗净额。</li>
+<li><strong>组织影响</strong>：可确认组织仍处执行与过渡期；管理跨度、协作成本、决策速度、人效和人才密度的净变化均未知。</li>
+<li><strong>L1 事实层</strong>：官方财报披露人数、费用和退出节奏。</li>
+<li><strong>L2 机制判断层</strong>：公告、实际离场与季度统计之间存在可见时滞，当前口径不是缩减完成后的稳态。</li>
+<li><strong>L3 组织判断层</strong>：不成立；不能判断缩减是否改善效率，也不能把全部变化归因于 AI。</li>
+<li><strong>来源与渠道</strong>：<a href="<a href="https://investor.atmeta.com/investor-news/press-release-details/2026/Meta-Reports-Second-Quarter-2026-Results/default.aspx" target="_blank" rel="noreferrer">https://investor.atmeta.com/investor-news/press-release-details/2026/Meta-Reports-Second-Quarter-2026-Results/default.aspx</a>">Meta Q2 官方结果</a>、<a href="<a href="https://www.prnewswire.com/news-releases/meta-reports-second-quarter-2026-results-302838214.html" target="_blank" rel="noreferrer">https://www.prnewswire.com/news-releases/meta-reports-second-quarter-2026-results-302838214.html</a>">官方稿镜像</a>、<a href="<a href="https://apnews.com/article/bcbc62dde6d2cac724e3b3385fcabeab" target="_blank" rel="noreferrer">https://apnews.com/article/bcbc62dde6d2cac724e3b3385fcabeab</a>">AP</a>。</li>
+<li><strong>证据等级</strong>：A + B；数字与执行节奏 L2；高置信；阅读价值“核心结论”。</li>
+<li><strong>互证情况</strong>：官方财报与 AP 对统计口径和 Q3 退出节奏一致；Q1 官方员工数为 77,986。</li>
+<li><strong>反向解释</strong>：同比仅下降 1% 不能否定约 8,000 人计划，因为 Q2 口径仍包含受影响员工；遣散费也不证明最终节省或效率。</li>
+<li><strong>与历史基线关系</strong>：Q1 77,986 人；Q2 75,472 人，季度末账面减少 2,514 人，但不能把差值当作最终裁员人数。</li>
+<li><strong>组织发展关注点</strong>：变革执行节奏、组织过渡成本、人才密度、管理跨度与统计口径。</li>
+<li><strong>适用边界</strong>：只适用于该次缩减的公开员工与费用口径；不能推断具体团队或地区。</li>
+<li><strong>待验证问题</strong>：Q3 稳态人数、岗位族群、AI 团队净变化、管理层级、重组后决策与交付指标。</li>
+<li><strong>公开策略</strong>：可公开数字和时间边界；不写人效改善。</li>
+</ul>
+<h3 id="openai-gpt-5-6-推理栈-模型进入自身-infra-持续优化闭环">OpenAI / GPT-5.6 推理栈 / 模型进入自身 Infra 持续优化闭环</h3>
+<ul>
+<li><strong>时间</strong>：OpenAI 官方工程文标注 2026-07-29。</li>
+<li><strong>组织范围</strong>：OpenAI Research、inference Infra、Codex / ChatGPT Work agentic harness；涉及 MTS、routing、kernel、speculator、context 与 caching。</li>
+<li><strong>机制名称</strong>：生产流量—模型辅助诊断 / 改码—验证—上线—继续测量的持续反馈闭环。</li>
+<li><strong>机制动作</strong>：GPT-5.6 Sol 参与流量分析、路由策略、production kernel 重写、speculator 实验 / 训练和 workload-specific 配置；Rust harness 通过 deferred discovery、10k tool-output 默认上限、append-only history 与确定性工具顺序降低重复工作。</li>
+<li><strong>应用关系</strong>：Research / Infra / Product 与 Context / Harness Engineering 边界相连；不涉及公开职级、绩效或人员替代。</li>
+<li><strong>系统 / 工具</strong>：Codex、Triton、Gluon、FpSan、speculative decoding、KV cache、agentic harness。</li>
+<li><strong>组织影响</strong>：模型开始成为基础设施工程协作者，可能扩大团队可探索的方案空间并缩短局部迭代；人工审查量、失败率、回滚、质量和岗位变化未披露。</li>
+<li><strong>L1 事实层</strong>：流程由 OpenAI 公开；20% serving cost 与 15% 用量单位-generation efficiency 为厂商自报结果。</li>
+<li><strong>L2 机制判断层</strong>：Research / Infra / Product 已形成模型参与自身 serving stack 的持续优化闭环，Context / Harness 成为独立效率杠杆。</li>
+<li><strong>L3 组织判断层</strong>：不成立；没有独立成本审计，不能判断替代工程师、无人化 Infra 或整体组织效率。</li>
+<li><strong>来源与渠道</strong>：<a href="<a href="https://openai.com/index/gpt-5-6-frontier-intelligence-efficiency/" target="_blank" rel="noreferrer">https://openai.com/index/gpt-5-6-frontier-intelligence-efficiency/</a>">OpenAI 工程文</a>、<a href="<a href="https://thenewstack.io/gpt-5-6-serving-efficiency/" target="_blank" rel="noreferrer">https://thenewstack.io/gpt-5-6-serving-efficiency/</a>">The New Stack</a>。</li>
+<li><strong>证据等级</strong>：A + B；流程 L2，中高置信；量化效果 L1，中低置信。</li>
+<li><strong>反向解释</strong>：GPT-5.6 发布后的工程营销；缺少成本基线、统计窗口、人工参与量、失败率和回滚数据。</li>
+<li><strong>与历史基线关系</strong>：GPT-5.6、Triton / Gluon 与 Codex harness 均非当日新设；窗口新增的是跨栈协作机制细节。</li>
+<li><strong>组织发展关注点</strong>：Research / Infra / Product 边界、Context / Harness 岗位、工程验证责任、执行节奏与风险。</li>
+<li><strong>适用边界</strong>：只适用于大规模推理、可验证 kernel 和 agent loop；不能类比所有知识工作。</li>
+<li><strong>待验证问题</strong>：人工审查比例、错误与回滚、长期成本、质量稳定性、职责与绩效口径。</li>
+<li><strong>公开策略</strong>：可公开厂商披露并保留“未独立验证”标签；不写为效率方法。</li>
+</ul>
+<h2 id="不是新闻-而是机制">不是新闻，而是机制</h2>
+<div class="table-wrap"><table><thead><tr>
+<th>外部事件</th>
+<th>组织机制</th>
+<th>效率含义</th>
+<th>证据等级</th>
+<th>反向解释</th>
+</tr></thead><tbody>
+<tr>
+<td>Lilian Weng 回归领导 top-level RSI team</td>
+<td>automated AI research 形成具名领导的跨研究协调面</td>
+<td>可能减少研究工具与实验协调；无结果</td>
+<td>L2</td>
+<td>高端人才回流、scoped role 或人才战叙事</td>
+</tr>
+<tr>
+<td>Meta 称企业服务需要 “new muscle”</td>
+<td>现有广告渠道与新企业 GTM 能力分开识别</td>
+<td>能力缺口被公开，但组织与效率尚未形成</td>
+<td>L1</td>
+<td>财报叙事或尚未落实的战略意图</td>
+</tr>
+<tr>
+<td>Meta Q2 员工数仍含约 8,000 名受影响员工</td>
+<td>缩减公告、离场与统计确认分阶段发生</td>
+<td>当前处过渡期，稳态协作与人效不可读</td>
+<td>L2事实</td>
+<td>会计与 HR 时点差异，不代表执行失控</td>
+</tr>
+<tr>
+<td>GPT-5.6 参与自身 serving stack 优化</td>
+<td>模型成为 Infra 工程协作者，Context / Harness 独立成杠杆</td>
+<td>扩大实验空间；厂商效率数字未独立验证</td>
+<td>L2机制 / L1结果</td>
+<td>工程营销或人工投入被隐藏</td>
+</tr>
+<tr>
+<td>Perplexity 开源 Numbat</td>
+<td>Agent 安全从单产品内控拆成跨 harness 端点层</td>
+<td>可能减少重复安全接入；效果未知</td>
+<td>L2事实</td>
+<td>开源包装动作，不代表新组织</td>
+</tr>
+<tr>
+<td>OpenAI 学术研究者计划</td>
+<td>免费席位 + 支持 + 社群 + 反馈构成外部科研 loop</td>
+<td>扩大复杂工作流样本，也增加支持成本</td>
+<td>L2事实</td>
+<td>获客、生态锁定与品牌投资</td>
+</tr>
+<tr>
+<td>Microsoft 披露 Infra 交付周期改善</td>
+<td>跨栈容量交付结果变快</td>
+<td>只证明结果，不证明组织设计是原因</td>
+<td>L1</td>
+<td>资本投入、供应改善或硬件代际</td>
+</tr>
+<tr>
+<td>AlphaFold 专队拆分 late-catch</td>
+<td>专题项目制向通用平台 / 多项目配置转移</td>
+<td>可能提高资源复用，也可能削弱深度连续性</td>
+<td>L1</td>
+<td>项目成熟后的正常人员流动</td>
+</tr>
+</tbody></table></div>
+<h2 id="组织情报结论卡">组织情报结论卡</h2>
+<h3 id="主题">主题</h3>
+<p>AI 原生组织把跨研究、Infra 与外部反馈边界显性化</p>
+<h3 id="组织情报结论">组织情报结论</h3>
+<p>本窗口的 L2 信号显示，AI 原生公司的新边界更多出现在三处：OpenAI 以具名负责人承接跨研究 RSI，模型进入自身推理栈的持续工程反馈，外部研究者与 Agent 端点安全被组织成新的反馈 / 控制层。它们都比普通产品发布更接近权责、流程与系统边界，但仍缺少团队规模、授权、稳定结果与独立验证，不能沉淀为组织方法。</p>
+<h3 id="外部信号">外部信号</h3>
+<ul>
+<li>信号 1：OpenAI 确认 Weng 领导支持跨研究 RSI 的 top-level team。</li>
+<li>信号 2：OpenAI 披露模型参与 routing、kernel、speculator 与 harness 优化。</li>
+<li>信号 3：Perplexity Numbat 与 OpenAI 学术计划分别形成外部控制层和外部反馈层。</li>
+</ul>
+<h3 id="与传统大厂的对照">与传统大厂的对照</h3>
+<div class="table-wrap"><table><thead><tr>
+<th>维度</th>
+<th>AI 原生组织</th>
+<th>传统大厂</th>
+<th>机制差异</th>
+</tr></thead><tbody>
+<tr>
+<td>决策</td>
+<td>跨研究 RSI 与模型—Infra 优化靠近研发主链</td>
+<td>Meta 企业 GTM 仍处能力意图，缩减处执行期</td>
+<td>AI 原生边界变化更贴近技术工作流</td>
+</tr>
+<tr>
+<td>团队</td>
+<td>具名 top-level team 与跨职能闭环出现</td>
+<td>新企业能力尚无公开组织图</td>
+<td>AI 原生职责可见度高于编制可见度</td>
+</tr>
+<tr>
+<td>流程</td>
+<td>生产测量—模型改进—验证—上线形成循环</td>
+<td>战略表述、人员离场、会计确认分阶段</td>
+<td>两组公开证据的时间粒度不同</td>
+</tr>
+<tr>
+<td>治理</td>
+<td>端点安全与外部科研反馈成为新控制 / 学习层</td>
+<td>财报对人数和费用形成正式约束</td>
+<td>两者都没有公开稳态效率结果</td>
+</tr>
+</tbody></table></div>
+<h3 id="适用边界">适用边界</h3>
+<ul>
+<li><strong>可能成立的前提</strong>：公开材料能区分战略表述、实际组织动作和结果指标。</li>
+<li><strong>不可直接类比的情况</strong>：只看到单一岗位、产品发布、裁员标题或单次事故。</li>
+<li><strong>需要保护的风险边界</strong>：时间错配、同源转述、统计口径、财务压力与 PR 叙事。</li>
+</ul>
+<h3 id="可观察指标">可观察指标</h3>
+<ul>
+<li><strong>周期指标</strong>：跨研究实验周期、模型辅助改动的验证 / 回滚周期、企业能力公告到负责人 / 岗位落地时间。</li>
+<li><strong>人效指标</strong>：本窗口无可用公开稳态数据。</li>
+<li><strong>质量指标</strong>：kernel 正确性、Agent 端点误报 / 绕过、科研工作流失败与企业交付返工；暂无独立公开数据。</li>
+<li><strong>风险指标</strong>：自动改码回滚、跨研究权责冲突、外部反馈偏差、组织过渡期关键人才流失。</li>
+</ul>
+<h3 id="证据等级">证据等级</h3>
+<p>L2，限于组织变化阶段的事实识别；不构成组织方法。</p>
+<h3 id="入库判断">入库判断</h3>
+<ul>
+<li>[x] 事实与解释分开</li>
+<li>[x] 有来源强度和互证边界</li>
+<li>[x] 有反向解释和适用边界</li>
+<li>[x] 没有把意图写成组织完成</li>
+<li>[x] 没有替用户做决策或给处方</li>
+</ul>
+<h2 id="证据链与可信度">证据链与可信度</h2>
+<div class="table-wrap"><table><thead><tr>
+<th>判断</th>
+<th>事实验证</th>
+<th>机制验证</th>
+<th>趋势验证</th>
+<th>置信度</th>
+</tr></thead><tbody>
+<tr>
+<td>OpenAI RSI 成为具名跨研究协调面</td>
+<td>BI + TechCrunch，均获公司确认</td>
+<td>top-level team 与跨研究职责可见，权责未披露</td>
+<td>单一新团队</td>
+<td>中高</td>
+</tr>
+<tr>
+<td>Meta 企业 GTM 是待补建能力</td>
+<td>官方电话会 + 同场转录</td>
+<td>CEO 明确区分现有渠道与新能力，组织细节未披露</td>
+<td>单公司单次表述</td>
+<td>中高</td>
+</tr>
+<tr>
+<td>Meta 约 8,000 人缩减仍在执行期</td>
+<td>官方财报 + AP</td>
+<td>人数、遣散费和 Q3 退出节奏一致</td>
+<td>可与 Q1 口径对比</td>
+<td>高</td>
+</tr>
+<tr>
+<td>GPT-5.6 参与自身推理栈</td>
+<td>OpenAI 工程文 + 媒体审阅</td>
+<td>production loop、验证工具与 harness 可见</td>
+<td>单公司流程披露</td>
+<td>机制中高 / 结果中低</td>
+</tr>
+<tr>
+<td>Perplexity Numbat</td>
+<td>官方研究页 + GitHub 实体</td>
+<td>跨 harness 端点层可观察</td>
+<td>单公司开源项目</td>
+<td>中高</td>
+</tr>
+<tr>
+<td>OpenAI 学术科研 loop</td>
+<td>官方计划 + Axios</td>
+<td>席位、支持、社群、反馈组成完整设计</td>
+<td>延续既有科研项目</td>
+<td>中高</td>
+</tr>
+<tr>
+<td>Microsoft Infra 交付变快</td>
+<td>官方电话会</td>
+<td>无组织动作，因果不可验证</td>
+<td>无同行同口径</td>
+<td>中</td>
+</tr>
+<tr>
+<td>AlphaFold 专队拆分</td>
+<td>FT 单一首发 + 同源转述</td>
+<td>人员去向与策略表述可见，官方独立公告缺失</td>
+<td>项目成熟期单案例</td>
+<td>中低</td>
+</tr>
+</tbody></table></div>
+<h2 id="去伪存真记录">去伪存真记录</h2>
+<ul>
+<li><strong>时间错配</strong>：FT 的 AlphaFold 报道标注 7 月 28 日，按英国发布时间早于本窗口起点；作为 late-catch 进入观察池，不冒充今日新增。</li>
+<li><strong>时间错配</strong>：OpenAI 事故官方更新为 7 月 28 日，TechCrunch“暂停训练”报道为 7 月 29 日 04:17 CST，均早于窗口；不作为今日新增。</li>
+<li><strong>窗口错配</strong>：国内 FDE 招聘文章发布时间为 7 月 29 日 08:31，早于窗口起点 5 分钟；严格排除。</li>
+<li><strong>旧闻复盘</strong>：腾讯混元基础模型部合并发生在 7 月 23 日；7 月 29 日文章没有新增组织事实。</li>
+<li><strong>传闻排除</strong>：华为 2012 实验室“AI 软件部”与 DeepSeek 实习生日薪均无第一来源、正式通知或独立互证，维持 L0。</li>
+<li><strong>同源互证降级</strong>：Meta 电话会官方入口与媒体转录是同一事件，不算两个独立组织事实源；企业 GTM 保持 L1。</li>
+<li><strong>财务因果降级</strong>：Meta 裁员数字和遣散费可确认，AI 因果、人效改善和管理跨度变化均不可确认。</li>
+<li><strong>结果不等于机制</strong>：Microsoft <code>dock-to-live</code> 改善可以记录为 Infra 结果，不能推断扁平化、减少 HC 或跨栈组织已经成熟。</li>
+<li><strong>产品仍在运行</strong>：AlphaFold 专队拆分不等于 AlphaFold 产品、数据库或科学方向关闭。</li>
+<li><strong>stop/go 收紧</strong>：官方只确认内部研究原型被停用、加密并限制访问；没有正式 stop/go gate、Safety Committee 下令停训、恢复条件或全公司 release gate。</li>
+<li><strong>Pacing 收紧</strong>：签名数升至约 1,273，但没有章程、预算、公司间协议或共同 gate；仍是倡议，不写“行业共同减速”。</li>
+<li><strong>效率数字降级</strong>：OpenAI 20% / 15% 与 Microsoft 近 50% 均为厂商口径；没有独立审计，不进入 L3 效率结论。</li>
+<li><strong>边界审校</strong>：全文不含处方、排期、责任人、执行清单或决策替代。</li>
+</ul>
+<h2 id="渠道索引补充">渠道索引补充</h2>
+<div class="table-wrap"><table><thead><tr>
+<th>渠道</th>
+<th>URL</th>
+<th>公司</th>
+<th>主题</th>
+<th>证据等级</th>
+<th>是否新增</th>
+</tr></thead><tbody>
+<tr>
+<td>Meta Investor Relations</td>
+<td><a href="https://investor.atmeta.com/investor-events/event-details/2026/Q2-2026-Earnings-Call/default.aspx" target="_blank" rel="noreferrer">https://investor.atmeta.com/investor-events/event-details/2026/Q2-2026-Earnings-Call/default.aspx</a></td>
+<td>Meta</td>
+<td>企业 AI GTM 能力边界</td>
+<td>A</td>
+<td>是</td>
+</tr>
+<tr>
+<td>Meta Investor Relations</td>
+<td><a href="https://investor.atmeta.com/investor-news/press-release-details/2026/Meta-Reports-Second-Quarter-2026-Results/default.aspx" target="_blank" rel="noreferrer">https://investor.atmeta.com/investor-news/press-release-details/2026/Meta-Reports-Second-Quarter-2026-Results/default.aspx</a></td>
+<td>Meta</td>
+<td>员工数、遣散费、执行节奏</td>
+<td>A</td>
+<td>是</td>
+</tr>
+<tr>
+<td>AP</td>
+<td><a href="https://apnews.com/article/bcbc62dde6d2cac724e3b3385fcabeab" target="_blank" rel="noreferrer">https://apnews.com/article/bcbc62dde6d2cac724e3b3385fcabeab</a></td>
+<td>Meta</td>
+<td>员工口径核对</td>
+<td>B</td>
+<td>是</td>
+</tr>
+<tr>
+<td>TechCrunch</td>
+<td><a href="https://techcrunch.com/2026/07/29/thinking-machines-co-founder-lilian-weng-left-the-company-citing-health-reasons-then-joined-openai/" target="_blank" rel="noreferrer">https://techcrunch.com/2026/07/29/thinking-machines-co-founder-lilian-weng-left-the-company-citing-health-reasons-then-joined-openai/</a></td>
+<td>OpenAI</td>
+<td>Weng 回归与 RSI 团队</td>
+<td>B</td>
+<td>是</td>
+</tr>
+<tr>
+<td>OpenAI Engineering</td>
+<td><a href="https://openai.com/index/gpt-5-6-frontier-intelligence-efficiency/" target="_blank" rel="noreferrer">https://openai.com/index/gpt-5-6-frontier-intelligence-efficiency/</a></td>
+<td>OpenAI</td>
+<td>模型参与推理栈与 harness</td>
+<td>A</td>
+<td>是</td>
+</tr>
+<tr>
+<td>Perplexity Research / GitHub</td>
+<td><a href="https://research.perplexity.ai/articles/securing-agents-across-perplexity%E2%80%99s-client-endpoints-with-numbat" target="_blank" rel="noreferrer">https://research.perplexity.ai/articles/securing-agents-across-perplexity%E2%80%99s-client-endpoints-with-numbat</a></td>
+<td>Perplexity</td>
+<td>跨 Agent harness 端点安全</td>
+<td>A</td>
+<td>是</td>
+</tr>
+<tr>
+<td>OpenAI 官方</td>
+<td><a href="https://openai.com/index/chatgpt-for-academic-researchers/" target="_blank" rel="noreferrer">https://openai.com/index/chatgpt-for-academic-researchers/</a></td>
+<td>OpenAI</td>
+<td>外部科研 adoption / feedback</td>
+<td>A</td>
+<td>是</td>
+</tr>
+<tr>
+<td>Microsoft Investor Relations</td>
+<td><a href="https://www.microsoft.com/en-us/investor/events/fy-2026/earnings-fy-2026-q4" target="_blank" rel="noreferrer">https://www.microsoft.com/en-us/investor/events/fy-2026/earnings-fy-2026-q4</a></td>
+<td>Microsoft</td>
+<td>AI Infra 交付节奏</td>
+<td>A</td>
+<td>是</td>
+</tr>
+<tr>
+<td>Financial Times</td>
+<td><a href="https://www.ft.com/content/61b2953d-ee0d-45de-af6e-a9c1cf524b33" target="_blank" rel="noreferrer">https://www.ft.com/content/61b2953d-ee0d-45de-af6e-a9c1cf524b33</a></td>
+<td>Google DeepMind</td>
+<td>AlphaFold late-catch</td>
+<td>B</td>
+<td>是</td>
+</tr>
+</tbody></table></div>
+<h2 id="观察池-待核验池">观察池 / 待核验池</h2>
+<div class="table-wrap"><table><thead><tr>
+<th>线索</th>
+<th>当前层级</th>
+<th>为什么不够</th>
+<th>可能机制</th>
+<th>待验证问题</th>
+</tr></thead><tbody>
+<tr>
+<td>OpenAI RSI top-level team</td>
+<td>L2事实</td>
+<td>无成员、授权、资源与结果</td>
+<td>跨研究 automated AI research</td>
+<td>组织边界、汇报线、工具、周期、风险</td>
+</tr>
+<tr>
+<td>Meta enterprise GTM “new muscle”</td>
+<td>L1</td>
+<td>无组织公告、负责人、岗位矩阵与运行结果</td>
+<td>新企业销售 / Solutions / 交付能力</td>
+<td>负责人、HC、汇报线、客户 owner 与反馈接口</td>
+</tr>
+<tr>
+<td>Meta 约 8,000 人缩减后稳态</td>
+<td>L2事实</td>
+<td>Q2 仍含受影响员工</td>
+<td>重组的季度级执行与结算</td>
+<td>Q3 人数、岗位族群、层级和效率指标</td>
+</tr>
+<tr>
+<td>GPT-5.6 自参与推理栈</td>
+<td>L2机制 / L1结果</td>
+<td>量化结果无独立审计</td>
+<td>模型—Infra 持续优化闭环</td>
+<td>人工审查、失败、回滚、质量、岗位</td>
+</tr>
+<tr>
+<td>Perplexity Numbat</td>
+<td>L2事实</td>
+<td>同源官方材料，效果未知</td>
+<td>跨 harness 安全控制层</td>
+<td>覆盖、误报、绕过、性能、组织 owner</td>
+</tr>
+<tr>
+<td>OpenAI 学术研究者计划</td>
+<td>L2事实</td>
+<td>10 万为目标，无学校侧结果</td>
+<td>外部科研 feedback loop</td>
+<td>实际覆盖、支持负荷、反馈进入产品路径</td>
+</tr>
+<tr>
+<td>Microsoft AI Infra 交付</td>
+<td>L1</td>
+<td>只有结果，没有组织因果</td>
+<td>跨栈容量交付</td>
+<td>团队、流程、资源、质量和风险</td>
+</tr>
+<tr>
+<td>AlphaFold 专队拆分</td>
+<td>L1 late-catch</td>
+<td>单一首发、窗口外、过去一年渐进发生</td>
+<td>专题项目制转平台化</td>
+<td>官方组织边界、资源、科研结果和人才留存</td>
+</tr>
+<tr>
+<td>滴滴 Intl Product 职位刷新</td>
+<td>L1</td>
+<td>可能是旧 JD 刷新，AI 只是加分项</td>
+<td>客服产品岗位吸收生成式 AI 能力</td>
+<td>首发时间、同类岗位、绩效和团队边界</td>
+</tr>
+<tr>
+<td>Pacing the Frontier 后续</td>
+<td>L2历史事实</td>
+<td>本窗口无章程、预算、授权或工具</td>
+<td>跨公司治理接口</td>
+<td>正式组织、企业授权和执行机制</td>
+</tr>
+</tbody></table></div>
+<h2 id="公开知识库入库判断">公开知识库入库判断</h2>
+<ul>
+<li><strong>私有知识源</strong>：OpenAI RSI 团队、GPT-5.6 推理栈机制、Perplexity Numbat、OpenAI 学术研究计划与 Meta 裁员执行节奏以 L2 事实 / 机制观察入库；Meta enterprise GTM、Microsoft Infra 与 AlphaFold late-catch 进入 L1 观察池。</li>
+<li><strong>公开知识库</strong>：本轮没有新增 L3 / L4 组织方法、效率结论、AI 替代岗位结论或最佳实践，不更新公开方法库。</li>
+<li><strong>隐私与公开边界</strong>：未读取、上传或引用桌面私有参考、内部链接、访谈口径、截图、未授权附件或个人信息。</li>
+<li><strong>二次验证入口</strong>：使用本地私有研究入口 <code>research/private-industry-bigtech-watch/index.html</code>；密码沿用用户已指定的本地密码。</li>
+</ul>
+      </article>
+    </main>
+  </div>
+</body>
+</html>
