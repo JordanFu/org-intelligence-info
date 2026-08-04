@@ -1,0 +1,622 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>组织情报信息</title>
+  <style>
+    :root {
+      color-scheme: light;
+      --bg: #f6f7f1;
+      --paper: #fffdf8;
+      --ink: #172033;
+      --muted: #697181;
+      --line: #ded8c9;
+      --soft: #ece6d7;
+      --accent: #1f6f68;
+      --accent-2: #b45a34;
+      --code: #f1eee6;
+    }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "PingFang SC", "Microsoft YaHei", sans-serif;
+      color: var(--ink);
+      background: var(--bg);
+      line-height: 1.75;
+    }
+    .shell {
+      display: grid;
+      grid-template-columns: minmax(210px, 280px) minmax(0, 1fr);
+      min-height: 100vh;
+    }
+    aside {
+      position: sticky;
+      top: 0;
+      height: 100vh;
+      padding: 28px 22px;
+      border-right: 1px solid var(--line);
+      background: #ebe5d7;
+      overflow: auto;
+    }
+    main {
+      max-width: 1040px;
+      width: 100%;
+      padding: 56px 56px 90px;
+    }
+    .eyebrow {
+      color: var(--accent-2);
+      font-size: 13px;
+      font-weight: 800;
+      letter-spacing: .08em;
+      text-transform: uppercase;
+      margin: 0 0 10px;
+    }
+    h1 {
+      font-size: clamp(30px, 4vw, 48px);
+      line-height: 1.12;
+      margin: 0 0 18px;
+      letter-spacing: 0;
+    }
+    h2 {
+      font-size: 26px;
+      line-height: 1.32;
+      margin: 48px 0 14px;
+      padding-top: 18px;
+      border-top: 1px solid var(--line);
+    }
+    h3 {
+      font-size: 20px;
+      margin: 34px 0 10px;
+      color: #23314d;
+    }
+    h4 {
+      font-size: 17px;
+      margin: 26px 0 8px;
+    }
+    p, li {
+      font-size: 16px;
+      color: #2b3343;
+    }
+    p { margin: 10px 0; }
+    ul { padding-left: 1.2rem; }
+    li { margin: 7px 0; }
+    a { color: var(--accent); text-decoration-thickness: 1px; text-underline-offset: 3px; }
+    code {
+      background: var(--code);
+      border: 1px solid var(--line);
+      border-radius: 5px;
+      padding: 1px 5px;
+      font-size: .92em;
+    }
+    pre {
+      overflow: auto;
+      background: #fff9ec;
+      color: #202838;
+      border: 1px solid #d8ccb8;
+      border-radius: 8px;
+      padding: 18px;
+      box-shadow: inset 4px 0 0 var(--accent);
+      white-space: pre-wrap;
+      word-break: break-word;
+    }
+    pre code {
+      display: block;
+      padding: 0;
+      border: 0;
+      background: transparent;
+      color: inherit;
+      line-height: 1.7;
+      font-size: 14px;
+    }
+    blockquote {
+      margin: 24px 0;
+      padding: 14px 18px;
+      border-left: 4px solid var(--accent);
+      background: #eef4ee;
+      color: #344033;
+    }
+    .table-wrap {
+      overflow-x: auto;
+      margin: 18px 0 26px;
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      background: var(--paper);
+    }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      min-width: 720px;
+    }
+    th, td {
+      padding: 12px 14px;
+      border-bottom: 1px solid var(--line);
+      vertical-align: top;
+      text-align: left;
+      font-size: 14px;
+    }
+    th {
+      background: #e7e0cf;
+      color: #26324a;
+      font-weight: 800;
+      white-space: nowrap;
+    }
+    tr:last-child td { border-bottom: 0; }
+    .topbar {
+      display: flex;
+      gap: 10px;
+      align-items: center;
+      flex-wrap: wrap;
+      margin-bottom: 28px;
+    }
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 38px;
+      padding: 8px 12px;
+      border: 1px solid var(--line);
+      border-radius: 7px;
+      background: var(--paper);
+      color: var(--ink);
+      text-decoration: none;
+      font-weight: 750;
+      font-size: 14px;
+    }
+    .primary { background: var(--accent); border-color: var(--accent); color: white; }
+    .toc-title {
+      margin: 0 0 12px;
+      font-size: 14px;
+      font-weight: 850;
+      color: #273247;
+    }
+    .toc a {
+      display: block;
+      padding: 7px 0;
+      color: #465064;
+      text-decoration: none;
+      font-size: 14px;
+      line-height: 1.45;
+      border-bottom: 1px solid rgba(23,32,51,.08);
+    }
+    .toc a.level-3 { padding-left: 14px; font-size: 13px; color: #626b78; }
+    .meta {
+      color: var(--muted);
+      font-size: 14px;
+      margin-bottom: 24px;
+    }
+    @media (max-width: 900px) {
+      .shell { display: block; }
+      aside { position: relative; height: auto; border-right: 0; border-bottom: 1px solid var(--line); }
+      main { padding: 34px 20px 70px; }
+      .toc { columns: 1; }
+      table { min-width: 640px; }
+    }
+  </style>
+</head>
+<body>
+  <div class="shell">
+    <aside>
+      <p class="toc-title">目录</p>
+      <nav class="toc">
+        <a class="level-2" href="#今日结论">今日结论</a>
+        <a class="level-2" href="#今日组织机制信号">今日组织机制信号</a>
+        <a class="level-2" href="#传统大厂与-ai-原生组织分组观察">传统大厂与 AI 原生组织分组观察</a>
+        <a class="level-2" href="#高价值变化卡片">高价值变化卡片</a>
+        <a class="level-3" href="#aws-superblocks-伙伴产品-云平台与客户治理形成三方交付面">AWS—Superblocks / 伙伴产品、云平台与客户治理形成三方交付面</a>
+        <a class="level-3" href="#阿里千问办公-赛马收敛出现人员与评价接口的新单源证据">阿里千问办公 / 赛马收敛出现人员与评价接口的新单源证据</a>
+        <a class="level-3" href="#蚂蚁灵波-集团核心业务接入外部资本接口">蚂蚁灵波 / 集团核心业务接入外部资本接口</a>
+        <a class="level-2" href="#不是新闻而是机制">不是新闻而是机制</a>
+        <a class="level-2" href="#组织情报结论卡">组织情报结论卡</a>
+        <a class="level-3" href="#主题-ai-能力进入生产场景时-控制面比组织名称更早显性化">主题：AI 能力进入生产场景时，控制面比组织名称更早显性化</a>
+        <a class="level-3" href="#组织情报结论">组织情报结论</a>
+        <a class="level-3" href="#外部信号">外部信号</a>
+        <a class="level-3" href="#与传统大厂的对照">与传统大厂的对照</a>
+        <a class="level-3" href="#适用边界">适用边界</a>
+        <a class="level-3" href="#可观察指标">可观察指标</a>
+        <a class="level-3" href="#证据等级">证据等级</a>
+        <a class="level-3" href="#入库判断">入库判断</a>
+        <a class="level-2" href="#证据链与可信度">证据链与可信度</a>
+      </nav>
+    </aside>
+    <main>
+      <div class="topbar">
+        <a class="btn primary" href="../index.html">返回研究源</a>
+        <a class="btn" href="./2026-08-04.md">查看 Markdown 原文</a>
+      </div>
+      <p class="eyebrow">Daily Scan</p>
+      <h1>2026-08-04 组织情报信息</h1>
+      <p class="meta">本页面由本地 Markdown 自动渲染生成，仍保留原始 md 文件作为知识库源文档。</p>
+      <article>
+        <blockquote>扫描窗口：2026-08-03 10:20 CST—2026-08-04 08:30 CST；过去 72 小时仅用于第一来源追溯、历史基线、late-catch 与反证。AnySearch CLI 为首选检索入口，辅以公司原文、权威媒体和反向搜索。本文只呈现结论、事实、机制判断、证据强度、反向解释、适用边界和待验证问题。</blockquote>
+<h2 id="今日结论">今日结论</h2>
+<ul>
+<li><strong>本窗口没有新增 L3 / L4 组织结论或组织方法。</strong> 唯一达到 L2 的窗口硬信号是 AWS 与 Superblocks 的多年合作：业务用户应用构建、AWS 基础设施与伙伴销售、客户 IT / Security 生产准入被接入同一交付路径；它不构成 AWS 内部重组或效率结果。</li>
+<li><strong>阿里千问办公是旧整合线的新证据，不是 8 月 3 日新重组。</strong> 三产品合并与陈宇森负责在 7 月已披露；本窗口新增的是公开公测，以及虎嗅关于“ATH 一级事业部、人才归并、短期不以用户数和 MAU 为首要指标”的单源细节。产品整合可维持 L2，新增组织与绩效细节只能 L1。</li>
+<li><strong>蚂蚁灵波把外部资本接入具身智能业务的事实仍停留在融资接触阶段。</strong> 公司确认正在接触投资人，强媒体披露拟募资规模；尚无融资完成、股权变化、独立董事会或经营授权变化。它提示“集团资源耦合 + 外部资本接口”的混合治理可能性，不等于独立运营已经发生。</li>
+<li><strong>AI 原生公司没有窗口内 L2+ 新组织动作。</strong> ElevenLabs 的“无传统 PM、工程与增长分担产品职责、3—11 人自治产品队”是高价值机制披露，但至少自 2025 年已有同一口径；Cursor 的 Google Workspace 插件只扩展产品上下文与权限面，两者均不作为本窗口组织变化。</li>
+<li><strong>去伪的核心是日期与层级。</strong> Anthropic 8 月 3 日仅纠正 cyber-eval 页面中的评测名称；OpenAI full-stack 文章正文日期仍为 7 月 31 日；多条“8 月 3 日人才战”材料复述 6 月人事。产品上线、页面修订和旧人事再传播均未升级。</li>
+</ul>
+<h2 id="今日组织机制信号">今日组织机制信号</h2>
+<div class="table-wrap"><table><thead><tr>
+<th>公司 / 组织</th>
+<th>时间</th>
+<th>信号</th>
+<th>机制标签</th>
+<th>L1 事实 / L2 机制 / L3 判断</th>
+<th>证据与置信度</th>
+<th>阅读价值</th>
+</tr></thead><tbody>
+<tr>
+<td>AWS—Superblocks—客户 IT / Security</td>
+<td>8 月 4 日 01:00 CST 公开</td>
+<td>Superblocks 在客户 AWS VPC 内运行，双方联合 GTM，客户保留模型、权限、审计与生产准入</td>
+<td>伙伴型交付、三方责任面、生产治理</td>
+<td>事实 L2；机制 L2；AWS 组织与效率无 L3</td>
+<td>AWS / Superblocks A + TechCrunch B / 高</td>
+<td>核心结论</td>
+</tr>
+<tr>
+<td>阿里千问办公</td>
+<td>8 月 3 日 11:00 公测；15:06 组织独家</td>
+<td>三产品公开合一；新增披露一级事业部、人才归并与早期评价重点</td>
+<td>赛马收敛、单一 owner、评价接口</td>
+<td>产品事实历史 L2；新增组织 / 绩效细节 L1；无 L3</td>
+<td>官方口径 A + 经济观察报 B；组织细节虎嗅 C / 中高</td>
+<td>持续观察</td>
+</tr>
+<tr>
+<td>蚂蚁灵波</td>
+<td>8 月 3 日 14:17—18:22</td>
+<td>公司确认接触投资人，强媒体披露首轮融资计划</td>
+<td>外部资本接口、集团资源耦合</td>
+<td>融资接触 L2；治理机制 L1-L2；独立运营无 L3</td>
+<td>公司回应 + 晚点 / 券商中国 B / 中高</td>
+<td>持续观察</td>
+</tr>
+<tr>
+<td>ElevenLabs 产品组织</td>
+<td>8 月 3 日披露，时刻未知</td>
+<td>无传统 PM；工程 / 增长分担产品职责；3—11 人产品队</td>
+<td>职能重组、双 owner、小团队自治</td>
+<td>本次披露 L1；历史机制 L2；效率无 L3</td>
+<td>Miro 正式访谈 B + 2025 同一陈述者 B / 中</td>
+<td>背景参考</td>
+</tr>
+<tr>
+<td>Cursor Workspace Plugins</td>
+<td>8 月 3 日，时刻未知</td>
+<td>Agent 可读写 Google Workspace</td>
+<td>Context / action boundary、权限治理</td>
+<td>产品事实 L1；组织与岗位无 L2 / L3</td>
+<td>Cursor A 单源 / 中高</td>
+<td>背景参考</td>
+</tr>
+</tbody></table></div>
+<h2 id="传统大厂与-ai-原生组织分组观察">传统大厂与 AI 原生组织分组观察</h2>
+<ul>
+<li><strong>国内传统大厂</strong>：阿里新增的是对既有三产品整合的运行证据与单源组织细节，不是新重组；蚂蚁灵波出现外部融资接口，但仍保持集团核心载体与资源支持口径。字节 / 飞书 / 火山的 7 月 30 日重组已在上期收录，窗口内报道不重复升级。</li>
+<li><strong>国外传统科技公司</strong>：AWS–Superblocks 是唯一 L2 新观察。Google Sail Tower 只证明办公节点启用，没有新增人数、团队迁移或权责变化；其余目标公司未检出可公开验证的 L2+ 信号。</li>
+<li><strong>AI 原生组织</strong>：ElevenLabs 提供了高价值职能边界材料，但属于旧机制新披露；Cursor 只到产品权限面；OpenAI、Anthropic 主要是旧线、页面修订或二手再传播。其余目标公司没有可核验的窗口内组织动作。</li>
+<li><strong>趋同与分化</strong>：三类材料共同指向“把实验性 AI 能力接入生产责任面”，但证据层级不同：阿里是内部产品线收敛，AWS 是伙伴与客户治理接口，ElevenLabs 是产品职能分摊。样本不足以形成行业趋势或效率优劣判断。</li>
+</ul>
+<h2 id="高价值变化卡片">高价值变化卡片</h2>
+<h3 id="aws-superblocks-伙伴产品-云平台与客户治理形成三方交付面">AWS—Superblocks / 伙伴产品、云平台与客户治理形成三方交付面</h3>
+<ul>
+<li><strong>时间与范围</strong>：2026-08-03 13:00 EDT（8 月 4 日 01:00 CST）公开；范围限 AWS 上企业内部 AI 应用从原型到生产的路径。</li>
+<li><strong>机制动作</strong>：Superblocks 在客户自己的 AWS VPC 内运行并接入 Bedrock、EC2、Aurora；AWS 成为首选云提供商，双方通过 field enablement、Marketplace、联合营销和 workshop 触达客户；客户 IT / Security 保留身份、网络、加密、审计、模型批准与生产部署控制。</li>
+<li><strong>L1 事实层</strong>：多年合作、技术集成、联合 GTM 和客户治理边界由 AWS、Superblocks 与 TechCrunch 直接确认。</li>
+<li><strong>L2 机制判断层</strong>：企业 AI 应用交付被拆成三块责任：伙伴提供业务应用生成与应用控制面，AWS 提供模型、数据、云安全、采购和销售入口，客户 IT / Security 持有生产准入。</li>
+<li><strong>L3 组织判断层</strong>：不成立；没有新设 AWS FDE / Solutions 团队、负责人、编制、汇报线、事故责任矩阵或结果数据。</li>
+<li><strong>组织影响</strong>：伙伴补齐 AWS 当前缺少的业务用户 vibe-coding 应用层，客户治理仍留在既有云控制面；同时增加 AWS、伙伴与客户三方在售前、支持和事故处置上的接口。</li>
+<li><strong>证据</strong>：<a href="https://press.aboutamazon.com/aws/2026/8/superblocks-and-aws-announce-strategic-collaboration-to-bring-secure-enterprise-ai-app-development-to-amazon-bedrock">AWS 官方</a>、<a href="https://www.superblocks.com/blog/superblocks-3-0-secure-private-vibe-coding-on-aws-built-for-the-age-of-ai-cyberattacks">Superblocks</a>、<a href="https://techcrunch.com/2026/08/03/aws-is-helping-vibe-coding-startup-superblocks-and-the-implications-are-big/">TechCrunch</a>；A + B，L2，高置信。</li>
+<li><strong>反向解释</strong>：也可能主要是既有 Marketplace 合作的联合营销与集成加深；Superblocks 早在 2025 年已进入 AWS Marketplace。厂商声称的成本、安全和速度结果均未获独立验证。</li>
+<li><strong>适用边界与待验证问题</strong>：仅适用于 AWS 上企业内部应用；待验证双方实际 owner、field 投入、售前 / 实施 / 支持分工、事故责任、客户采用与运行结果。</li>
+</ul>
+<h3 id="阿里千问办公-赛马收敛出现人员与评价接口的新单源证据">阿里千问办公 / 赛马收敛出现人员与评价接口的新单源证据</h3>
+<ul>
+<li><strong>时间与范围</strong>：8 月 3 日 11:00 三方官方账号宣布公测；15:06 虎嗅发布组织独家。范围限 ATH 下 QoderWork、MuleRun、悟空、钉钉与千问办公。</li>
+<li><strong>历史基线</strong>：三产品整合与陈宇森统筹在 7 月 2 日已获公司回应；“千问办公”命名、团队资源重配难点和产品入口在 7 月 21—28 日已入库。</li>
+<li><strong>本次新增</strong>：虎嗅称原悟空事业部升级为 ATH 一级“千问办公事业部”，旧产品不再独立、人才进入统一体系；短期评价更重产品可用性、企业需求洞察与场景落地，不把用户数和 MAU 作为首要指标。</li>
+<li><strong>L1 事实层</strong>：组织层级、人才归并与评价重点均来自匿名独家；官方只确认产品合一、公测与企业级定位。</li>
+<li><strong>L2 机制判断层</strong>：既有产品赛马继续向单一产品、单一负责人和企业场景验证接口收敛；“人员已全部并线”和“绩效口径已变”仍不能确认。</li>
+<li><strong>L3 组织判断层</strong>：不成立；缺正式组织通知、预算 / P&amp;L、编制、汇报线、绩效表和第二独立来源。</li>
+<li><strong>组织影响</strong>：产品和负责人收敛可能减少重复路线，也会把原三条技术栈、钉钉、企业交付与收入归属的协调集中到同一 owner 周围。</li>
+<li><strong>证据</strong>：<a href="https://www.huxiu.com/article/4880200.html">虎嗅独家</a>、<a href="http://www.eeo.com.cn/2026/0803/985067.shtml">经济观察报</a>、<a href="https://news.qq.com/rain/a/20260721A05TDF00">7 月 21 日历史披露</a>；产品整合 L2，窗口增量 L1，中置信。</li>
+<li><strong>反向解释</strong>：可能主要是品牌、产品和发布节奏统一；“短期不看 MAU”也可能是早期产品叙事，不是奖金或正式绩效规则。陈宇森同时负责钉钉与千问办公也可能是过渡双帽。</li>
+<li><strong>适用边界与待验证问题</strong>：不能外推阿里全面结束赛马或钉钉被并入千问办公；待验证组织通知、人员预算、实虚线汇报、P&amp;L、正式 OKR 与企业交付 / FDE 归属。</li>
+</ul>
+<h3 id="蚂蚁灵波-集团核心业务接入外部资本接口">蚂蚁灵波 / 集团核心业务接入外部资本接口</h3>
+<ul>
+<li><strong>时间与范围</strong>：8 月 3 日 14:17 晚点首披，18:22 券商中国跟进并引述公司回应；范围限蚂蚁集团全资子公司灵波科技。</li>
+<li><strong>机制动作</strong>：强媒体称已启动首轮融资、拟募资 15 亿元；公司确认“确实在跟投资人接触”，同时强调仍是蚂蚁具身智能核心载体，集团继续提供 AI Infra 与场景资源。</li>
+<li><strong>L1 事实层</strong>：对外融资接触成立；拟募资规模、轮次节奏和“算力预算挤压”分别来自媒体与匿名人士，不等于交易完成。</li>
+<li><strong>L2 机制判断层</strong>：内部长期研发单元可能在保持集团资源耦合的同时，引入外部资金与未来股东治理接口；这是混合治理假设，不是独立运营事实。</li>
+<li><strong>L3 组织判断层</strong>：不成立；没有交割、股权比例、董事会、员工股权、P&amp;L、预算权或汇报线变化。</li>
+<li><strong>组织影响</strong>：若交易完成，资本与治理接口会增加；集团算力、数据与场景继续耦合，意味着资源配置并未完全外部化。</li>
+<li><strong>证据</strong>：<a href="https://www.163.com/dy/article/L3DOIAAS0531M1CO.html">晚点镜像</a>、<a href="https://qzs.stcn.com/article/detail/621129.html">券商中国</a>、<a href="https://www.popcj.com/depth/8073372608463868">蓝鲸报道镜像</a>；B + B + 公司回应，融资接触 L2，治理影响 L1-L2。</li>
+<li><strong>反向解释</strong>：外部融资也可能只是资本市场窗口、算力成本或估值管理；公司“持续支持”口径与匿名“资源挤压”解释相互制衡。</li>
+<li><strong>适用边界与待验证问题</strong>：只支持融资接触；待验证交割、股权与董事席位、独立预算、员工激励、共享资源定价和经营授权。</li>
+</ul>
+<h2 id="不是新闻而是机制">不是新闻而是机制</h2>
+<div class="table-wrap"><table><thead><tr>
+<th>外部事件</th>
+<th>组织机制</th>
+<th>效率含义</th>
+<th>证据等级</th>
+<th>反向解释</th>
+</tr></thead><tbody>
+<tr>
+<td>AWS 与 Superblocks 多年合作</td>
+<td>伙伴应用层 + AWS 基础设施 / GTM + 客户生产治理</td>
+<td>责任面更可识别，同时新增三方支持与事故接口</td>
+<td>L2</td>
+<td>标准 Marketplace 合作加深，不是组织重构</td>
+</tr>
+<tr>
+<td>千问办公公开公测及单源组织细节</td>
+<td>产品赛马向单一 owner 与企业场景验证收敛</td>
+<td>重复路线可能减少，整合与 P&amp;L 协调负荷可能上升</td>
+<td>历史 L2 / 新增 L1</td>
+<td>品牌合一不等于人员、预算和绩效合一</td>
+</tr>
+<tr>
+<td>蚂蚁灵波接触外部投资人</td>
+<td>集团资源耦合 + 外部资本接口</td>
+<td>可能增加资本纪律与治理接口；运行结果未知</td>
+<td>事实 L2 / 机制 L1-L2</td>
+<td>资本窗口或算力成本也能解释</td>
+</tr>
+<tr>
+<td>ElevenLabs 再披露无传统 PM 与小团队</td>
+<td>PM 工作分摊给工程和增长 owner</td>
+<td>职能边界更模糊；效率与负荷无数据</td>
+<td>历史 L2 / 本次 L1</td>
+<td>title 重分配，不是 PM 工作消失</td>
+</tr>
+</tbody></table></div>
+<h2 id="组织情报结论卡">组织情报结论卡</h2>
+<h3 id="主题-ai-能力进入生产场景时-控制面比组织名称更早显性化">主题：AI 能力进入生产场景时，控制面比组织名称更早显性化</h3>
+<h3 id="组织情报结论">组织情报结论</h3>
+<p>本窗口不支持新的行业趋势结论，只支持一个 L2 方向性假设：AI 产品从探索转入生产时，公开材料更早显露的不是完整组织图，而是控制面——阿里显露单一产品 owner 与早期评价重点，AWS–Superblocks 显露伙伴、云平台与客户 IT / Security 的生产责任，蚂蚁灵波显露集团资源与外部资本的双重接口。三者都缺少效率结果，且后两条不等同于内部重组。</p>
+<h3 id="外部信号">外部信号</h3>
+<ul>
+<li>AWS–Superblocks：技术、销售、采购与生产治理被接入同一伙伴路径。</li>
+<li>阿里：产品整合已获历史互证，新增组织层级、人员与评价细节仍为单源。</li>
+<li>蚂蚁灵波：融资接触获公司确认，治理与独立性尚未改变。</li>
+<li>ElevenLabs：旧机制的新披露显示 PM 工作被分摊，但没有效率证明。</li>
+</ul>
+<h3 id="与传统大厂的对照">与传统大厂的对照</h3>
+<div class="table-wrap"><table><thead><tr>
+<th>维度</th>
+<th>AI 原生组织</th>
+<th>传统大厂</th>
+<th>机制差异</th>
+</tr></thead><tbody>
+<tr>
+<td>决策</td>
+<td>工程 / 增长 owner 共同形成产品路线</td>
+<td>单一产品 owner 或伙伴 / 客户多方准入</td>
+<td>前者依赖高密度小团队，后者依赖显性接口</td>
+</tr>
+<tr>
+<td>团队</td>
+<td>小产品队、职能混合</td>
+<td>事业部收敛、平台伙伴化交付</td>
+<td>前者弱化 title，后者强化组合与责任面</td>
+</tr>
+<tr>
+<td>流程</td>
+<td>customer pull × research push</td>
+<td>产品公测、Marketplace、field enablement、生产 gate</td>
+<td>前者靠快速产品判断，后者靠规模化治理链</td>
+</tr>
+<tr>
+<td>治理</td>
+<td>自述自治，结果未验证</td>
+<td>客户 IT / Security、集团资源、外部资本共同介入</td>
+<td>传统组织外部接口更多，协调成本也更高</td>
+</tr>
+</tbody></table></div>
+<h3 id="适用边界">适用边界</h3>
+<ul>
+<li><strong>可能成立的前提</strong>：产品或伙伴边界清楚，生产准入、预算与结果责任可被识别。</li>
+<li><strong>不可直接类比的情况</strong>：把产品公测、融资接触、title 缺失或联合营销写成组织转型完成。</li>
+<li><strong>需要保护的风险边界</strong>：客户数据与权限、三方事故责任、单一 owner 负荷、外部股东与集团资源的冲突。</li>
+</ul>
+<h3 id="可观察指标">可观察指标</h3>
+<ul>
+<li><strong>周期指标</strong>：原型到生产准入、跨产品整合、售前到部署的周期。</li>
+<li><strong>人效指标</strong>：本窗口无可独立验证的数据。</li>
+<li><strong>质量指标</strong>：生产应用返工、权限异常、客户场景复用与旧产品迁移稳定性。</li>
+<li><strong>风险指标</strong>：三方事故归属、P&amp;L 冲突、关键 owner 过载、外部资本与共享资源定价冲突。</li>
+</ul>
+<h3 id="证据等级">证据等级</h3>
+<p>AWS–Superblocks 为 L2；阿里产品整合为历史 L2、窗口增量为 L1；蚂蚁灵波融资接触为 L2、治理影响为 L1-L2；ElevenLabs 为历史 L2 / 本次 L1。无 L3 / L4。</p>
+<h3 id="入库判断">入库判断</h3>
+<ul>
+<li>[x] 事实与解释分开</li>
+<li>[x] 有来源强度和同源边界</li>
+<li>[x] 有反向解释与适用边界</li>
+<li>[x] 未把产品、融资或 title 写成效率结果</li>
+<li>[x] 没有替用户做决策或给处方</li>
+</ul>
+<h2 id="证据链与可信度">证据链与可信度</h2>
+<div class="table-wrap"><table><thead><tr>
+<th>判断</th>
+<th>事实验证</th>
+<th>机制验证</th>
+<th>趋势验证</th>
+<th>置信度</th>
+</tr></thead><tbody>
+<tr>
+<td>AWS 伙伴型交付边界</td>
+<td>AWS / Superblocks 协调发布 + TechCrunch 独立采访</td>
+<td>VPC、Bedrock、Aurora、Marketplace、field 与客户治理接口明确</td>
+<td>2025 Marketplace 为历史基线，本次为合作加深</td>
+<td>高</td>
+</tr>
+<tr>
+<td>阿里千问办公继续收敛</td>
+<td>官方公测 + 历史公司回应</td>
+<td>组织层级、人员与评价新增均为虎嗅单源</td>
+<td>与 7 月整合线连续，不是新重组</td>
+<td>事实高 / 增量中</td>
+</tr>
+<tr>
+<td>蚂蚁灵波接入外部资本</td>
+<td>两家强媒体 + 公司确认接触投资人</td>
+<td>没有董事会、预算或授权变化</td>
+<td>蚂蚁其他主体市场化仅作背景，不机械互证</td>
+<td>事实中高 / 机制中</td>
+</tr>
+<tr>
+<td>ElevenLabs 职能分摊</td>
+<td>Miro 正式访谈</td>
+<td>与 2025 同一高管口径一致</td>
+<td>同一陈述者不算独立效果互证</td>
+<td>中</td>
+</tr>
+</tbody></table></div>
+<h2 id="去伪存真记录">去伪存真记录</h2>
+<ul>
+<li><strong>阿里不是当日新重组</strong>：三产品合并与陈宇森负责已在 7 月披露；8 月 3 日新增是公测与单源组织细节。</li>
+<li><strong>同源转载不算互证</strong>：凤凰、PChome、华尔街见闻等对虎嗅内容的复述不构成事业部层级和考核口径的第二来源。</li>
+<li><strong>产品合一不等于组织合一</strong>：千问办公公测不能证明人员、预算、绩效、P&amp;L 和钉钉边界已稳定。</li>
+<li><strong>融资接触不等于治理改变</strong>：蚂蚁灵波尚无交易完成、股权或董事会变化；“资源挤压”是匿名解释。</li>
+<li><strong>伙伴合作不等于新团队</strong>：AWS–Superblocks 没有新设 FDE / Solutions 组织证据，厂商效果数据不升结论。</li>
+<li><strong>title 缺失不等于职能消失</strong>：ElevenLabs 明确 PM 工作由工程和增长承担，不能写成 AI 取消 PM。</li>
+<li><strong>页面更新不等于机制更新</strong>：Anthropic 8 月 3 日只纠正评测名称；OpenAI full-stack 正文日期为 7 月 31 日。</li>
+<li><strong>人才再传播不算当日流动</strong>：Noam Shazeer、John Jumper 等人事发生于 6 月，8 月 3 日聚合稿不入库。</li>
+<li><strong>无日期岗位不算扩编</strong>：FDE、Safety、Post-training、Agent / Context Engineer 岗位页没有窗口时间戳时只保留历史边界。</li>
+<li><strong>未检出不等于没有变化</strong>：结论仅限可公开验证的窗口信号。</li>
+</ul>
+<h2 id="渠道索引补充">渠道索引补充</h2>
+<div class="table-wrap"><table><thead><tr>
+<th>渠道</th>
+<th>URL</th>
+<th>公司</th>
+<th>主题</th>
+<th>证据等级</th>
+<th>是否新增</th>
+</tr></thead><tbody>
+<tr>
+<td>AWS Press Center</td>
+<td><a href="https://press.aboutamazon.com/aws/2026/8/superblocks-and-aws-announce-strategic-collaboration-to-bring-secure-enterprise-ai-app-development-to-amazon-bedrock" target="_blank" rel="noreferrer">https://press.aboutamazon.com/aws/2026/8/superblocks-and-aws-announce-strategic-collaboration-to-bring-secure-enterprise-ai-app-development-to-amazon-bedrock</a></td>
+<td>AWS / Superblocks</td>
+<td>多年合作与三方交付边界</td>
+<td>A</td>
+<td>是</td>
+</tr>
+<tr>
+<td>TechCrunch</td>
+<td><a href="https://techcrunch.com/2026/08/03/aws-is-helping-vibe-coding-startup-superblocks-and-the-implications-are-big/" target="_blank" rel="noreferrer">https://techcrunch.com/2026/08/03/aws-is-helping-vibe-coding-startup-superblocks-and-the-implications-are-big/</a></td>
+<td>AWS / Superblocks</td>
+<td>AWS 伙伴支持与模型无关应用层</td>
+<td>B</td>
+<td>是</td>
+</tr>
+<tr>
+<td>虎嗅</td>
+<td><a href="https://www.huxiu.com/article/4880200.html" target="_blank" rel="noreferrer">https://www.huxiu.com/article/4880200.html</a></td>
+<td>阿里</td>
+<td>千问办公事业部、人才与评价细节</td>
+<td>C</td>
+<td>是，单源增量</td>
+</tr>
+<tr>
+<td>经济观察报</td>
+<td><a href="http://www.eeo.com.cn/2026/0803/985067.shtml" target="_blank" rel="noreferrer">http://www.eeo.com.cn/2026/0803/985067.shtml</a></td>
+<td>阿里</td>
+<td>官方公测、三产品与 6 月整合时间线</td>
+<td>B</td>
+<td>是</td>
+</tr>
+<tr>
+<td>券商中国</td>
+<td><a href="https://qzs.stcn.com/article/detail/621129.html" target="_blank" rel="noreferrer">https://qzs.stcn.com/article/detail/621129.html</a></td>
+<td>蚂蚁灵波</td>
+<td>融资接触与公司回应</td>
+<td>B</td>
+<td>是</td>
+</tr>
+<tr>
+<td>Miro</td>
+<td><a href="https://miro.com/blog/luke-harries-canvas-26/" target="_blank" rel="noreferrer">https://miro.com/blog/luke-harries-canvas-26/</a></td>
+<td>ElevenLabs</td>
+<td>工程 / 增长 owner 与小团队</td>
+<td>B</td>
+<td>是，历史补证</td>
+</tr>
+<tr>
+<td>Cursor</td>
+<td><a href="https://cursor.com/changelog/google-workspace-plugins" target="_blank" rel="noreferrer">https://cursor.com/changelog/google-workspace-plugins</a></td>
+<td>Cursor</td>
+<td>Workspace context / action boundary</td>
+<td>A</td>
+<td>是，产品观察</td>
+</tr>
+</tbody></table></div>
+<h2 id="观察池-待核验池">观察池/待核验池</h2>
+<div class="table-wrap"><table><thead><tr>
+<th>线索</th>
+<th>当前层级</th>
+<th>为什么不够</th>
+<th>可能机制</th>
+<th>待验证问题</th>
+</tr></thead><tbody>
+<tr>
+<td>千问办公一级事业部、人才归并与短期评价重点</td>
+<td>新增 L1</td>
+<td>匿名独家，无组织通知和第二来源</td>
+<td>赛马收敛、单一 owner、评价接口转向场景验证</td>
+<td>组织层级、预算、P&amp;L、OKR、钉钉与 FDE 边界</td>
+</tr>
+<tr>
+<td>蚂蚁灵波外部融资</td>
+<td>事实 L2 / 机制 L1-L2</td>
+<td>接触投资人，不是完成融资</td>
+<td>集团资源耦合 + 外部资本治理</td>
+<td>股权、董事会、预算、员工激励、共享资源定价</td>
+</tr>
+<tr>
+<td>ElevenLabs 无传统 PM 与 3—11 人队</td>
+<td>历史 L2 / 本次 L1</td>
+<td>同一高管自述，无效率与覆盖数据</td>
+<td>工程 / 增长分担 PM、产品队自治</td>
+<td>团队覆盖、跨队依赖、停止规则、负荷与留存</td>
+</tr>
+<tr>
+<td>Cursor Workspace 插件</td>
+<td>L1产品观察</td>
+<td>无组织、负责人和岗位变化</td>
+<td>Context / action boundary 扩张</td>
+<td>权限审计、企业 admin、Marketplace owner、支持边界</td>
+</tr>
+<tr>
+<td>Google Sail Tower</td>
+<td>L1</td>
+<td>只有办公节点启用，无人数或迁移</td>
+<td>地域协作节点</td>
+<td>新增 HC、团队迁移、权责与 AI 组织范围</td>
+</tr>
+<tr>
+<td>Anthropic 8 月 3 日页面更新</td>
+<td>L0新增</td>
+<td>只纠正评测名称</td>
+<td>无新增机制</td>
+<td>后续 METR 复核、恢复条件与长期监控结果</td>
+</tr>
+</tbody></table></div>
+<h2 id="公开知识库入库判断">公开知识库入库判断</h2>
+<ul>
+<li><strong>私有知识源</strong>：AWS–Superblocks 以 L2 伙伴型交付边界入库；阿里保留历史 L2 并新增 L1 组织 / 绩效观察；蚂蚁灵波以 L2 融资接触和 L1-L2 治理假设入库；ElevenLabs、Cursor 与 Google 进入观察池。</li>
+<li><strong>公开知识库</strong>：本轮没有新增 L3 / L4 组织效率方法或可迁移做法。AWS–Superblocks 可维护脱敏后的公开案例索引，但不写成本、安全或交付效率已经改善。</li>
+<li><strong>隐私边界</strong>：未读取、上传或引用桌面私有参考、内部链接、访谈口径、截图、未授权附件或个人信息。</li>
+<li><strong>二次验证入口</strong>：使用本地私有入口 <code>research/private-industry-bigtech-watch/index.html</code>；密码沿用用户已指定的本地密码。</li>
+</ul>
+      </article>
+    </main>
+  </div>
+</body>
+</html>
