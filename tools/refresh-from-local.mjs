@@ -26,6 +26,7 @@ function copy(relativePath) {
   fs.mkdirSync(path.dirname(target), { recursive: true });
   let text = fs.readFileSync(source, "utf8");
   text = stripPrivateAccessGate(text);
+  text = stripPrivateVerificationEntry(text);
   text = stripLocalPaths(text);
   text = stripSensitiveKeywords(text);
   text = text.replace(/知音楼\/石墨/g, "账号态内部链接");
@@ -52,6 +53,12 @@ function stripPrivateAccessGate(text) {
   return text.replace(/<!-- PRIVATE_ACCESS_GATE_START -->[\s\S]*?<!-- PRIVATE_ACCESS_GATE_END -->/g, "");
 }
 
+function stripPrivateVerificationEntry(text) {
+  return text
+    .replace(/<li\b[^>]*>(?:(?!<\/li>)[\s\S])*?二次验证入口(?:(?!<\/li>)[\s\S])*?<\/li>\s*/gi, "")
+    .replace(/^.*二次验证入口.*(?:\r?\n|$)/gm, "");
+}
+
 function stripLocalPaths(text) {
   return text
     .replace(/file:\/\/\/Users\/[^\s"'`)<>\]]+/g, "本地文件")
@@ -72,8 +79,11 @@ function assertSafe() {
     /ANYSEARCH_API_KEY/i,
     /api[_-]?key/i,
     /password/i,
+    /密码/,
     /(?<![a-z])secret(?![a-z])/i,
     /token/i,
+    /private-industry-bigtech-watch/i,
+    /research\/private/i,
     /source-channels\.private/i,
     /local-reference-structured/i,
     /附：行业绩效/,
