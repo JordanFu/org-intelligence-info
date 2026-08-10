@@ -40,7 +40,7 @@ function isSuspiciousReportRegression(relativePath, nextText, target) {
   const currentText = fs.readFileSync(target, "utf8");
   const currentLines = currentText.split(/\r?\n/).length;
   const nextLines = nextText.split(/\r?\n/).length;
-  if (currentLines >= 800 && nextLines < currentLines * 0.75) {
+  if (nextLines < currentLines * 0.85) {
     console.warn(
       `Skipped ${relativePath}: source HTML looks truncated (${nextLines}/${currentLines} lines).`,
     );

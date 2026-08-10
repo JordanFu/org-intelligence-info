@@ -39,6 +39,41 @@ function runRefreshWith(content, fileName = "2026-07-23.html") {
   }
 }
 
+function runStageReportRefresh(currentLines, sourceLines) {
+  const fixtureRoot = fs.mkdtempSync(path.join(os.tmpdir(), "report-regression-"));
+  const publicRoot = path.join(fixtureRoot, "public");
+  const sourceRoot = path.join(fixtureRoot, "research", "private-industry-bigtech-watch");
+  const relativePath = path.join("reports", "latest-bigtech-org-intelligence.html");
+  const current = Array.from(
+    { length: currentLines },
+    (_, index) => `<p>published report line ${index + 1}</p>`,
+  ).join("\n");
+  const source = Array.from(
+    { length: sourceLines },
+    (_, index) => `<p>new source report line ${index + 1}</p>`,
+  ).join("\n");
+
+  fs.mkdirSync(path.join(publicRoot, "tools"), { recursive: true });
+  fs.mkdirSync(path.join(publicRoot, "reports"), { recursive: true });
+  fs.mkdirSync(path.join(sourceRoot, "reports"), { recursive: true });
+  fs.copyFileSync(refreshScript, path.join(publicRoot, "tools", "refresh-from-local.mjs"));
+  fs.writeFileSync(path.join(sourceRoot, "framework.html"), "<p>public framework</p>");
+  fs.writeFileSync(path.join(sourceRoot, "framework.md"), "public framework");
+  fs.writeFileSync(path.join(publicRoot, relativePath), current);
+  fs.writeFileSync(path.join(sourceRoot, relativePath), source);
+
+  try {
+    execFileSync(process.execPath, ["tools/refresh-from-local.mjs"], {
+      cwd: publicRoot,
+      encoding: "utf8",
+      stdio: "pipe",
+    });
+    return fs.readFileSync(path.join(publicRoot, relativePath), "utf8");
+  } finally {
+    fs.rmSync(fixtureRoot, { recursive: true, force: true });
+  }
+}
+
 test("allows public undersecretary URLs", () => {
   const { error } = runRefreshWith(
     '<a href="https://energy.gov/undersecretary/science">public source</a>',
@@ -74,3 +109,10 @@ for (const [fileName, content] of [
     assert.match(output, /公开结论/);
   });
 }
+
+test("preserves a published stage report when the source is clearly shorter", () => {
+  const output = runStageReportRefresh(739, 605);
+
+  assert.match(output, /published report line 739/);
+  assert.doesNotMatch(output, /new source report line/);
+});
