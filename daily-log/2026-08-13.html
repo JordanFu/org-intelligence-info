@@ -1,0 +1,547 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>组织情报信息</title>
+  <style>
+    :root {
+      color-scheme: light;
+      --bg: #f6f7f1;
+      --paper: #fffdf8;
+      --ink: #172033;
+      --muted: #697181;
+      --line: #ded8c9;
+      --soft: #ece6d7;
+      --accent: #1f6f68;
+      --accent-2: #b45a34;
+      --code: #f1eee6;
+    }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "PingFang SC", "Microsoft YaHei", sans-serif;
+      color: var(--ink);
+      background: var(--bg);
+      line-height: 1.75;
+    }
+    .shell {
+      display: grid;
+      grid-template-columns: minmax(210px, 280px) minmax(0, 1fr);
+      min-height: 100vh;
+    }
+    aside {
+      position: sticky;
+      top: 0;
+      height: 100vh;
+      padding: 28px 22px;
+      border-right: 1px solid var(--line);
+      background: #ebe5d7;
+      overflow: auto;
+    }
+    main {
+      max-width: 1040px;
+      width: 100%;
+      padding: 56px 56px 90px;
+    }
+    .eyebrow {
+      color: var(--accent-2);
+      font-size: 13px;
+      font-weight: 800;
+      letter-spacing: .08em;
+      text-transform: uppercase;
+      margin: 0 0 10px;
+    }
+    h1 {
+      font-size: clamp(30px, 4vw, 48px);
+      line-height: 1.12;
+      margin: 0 0 18px;
+      letter-spacing: 0;
+    }
+    h2 {
+      font-size: 26px;
+      line-height: 1.32;
+      margin: 48px 0 14px;
+      padding-top: 18px;
+      border-top: 1px solid var(--line);
+    }
+    h3 {
+      font-size: 20px;
+      margin: 34px 0 10px;
+      color: #23314d;
+    }
+    h4 {
+      font-size: 17px;
+      margin: 26px 0 8px;
+    }
+    p, li {
+      font-size: 16px;
+      color: #2b3343;
+    }
+    p { margin: 10px 0; }
+    ul { padding-left: 1.2rem; }
+    li { margin: 7px 0; }
+    a { color: var(--accent); text-decoration-thickness: 1px; text-underline-offset: 3px; }
+    code {
+      background: var(--code);
+      border: 1px solid var(--line);
+      border-radius: 5px;
+      padding: 1px 5px;
+      font-size: .92em;
+    }
+    pre {
+      overflow: auto;
+      background: #fff9ec;
+      color: #202838;
+      border: 1px solid #d8ccb8;
+      border-radius: 8px;
+      padding: 18px;
+      box-shadow: inset 4px 0 0 var(--accent);
+      white-space: pre-wrap;
+      word-break: break-word;
+    }
+    pre code {
+      display: block;
+      padding: 0;
+      border: 0;
+      background: transparent;
+      color: inherit;
+      line-height: 1.7;
+      font-size: 14px;
+    }
+    blockquote {
+      margin: 24px 0;
+      padding: 14px 18px;
+      border-left: 4px solid var(--accent);
+      background: #eef4ee;
+      color: #344033;
+    }
+    .table-wrap {
+      overflow-x: auto;
+      margin: 18px 0 26px;
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      background: var(--paper);
+    }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      min-width: 720px;
+    }
+    th, td {
+      padding: 12px 14px;
+      border-bottom: 1px solid var(--line);
+      vertical-align: top;
+      text-align: left;
+      font-size: 14px;
+    }
+    th {
+      background: #e7e0cf;
+      color: #26324a;
+      font-weight: 800;
+      white-space: nowrap;
+    }
+    tr:last-child td { border-bottom: 0; }
+    .topbar {
+      display: flex;
+      gap: 10px;
+      align-items: center;
+      flex-wrap: wrap;
+      margin-bottom: 28px;
+    }
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 38px;
+      padding: 8px 12px;
+      border: 1px solid var(--line);
+      border-radius: 7px;
+      background: var(--paper);
+      color: var(--ink);
+      text-decoration: none;
+      font-weight: 750;
+      font-size: 14px;
+    }
+    .primary { background: var(--accent); border-color: var(--accent); color: white; }
+    .toc-title {
+      margin: 0 0 12px;
+      font-size: 14px;
+      font-weight: 850;
+      color: #273247;
+    }
+    .toc a {
+      display: block;
+      padding: 7px 0;
+      color: #465064;
+      text-decoration: none;
+      font-size: 14px;
+      line-height: 1.45;
+      border-bottom: 1px solid rgba(23,32,51,.08);
+    }
+    .toc a.level-3 { padding-left: 14px; font-size: 13px; color: #626b78; }
+    .meta {
+      color: var(--muted);
+      font-size: 14px;
+      margin-bottom: 24px;
+    }
+    @media (max-width: 900px) {
+      .shell { display: block; }
+      aside { position: relative; height: auto; border-right: 0; border-bottom: 1px solid var(--line); }
+      main { padding: 34px 20px 70px; }
+      .toc { columns: 1; }
+      table { min-width: 640px; }
+    }
+  </style>
+</head>
+<body>
+  <div class="shell">
+    <aside>
+      <p class="toc-title">目录</p>
+      <nav class="toc">
+        <a class="level-2" href="#今日结论">今日结论</a>
+        <a class="level-2" href="#今日组织机制信号">今日组织机制信号</a>
+        <a class="level-2" href="#传统大厂与-ai-原生组织分组观察">传统大厂与 AI 原生组织分组观察</a>
+        <a class="level-2" href="#高价值变化卡片">高价值变化卡片</a>
+        <a class="level-3" href="#google-deepmind-从半自治研究实验室进一步转向集团产品平台单元">Google DeepMind / 从半自治研究实验室进一步转向集团产品平台单元</a>
+        <a class="level-3" href="#anthropic-frontier-red-team-把多-agent-协调纳入系统级评估">Anthropic / Frontier Red Team 把多 Agent 协调纳入系统级评估</a>
+        <a class="level-2" href="#不是新闻而是机制">不是新闻而是机制</a>
+        <a class="level-2" href="#组织情报结论卡">组织情报结论卡</a>
+        <a class="level-3" href="#主题-规模化-ai-组织正在把-最后决定权-和-系统级失效-同时上提">主题：规模化 AI 组织正在把“最后决定权”和“系统级失效”同时上提</a>
+        <a class="level-3" href="#组织情报结论">组织情报结论</a>
+        <a class="level-3" href="#外部信号">外部信号</a>
+        <a class="level-3" href="#与传统大厂的对照">与传统大厂的对照</a>
+        <a class="level-3" href="#适用边界">适用边界</a>
+        <a class="level-3" href="#可观察指标">可观察指标</a>
+        <a class="level-3" href="#证据等级">证据等级</a>
+        <a class="level-3" href="#入库判断">入库判断</a>
+        <a class="level-2" href="#证据链与可信度">证据链与可信度</a>
+        <a class="level-2" href="#去伪存真记录">去伪存真记录</a>
+      </nav>
+    </aside>
+    <main>
+      <div class="topbar">
+        <a class="btn primary" href="../index.html">返回研究源</a>
+        <a class="btn" href="./2026-08-13.md">查看 Markdown 原文</a>
+      </div>
+      <p class="eyebrow">Daily Scan</p>
+      <h1>2026-08-13 组织情报信息</h1>
+      <p class="meta">本页面由本地 Markdown 自动渲染生成，仍保留原始 md 文件作为知识库源文档。</p>
+      <article>
+        <blockquote>扫描窗口：2026-08-12 08:31 CST—2026-08-13 11:18 CST。72 小时扩展窗只用于追溯第一来源、历史基线和反证，不计作今日新增。</blockquote>
+<h2 id="今日结论">今日结论</h2>
+<p class="ordered">1. <strong>今日新增一条 L3 结构结论：Google DeepMind 的自治边界继续收缩。</strong> 8 月 12 日 Reuters 对七名知情人的复核，加上 8 月 5 日官方任命、Google 发言人确认和独立媒体基线，足以确认：长期科学 / AGI 议题与 Gemini 日常经营进一步分开，Koray Kavukcuoglu 同时连接 DeepMind 与集团产品架构，并对 DeepMind 重大决策持最终决定权；若干非技术团队被告知转入 corporate Google 汇报线。能确认的是权责接口集中，不能确认发布速度、模型质量或协作成本已经改善。</p>
+<p class="ordered">2. <strong>Anthropic 把 Frontier Red Team 的评估对象从单体模型扩大到多 Agent 系统失效，但只到 L2 机制观察。</strong> 官方实验显示，独立可拆分任务可扩大覆盖；高依赖任务中，合并、共享状态、同质决策、资源拥塞和目标冲突会吞噬并行收益。给 Agent 加上“CEO”角色提示没有显著改善结果，不能把 Agent 数量或角色命名当作管理机制。</p>
+<p class="ordered">3. <strong>Canva 与字节均为持续观察，不升级为效率结论。</strong> Canva 的 L2 新证据显示单位任务成本已成为 AI 发布节奏的闸门；字节“AI 数据与安全”一级部门是 36 氪多信源独家，指向数据全流程责任集中，但公司未回应、同源转载不构成独立互证，暂按 L1 强观察。字节报道发表于 8 月 11 日 18:38 CST，属于昨日窗口漏捕后的补录，不计为今日事件。</p>
+<p class="ordered">4. <strong>今日没有新增 L4 组织方法。</strong> 公开知识库只适合维护 Google 的脱敏结构结论与 Anthropic 的系统级评估来源索引；其余保留在私有观察池。</p>
+<h2 id="今日组织机制信号">今日组织机制信号</h2>
+<div class="table-wrap"><table><thead><tr>
+<th>信号</th>
+<th>事实层</th>
+<th>机制判断层</th>
+<th>组织判断层</th>
+<th>证据置信度</th>
+<th>阅读价值</th>
+</tr></thead><tbody>
+<tr>
+<td>Google DeepMind 权责进一步集中</td>
+<td>官方任命、发言人确认、Reuters 七人采访与 FT 独立报道</td>
+<td>长期科学与模型—产品—Cloud 经营分开；重大决策与跨组织资源接口集中</td>
+<td>自治边界收缩是 L3 结构结论；效率结果未知</td>
+<td>高</td>
+<td>核心结论</td>
+</tr>
+<tr>
+<td>Anthropic 多 Agent 系统研究</td>
+<td>Frontier Red Team 官方实验</td>
+<td>Safety / Red Team 从单体能力扩至协调、激励、共享资源和系统性失效</td>
+<td>只到 L2；不是公司重组或生产结果</td>
+<td>中</td>
+<td>核心观察</td>
+</tr>
+<tr>
+<td>Canva AI 发布放缓</td>
+<td>CEO 直接确认成本不足以支撑广泛发布，单位成本与商业模式共同约束 rollout</td>
+<td>单位经济性成为产品发布闸门，Infra / 模型 / 商业模式进入同一决策回路</td>
+<td>L2；无组织结构和未审计结果</td>
+<td>中</td>
+<td>持续观察</td>
+</tr>
+<tr>
+<td>字节 AI 数据与安全一级部门（late-catch）</td>
+<td>36 氪称多个独立信源确认；字节未回复</td>
+<td>数据采购、合成、清洗、标准、评测与合规由分散支持转为统一责任接口</td>
+<td>L1；不能确认正式 RACI、规模和运行结果</td>
+<td>中低</td>
+<td>持续观察</td>
+</tr>
+</tbody></table></div>
+<h2 id="传统大厂与-ai-原生组织分组观察">传统大厂与 AI 原生组织分组观察</h2>
+<ul>
+<li><strong>国内传统大厂</strong>：严格窗口内无 L2+ 新增；补录字节昨日窗口的一条 L1 强观察。腾讯、阿里、美团、百度、京东、快手、小米、华为、网易、拼多多、蚂蚁、B 站、滴滴、携程无严格窗口内 L2+ 新增。</li>
+<li><strong>国外传统科技公司</strong>：Google 形成 L3 结构结论；Canva 形成 L2 发布治理观察。Amazon、Meta、Microsoft、Apple、Netflix、Salesforce、Adobe、Nvidia、Shopify、Atlassian、GitLab、Stripe、Zapier 无合格新增。</li>
+<li><strong>国内 AI 原生与模型公司</strong>：DeepSeek、Kimi / 月之暗面、智谱 AI、MiniMax、百川、阶跃星辰、零一万物、商汤日日新、面壁、昆仑万维 / 天工、秘塔、无问芯穹、硅基流动无严格窗口内 L2+ 新增。</li>
+<li><strong>国外 AI 原生与模型公司</strong>：Anthropic 有一条 L2 系统评估机制观察；OpenAI、Perplexity、Mistral、Cohere、xAI、Character.AI、Inflection、Adept、Runway、Midjourney、ElevenLabs、Harvey、Anysphere、Replit、Scale AI 无新增组织硬信号。</li>
+</ul>
+<h2 id="高价值变化卡片">高价值变化卡片</h2>
+<h3 id="google-deepmind-从半自治研究实验室进一步转向集团产品平台单元">Google DeepMind / 从半自治研究实验室进一步转向集团产品平台单元</h3>
+<ul>
+<li><strong>时间与范围</strong>：8 月 5 日任命；8 月 6 日 all-hands；Reuters 深度稿于 8 月 13 日 01:35 CST 进入本窗口。范围限 Google DeepMind、Gemini 与 corporate Google / Cloud 接口。</li>
+<li><strong>L1 事实</strong>：Demis Hassabis 转任 DeepMind chair 与 Alphabet chief scientist；Koray Kavukcuoglu 接管日常经营并继续担任 chief AI architect。Google 发言人确认其对 DeepMind 重大决策有最终决定权；Reuters 两名信源称若干非技术团队被告知转入 corporate Google 汇报线。</li>
+<li><strong>L2 机制判断</strong>：长期科学 / AGI 与 Gemini 模型、产品嵌入、Cloud 商业化和 TPU 资源协调被进一步拆开；日常经营与重大决定集中到一个横跨实验室和集团产品架构的责任接口。</li>
+<li><strong>L3 组织判断</strong>：DeepMind 的自治边界继续收缩，组织形态更接近集团内受统一产品化约束的 SVP 制平台单元。该判断只指结构，不包含效率优劣。</li>
+<li><strong>历史基线</strong>：Kavukcuoglu 2025 年已兼任 chief AI architect，且已实际负责模型开发一年多；本次是实质权力的正式化和边界继续收紧，不是从零开始。</li>
+<li><strong>组织影响</strong>：重大决策接口减少，理论上可降低 DeepMind—产品—Cloud 间的协调成本；研究自主空间、非 Gemini 项目和异议保留机制可能承受更强商业优先级压力。两者均待结果数据验证。</li>
+<li><strong>反向解释</strong>：管理层称日常工作不变；Hassabis 的公开理由是把时间投入 AGI、科学与 Isomorphic Labs。这也可能是长期接班与角色匹配，而非单向“商业压过研究”。模型延迟还可能来自算力约束、多人领导分歧与人才流失。</li>
+<li><strong>适用边界</strong>：只适用于高资本投入、研究与多产品商业化共存的前沿模型组织，不外推整个 Alphabet，也不构成“集中必然更快”的证据。</li>
+<li><strong>待验证问题</strong>：非技术团队的最终清单与汇报线；TPU 分配规则；研究项目保留权；模型发布周期、质量与 Cloud 交付摩擦是否变化。</li>
+</ul>
+<h3 id="anthropic-frontier-red-team-把多-agent-协调纳入系统级评估">Anthropic / Frontier Red Team 把多 Agent 协调纳入系统级评估</h3>
+<ul>
+<li><strong>时间与范围</strong>：Anthropic Frontier Red Team，2026 年 8 月 13 日；页面无精确时分。研究覆盖漏洞发现、多人游戏开发、资源竞争、信息聚合与冲突目标模拟。</li>
+<li><strong>L1 事实</strong>：45 个 Agent 的协调 swarm 在 2700 万 用量单位s 中发现 266 个漏洞；独立并行组在 650 万 用量单位s 中发现 21 个。限定到相同核心目录后，两者每漏洞 用量单位 大体相当，重合仅 12 个。在高依赖软件任务中，baseline、预设职能和“CEO hierarchy”三种提示无显著差别，成品均差。</li>
+<li><strong>L2 机制判断</strong>：评估边界从“单 Agent 能做什么”扩展到 Agent 间协调协议、共享状态、相关错误、资源拥塞、共识吞没私有信息与冲突升级。角色命名本身不产生治理能力。</li>
+<li><strong>组织影响</strong>：独立可拆分工作更容易获得覆盖收益；高耦合工作中，合并与协调成本可能抵消并行速度。同一模型的低方差还会把局部错误扩大为系统性失效。</li>
+<li><strong>反向解释</strong>：Anthropic 既有 production engineering 研究显示 orchestrator-worker 在 breadth-first research 可显著提高质量，但 用量单位 成本约为普通 chat 的 15 倍，并明确不适合高依赖任务；因此不是“多 Agent 一律失败”，而是任务耦合度与协议决定净收益。</li>
+<li><strong>适用边界</strong>：官方单源、实验环境、未独立复现；不能写成 Anthropic 内部重组、真实生产事故、岗位替代或组织效率下降。</li>
+<li><strong>待验证问题</strong>：异质模型是否降低相关错误；真实生产任务的返工与人工介入；权限、声誉、仲裁和可执行治理层对冲突的实际效果。</li>
+</ul>
+<h2 id="不是新闻而是机制">不是新闻而是机制</h2>
+<div class="table-wrap"><table><thead><tr>
+<th>外部事件</th>
+<th>不是新闻，是机制</th>
+<th>效率含义</th>
+<th>证据边界</th>
+</tr></thead><tbody>
+<tr>
+<td>Google 高管与团队调整</td>
+<td>研究自治、模型经营、产品嵌入和资源配置的最终责任接口重新集中</td>
+<td>可能减少跨单元协商，也可能压缩探索与异议空间</td>
+<td>结构 L3；结果未知</td>
+</tr>
+<tr>
+<td>Anthropic 多 Agent 实验</td>
+<td>从能力评测转向协调、激励、共享资源和系统失效评测</td>
+<td>可拆分任务扩大覆盖，高依赖任务增加合并与拥塞成本</td>
+<td>机制 L2；实验单源</td>
+</tr>
+<tr>
+<td>Canva 放慢 rollout</td>
+<td>单位任务成本、架构、模型路由和商业模式共同构成发布闸门</td>
+<td>执行节奏阶段性让位于可持续单位经济性</td>
+<td>L2；公司口径为主</td>
+</tr>
+<tr>
+<td>字节上提数据部门（late-catch）</td>
+<td>训练数据从分散支持服务转向端到端责任接口</td>
+<td>可能减少跨团队采购、标准、质量和合规的重复协调</td>
+<td>L1；公司未确认</td>
+</tr>
+</tbody></table></div>
+<h2 id="组织情报结论卡">组织情报结论卡</h2>
+<h3 id="主题-规模化-ai-组织正在把-最后决定权-和-系统级失效-同时上提">主题：规模化 AI 组织正在把“最后决定权”和“系统级失效”同时上提</h3>
+<h3 id="组织情报结论">组织情报结论</h3>
+<p>Google 与 Anthropic 的信号并不相同：前者把模型经营与集团产品化的最终决定权收拢，后者把评估对象从单体 Agent 扩大到多主体系统。共同机制是，随着模型、产品、资源和 Agent 数量增加，组织效率的瓶颈从单点能力转向接口、协调协议和系统后果。</p>
+<h3 id="外部信号">外部信号</h3>
+<ul>
+<li>Google：重大决策、产品嵌入与资源协调接口集中。</li>
+<li>Anthropic：多 Agent 的共享状态、相关错误、冲突和共识失败进入 Frontier Red Team 研究范围。</li>
+<li>Canva：单位任务成本进入发布节奏控制。</li>
+<li>字节：训练数据全流程责任可能从分散团队上提为一级接口。</li>
+</ul>
+<h3 id="与传统大厂的对照">与传统大厂的对照</h3>
+<ul>
+<li>传统大厂的主要摩擦来自跨事业单元、研究—产品—商业化和稀缺资源分配；Google 用正式权责集中回应。</li>
+<li>AI 原生组织的主要新增风险来自 Agent 间相互作用速度超过人工监督速度；Anthropic 把这类系统后果纳入评估。</li>
+<li>两者都说明“更少层级”或“更多 Agent”不是独立效率变量，责任清晰度、任务耦合度和可观察控制面更关键。</li>
+</ul>
+<h3 id="适用边界">适用边界</h3>
+<ul>
+<li>不把 Google 个案外推为集中制优于研究自治。</li>
+<li>不把实验中的多 Agent 失效外推为现实组织或所有工作流。</li>
+<li>不把 Canva 的成本补课写成成熟机制，不把字节的媒体独家写成已验证重组。</li>
+</ul>
+<h3 id="可观察指标">可观察指标</h3>
+<ul>
+<li>最终决定接口数量与跨单元升级次数。</li>
+<li>模型发布周期、返工率、非主航道项目存续率。</li>
+<li>多 Agent 合并冲突、重复动作、共享资源拥塞、人工介入与权限事件。</li>
+<li>单任务推理成本、rollout 覆盖、质量和用量限制变化。</li>
+</ul>
+<h3 id="证据等级">证据等级</h3>
+<ul>
+<li>Google 结构判断：L3，高置信。</li>
+<li>Anthropic 系统评估机制：L2，中置信。</li>
+<li>Canva 发布闸门：L2，中置信。</li>
+<li>字节数据组织上提：L1，中低置信。</li>
+</ul>
+<h3 id="入库判断">入库判断</h3>
+<ul>
+<li>Google 可作为脱敏后的可信结构结论入库。</li>
+<li>Anthropic 可作为系统级 Agent 评估的事实观察与来源索引入库，不沉淀为组织方法。</li>
+<li>Canva、字节留私有观察池。</li>
+<li>今日无 L4 方法。</li>
+</ul>
+<h2 id="证据链与可信度">证据链与可信度</h2>
+<div class="table-wrap"><table><thead><tr>
+<th>条目</th>
+<th>主证据</th>
+<th>互证 / 基线</th>
+<th>结论等级</th>
+<th>置信度</th>
+</tr></thead><tbody>
+<tr>
+<td>Google DeepMind</td>
+<td>Reuters 8/12 深度稿；Google 发言人</td>
+<td>8/5 Reuters 初报、官方 memo、FT 约 12 名现 / 前员工</td>
+<td>结构 L3</td>
+<td>高</td>
+</tr>
+<tr>
+<td>Anthropic multiagent</td>
+<td>Anthropic Frontier Red Team 官方研究</td>
+<td>Anthropic 2025 production engineering；GovSim 独立研究作反证</td>
+<td>机制 L2</td>
+<td>中</td>
+</tr>
+<tr>
+<td>Canva AI cost gate</td>
+<td>Fortune 获 CEO 直接确认</td>
+<td>Q2 股东信的 AFR / Startup Daily 报道；4 月官方产品基线</td>
+<td>机制 L2</td>
+<td>中</td>
+</tr>
+<tr>
+<td>字节 AI 数据与安全</td>
+<td>36 氪《智能涌现》多个独立信源</td>
+<td>TechNode、IT 之家等均回指 36 氪，不算独立互证</td>
+<td>L1</td>
+<td>中低</td>
+</tr>
+</tbody></table></div>
+<h2 id="去伪存真记录">去伪存真记录</h2>
+<ul>
+<li>Google 8 月 12 日深度稿不是“今日新任命”；新增价值是最终决定权、非技术团队汇报线、TPU 协调和历史权力转移的证据升级。</li>
+<li>Google 管理层称日常工作不变，且模型经营权早已转移一年多；不把正式化误写成从零重组。</li>
+<li>Anthropic 的 266 对 21 不能直接写成 12 倍效率；搜索范围、用量单位s 和任务覆盖不同，限定同范围后单位效率大体相当。</li>
+<li>“CEO hierarchy”只是一种提示设置，不是有效管理层级；实验没有证明层级无效，只证明该提示未显著改善本任务。</li>
+<li>Canva 90% 单位成本下降是管理层自述，未审计；收入预期下调也可能包含 IPO 前利润保护和财务重置。</li>
+<li>字节信息来自 36 氪多信源独家，公司截至发稿未回应；TechNode、IT 之家、网易等为同源转述，不构成双源互证。</li>
+<li>OpenAI Ads 岗位的 8 月 13 日是申请截止日，不是设岗时间；Grok Bot 是昨日已收录旧线；xAI 联合创始人离职命中为 2025 年旧闻。</li>
+<li>未检出不等于没有变化，只表示本轮没有可公开定位、达到门槛的新增证据。</li>
+</ul>
+<h2 id="渠道索引补充">渠道索引补充</h2>
+<div class="table-wrap"><table><thead><tr>
+<th>渠道</th>
+<th>URL</th>
+<th>公司</th>
+<th>主题</th>
+<th>证据等级</th>
+<th>是否新增</th>
+</tr></thead><tbody>
+<tr>
+<td>Reuters</td>
+<td><a href="https://www.reuters.com/world/inside-google-executive-moves-that-led-its-big-ai-reshuffle-2026-08-12/" target="_blank" rel="noreferrer">https://www.reuters.com/world/inside-google-executive-moves-that-led-its-big-ai-reshuffle-2026-08-12/</a></td>
+<td>Google</td>
+<td>DeepMind 权责、汇报线与资源接口</td>
+<td>B</td>
+<td>是，证据升级</td>
+</tr>
+<tr>
+<td>CNA / Reuters syndication</td>
+<td><a href="https://www.channelnewsasia.com/business/exclusive-inside-google-executive-moves-led-its-big-ai-reshuffle-6315591" target="_blank" rel="noreferrer">https://www.channelnewsasia.com/business/exclusive-inside-google-executive-moves-led-its-big-ai-reshuffle-6315591</a></td>
+<td>Google</td>
+<td>Reuters 全文与时间戳</td>
+<td>B</td>
+<td>是</td>
+</tr>
+<tr>
+<td>Anthropic Research</td>
+<td><a href="https://www.anthropic.com/research/multiagent-systems" target="_blank" rel="noreferrer">https://www.anthropic.com/research/multiagent-systems</a></td>
+<td>Anthropic</td>
+<td>多 Agent 协调与系统失效</td>
+<td>A</td>
+<td>是</td>
+</tr>
+<tr>
+<td>Anthropic Engineering</td>
+<td><a href="https://www.anthropic.com/engineering/multi-agent-research-system" target="_blank" rel="noreferrer">https://www.anthropic.com/engineering/multi-agent-research-system</a></td>
+<td>Anthropic</td>
+<td>多 Agent 适用任务与 用量单位 成本基线</td>
+<td>A</td>
+<td>反证基线</td>
+</tr>
+<tr>
+<td>Fortune</td>
+<td><a href="https://fortune.com/2026/08/12/canva-startup-growth-ai-costs-revenue-forecast-by-third/" target="_blank" rel="noreferrer">https://fortune.com/2026/08/12/canva-startup-growth-ai-costs-revenue-forecast-by-third/</a></td>
+<td>Canva</td>
+<td>AI 单位成本与 rollout</td>
+<td>B</td>
+<td>是</td>
+</tr>
+<tr>
+<td>36 氪</td>
+<td><a href="https://www.36kr.com/newsflashes/3934989813710209" target="_blank" rel="noreferrer">https://www.36kr.com/newsflashes/3934989813710209</a></td>
+<td>字节</td>
+<td>AI 数据与安全一级部门</td>
+<td>C</td>
+<td>是，观察池</td>
+</tr>
+<tr>
+<td>TechNode</td>
+<td><a href="https://technode.com/2026/08/12/bytedance-reportedly-forms-new-ai-data-and-safety-department/" target="_blank" rel="noreferrer">https://technode.com/2026/08/12/bytedance-reportedly-forms-new-ai-data-and-safety-department/</a></td>
+<td>字节</td>
+<td>36 氪消息英文转述</td>
+<td>C</td>
+<td>同源索引</td>
+</tr>
+</tbody></table></div>
+<h2 id="观察池-待核验池">观察池/待核验池</h2>
+<div class="table-wrap"><table><thead><tr>
+<th>线索</th>
+<th>当前层级</th>
+<th>为什么不够</th>
+<th>可能机制</th>
+<th>待验证问题</th>
+</tr></thead><tbody>
+<tr>
+<td>Anthropic multiagent</td>
+<td>L2</td>
+<td>单一公司实验、未独立复现、无生产结果</td>
+<td>Agent 治理从个体控制扩至系统协议</td>
+<td>生产返工、权限、异质模型、治理层效果</td>
+</tr>
+<tr>
+<td>Canva AI cost gate</td>
+<td>L2</td>
+<td>私有股东信 + CEO 口径，90% 未审计</td>
+<td>单位经济性成为发布闸门</td>
+<td>成本口径、质量、用量、定价与增长恢复</td>
+</tr>
+<tr>
+<td>字节 AI 数据与安全</td>
+<td>L1</td>
+<td>公司未回应；转载同源</td>
+<td>数据全流程与安全合规统一接口</td>
+<td>正式任命、组织清单、RACI、规模、预算、运行结果</td>
+</tr>
+<tr>
+<td>Google 效率结果</td>
+<td>结构 L3；结果未定</td>
+<td>无发布周期、质量或协作成本结果</td>
+<td>决策权集中可能降低协调摩擦</td>
+<td>Gemini 节奏、TPU 分配、研究项目保留、人才流动</td>
+</tr>
+</tbody></table></div>
+<h2 id="公开知识库入库判断">公开知识库入库判断</h2>
+<ul>
+<li><strong>私有知识源</strong>：Google 进入核心区；Anthropic 作为 L2 核心观察；Canva 与字节进入观察池。</li>
+<li><strong>公开知识库</strong>：只维护 Google“研究自治—模型经营—集团产品化接口集中”的脱敏结构结论，以及 Anthropic“多 Agent 系统级评估”的公开来源索引；不包含私有渠道或未授权材料。</li>
+<li><strong>方法门槛</strong>：今日没有 L4，也没有可写成最佳实践、岗位替代或效率提升的证据。</li>
+<li><strong>隐私边界</strong>：未读取、上传或引用桌面私有参考、内部链接、访谈口径、截图、未授权附件或个人信息。</li>
+</ul>
+      </article>
+    </main>
+  </div>
+</body>
+</html>
