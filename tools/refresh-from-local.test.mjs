@@ -39,19 +39,25 @@ function runRefreshWith(content, fileName = "2026-07-23.html") {
   }
 }
 
-function runStageReportRefresh(currentLines, sourceLines) {
+function runStageReportRefresh(currentLines, sourceLines, dates = {}) {
   const fixtureRoot = fs.mkdtempSync(path.join(os.tmpdir(), "report-regression-"));
   const publicRoot = path.join(fixtureRoot, "public");
   const sourceRoot = path.join(fixtureRoot, "research", "private-industry-bigtech-watch");
   const relativePath = path.join("reports", "latest-bigtech-org-intelligence.html");
-  const current = Array.from(
+  const currentBody = Array.from(
     { length: currentLines },
     (_, index) => `<p>published report line ${index + 1}</p>`,
   ).join("\n");
-  const source = Array.from(
+  const sourceBody = Array.from(
     { length: sourceLines },
     (_, index) => `<p>new source report line ${index + 1}</p>`,
   ).join("\n");
+  const current = dates.current
+    ? `<h1>${dates.current} 组织情报信息</h1>\n${currentBody}`
+    : currentBody;
+  const source = dates.source
+    ? `<h1>${dates.source} 组织情报信息</h1>\n${sourceBody}`
+    : sourceBody;
 
   fs.mkdirSync(path.join(publicRoot, "tools"), { recursive: true });
   fs.mkdirSync(path.join(publicRoot, "reports"), { recursive: true });
@@ -115,4 +121,15 @@ test("preserves a published stage report when the source is clearly shorter", ()
 
   assert.match(output, /published report line 739/);
   assert.doesNotMatch(output, /new source report line/);
+});
+
+test("publishes a clearly newer dated stage report even when it is shorter", () => {
+  const output = runStageReportRefresh(739, 500, {
+    current: "2026-08-18",
+    source: "2026-08-22",
+  });
+
+  assert.match(output, /2026-08-22 组织情报信息/);
+  assert.match(output, /new source report line 500/);
+  assert.doesNotMatch(output, /published report line/);
 });

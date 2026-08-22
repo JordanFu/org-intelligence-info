@@ -38,6 +38,9 @@ function isSuspiciousReportRegression(relativePath, nextText, target) {
   if (relativePath !== "reports/latest-bigtech-org-intelligence.html") return false;
   if (!fs.existsSync(target)) return false;
   const currentText = fs.readFileSync(target, "utf8");
+  const currentDate = documentDate(currentText);
+  const nextDate = documentDate(nextText);
+  if (currentDate && nextDate && nextDate > currentDate) return false;
   const currentLines = currentText.split(/\r?\n/).length;
   const nextLines = nextText.split(/\r?\n/).length;
   if (nextLines < currentLines * 0.85) {
@@ -47,6 +50,10 @@ function isSuspiciousReportRegression(relativePath, nextText, target) {
     return true;
   }
   return false;
+}
+
+function documentDate(text) {
+  return text.match(/<h1\b[^>]*>[^<]*(\d{4}-\d{2}-\d{2})[^<]*<\/h1>/i)?.[1] ?? null;
 }
 
 function stripPrivateAccessGate(text) {
