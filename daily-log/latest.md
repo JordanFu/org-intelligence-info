@@ -4,7 +4,7 @@
 
 ## 今日结论
 
-- **本次形成两条 L3 组织边界 / 领导交接事实、一条 L3 人员调整事实；稳定效率结论与 L4 均为 0。** Anthropic 正式启用新加坡办公室并把当地 GTM 与政府政策、安全评测接口放在同一地域节点；OpenAI 宣布把 overall compute organization 交由 CTO of Compute Uday Ruddarraju 统一负责；Netflix 通过联席 CEO 内部邮件确认裁减约 6%、约 1,000 人，主要落在产品、技术、法务和 HR。
+- **本次形成两条 L3 可核组织事实、一条 L3 人员调整事实；稳定效率结论与 L4 均为 0。** Anthropic 正式启用新加坡办公室并签署覆盖政府政策、安全评测的 MOU；OpenAI 宣布把 overall compute organization 交由 CTO of Compute Uday Ruddarraju 统一负责；Netflix 通过联席 CEO 内部邮件确认裁减约 6%、约 1,000 人，主要落在产品、技术、法务和 HR。
 - **Anthropic 的增量不是“又开一个销售点”。** 新加坡办公室的当期扩张重心确为 GTM，公开岗位从 finance 到 sales；与此同时，公司与新加坡政府签署的 MOU 覆盖模型评测、测试标准、事故响应、安全与采用影响研究，并由 APAC Policy 参与。可以确认当地节点同时承接商业与治理接口，但不能写成当地已有独立 Research / Safety 团队或稳定的跨职能组织。
 - **OpenAI 的变化是算力权责向单一总体负责人集中，而不是完整基础设施重组已经完成。** Sachin Katti 将于 11 月 15 日离开现职并转顾问，Uday Ruddarraju 接管整体 compute organization；训练、推理、数据中心建设与容量路线之间的领导接口可能减少，但公开材料没有组织图、HC、下层汇报线或交接结果。
 - **Netflix 的裁员是跨核心与支持职能的资源重排，不能改写成 AI 替岗。** 多家媒体分别取得或核验联席 CEO memo；管理层使用“资源优先级”“高影响领域”和“focused choices”解释调整，并未把 AI 作为原因。短期成本下降、层级压缩、吞吐提升或员工减负均无证据。
@@ -64,7 +64,7 @@
 - **机制变化**：联席 CEO memo 确认裁约 1,000 人、约 6%，为 2022 年以来最大一轮；与 10 月 9 日“可能裁约 5%”传闻相比，执行规模与职能范围首次明确。
 - **应用关系与系统**：产品和技术与法务、HR 同时受影响，说明不是单一后台职能收缩；未公开团队、层级、地区、保留岗位或自动化替代关系。
 - **组织影响**：专业支持密度、跨职能服务容量和留下员工的责任范围可能改变；成本、决策速度、产品吞吐与风险控制的净影响未知。
-- **证据链**：[CNBC 获得 memo](https://www.cnbc.com/2026/10/14/netflix-layoffs.html)、[AP 获得 memo](https://abc7.com/story/netflix-is-laying-off-6-workforce-1000-employees-biggest-round-job-cuts-streaming-giant-years/19938143/)、[Reuters](https://www.reuters.com/business/world-at-work/netflix-cuts-about-6-jobs-wsj-reports-2026-10-14/)、[WSJ](https://www.wsj.com/business/media/netflix-eliminates-about-6-of-staff-in-biggest-cuts-since-2022-0a2d8ec3)。
+- **证据链**：[CNBC 获得 memo](https://www.cnbc.com/2026/10/14/netflix-layoffs.html)、[AP 获得 memo](https://apnews.com/article/2290c8472a155adb9c4b85fdc885bc7e)、[Reuters](https://www.reuters.com/business/world-at-work/netflix-cuts-about-6-jobs-wsj-reports-2026-10-14/)、[WSJ](https://www.wsj.com/business/media/netflix-eliminates-about-6-of-staff-in-biggest-cuts-since-2022-0a2d8ec3)。
 - **证据等级**：裁减事实和主要职能范围 L3、高置信；层级压缩、AI 替代、效率提升和员工负荷为 L0。
 - **反向解释**：观看时长、竞争、增长目标、财务纪律和投资优先级都可能解释调整；盈利增长不排除战略重配，也不能证明此前存在“组织膨胀”。
 - **历史基线与公开策略**：10 月 9 日报道尚无公司确认，私库未升级；本次以多家媒体独立取得同一高管 memo 完成事实升级。
@@ -82,7 +82,7 @@
 
 ## 组织情报结论卡
 
-### 结论卡 A｜AI 原生公司的区域扩张正在把商业与治理接口一起下沉，但核心模型权仍集中
+### 结论卡 A｜AI 原生公司的区域扩张同时配置商业与治理接口，但核心模型权仍集中
 
 - **核心结论**：Anthropic 新加坡节点同时出现 GTM、APAC Policy、模型评测和事故响应合作，说明区域办公室不只承接销售；公开证据仍显示核心 Research、训练和发布权没有下沉。
 - **Signal-to-Mechanism**：办公室启用 + 当地 GTM 招聘 + 政府安全 MOU → 客户采用与治理问题在当地汇合 → 与全球模型团队之间新增一个正式地域接口。
@@ -90,9 +90,9 @@
 - **证据边界**：结构事实 L3；稳定 operating model 和效果 L2 / L0。
 - **适用边界与待验证问题**：仅适用于已有强监管与公共部门采用的区域节点；需验证实际岗位、权责、升级路径和员工负担。
 
-### 结论卡 B｜算力已成为与模型研究同等级的组织权责中心
+### 结论卡 B｜整体算力责任接口向单一负责人收口
 
-- **核心结论**：OpenAI 把 overall compute organization 明确交给 CTO of Compute，说明基础设施路线、容量和数据中心交付需要一个可识别的最高 owner；这不等于领导集中已经解决执行问题。
+- **核心结论**：OpenAI 把 overall compute organization 明确交给 CTO of Compute，使基础设施路线、容量和数据中心交付具有一个可识别的最高 owner；这不等于领导集中已经解决执行问题。
 - **Signal-to-Mechanism**：前任离任转顾问 + CTO of Compute 扩大总体职责 → 最高责任接口收口 → 训练 / 推理容量与长期数据中心投资在同一领导节点协调。
 - **效率影响**：接口可能减少，但领导连续性、合作方管理和超大资本项目的复杂性不会因此自动下降。
 - **证据边界**：领导与职责 L3；组织图、HC、周期和项目结果未知。
@@ -137,7 +137,7 @@
 
 - **Anthropic 新加坡**：`https://www.anthropic.com/news/singapore-office-opening`；`https://www.channelnewsasia.com/singapore/anthropic-office-safety-agreement-government-deal-6456671`；`https://thenextweb.com/news/anthropic-singapore-office-government-mou`。
 - **OpenAI Compute**：`https://www.linkedin.com/posts/sachin-katti-72777943_after-an-incredible-year-at-openai-ive-activity-7516168693463019520-y3qE`；`https://www.cnbc.com/2026/10/14/openais-sachin-katti-to-leave-infrastructure-role-stay-on-as-advisor.html`；`https://www.bloomberg.com/news/articles/2026-10-14/openai-names-uday-ruddarraju-to-lead-data-center-computing-unit`；`https://www.datacenterdynamics.com/en/news/openai-again-shakes-up-compute-leadership-with-xai-exec-uday-ruddarraju-to-lead-and-sachin-katti-to-leave/`。
-- **Netflix**：`https://www.cnbc.com/2026/10/14/netflix-layoffs.html`；`https://abc7.com/story/netflix-is-laying-off-6-workforce-1000-employees-biggest-round-job-cuts-streaming-giant-years/19938143/`；`https://www.reuters.com/business/world-at-work/netflix-cuts-about-6-jobs-wsj-reports-2026-10-14/`；`https://www.wsj.com/business/media/netflix-eliminates-about-6-of-staff-in-biggest-cuts-since-2022-0a2d8ec3`。
+- **Netflix**：`https://www.cnbc.com/2026/10/14/netflix-layoffs.html`；`https://apnews.com/article/2290c8472a155adb9c4b85fdc885bc7e`；`https://www.reuters.com/business/world-at-work/netflix-cuts-about-6-jobs-wsj-reports-2026-10-14/`；`https://www.wsj.com/business/media/netflix-eliminates-about-6-of-staff-in-biggest-cuts-since-2022-0a2d8ec3`。
 - **选拔机制观察**：`https://www.wsj.com/lifestyle/careers/mckinsey-interview-process-ai-7d08a69e`；`https://www.mckinsey.com/careers/interviewing`；`https://managementconsulted.com/mckinsey-ai-case-interview/`。
 - **治理补漏**：`https://committees.parliament.uk/event/28282/formal-meeting-oral-evidence-session/`；`https://committees.parliament.uk/committee/365/business-innovation-science-and-trade-committee/news/218156/house-of-commons-committee-opens-major-new-inquiry-into-ai-security-risks/`；`https://www.wired.com/story/openai-and-anthropic-tell-british-lawmakers-regulate-us/`。
 - **固定渠道**：36 氪、机器之心、虎嗅、界面新闻、第一财经、科技日报、财新、Reuters、CNBC、Bloomberg、AP、CNA、TechCrunch、The Verge、Hacker News，以及固定公司官方新闻页、监管 / 议会页和招聘系统。
