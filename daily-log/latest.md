@@ -1,155 +1,209 @@
-# 2026-10-20 组织情报信息
+# 2026-11-06 组织情报信息
 
-> 连续扫描窗口：2026-10-19 08:31 CST—2026-10-20 08:27 CST；上一份日报为 2026-10-19，无缺失自然日。72 小时补漏从 2026-10-17 08:27 CST 起算。AnySearch 为首选检索，并核对公司公告、Reuters、TechCrunch、GeekWire、Los Angeles Times、Variety、The Hollywood Reporter、国内固定媒体、公开招聘系统及国际 RSS；Hacker News、TechCrunch 与 The Verge RSS 首轮均完成，后续补抓出现间歇性 DNS 失败，不影响两条核心事实链。
+> **扫描窗口**：严格窗口为 2026-11-05 08:34:08 CST—2026-11-06 08:27:57 CST；72 小时补漏窗口为 2026-11-03 08:27:57 CST—2026-11-06 08:27:57 CST。本地最新日报为 2026-11-05，本期不存在缺失自然日。
+>
+> **证据结论**：严格窗口内最强信号是 METR 对 Anthropic AI 研发加速的高权限评估。可达到 L3 的结论被严格限定为：Anthropic 内部模型在 AECI 所覆盖、可明确评分的任务上，能力增长速度自 2025 年 10 月以来约为此前的 1.9 倍；这不是“模型能力翻倍”，也不是“全组织生产率翻倍”。“多数加速由 AI 使用导致”仍是 L2 机制假设，因 Anthropic 公开口径、方法敏感性、非 AI 因素与大规模删节而不能升级。OpenAI、Harvey、ElevenLabs 等招聘差分仅证明公开岗位与权责设计意图，统一保留为 L1。
 
 ## 今日结论
 
-- **严格窗口形成一条 L3 责任接口事实和一条 L2 agent 治理设计事实；效率结果与 L4 均为 0。** Netflix 确认电影负责人 Dan Lin 离任，新任首席内容官 Peter Rice 在继任者产生前直接监督电影团队；Microsoft 公布把 agent 独立身份、任务级限时权限、动态风险、人工批准与运行时隔离连接成控制链。
-- **Netflix 的变化是内容组织第二层责任接口继续重置，不是裁员、AI 或绩效原因得到证实。** 10 月 14 日跨职能裁员、10 月 15 日 CCO 交接与 10 月 19 日电影负责人离任在时间上连续，但 Netflix 没有公开共同重组方案或因果链。
-- **电影业务的临时决策权上收具有双向含义。** Peter Rice 暂时兼管电影团队，可能缩短继任窗口中的汇报链，也会扩大其短期管理跨度；没有立项周期、项目质量、创作者关系、员工工时或负担数据支持任何效率判断。
-- **Microsoft 的核心变化是把 agent 从“员工权限的延伸”改写为独立、可归责、权限可收缩的非人行动主体。** 公开设计要求 agent 拥有区别于员工的身份，从零或最小权限开始，权限按任务和时限授予，并可随风险变化被降级、阻断、隔离或停止。
-- **治理权被明确放在模型之外，但这仍是产品与治理架构，不是客户组织已经完成变革。** Microsoft 把模型智能供给与组织授权分开，高影响动作可以要求可验证的人工批准；公开材料没有采用率、误报、人工审核时延、事故率或生产率结果。
-- **持续监测既可能改善归责，也可能扩大员工行为可见性。** 统一 registry 和跨身份、数据、端点、网络、云及运行时的信号可以区分人和 agent 的行为；员工知情、用途限制、数据最小化、保留期、组织访问与申诉边界尚未披露。
-- **固定国内公司与其余 AI 原生公司未发现新的 L2+ 组织机制信号。** Mistral AI 的 APAC GSI 岗位只显示单一招聘蓝图；Anthropic—Nscale 算力交易仍处匿名来源所称谈判；Town 的“每名员工一个 Townie”仍是供应商功能叙事，均不进入核心结论。
+- **Anthropic 的研发反馈回路出现了可测量的加速，但结论只适用于特定能力指标。** METR 基于内部模型、训练流程、计算量、指标与访谈，估计 AECI 增长速度自 2025 年 10 月以来约为历史阶段的 1.9 倍，95% 置信区间为 1.5—2.8 倍；不同方法选择下结果可在 1.1—2.9 倍变化。
+- **“AI 深度进入研发工作流”比“AI 已替代研究员”更符合证据。** METR 判断当前加速主要来自 AI 辅助人类研发；Anthropic 公开称模型尚不接近替代研究科学家和工程师，其真实工程任务测试得分 55.8%，低于其设定的 85% 替代阈值。
+- **AI 对加速的因果贡献仍未定论。** METR 主观判断多数加速可能来自 AI，但 Anthropic 表示尚未观察到“可归因于 AI 的持续翻倍”；招聘、数据改进、算法发现和前期瓶颈解除等因素没有被决定性排除。
+- **外部评估进入核心研发流程，本身也是治理机制变化。** Anthropic 向 METR 开放内部模型、训练流程、算力、指标与人员访谈，但同时删去了多数对结论最有判断价值的证据。高权限第三方审查增加了独立判断，却没有实现公众可复核的证据透明。
+- **OpenAI 的 FDE 继续向金融、网络安全和行业产品小队分化。** 窗口内出现 foundational FDE manager、Cyber FDE、Enterprise Verticals 咨询产品工程和 Delivery Lead 等岗位；这显示客户交付、行业约束、产品发现和研究反馈正在被连接，但不证明团队已经完成组建或交付效率已经改善。
+- **OpenAI 把代理安全从研究议题推进到生产工程平台。** Guardian 岗位负责实时评估 agent 行为、权限边界、恢复与升级路径，并连接 Product、Alignment、Infrastructure、Security；这是 L1 组织设计信号，不是安全事故减少或人工监督负担下降的结果证据。
+- **传统大厂与国内 AI 原生公司未检出新的 L2+ 组织机制事实。** 命中以旧重组、旧裁员、产品新闻、招聘聚合与二手改写为主；“本期未检出”不能解释为内部没有变化。
+- **没有证据支持 AI 已减少 HC、提高人才密度、降低员工负担或提升全组织效率。** 指标加速、岗位发布、工具采用与管理层新增都不能单独承担这些结论。
 
 ## 今日组织机制信号
 
-| 公司 / 组织 | 机制标签 | L1 事实 | L2 机制判断 | L3 组织判断 | 置信度 / 阅读价值 |
+| 信号 | 事件状态 | 机制假设 | 可能影响的组织变量 | 知识等级 / 置信度 | 阅读价值 |
 |---|---|---|---|---|---|
-| Netflix 电影业务 | temporary accountability consolidation、leadership reset | Netflix 确认 Dan Lin 离任；Peter Rice 在新电影负责人产生前监督电影团队 | CCO 交接后，电影业务的决策与任命接口临时上收至同一最高内容 owner | 离任、临时管辖与继任者待定为 L3 结构事实；原因、效率与员工影响不升级 | 高 / 核心结论 |
-| Microsoft Security / Agent 365 | first-class agent identity、dynamic least privilege、external control plane | 官方公布统一 registry、独立 Agent ID、任务级限时权限、动态风险、人类批准、隔离与停止能力 | agent 治理由一次性准入转为“发现—归责—授权—监测—分级收权”的持续闭环 | 设计事实为 L2；客户采用、事故减少、生产率与员工受益均未达到 L3 | 高 / 核心结论 |
-| Mistral AI APAC Partnerships | GSI channel owner、partner scorecard | 官方招聘页出现 Strategic Partnerships, GSI, APAC，描述单人负责 EY APAC、QBR、scorecard 与交付 pods | 招聘蓝图提示企业交付可能通过 GSI partner operating cadence 扩展 | 单一岗位不能证明到岗、新组织成立、收入目标实现或交付效率 | 中 / 持续观察 |
-| Anthropic / Nscale | compute-capacity negotiation | Bloomberg 经 TechCrunch 转述双方讨论约 450 亿美元算力交易，细节可能变化 | 若完成，可能提高外部算力伙伴与内部 Compute / Finance / Infrastructure 的协调复杂性 | 匿名来源、谈判未签约，不能形成结构或效率结论 | 低 / 暂不采纳 |
+| METR 对 Anthropic AI 研发加速的高权限评估 | 一手报告标注 11 月 5 日；AP、Reuters 在严格窗口内发布 | AI 进入实验、编码、评测与训练反馈回路；外部高权限审查进入核心研发治理 | 研发节奏、人才分工、验证成本、透明度、风险治理 | A+B；限定结论 L3 / 中高 | 核心结论 |
+| OpenAI 金融 FDE 管理岗与 Cyber FDE | 严格窗口；官方岗位 + 独立首次索引 | FDE 从通用交付继续向高风险行业小队和管理层分化 | 决策速度、领域密度、矩阵协作、客户反馈回流 | A / L1；事实高、机制中 | 核心观察 |
+| OpenAI Guardian 生产安全工程 | 严格窗口；官方岗位 + 既有官方 Auto-review 材料 | Safety / Alignment 通过生产平台进入 agent 实时权限与恢复路径 | 职能边界、人工审批、风险控制、产品摩擦 | A / L1；事实高、机制中 | 持续观察 |
+| OpenAI 四类 Compute TPM | 严格窗口；四岗集中发布 | 供应信号、全球规划、研究需求转译和容量工具被拆成专业控制面 | 算力配置、跨职能协作、预算与预测、管理复杂度 | A / L1；事实高、机制中 | 持续观察 |
+| Harvey Legal Engineer 前后链路分工 | 严格窗口；官方岗位簇 | 法律域专家按售前、售后、技术 CX 和地区管理拆分 | 管理跨度、交接成本、领域密度、客户采用 | A / L1；事实高、机制中 | 持续观察 |
+| ElevenLabs Talent Lead | 严格窗口；单一官方岗位 | Talent 从高容量招聘执行转向 Operations 管理链中的人才供给系统 | 招聘容量、职能边界、绩效压力、管理跨度 | A / L1；事实高、机制中 | 观察池 |
 
 ## 传统大厂与 AI 原生组织分组观察
 
-- **国内传统互联网 / 科技大厂**：腾讯、阿里、字节、美团、百度、京东、快手、小米、华为、网易、拼多多、蚂蚁、飞书 / 火山、B 站、滴滴、携程未发现严格窗口内新的 L2+ 绩效、晋升、职级、干部、薪酬或组织结构变化。
-- **国外传统科技与高制度透明度公司**：Netflix 的电影负责人离任与临时监督安排达到 L3 结构事实门槛；Microsoft 的 agent 安全控制链达到 L2 治理设计门槛。Amazon、Google、Meta、Apple、Salesforce、Adobe、Nvidia、Shopify、Atlassian、GitLab、Stripe、Canva、Zapier 未发现新的公司级 L2+ 组织变化。
-- **国内 AI 原生与模型公司**：DeepSeek、Kimi / 月之暗面、智谱 AI、MiniMax、百川智能、阶跃星辰、零一万物、商汤日日新、面壁智能、昆仑万维 / 天工、秘塔 AI、无问芯穹、硅基流动未发现新的 L2+ 组织机制事实。MiniMax M3.1 Flash 属产品发布，不换算为组织变革。
-- **国外 AI 原生与模型公司**：Mistral AI 的 APAC GSI 岗位只作为 L1 招聘蓝图；Anthropic—Nscale 交易仍是 L1 谈判观察。OpenAI、Perplexity、Cohere、xAI、Character.AI、Inflection、Adept、Runway、Midjourney、ElevenLabs、Harvey、Cursor / Anysphere、Replit、Scale AI 未出现新的 L2+ 信号。
-- **趋同与分化**：Netflix 处理的是领导交接中的责任连续性，Microsoft 处理的是非人行动主体的身份与授权边界。前者临时集中人的决策权，后者把机器权限从人的 standing access 中拆出；两者都强调责任归属，但不能概括为同一种“扁平化”或“AI 提效”。
+### 传统大厂
+
+- **国内传统互联网 / 科技公司**：腾讯、阿里、字节、美团、百度、京东、快手、小米、华为、网易、拼多多、蚂蚁、飞书 / 火山、B 站、滴滴、携程的命中以历史材料、产品动态和二手评论为主，严格窗口内没有达到 L2 的新组织机制事实。
+- **国外传统科技公司**：Amazon、Google、Meta、Microsoft、Apple、Netflix、Salesforce、Adobe、Nvidia、Shopify、Atlassian、GitLab、Stripe、Canva、Zapier 未发现严格窗口内可进入核心区的新机制材料。Meta 收购 Conductor 已在上一期作为 L2 事实处理，本期仅保留连续观察，不重复升级。
+- **证据边界**：搜索结果页更新时间、招聘聚合页和 layoff tracker 不能承担事件时间或组织因果证明。
+
+### AI 原生组织
+
+- **Anthropic**：METR 的高权限评估构成本期唯一达到 L3 的限定结论；Discovery 的领域科学家—模型研究员岗位对、Product 内部沟通、Partner Services Delivery、Sales Enablement 等均为 L1 组织设计信号。
+- **OpenAI**：FDE 的金融 / Cyber 专项、Delivery Lead、Enterprise Verticals 咨询小队、Agent Platform、Guardian 和 Compute TPM 岗位簇同时出现，显示企业交付、横向平台、代理安全与算力治理继续专业化；存在旧岗重发、换 ID 和地域复制，不能按新增 ID 计算 HC。
+- **Harvey**：德国市场同时出现售前 Legal Engineer Manager 与售后 Product Specialist Manager，并补充 Technical CX；更接近客户生命周期分工和区域管理复制，不证明净效率改善。
+- **ElevenLabs、Cohere、Perplexity、Replit**：Talent Lead、Inference Platform P&L 责任、University Recruiter 等只进入观察池；Replit 快照无变化。
+- **国内 AI 原生公司**：DeepSeek、Kimi、智谱 AI、MiniMax、百川智能、阶跃星辰、零一万物、商汤日日新、面壁智能、昆仑万维 / 天工、秘塔 AI、无问芯穹、硅基流动未发现严格窗口内达到 L2 的组织机制新事实。
+
+### 趋同与分化
+
+- **趋同**：AI 原生公司正在把此前由通才或临时项目承担的工作拆成专门接口——行业交付、平台编排、实时安全、算力配置、客户生命周期和人才容量。
+- **分化**：Anthropic 本期最强证据来自研发过程与外部评估；OpenAI、Harvey 和 ElevenLabs 主要来自岗位设计。前者能支持限定的运行结论，后者只能证明公开组织意图。
 
 ## 高价值变化卡片
 
-### Netflix｜电影业务责任在继任窗口临时上收至新 CCO
+### 变化卡 1｜Anthropic：AI 研发能力增速的可测量加速与证据透明边界
 
-- **时间与范围**：Variety 于 2026-10-19 23:25 CST 首发，The Hollywood Reporter 随后跟进；Los Angeles Times 于 10 月 20 日 03:09 CST 更新并引述公司与本人声明，Reuters 记录 Netflix 确认。范围是 Netflix 电影团队及其领导接口。
-- **机制名称与理念**：temporary accountability consolidation；在电影负责人空缺期间，由即将生效的全球内容最高 owner 临时承担监督，维持责任连续性。
-- **机制变化**：Dan Lin 结束自 2024 年 2 月开始的电影负责人任期；Peter Rice 在新电影负责人公布前直接监督电影团队。继任者、选任时间和长期汇报结构尚未公布。
-- **应用关系与系统**：Rice 将自 10 月 26 日起担任 CCO，原职责已覆盖剧集、电影、直播和地区内容；临时兼管把电影条线的决策、汇报和继任选择连接到同一最高内容接口。
-- **组织影响**：责任上收可能减少空缺期的多头协调，也可能扩大 CCO 短期管理跨度，并给电影团队带来方向与汇报不确定性。公开材料没有决策周期、项目吞吐、内容质量、工时、自主权或员工体验结果。
-- **证据链**：[Netflix 的 CCO 历史基线](https://about.netflix.com/en/news/peter-rice-named-netflix-chief-content-officer)、[Reuters](https://www.reuters.com/business/media-telecom/netflix-film-division-boss-exit-second-senior-departure-week-2026-10-19/)、[Los Angeles Times](https://www.latimes.com/entertainment-arts/business/story/2026-10-19/netflix-film-chief-dan-lin-is-out-as-streamer-shuffles-executive-ranks)、[Variety](https://variety.com/2026/film/news/dan-lin-exits-netflix-film-chief-1236913606/)、[The Hollywood Reporter](https://www.hollywoodreporter.com/movies/movie-news/netflix-film-head-dan-lin-out-1236733802/)。
-- **证据等级**：离任、临时监督与继任者待定为 L3、高置信；“决策权临时集中”为 L2 机制判断；离任原因、长期结构、效率和员工影响低于 L3。
-- **反向解释**：这可能是新 CCO 常规搭建管理班底、电影业务的独立战略调整、成本纪律或多种因素共同作用。Dan Lin 任内同时有成功与失利项目，离任不能反推单一绩效结论。
-- **历史基线与公开策略**：10 月 14 日 Netflix 确认约 6% 跨职能裁员，10 月 15 日宣布 CCO 交接；本次增量只证明电影条线负责人离任与临时监督，不建立三者的共同因果。
-- **适用边界与待验证问题**：仅限电影条线的继任窗口；待验证继任者、选任权、项目决策权限、与地区及制作团队的接口、管理跨度、人员流动与剩余团队工作负担。
+- **时间**：METR 一手报告标注 2026-11-05，未提供小时级发布时间；AP 于 2026-11-06 02:00 CST、Reuters 于约 02:53 CST 发布报道，均位于严格窗口。
+- **公司与组织范围**：Anthropic 模型研发、预训练、强化学习、训练计算、内部模型指标、研发人员与 Responsible Scaling。
+- **机制名称**：AI 辅助研发反馈回路 + 高权限第三方审查。
+- **机制理念**：模型参与下一代模型的编码、实验、评测与训练工作；外部评估者获得接近员工级的内部材料，对加速速度和风险形成独立判断。
+- **L1 事实**：METR 于 8 月 12 日至 10 月 29 日获得内部模型、训练流程、训练算力、基准、研发加速分析和人员访谈。其 AECI 分析显示，自 2025 年 10 月以来内部模型基准分数的增长速度约为此前的 1.9 倍，95% 置信区间为 1.5—2.8 倍。
+- **L2 机制判断**：多条证据与“AI 已深度进入研发工作流并缩短迭代反馈”一致；AI 可能贡献了多数加速，但 METR 对约 80% 的估计是带显著不确定性的主观判断。
+- **L3 组织判断**：仅成立于“可明确评分任务上的能力增长速度较历史阶段明显加快”。不成立于“Anthropic 全组织生产率翻倍”“研发人员被替代”或“效率收益已经分配给员工”。
+- **应用关系**：模型辅助编码、实验设计、评测、训练数据、RL、算力利用、内部指标和风险评估。
+- **系统 / 工具**：AECI、内部模型快照、训练流程数据、员工访谈与调查；公开材料不包含可完整复核的内部原始数据。
+- **组织影响**：可能缩短研发周期并提高同一时间内的实验与验证供给；也可能把更快的节奏转化为更高工作强度、更多评测负担和更短安全缓冲。现有证据没有员工工时、负担、质量或收益分配数据。
+- **证据来源**：[METR 独立评估](https://metr.org/blog/2026-11-05-anthropic-ai-rd-acceleration-assessment/)、[METR 对 Anthropic 风险报告的复核](https://metr.org/blog/2026-11-05-rd-section-anthropic-risk-report-august-2026-review/)、[AP](https://apnews.com/article/anthropic-metr-ai-claude-acceleration-9cf8c590ffc1abdb489179bdccc69c23)、[Reuters 转载](https://au.marketscreener.com/news/anthropic-s-models-improving-nearly-twice-as-fast-with-help-ai-study-finds-ce785fddd88dfe24)、[Anthropic Transparency Hub](https://www.anthropic.com/transparency)。
+- **证据等级**：A + B；知识等级为限定 L3；事实置信度中高，AI 因果归因置信度中，组织生产率结论不成立；阅读价值为核心结论。
+- **互证情况**：METR、AP、Reuters 和 Anthropic 均确认高权限评估与 AI 辅助研发存在；Anthropic 与 METR 对“是否已观察到可归因于 AI 的持续翻倍”口径不同，构成重要反证而非可忽略差异。
+- **反向解释**：AECI 偏向可验证任务；方法选择可使结果在 1.1—2.9 倍变化；早期基线可能异常低；招聘、数据、算法发现和旧瓶颈解除仍可能贡献加速；员工自报存在低投入和高估风险。
+- **与历史基线对比**：比较基线为 2023 / 2024 至 2025 年的 Anthropic 内部能力增长；报告明确指出 2025 年 Anthropic 可能低于行业前沿，低基线会放大后续加速。
+- **公开策略**：只公开聚合指标、方法限制和来源；不公开个人访谈、个人 AI 使用率、内部模型细节或可反向识别员工的信息。
+- **组织发展关注点**：真实复杂任务的外推、AI 与非 AI 因素拆分、评测负担、员工工作强度、外部评估独立性、删节权与公众复核能力。
+- **适用边界**：只适用于 Anthropic 的内部模型研发与 AECI 所覆盖任务，不能外推到一般知识工作、其他公司或全组织生产率。
+- **待验证问题**：真实复杂研发任务是否同样加速；AI 贡献的可复现因果估计；研发人员工时与任务结构；质量、安全与返工；节省时间由谁获得；未删节证据是否改变结论。
 
-### Microsoft｜agent 由员工权限附属物转为独立、动态受控的行动主体
+### 变化卡 2｜OpenAI：FDE 的行业化、管理化与交付分工
 
-- **时间与范围**：Microsoft 于 2026-10-19 发布；TechCrunch 于 10 月 20 日 06:04 CST 跟进，GeekWire 亦在严格窗口报道。范围是 Project Perception、Microsoft Agent 365、Entra Agent ID 及相关身份、权限、数据、端点、网络、云与运行时控制。
-- **机制名称与理念**：external agent control plane、first-class agent identity、dynamic least privilege；模型提供智能，组织保留授权，安全判断和执行边界位于模型之外。
-- **机制变化**：Project Perception 与 Agent 365 共享信号、上下文和统一 registry；官方称新增 35 类本地 agent 发现能力、总计支持 60 类。agent 拥有区别于员工的身份，从零或最小权限开始，权限按任务和时间授予；风险变化可触发读写分级、资源与网络收缩、权限撤销、可验证人工批准、运行时隔离或停止。
-- **应用关系与系统**：身份锚定 owner、归责、生命周期、风险、权限和策略；Dynamic Agent Risk 汇集多层信号，Dynamic Conditional Access 将风险变化转成分级控制；Guardian Agents 承担持续调查与处置，人的角色保留在政策、批准边界和重大决定。
-- **组织影响**：设计上把人和 agent 的行为归责、权限与生命周期分开，可能降低 standing access 带来的责任模糊和全有全无处置；持续 registry、监测与人工 gate 也可能增加审批、误报、治理成本和员工工具使用可见性。没有结果数据判断净影响。
-- **证据链**：[Microsoft Security Blog](https://www.microsoft.com/en-us/security/blog/2026/10/19/agents-are-your-newest-insiders-security-must-move-at-their-speed/)、[Microsoft 总述](https://blogs.microsoft.com/blog/2026/10/19/securing-the-agentic-insider/)、[TechCrunch](https://techcrunch.com/2026/10/19/microsoft-says-ai-agents-are-like-insider-threats-as-frontier-models-cant-be-trusted/)、[GeekWire](https://www.geekwire.com/2026/microsoft-unveils-tools-to-monitor-and-corral-rogue-ai-agents/)。
-- **证据等级**：公开架构与功能设计为 L2、高置信；Microsoft “Customer Zero” 的数十万 agent 为公司自述背景；客户采用、安全效果、生产率、员工受益与组织效率低于 L3。
-- **反向解释**：发布服务于 Microsoft 安全产品与 agent control-plane 商业定位；“agentic insider”是风险模型，不表示 agent 恶意，也不证明客户已经重构组织。支持 60 类 agent 只说明发现覆盖，不等于采用规模或治理效果。
-- **历史基线与公开策略**：Project Perception 先用于 agent 防御，本次扩展到治理企业内部的 agent；Nvidia Open Agent Safety Platform 提供行业趋势互证，但不能替代客户采用与结果证据。
-- **适用边界与待验证问题**：适用于具备跨系统行动能力的企业 agent；待验证正式可用范围、定价、真实部署、误报、人审时延、策略冲突、员工知情、用途限制、数据最小化、保留期、访问权与申诉机制。
+- **时间**：FDE Manager, Financial Services 于 2026-11-05 22:12 CST 发布；Cyber FDE 于 11 月 6 日 07:48 CST 发布；均位于严格窗口。
+- **公司与组织范围**：OpenAI Forward Deployed Engineering、Financial Services、Cyber、Product、Research、GTM、Security、Legal 与 GRC。
+- **机制名称**：行业化 FDE + 现场交付反馈闭环。
+- **机制理念**：把领域约束、生产部署、评测、客户价值和产品 / 研究反馈放进同一交付单元，再把有效做法沉淀为可复用模式。
+- **L1 事实**：金融 FDE 管理岗被定义为 foundational manager，负责组建团队、端到端结果、绩效反馈和 staffing；Cyber FDE 直接面对 CISO 与一线分析人员，并界定人工审查、权限边界、评测与生产运行。
+- **L2 机制判断**：岗位簇显示 FDE 正从通用客户工程继续向高风险行业和管理层分化；仍缺到岗、团队规模、汇报线和运行数据，机制判断保持假设语气。
+- **L3 组织判断**：不成立。不能据此认定成熟事业部已成立、交付速度提高或客户风险下降。
+- **组织影响**：可能减少客户问题进入产品和研究的翻译损耗；行业小队与横向平台之间也会增加矩阵协调、重复建设和优先级冲突。
+- **证据来源**：[OpenAI 官方岗位：FDE Manager, Financial Services](https://openai.com/careers/forward-deployed-engineering-manager-financial-services-new-york-city/)、[Cyber FDE NYC](https://jobs.ashbyhq.com/openai/9c1aa1f3-b4d0-48fa-814b-37d36ad0ad2e)、[独立首次索引记录](https://sixfigurework.com/jobs/forward-deployed-engineering-manager-financial-services-faa354cc-6af9-405e-b3ed-54c319ef7aee)。
+- **证据等级**：A / L1；岗位存在与时间置信度高，组织运行置信度低；阅读价值为核心观察。
+- **反向解释**：金融 FDE 专员此前已存在；金融 FDE 的新 ID 是旧岗重发，Cyber 两岗是地域复制；真正新增信号主要是管理岗与专项边界。
+- **适用边界**：只适用于高风险企业部署，不代表所有客户交付都适合独立行业团队。
+- **待验证问题**：团队实际人数、管理跨度、与 Technical Success 的交接、现场反馈进入 roadmap 的权限、客户采用与返工、员工旅行和工作强度。
+
+### 变化卡 3｜OpenAI Guardian：把 agent 安全变成跨产品生产工程能力
+
+- **时间**：Software Engineer, Guardian 于 2026-11-06 05:26 CST 进入官方 ATS 快照，位于严格窗口。
+- **公司与组织范围**：OpenAI Guardian、Applied AI、Alignment Research、Product、Infrastructure、Security 与 Codex / agent 产品。
+- **机制名称**：实时 agent 行为审查与权限控制平台。
+- **机制理念**：在 agent 越过权限边界时，用独立模型和生产系统评估动作、识别风险、批准或拒绝，并提供恢复与升级路径。
+- **L1 事实**：岗位负责 Auto-review 与更广泛 Guardian 平台，覆盖用户意图、环境上下文、权限、隐私、实时风险识别和产品集成；团队在伦敦形成集中工程组。
+- **L2 机制判断**：Safety / Alignment 不再只停留在研究、政策或发布前评测，而是通过生产工程平台进入 agent 执行时控制链；岗位文本仍不能证明机制已覆盖全部产品或风险结果。
+- **L3 组织判断**：不成立。没有误报、漏报、事故率、人工审批时延、成本或用户负担数据。
+- **证据来源**：[OpenAI 官方岗位](https://openai.com/careers/software-engineer-guardian-london-uk/)、[Auto-review 技术说明](https://alignment.openai.com/auto-review)、[Agent approvals 文档](https://developers.openai.com/api/docs/guides/agents-api/sessions/approvals)。
+- **证据等级**：A / L1；事实高、机制中；阅读价值为持续观察。
+- **反向解释**：新团队可能是既有 Auto-review 的扩容或重命名；自动审批也会增加推理成本、误判和不可见决策，不能把减少弹窗等同于降低整体负担。
+- **适用边界**：主要是会执行代码、调用工具和跨权限边界的 agent 场景。
+- **待验证问题**：覆盖产品、人工接管边界、企业策略权、隐私最小化、成本、误判、事故与用户申诉。
+
+### 变化卡 4｜Harvey：Legal Engineer 从混合角色走向客户生命周期分工
+
+- **时间**：两个德国管理岗于 2026-11-05 21:37—21:39 CST 发布；Toronto、Mexico Legal Engineer 与 EMEA Technical CX 在严格窗口内发布。
+- **公司与组织范围**：Harvey GTM、Legal Engineer、Product Specialist、Technical CX 与德国 / EMEA / 北美地区团队。
+- **机制名称**：域专家前后链路分工 + 地区经理层。
+- **机制理念**：把售前发现与方案、售后采用与价值实现、技术问题根因处理拆成不同责任接口，同时由地区管理者承接规模化。
+- **L1 事实**：德国新增售前 Legal Engineer Manager 和售后 Product Specialist Manager；两岗分别领导 pre-sales 与 post-sales 团队。Technical CX 负责从首响到 root cause 的技术问题闭环。
+- **L2 机制判断**：职责拆分可能减少单一域专家贯穿全部客户生命周期的上下文切换，也会产生售前—售后—支持的交接成本。
+- **L3 组织判断**：不成立。岗位发布不能证明管理层已到岗、交接质量或客户采用结果。
+- **证据来源**：[Post-sales Manager](https://jobs.ashbyhq.com/harvey/66bded30-3d30-4edd-b70f-25f4519b0e1c)、[Pre-sales Manager](https://jobs.ashbyhq.com/harvey/e8696182-927b-4a66-a058-be39ab583e7b)、[Technical CX London](https://jobs.ashbyhq.com/harvey/cbb288f0-8eb6-44dd-a8d7-2b5de901e101)。
+- **证据等级**：A / L1；事实高、机制中；阅读价值为持续观察。
+- **反向解释**：部分岗位是 Munich / EMEA 既有模式的地区复制；新增经理也可能是快速扩张后的管理补课。
+- **适用边界**：仅说明 Harvey 的法律域交付岗位设计，不能外推为所有 FDE / 域专家组织的通用结构。
+- **待验证问题**：经理到岗、团队规模、售前售后交接、客户上下文传递、产品反馈权、案件质量与员工负担。
 
 ## 不是新闻而是机制
 
-| 表面事件 | 机制问题 | 可能影响的效率维度 | 已有证据 | 不能推出 |
-|---|---|---|---|---|
-| Netflix 电影负责人离任 | 负责人空缺时，电影决策和继任权如何保持连续 | 决策速度、管理跨度、创意协作、执行节奏 | 离任、Rice 临时监督、继任者待定 | 因裁员、AI 或绩效被撤；内容质量或效率已经变化 |
-| 一周内连续两名内容高管离开 | 全球内容最高 owner 与电影条线 owner 如何衔接 | 权责清晰度、单点负荷、团队方向稳定性 | CCO 交接与电影负责人离任分别确认 | 永久减少层级、重组完成或形成新组织结构 |
-| Microsoft 称 agent 是“内部人风险” | 智能供给与组织授权能否分离 | 归责、权限边界、风险响应速度 | 模型外控制、独立身份、动态权限 | agent 恶意、模型供应商普遍不可信或行业已达成共识 |
-| agent 拥有独立身份 | 人与 agent 的行为、权限和生命周期如何区分 | 审计成本、责任清晰度、访问控制 | Entra Agent ID 与统一 registry 设计 | 所有 agent 已纳管、归责争议已经消失 |
-| 动态权限与 Guardian Agents | 风险变化如何转成可逆、分级处置 | 人工审核负担、停机范围、响应节奏 | 读写分级、缩权、人工批准、隔离和停止 | 事故减少、人工负担下降、生产率提高 |
-| 发现员工本地 agent | 安全可见性与员工隐私如何划界 | 信任、数据质量、治理成本 | 支持 60 类本地 agent 的发现设计 | 员工已经知情同意、监测范围最小化或员工受益 |
+| 事件表面 | 机制翻译 | 效率含义 | 反向解释与边界 |
+|---|---|---|---|
+| Anthropic 模型进步“快了约两倍” | AI 辅助进入研发反馈回路；高权限第三方评估进入内部治理 | 可能缩短可明确评分任务的研发周期 | 不是能力翻倍、员工生产率翻倍或自主研发；因果归因和公开复核均受限 |
+| OpenAI 招 FDE 经理和 Cyber FDE | 客户现场工程按行业约束、评测与反馈回路组织 | 可能减少客户到研究 / 产品的翻译损耗 | 招聘意图不等于组织已运行；行业纵向小队会增加矩阵协调 |
+| OpenAI 建 Guardian 团队 | Safety / Alignment 进入 agent 执行时的生产控制面 | 可能减少人工审批中断并提高边界一致性 | 自动审查有误判、成本和透明度代价，不能只比较速度 |
+| OpenAI 同日发布四类 Compute TPM | 算力供需、全球规划、研究需求和容量工具被拆为专业配置接口 | 可能减少研究、产品、财务和基础设施之间的信息断层 | 也可能新增计划层和预测维护成本；没有利用率或配置结果 |
+| Harvey 增设 Legal Engineer 管理岗 | 域专家按售前、售后和技术支持拆分并地区化 | 可能降低角色切换、扩大管理承载 | 新交接点可能丢失客户与法律工作流上下文 |
+| ElevenLabs 招 Talent Lead | 招聘容量与业务扩张被纳入 Operations 管理链 | 可能增强 HC 预测与招聘容量协调 | 也可能是高增长压力下的治理补课；AI 化招聘未验证 |
 
 ## 组织情报结论卡
 
-### 结论卡 A｜领导交接中的“责任连续性”不等于“效率已改善”
+### 结论卡 A｜AI 辅助研发的“速度”与组织生产率必须分开
 
-- **核心结论**：Netflix 在 CCO 交接后把电影业务临时交由同一最高内容 owner 监督，形成可核的责任连续安排；该安排只证明空缺期的 owner 清晰，不证明长期结构、决策速度或内容质量更优。
-- **Signal-to-Mechanism**：电影负责人离任 + 新 CCO 即将生效 + 继任者未定 + CCO 临时监督 → 决策与继任接口暂时集中 → 汇报链可能缩短，管理跨度和单点负荷同时上升。
-- **效率影响**：对决策速度、协作成本和执行节奏的方向不确定；没有周期、质量、工时和员工体验数据。
-- **证据边界**：结构事实 L3；机制判断 L2；原因与结果低于 L3。
-- **适用边界与待验证问题**：只适用于 Netflix 电影团队的继任窗口；长期负责人、权限分工、团队稳定性和剩余员工负担待验证。
+- **事实基础**：AECI 指标增长速度约为历史阶段的 1.9 倍；METR 得到高权限内部材料；Anthropic 同时否认已观察到“可归因于 AI 的持续翻倍”。
+- **机制判断**：AI 已深度进入模型研发的多个工作环节，能够扩大实验、编码和评测供给；真实组织结果仍受任务可定义性、人员判断、算力、数据、安全与协作接口约束。
+- **效率变量**：迭代周期、实验量、验证负担、研究人员任务结构、工作强度、质量与风险。
+- **知识等级**：限定结论 L3；AI 因果归因 L2；全组织生产率、员工减负和替代结论不成立。
+- **反向解释**：指标偏向可验证任务、历史基线偏低、非 AI 因素、删节与自报偏差都可能抬高结果。
+- **适用边界**：Anthropic 内部模型研发与 AECI，不外推其他组织或一般知识工作。
+- **待验证问题**：复杂任务、人员后效、安全质量、返工、劳动强度和收益分配。
 
-### 结论卡 B｜agent 治理的关键边界从“允许使用”转向“允许做什么、多久、在何种风险下继续”
+### 结论卡 B｜AI 原生组织正在把“现场—平台—安全”拆成更明确的接口
 
-- **核心结论**：Microsoft 的公开设计把 agent 管理拆为可发现、可归责、任务级授权、持续风险判断和分级收权；它描述了组织控制平面，而不是一次性工具准入。
-- **Signal-to-Mechanism**：统一 registry + 独立 Agent ID + 零 / 最小权限 + 任务和时限范围 + 动态风险 + 人工 gate / 隔离 → agent 的 authority 与员工 standing access 分离 → 权限可以随上下文变化收缩。
-- **效率影响**：可能降低责任模糊和大范围停机，也可能增加治理接口、人审时延、误报与维护成本；净效应未知。
-- **证据边界**：架构与功能设计 L2；采用、风险下降、效率和员工受益低于 L3。
-- **适用边界与待验证问题**：适用于可访问企业数据、工具和其他 agent 的行动型系统；正式可用性、部署成效、治理成本和隐私边界待验证。
-
-### 结论卡 C｜持续可见性只有在员工价值、透明边界和最小采集同时成立时，才可能形成可信组织数据
-
-- **核心结论**：Microsoft 的统一 registry 与跨层信号能够提高 agent 可见性，但公开材料没有说明员工对监测的知情、用途、保留和申诉边界；技术可见性不能直接换算为可信组织洞察。
-- **Signal-to-Mechanism**：本地 agent 发现 + sponsor / owner 关联 + 跨系统遥测 → 更完整的活动证据 → 若用途和边界不透明，也可能引发自我审查、规避和低质量数据。
-- **效率影响**：审计与归责可能更清晰，信任、隐私和维护负担也可能上升；没有员工收益或负担数据。
-- **证据边界**：监测设计为 L2；员工体验、数据可信度和组织效益为待验证问题。
-- **适用边界与待验证问题**：只适用于已授权的企业 agent 工作流；个人用途与组织用途、最小采集、保留期、访问和申诉待验证。
+- **事实基础**：OpenAI 同时出现行业 FDE、Delivery Lead、Enterprise Verticals、Agent Platform 和 Guardian 岗位；Harvey 按售前、售后与技术 CX 拆分 Legal Engineer 体系。
+- **机制判断**：随着客户工作进入生产环境，单一通才角色难以同时承载领域理解、交付、平台复用、安全控制和项目节奏；组织开始建立专门接口。
+- **效率变量**：客户反馈回流、跨团队翻译、管理跨度、交接成本、平台复用和风险控制。
+- **知识等级**：A / L1；只证明岗位与权责设计，不形成组织效率结论。
+- **反向解释**：专业化也可能是扩张后的协调补课，会新增矩阵和交接成本；岗位发布不能证明机制已经稳定运行。
+- **适用边界**：高风险、强领域约束的企业 AI 部署。
+- **待验证问题**：团队规模、决策权、真实交付周期、返工、客户采用、员工负担和平台复用率。
 
 ## 证据链与可信度
 
-| 信号 | 事实验证 | 机制验证 | 趋势验证 | 反向解释 | 层级 / 置信度 |
+| ID | 事实链 | 机制验证 | 趋势验证 | 反证 / 缺口 | 等级 |
 |---|---|---|---|---|---|
-| Netflix Dan Lin 离任 | Reuters 记录公司确认；LA Times 引述公司与本人声明；Variety / THR 独立报道 | Rice 临时监督与继任者待定使责任接口具体 | 10/15 官方 CCO 交接提供同一组织历史基线 | 常规搭班子、电影战略、成本纪律或多重原因；无公开定论 | L3 结构事实，高 |
-| Netflix 临时决策权集中 | CCO 职责与电影临时监督可核 | 最高内容 owner 暂时兼管下层条线 | 与两日前 CCO 交接连续，但无共同方案 | 可能只是短期占位，不形成永久层级变化 | L2 机制，中高 |
-| Microsoft agent 控制链 | 官方详细设计 + Microsoft 总述 + TechCrunch / GeekWire | 身份、权限、风险、人工 gate 与运行时处置形成闭环 | Nvidia Open Agent Safety Platform 提供跨公司趋势背景 | 产品销售与 control-plane 竞争；客户采用未知 | L2 设计事实，高 |
-| Microsoft 数十万 agents | Microsoft Customer Zero 自述 | 缺 agent 类型、自治程度、覆盖和失败率 | 无独立审计或结果数据 | 可能包含大量低自治或重复实例 | L1-L2 背景，中 |
-| Mistral APAC GSI 岗位 | 官方 Ashby 岗位页 | owner、QBR、scorecard、certified delivery pods 描述具体 | 无到岗、组织图或收入互证 | 招聘愿望或既有工作重命名 | L1 招聘观察，中 |
-| Anthropic—Nscale 算力交易 | 匿名来源经媒体转述 | 交易若完成才可能改变协调接口 | 细节可变，尚未签约 | 融资或供应谈判，不是组织变革 | L1，低 |
+| ANT-METR-RD | METR 高权限评估 + AP + Reuters + Anthropic 公开口径 | 内部指标、训练算力、访谈与流程证据支持研发速度变化 | 与 Anthropic 长期“AI 用于研发”材料一致 | 大量删节；AECI 方法敏感；因果归因有分歧；无员工后效 | 限定 L3 / 中高 |
+| OAI-FDE-VERTICAL | 官方岗位 + 官方 Careers + 独立首次索引 | 管理岗、Cyber、Delivery、咨询行业小队形成同向边界 | 既有 Gov、Platform、Financial FDE 提供历史基线 | 旧岗重发、换 ID、地域复制；无到岗与结果 | A / L1 |
+| OAI-GUARDIAN | 官方岗位 + 官方 Auto-review 研究 + 产品文档 | 实时权限审查、恢复与跨产品集成形成完整控制链设计 | 与 agent autonomy 增长和执行时治理主题一致 | 无覆盖率、误报、成本、事故和用户负担数据 | A / L1 |
+| OAI-COMPUTE-TPM | 四个官方岗位 21 秒内集中发布 | 供应、规划、研究需求与容量工具形成专业化配置层 | 与 AI 原生公司算力组织专业化趋势一致 | 可能是批量更新；无配置权、预测或利用率结果 | A / L1 |
+| HARVEY-LEGAL-LIFECYCLE | 两个经理岗 + Legal Engineer + Technical CX 官方岗位 | 售前、售后、技术支持与地区管理构成客户生命周期分工 | 与 Harvey 既有 Legal Engineer 地区扩张一致 | 既有模式复制；无交接与客户结果 | A / L1 |
+
+三角验证结果：只有 Anthropic AECI 加速形成 L3 的限定结论；AI 因果归因因 Anthropic 反向口径和公开证据删节保持 L2。招聘信号均只完成事实验证与部分机制验证，不升 L2 / L3 组织结论。
 
 ## 去伪存真记录
 
-- **离任事实与离任原因分开**：Netflix 确认 Dan Lin 离任，但没有公开原因；媒体的“fired”“dismissed”及绩效叙事不升级为公司事实。
-- **实际决定时间与公开披露时间分开**：匿名来源称决定在上周末前形成，严格窗口内可确认的是 10 月 19 日公开披露与公司确认。
-- **临时监督与永久结构分开**：Peter Rice 在继任者产生前监督电影团队，不等于永久减少一个层级或电影部门并入其他组织。
-- **连续事件与共同因果分开**：10 月 14 日裁员、10 月 15 日 CCO 交接和 10 月 19 日电影负责人离任时间相邻，不证明由 AI、同一重组方案或单一绩效问题驱动。
-- **成功与失利项目并存**：Dan Lin 任内同时存在高表现与失利项目，不能用单个作品或离任反推整体绩效结论。
-- **产品架构与组织落地分开**：Microsoft 公布的是治理与安全控制设计，不是客户已完成 agent 组织变革。
-- **发现覆盖与采用规模分开**：支持发现 60 类 agent 不等于 60 类都被客户使用，也不等于所有 agent 已纳管。
-- **公司自述与独立结果分开**：Microsoft 的数十万 agent 为 Customer Zero 自述，缺独立审计、任务类型、自治程度与结果数据。
-- **人工批准设计与人类控制结果分开**：高影响动作“可以”要求人工批准，不证明所有重大决定都有 gate 或人类总能有效介入。
-- **监测与员工受益分开**：持续遥测可能提高安全归责，也可能扩大员工行为可见性；知情、用途、最小采集、保留和申诉未披露。
-- **招聘岗位与组织成立分开**：Mistral AI 单一 GSI 岗位不证明新团队、实际 headcount、收入或交付结果。
-- **旧报道与新事件分开**：OpenAI 扩招至 8,000 人为 3 月旧报道重新抓取；Google—Spirit 内部数据交易底层事件发生于 8 月，均不计作 10 月 20 日新增。
-- **未检出与没有变化分开**：固定公司公开渠道没有达到门槛的新信号，不等于其内部没有变化。
+- **不把 1.9 倍写成“模型能力提高 1.9 倍”**：它表示增长速率相对历史阶段加快，不是能力水平的倍数。
+- **不把 AECI 写成全组织生产率**：指标主要覆盖可明确评分任务；复杂、模糊、跨职能研发工作的外推不成立。
+- **不把约 80% 写成实测因果份额**：这是 METR 在多条证据基础上的主观猜测；Anthropic 明确称尚未观察到可归因于 AI 的持续翻倍。
+- **不把员工 Slack 反应写成绩效数据**：低投入自报最高出现 12 倍，METR 自己也把它定义为很弱的证据。
+- **不把“未发现瓶颈”写成“没有瓶颈”**：METR 的判断随内部材料增加多次变化，且关键分析被删节。
+- **不把 ATS 新 ID 写成净新增 HC**：OpenAI +26 / -14、Anthropic +8 / -13、Harvey +17 / -13；其中存在换 ID、重发和地域复制。
+- **排除 OpenAI 金融 FDE 为新职能**：旧 ID 于 9 月发布，新 ID 文本几乎一致；本期新增信号主要是 foundational manager 和 Cyber 专项。
+- **排除 OpenAI Delivery Lead 为新职能**：SF、London 等版本此前已经存在，本期 NYC / Remote AMER 属地域复制。
+- **排除 ElevenLabs GTM Recruiter 为新设**：同标题旧 ID 改发布时间并出现重复新 ID，不能计算为两名新增。
+- **不把 ATS 下架解释为裁员**：删除可能来自招满、暂停、重发、换 ID、迁移或清理，缺少人员事件证据。
+- **排除传统大厂与国内公司旧闻回流**：Google 管理层削减、Meta 旧 AI 重组、DeepSeek Harness、MiniMax 10x Team、xAI 创始人离职等均为旧事件、二手重打包或超出窗口。
+- **不把工具使用当组织变革**：只有当权责、流程、控制点和运行边界发生变化时才进入机制观察；工具采用本身不承担效率结论。
 
 ## 渠道索引补充
 
-- **Netflix 电影领导变化**：`https://www.reuters.com/business/media-telecom/netflix-film-division-boss-exit-second-senior-departure-week-2026-10-19/`；`https://www.latimes.com/entertainment-arts/business/story/2026-10-19/netflix-film-chief-dan-lin-is-out-as-streamer-shuffles-executive-ranks`；`https://variety.com/2026/film/news/dan-lin-exits-netflix-film-chief-1236913606/`；`https://www.hollywoodreporter.com/movies/movie-news/netflix-film-head-dan-lin-out-1236733802/`。
-- **Netflix 历史基线**：`https://about.netflix.com/en/news/peter-rice-named-netflix-chief-content-officer`；10 月 15 日与 16 日私有日报已分别记录裁员与 CCO 交接，不重复计算。
-- **Microsoft agent 治理**：`https://www.microsoft.com/en-us/security/blog/2026/10/19/agents-are-your-newest-insiders-security-must-move-at-their-speed/`；`https://blogs.microsoft.com/blog/2026/10/19/securing-the-agentic-insider/`；`https://techcrunch.com/2026/10/19/microsoft-says-ai-agents-are-like-insider-threats-as-frontier-models-cant-be-trusted/`；`https://www.geekwire.com/2026/microsoft-unveils-tools-to-monitor-and-corral-rogue-ai-agents/`。
-- **Mistral AI 观察**：`https://jobs.ashbyhq.com/mistral.ai/924feb9e-fb5e-4817-aaef-c885fc28ca46`。
-- **72 小时历史观察与反证**：Google—Spirit 底层交易 `https://www.reuters.com/legal/litigation/google-buy-spirit-airlines-business-data-10-million-2026-08-17/`；议员反对 `https://horsford.house.gov/media/press-releases/spirit-airlines-to-sell-employee-data-to-train-google-ai-horsford-and-warren-lead-call-for-worker-privacy-protections`；工会反对 `https://afacwa.org/spirit-objection-sale-your-data/`。仅作旧事件数据治理记录，不进入当日结论。
-- **固定渠道**：36 氪、机器之心、虎嗅、界面新闻、澎湃、第一财经、科创板日报、科技日报、财新、Reuters、Bloomberg、AP、TechCrunch、The Verge、Hacker News，以及固定公司新闻页、研究页和招聘系统。
+- **新增外部高权限评估入口**：METR AI R&D Acceleration assessments，可观察内部研发速度、方法、瓶颈、删节与外部评估权边界。
+- **新增反向口径入口**：Anthropic Transparency Hub，用于把外部评估与公司对替代阈值、持续加速和模型能力的公开说法对照。
+- **新增主流事实核验入口**：AP、Reuters，用于确认报告公开时间、引用链与公司回应；媒体标题不代替报告方法。
+- **继续保留官方 ATS 日差分**：OpenAI Ashby / Careers、Anthropic Greenhouse、Harvey、ElevenLabs、Cohere、Perplexity、Replit；必须同时检查旧 ID、正文相似度、首次索引和地域复制。
+- **本期无新增私密渠道索引**：未读取、复制或上传桌面私有参考文档、内部链接、访谈口径、截图、未授权附件或个人信息。
 
 ## 观察池 / 待核验池
 
-| 信号 | 当前等级 | 保留原因 | 反向解释 / 边界 | 待验证问题 |
-|---|---|---|---|---|
-| Netflix 新电影负责人 | L1 | 公司确认尚未公布继任者 | 临时监督可能很短，不代表结构重组 | 人选、时间、职责、汇报线与选任权 |
-| Netflix 电影团队过渡 | L1-L2 | 临时 owner 清晰，工作接口会变化 | 没有项目、工时或员工数据 | 决策周期、授权、人员流动、工作负担与创作者接口 |
-| Microsoft Agent ID / Dynamic Permissions 正式可用 | L2 设计 | 官方提供详细控制链 | 部分能力可能处于预览或受许可证限制 | GA 时间、产品范围、兼容性、定价和失败模式 |
-| Microsoft agent 治理效果 | L0-L1 | 公司自述 Customer Zero 规模大 | 缺独立审计、基线和对照 | 事故率、误报、响应时延、人审成本和业务中断 |
-| agent 监测的人本边界 | L1 | 跨层信号和 owner 关联可能触及员工数据 | 安全遥测不等于绩效监控，但用途可扩张 | 知情、授权、最小采集、保留、访问、申诉和个人用途边界 |
-| Mistral AI APAC GSI operating cadence | L1 | 官方岗位描述包含 QBR、scorecard、partner pods | 可能是目标态或单一 partner 计划 | 到岗、团队、实际伙伴范围、bookings 与交付结果 |
-| Anthropic—Nscale 算力谈判 | L1 / 暂不采纳 | 交易规模可能改变外部协调接口 | 匿名来源、未签约、细节可能变化 | 正式协议、期限、组织 owner、资本与交付责任 |
-| Town shared workflow / 每名员工 Townie | L1 / 暂不采纳 | 产品叙事涉及员工工作上下文 | 无客户采用、授权、隐私或减负结果 | 数据边界、员工价值、真实工作流和组织访问 |
+- **OpenAI Compute TPM（A/L1）**：供应信号、全球规划、研究需求、容量工具四个岗位的真实决策权、配置节奏、预测准确率、GPU 利用率和计划层成本。
+- **OpenAI Product Operations（A/L1）**：alpha / beta / GA 门槛、launch calendar、Safety / Security 前置检查与发布周期；外部索引显示同一岗位页面此前已存在，需判断重发与实际机制范围。
+- **OpenAI Enterprise Verticals—Consulting（A/L1）**：行业设计伙伴、第一方产品边界、与通用平台的复用和优先级冲突。
+- **Anthropic Discovery Engineering & Applied Sciences（A/L1）**：领域科学家与模型研究员的配对、真实任务评测、外部实验室 / 制造商接口和生产训练反馈。
+- **Anthropic Partner Services Delivery and Success（72 小时，A/L1）**：岗位称新职能尚待组建，目标是用伙伴网络承载大量部署；实际伙伴数量、保障标准、客户后效与控制距离待核。
+- **ElevenLabs Talent Lead（A/L1）**：20—30 人 Talent 团队、每季度数百人目标、Operations 与 People 边界、招聘容量压力和 AI 化招聘的求职者透明度。
+- **Cohere Inference Platform PM（A/L1）**：岗位描述中的收入 / 利润责任是否转化为真实 P&L 权限，以及与 Finance、Serving、GTM 的矩阵边界。
+- **Cat Wu 转入 OpenAI（72 小时补漏，L2 事实 / L1 机制）**：人员与 Core Products 职责可确认；不能外推 Anthropic 团队失稳、OpenAI 已重组或产品速度提高。
+- **METR—Anthropic 后续复核（L3 限定结论）**：未删节材料、AECI 外真实任务、长期加速、质量 / 安全、员工负担和收益分配。
 
 ## 公开知识库入库判断
 
-- **L3 结构事实**：Netflix 电影负责人 Dan Lin 离任，Peter Rice 在继任者产生前临时监督电影团队。公开版保留离任、临时监督与继任者待定，不写离任原因或效率结果。
-- **L2 事实观察**：Microsoft 公布 agent 独立身份、任务级限时权限、动态风险、人工批准、分级收权与隔离停止的治理控制链。公开版明确这是产品 / 治理设计，不写成已普遍采用或已改善组织效率。
-- **L2 机制观察**：Netflix 电影责任接口临时上收；Microsoft 将 agent 从员工 standing access 中拆出并建立持续风险—权限闭环。两者均不升级为最佳实践。
-- **L1 观察**：Microsoft Customer Zero 规模、Mistral AI APAC GSI 岗位、Anthropic—Nscale 谈判与 Town shared workflow 仅保留口径和限制。
-- **暂不采纳**：Netflix 因 AI、裁员或绩效撤换电影负责人；Netflix 永久减少管理层级；Microsoft 已完成 agent 治理转型；数十万 agent 已安全运行；Guardian Agents 已降低事故或人工负担；agent 监测已取得员工同意；任何 AI 替岗或减少 HC 判断。
-- **组织效率与人本结果**：没有工时、会议、重复劳动、员工自主权、负担、风险事故、人审时延或收益分配结果，不形成效率优劣结论。
-- **L4 沉淀**：0。没有内部长期结果或跨周期验证，不形成方法、playbook、最佳实践或处方。
-
+- **新增 L3 结论**：Anthropic 内部模型在 AECI 所覆盖的可明确评分任务上，能力增长速度自 2025 年 10 月以来较此前明显加快；点估计 1.9 倍，方法与置信区间必须同句保留。
+- **新增 L2 机制假设**：AI 使用可能贡献多数加速；因公开证据删节、非 AI 因素和 Anthropic 反向口径，不写成确定因果。
+- **新增 L1 核心观察**：OpenAI 行业化 FDE / Guardian / Compute TPM；Harvey Legal Engineer 客户生命周期分工；Anthropic Discovery 岗位对；ElevenLabs Talent Lead。
+- **72 小时补漏**：Cat Wu 转入 OpenAI、Anthropic Partner Services Delivery；标注事件早于严格窗口，不伪装为当日新增。
+- **暂不采纳**：ATS 删除、同岗换 ID、地域复制、旧裁员 / 旧重组、职位聚合页、匿名夸大薪酬、工具采用即组织变革的叙事。
+- **不可形成的判断**：Anthropic 全组织生产率翻倍、AI 已替代研究人员、员工负担下降、HC 减少、OpenAI / Harvey 已完成结构重组、专业化必然提高效率；均缺 L3 / L4 证据。
+- **L4 方法 / playbook**：无。公开证据无法同时验证组织结果、员工后效与长期稳定性。
+- **公开边界**：公开镜像只保留公开来源、证据判断、反向解释、适用边界和待验证问题；移除私有渠道、原始检索归档、本地路径、访问凭据、访谈材料和个人信息。
