@@ -1,0 +1,528 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>组织情报信息</title>
+  <style>
+    :root {
+      color-scheme: light;
+      --bg: #f6f7f1;
+      --paper: #fffdf8;
+      --ink: #172033;
+      --muted: #697181;
+      --line: #ded8c9;
+      --soft: #ece6d7;
+      --accent: #1f6f68;
+      --accent-2: #b45a34;
+      --code: #f1eee6;
+    }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "PingFang SC", "Microsoft YaHei", sans-serif;
+      color: var(--ink);
+      background: var(--bg);
+      line-height: 1.75;
+    }
+    .shell {
+      display: grid;
+      grid-template-columns: minmax(210px, 280px) minmax(0, 1fr);
+      min-height: 100vh;
+    }
+    aside {
+      position: sticky;
+      top: 0;
+      height: 100vh;
+      padding: 28px 22px;
+      border-right: 1px solid var(--line);
+      background: #ebe5d7;
+      overflow: auto;
+    }
+    main {
+      max-width: 1040px;
+      width: 100%;
+      padding: 56px 56px 90px;
+    }
+    .eyebrow {
+      color: var(--accent-2);
+      font-size: 13px;
+      font-weight: 800;
+      letter-spacing: .08em;
+      text-transform: uppercase;
+      margin: 0 0 10px;
+    }
+    h1 {
+      font-size: clamp(30px, 4vw, 48px);
+      line-height: 1.12;
+      margin: 0 0 18px;
+      letter-spacing: 0;
+    }
+    h2 {
+      font-size: 26px;
+      line-height: 1.32;
+      margin: 48px 0 14px;
+      padding-top: 18px;
+      border-top: 1px solid var(--line);
+    }
+    h3 {
+      font-size: 20px;
+      margin: 34px 0 10px;
+      color: #23314d;
+    }
+    h4 {
+      font-size: 17px;
+      margin: 26px 0 8px;
+    }
+    p, li {
+      font-size: 16px;
+      color: #2b3343;
+    }
+    p { margin: 10px 0; }
+    ul { padding-left: 1.2rem; }
+    li { margin: 7px 0; }
+    a { color: var(--accent); text-decoration-thickness: 1px; text-underline-offset: 3px; }
+    code {
+      background: var(--code);
+      border: 1px solid var(--line);
+      border-radius: 5px;
+      padding: 1px 5px;
+      font-size: .92em;
+    }
+    pre {
+      overflow: auto;
+      background: #fff9ec;
+      color: #202838;
+      border: 1px solid #d8ccb8;
+      border-radius: 8px;
+      padding: 18px;
+      box-shadow: inset 4px 0 0 var(--accent);
+      white-space: pre-wrap;
+      word-break: break-word;
+    }
+    pre code {
+      display: block;
+      padding: 0;
+      border: 0;
+      background: transparent;
+      color: inherit;
+      line-height: 1.7;
+      font-size: 14px;
+    }
+    blockquote {
+      margin: 24px 0;
+      padding: 14px 18px;
+      border-left: 4px solid var(--accent);
+      background: #eef4ee;
+      color: #344033;
+    }
+    .table-wrap {
+      overflow-x: auto;
+      margin: 18px 0 26px;
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      background: var(--paper);
+    }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      min-width: 720px;
+    }
+    th, td {
+      padding: 12px 14px;
+      border-bottom: 1px solid var(--line);
+      vertical-align: top;
+      text-align: left;
+      font-size: 14px;
+    }
+    th {
+      background: #e7e0cf;
+      color: #26324a;
+      font-weight: 800;
+      white-space: nowrap;
+    }
+    tr:last-child td { border-bottom: 0; }
+    .topbar {
+      display: flex;
+      gap: 10px;
+      align-items: center;
+      flex-wrap: wrap;
+      margin-bottom: 28px;
+    }
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 38px;
+      padding: 8px 12px;
+      border: 1px solid var(--line);
+      border-radius: 7px;
+      background: var(--paper);
+      color: var(--ink);
+      text-decoration: none;
+      font-weight: 750;
+      font-size: 14px;
+    }
+    .primary { background: var(--accent); border-color: var(--accent); color: white; }
+    .toc-title {
+      margin: 0 0 12px;
+      font-size: 14px;
+      font-weight: 850;
+      color: #273247;
+    }
+    .toc a {
+      display: block;
+      padding: 7px 0;
+      color: #465064;
+      text-decoration: none;
+      font-size: 14px;
+      line-height: 1.45;
+      border-bottom: 1px solid rgba(23,32,51,.08);
+    }
+    .toc a.level-3 { padding-left: 14px; font-size: 13px; color: #626b78; }
+    .meta {
+      color: var(--muted);
+      font-size: 14px;
+      margin-bottom: 24px;
+    }
+    @media (max-width: 900px) {
+      .shell { display: block; }
+      aside { position: relative; height: auto; border-right: 0; border-bottom: 1px solid var(--line); }
+      main { padding: 34px 20px 70px; }
+      .toc { columns: 1; }
+      table { min-width: 640px; }
+    }
+  </style>
+</head>
+<body>
+  <div class="shell">
+    <aside>
+      <p class="toc-title">目录</p>
+      <nav class="toc">
+        <a class="level-2" href="#今日结论">今日结论</a>
+        <a class="level-2" href="#今日组织机制信号">今日组织机制信号</a>
+        <a class="level-2" href="#传统大厂与-ai-原生组织分组观察">传统大厂与 AI 原生组织分组观察</a>
+        <a class="level-3" href="#传统大厂">传统大厂</a>
+        <a class="level-3" href="#ai-原生组织">AI 原生组织</a>
+        <a class="level-3" href="#分化与趋同">分化与趋同</a>
+        <a class="level-2" href="#高价值变化卡片">高价值变化卡片</a>
+        <a class="level-3" href="#变化卡-1-mistral-cloud-platform-公开补齐分层管理岗位-72-小时补漏">变化卡 1｜Mistral：Cloud Platform 公开补齐分层管理岗位（72 小时补漏）</a>
+        <a class="level-3" href="#变化卡-2-harvey-legal-engineer-出现初级交付层">变化卡 2｜Harvey：Legal Engineer 出现初级交付层</a>
+        <a class="level-2" href="#不是新闻而是机制">不是新闻而是机制</a>
+        <a class="level-2" href="#组织情报结论卡">组织情报结论卡</a>
+        <a class="level-3" href="#结论卡-a-扩张期补管理层-既可能澄清边界-也可能增加层级">结论卡 A｜扩张期补管理层，既可能澄清边界，也可能增加层级</a>
+        <a class="level-3" href="#结论卡-b-领域交付分层可能提高容量-也可能把复杂度转移给一线">结论卡 B｜领域交付分层可能提高容量，也可能把复杂度转移给一线</a>
+        <a class="level-2" href="#证据链与可信度">证据链与可信度</a>
+        <a class="level-2" href="#去伪存真记录">去伪存真记录</a>
+        <a class="level-2" href="#渠道索引补充">渠道索引补充</a>
+        <a class="level-2" href="#观察池-待核验池">观察池 / 待核验池</a>
+        <a class="level-2" href="#公开知识库入库判断">公开知识库入库判断</a>
+      </nav>
+    </aside>
+    <main>
+      <div class="topbar">
+        <a class="btn primary" href="../index.html">返回研究源</a>
+        <a class="btn" href="./2026-11-08.md">查看 Markdown 原文</a>
+      </div>
+      <p class="eyebrow">Daily Scan</p>
+      <h1>2026-11-08 组织情报信息</h1>
+      <p class="meta">本页面由本地 Markdown 自动渲染生成，仍保留原始 md 文件作为知识库源文档。</p>
+      <article>
+        <blockquote><strong>扫描窗口</strong>：严格窗口为 2026-11-07 08:29:18 CST—2026-11-08 08:27:08 CST；72 小时补漏窗口为 2026-11-05 08:27:08 CST—2026-11-08 08:27:08 CST。本地最新日报为 2026-11-07，本期不存在缺失自然日。</blockquote>
+<blockquote></blockquote>
+<blockquote><strong>证据结论</strong>：严格窗口内没有新增达到 L2 或 L3 的组织机制事实。可定位的新信号来自官方 ATS：Harvey 为 Legal Engineer 增加 1—3 年经验的 Associate 层。72 小时补漏还发现 Mistral Cloud 公开一组多团队管理岗位。它们只能证明公开岗位与职责设计，不能证明人员到岗、汇报线改变、组织已运行或效率结果出现。SpaceXSI/xAI 的 Imagine 与 Voice 页面虽在窗口内更新，但 Greenhouse 时间语义和历史基线不足，已降入待核验池。</blockquote>
+<h2 id="今日结论">今日结论</h2>
+<ul>
+<li><strong>本期保持“零新增组织结论”。</strong> 没有公告、独立报道、组织运行数据与员工/客户后效共同支持的新 L2/L3 判断。</li>
+<li><strong>严格窗口唯一保留的核心 L1 是 Harvey Associate Legal Engineer。</strong> 两个地点版本有前一日快照作比较，且首次在本地连续快照中出现 Associate 标题；其余候选均被时间语义、旧岗重发或来源独立性问题降级。</li>
+<li><strong>Harvey 首次在本地日差分中公开 Associate Legal Engineer 双城市版本，显示域专家交付开始出现经验层级。</strong> 岗位要求 1—3 年经验，主要承担培训、采用、反馈与可复用内容，和高级 Legal Engineer、Sales、Customer Success、Product 协作。它可能扩大交付容量，也可能增加升级、复核和交接成本。</li>
+<li><strong>Perplexity 的变化是同岗重发与标题澄清，不是新增政策工程团队。</strong> 旧岗位删除、新 ID 发布，正文仍覆盖政策、法律、合规、People 系统和公司事务；标题新增“Software Engineer”更明确技术身份，但没有独立证据证明职能或汇报线变化。</li>
+<li><strong>72 小时补漏发现 Mistral Cloud 正公开招聘一组管理层，但只作为 L1 补记。</strong> Senior Engineering Manager 将管理 Kubernetes、Network、Storage 等团队负责人，多个 Engineering Manager 岗被写为 founding people-leadership roles，并承担团队 charter、招聘、绩效与成长。岗位簇显示扩张中的主权云平台开始补齐分层管理系统，但不能证明岗位已到位或管理效果出现。</li>
+<li><strong>Anthropic Legal Specialist 不是新职能。</strong> 2026-08 已有同名旧岗，本期新 ID 增加纽约地点并调整文案，按重发/扩地点处理。</li>
+<li><strong>SpaceXSI/xAI 的端到端模态团队职责有机制阅读价值，但不计为当日新增。</strong> Greenhouse 只提供页面更新时间，缺少前一日可靠快照，不能确认本期首次发布或组织边界变化。</li>
+<li><strong>传统大厂与国内 AI 原生公司未检出严格窗口内达到 L2 的新组织机制事实。</strong> 命中主要是旧裁员汇总、旧报告再传播、融资/IPO、产品新闻、招聘聚合页和搜索抓取更新时间；“未检出”不等于内部没有变化。</li>
+<li><strong>没有证据支持本期岗位变化代表净增 HC、AI 替代岗位、人才密度提高、协作成本下降或员工负担减少。</strong> ATS 删除也不解释为裁员、撤编或绩效淘汰。</li>
+</ul>
+<h2 id="今日组织机制信号">今日组织机制信号</h2>
+<div class="table-wrap"><table><thead><tr>
+<th>信号</th>
+<th>L1 事实</th>
+<th>L2 机制判断</th>
+<th>L3 组织判断</th>
+<th>影响变量</th>
+<th>证据 / 置信度</th>
+<th>阅读价值</th>
+</tr></thead><tbody>
+<tr>
+<td>Harvey Associate Legal Engineer</td>
+<td>纽约与旧金山同时新增同一初级岗位，要求 1—3 年经验，承担培训、采用和反馈</td>
+<td>域专家交付可能从扁平专家池向分层交付与升级机制演化</td>
+<td>不成立：无编制、汇报线、复核比例、客户或员工后效</td>
+<td>管理跨度、人才梯队、交接成本、工作强度</td>
+<td>A / L1；事实高、机制中</td>
+<td>核心观察</td>
+</tr>
+<tr>
+<td>Mistral Cloud 管理层补齐（72h）</td>
+<td>官方 ATS 同窗出现 Senior EM 与多个 founding EM，覆盖 IaaS、Storage、Fleet、Sandbox、Serverless</td>
+<td>IC 密集平台可能转向“二线经理—团队负责人—工程师”的分层管理</td>
+<td>不成立：无到岗、组织图、决策周期或人员后效</td>
+<td>管理跨度、职能边界、绩效压力、执行节奏</td>
+<td>A / L1；事实高、机制中</td>
+<td>持续观察</td>
+</tr>
+<tr>
+<td>Perplexity 政策工程岗重发</td>
+<td>旧 ID 删除，新 ID 发布；标题新增 Software Engineer，职责基本延续跨政策、法律、合规和 People 系统的工程工作</td>
+<td>技术身份被显式化，但无法确认职责或组织边界实质改变</td>
+<td>不成立：属于单源重发，缺少独立组织事实</td>
+<td>职能边界、角色跨度、决策接口</td>
+<td>A / L1；事实高、机制低</td>
+<td>持续观察</td>
+</tr>
+<tr>
+<td>Anthropic Legal Specialist 重发</td>
+<td>2026-08 已有同名旧岗；新 ID 增加纽约地点并调整文案</td>
+<td>可确认职责继续公开，不能确认机制变化</td>
+<td>不成立：不是新职能</td>
+<td>法务运营、隐私、合规</td>
+<td>A / L1 以下</td>
+<td>背景参考</td>
+</tr>
+<tr>
+<td>SpaceXSI/xAI 模态岗位页面更新</td>
+<td>Imagine 与 Voice 页面职责覆盖端到端模型栈，但只有 Greenhouse <code>updated_at</code></td>
+<td>可阅读团队设计，不能确认本期变化</td>
+<td>不成立：缺前日快照与首次发布时间</td>
+<td>责任跨度、交接成本、线上风险</td>
+<td>时间证据不足</td>
+<td>待核验</td>
+</tr>
+</tbody></table></div>
+<h2 id="传统大厂与-ai-原生组织分组观察">传统大厂与 AI 原生组织分组观察</h2>
+<h3 id="传统大厂">传统大厂</h3>
+<ul>
+<li>国内传统互联网 / 科技公司：腾讯、阿里、字节、美团、百度、京东、快手、小米、华为、网易、拼多多、蚂蚁、飞书 / 火山、B 站、滴滴、携程未检出严格窗口内达到 L2 的新组织机制事实。</li>
+<li>国外传统科技公司：Amazon、Google、Meta、Microsoft、Apple、Netflix、Salesforce、Adobe、Nvidia、Shopify、Atlassian、GitLab、Stripe、Canva、Zapier 的新增命中以历史裁员、旧重组、融资/产品消息和二手评论为主，没有进入核心区。</li>
+<li>搜索限制：新闻追踪页、聚合站和搜索索引的页面更新时间不能替代事件发生时间；周末披露节奏也限制公开覆盖。</li>
+</ul>
+<h3 id="ai-原生组织">AI 原生组织</h3>
+<ul>
+<li>SpaceXSI/xAI：Imagine 与 Voice 页面显示端到端模态团队设计，但缺少可比快照和首次发布时间，只进入待核验池。</li>
+<li>Anthropic：Legal Specialist 是 2026-08 同名旧岗的重发/扩地点；Applied AI Manager 与 Rule of Law 也只是既有页面刷新，不能重复计算为新信号。</li>
+<li>Harvey：Associate Legal Engineer 在纽约、旧金山同步发布，显示既有 Legal Engineer 机制增加初级层；仍只有招聘设计意图。</li>
+<li>Perplexity：AI Policy and Strategic Initiatives 岗位以新 ID 重发并在标题中明确 Software Engineer；按重发而非新职能处理。</li>
+<li>OpenAI：严格窗口内无新增 ATS ID；仅有 Revenue Accounting 管理岗下架。72 小时内的 FDE、Preparedness 等信号已在前期报告记录，不重复包装为当日变化。</li>
+<li>Cohere、ElevenLabs、Replit：公开 ATS 无新增 ID；没有形成新的高价值组织机制信号。</li>
+<li>Mistral：72 小时补漏发现 Cloud Platform 管理岗位簇、数据中心容量/能源职能与 Forward Software Engineer；本期只把管理层补齐列为核心补漏，其余进入观察池。</li>
+<li>国内 AI 原生公司：DeepSeek 官方招聘页仍可见 Agent、训练、数据、基础设施与解决方案岗位，但缺少稳定日级发布时间；Kimi、智谱、MiniMax 等未检出 L2+ 新事实。</li>
+</ul>
+<h3 id="分化与趋同">分化与趋同</h3>
+<ul>
+<li><strong>趋同</strong>：AI 原生公司持续把模型、基础设施、产品、领域知识与客户反馈压进更短的责任链，但本期可确认的新增证据很少。</li>
+<li><strong>分化</strong>：Mistral 为扩张中的云平台增加分层管理，Harvey 为领域交付增加经验层级，Perplexity 保留跨政策与公司事务的宽角色但强化工程身份；SpaceXSI/xAI 的模态团队设计因时间证据不足不参与当日变化比较。</li>
+<li><strong>未被证明的部分</strong>：这些设计是否减少等待、返工和重复汇报，还是增加复核层级、角色跨度和一线压力，公开岗位无法回答。</li>
+</ul>
+<h2 id="高价值变化卡片">高价值变化卡片</h2>
+<h3 id="变化卡-1-mistral-cloud-platform-公开补齐分层管理岗位-72-小时补漏">变化卡 1｜Mistral：Cloud Platform 公开补齐分层管理岗位（72 小时补漏）</h3>
+<ul>
+<li><strong>时间</strong>：2026-11-07 01:30 CST 左右，位于 72 小时补漏窗口、早于本期严格窗口起点。</li>
+<li><strong>公司与组织范围</strong>：Mistral Cloud Platform、IaaS、Managed Kubernetes、Network、Storage、Fleet Delivery、Sandbox、Serverless Containers。</li>
+<li><strong>机制名称</strong>：扩张期平台分层管理。</li>
+<li><strong>机制理念</strong>：由 Senior Engineering Manager 管理多个团队负责人，并以 founding Engineering Manager 明确团队 charter、招聘、绩效、成长与技术方向。</li>
+<li><strong>L1 事实</strong>：Senior EM 岗描述当前约 12 名工程师、管理 Kubernetes/Network/Storage 团队负责人；Storage、Fleet Delivery 等经理岗被写为 founding people-leadership roles，多岗同时承担技术与人员管理。</li>
+<li><strong>L2 机制判断</strong>：Cloud Platform 可能从 IC/技术负责人密集的协作方式转向“二线经理—团队负责人—工程师”的分层系统，以控制扩张后的管理跨度和专业边界；招聘文本不证明结构已完成。</li>
+<li><strong>L3 组织判断</strong>：不成立。没有到岗、组织图、真实团队规模、决策周期、交付质量或员工后效。</li>
+<li><strong>组织影响</strong>：可能提高方向清晰度和人员支持，也可能新增管理层、跨平台接口和绩效压力。</li>
+<li><strong>来源与渠道</strong>：<a href="https://jobs.ashbyhq.com/mistral.ai/f0bd537c-75e3-4c03-b617-d9a0db168b07">Senior EM, IaaS</a>、<a href="https://jobs.ashbyhq.com/mistral.ai/81611d9e-112e-4512-a793-8f0b64f6a99c">Storage EM</a>、<a href="https://jobs.ashbyhq.com/mistral.ai/647826f5-37f4-48b7-b5b8-5b7bee6d8e23">Fleet Delivery EM</a>。</li>
+<li><strong>证据等级</strong>：A / L1；岗位与职责事实高，机制中，运行结果低。</li>
+<li><strong>互证情况</strong>：多个同窗岗位形成同向角色簇，但仍属于同一 ATS、同一公司事实根。</li>
+<li><strong>反向解释</strong>：可能是计划性招聘、未来组织蓝图或扩张后的管理补课，不代表现有团队已分层运行；岗位描述的增长目标也不等于实际 HC。</li>
+<li><strong>与历史基线关系</strong>：本地前期报告未记录这一岗位簇，本期作为 72 小时补漏，不改写缺失日期。</li>
+<li><strong>组织发展关注点</strong>：经理层级、团队 charter、共享平台接口、IC 管理负担、绩效与成长机制、技术决策权。</li>
+<li><strong>适用边界</strong>：主权云与基础设施平台扩张，不外推模型研究或全部公司。</li>
+<li><strong>待验证问题</strong>：实际到岗、汇报线、管理跨度、团队依赖、决策与事故升级、交付和人员后效。</li>
+<li><strong>公开策略</strong>：公开岗位职责与补漏时间，不把招聘计划写成已完成组织调整。</li>
+</ul>
+<h3 id="变化卡-2-harvey-legal-engineer-出现初级交付层">变化卡 2｜Harvey：Legal Engineer 出现初级交付层</h3>
+<ul>
+<li><strong>时间</strong>：纽约岗 2026-11-07 09:46 CST，旧金山岗 09:48 CST，均位于严格窗口。</li>
+<li><strong>公司与组织范围</strong>：Go-to-Market、Legal Engineering、Sales、Customer Success、Product。</li>
+<li><strong>机制名称</strong>：域专家交付分层。</li>
+<li><strong>机制理念</strong>：由较初级的法律域专家承担培训、重复性交付、内容沉淀和反馈，高级角色处理更复杂的客户与升级。</li>
+<li><strong>L1 事实</strong>：两个地域版本正文相同，要求 JD 和通常 1—3 年实践经验；职责覆盖客户培训、采用、续约支持、反馈与可复用内容，并与更高级 Legal Engineer 协作。</li>
+<li><strong>L2 机制判断</strong>：Harvey 的域专家交付可能从单一专家层转向经验分层，以支持规模化培训和采用；岗位文本没有给出正式职级或升级规则。</li>
+<li><strong>L3 组织判断</strong>：不成立。没有到岗、团队规模、管理跨度、交付质量、客户采用或人员后效。</li>
+<li><strong>组织影响</strong>：可能扩大交付容量和人才供给，也可能增加分派、复核、升级和客户上下文转移。</li>
+<li><strong>来源与渠道</strong>：<a href="https://jobs.ashbyhq.com/harvey/8a6fd2f5-1d8f-40b3-a101-1e792f0ff80a">纽约岗位</a>、<a href="https://jobs.ashbyhq.com/harvey/ac406ea9-bd7f-4a50-9341-8370ceca3949">旧金山岗位</a>。</li>
+<li><strong>证据等级</strong>：A / L1；岗位存在与职责高，机制中，结果低。</li>
+<li><strong>互证情况</strong>：两个地域版本互相印证同一岗位族群，但仍属于同一公司、同一招聘事实根。</li>
+<li><strong>反向解释</strong>：可能只是薪酬/经验分段、招聘池拓宽或常规补位，不代表新增管理层或正式职级体系。</li>
+<li><strong>与历史基线关系</strong>：Harvey 已有大量 Legal Engineer、Manager、Product Specialist 和 Program Manager；本期首次在本地日差分中出现 Associate 标题。</li>
+<li><strong>组织发展关注点</strong>：任务分配、复核与升级、客户责任、成长路径、重复培训负担和高级专家的指导跨度。</li>
+<li><strong>适用边界</strong>：法律 AI 的高触达企业交付，不外推自助产品或一般软件工程。</li>
+<li><strong>待验证问题</strong>：正式职级、汇报线、初高级任务边界、复核比例、晋升标准、客户与员工后效。</li>
+<li><strong>公开策略</strong>：两个地域版本视为一个岗位族群，不把职位数解释为净增人数。</li>
+</ul>
+<h2 id="不是新闻而是机制">不是新闻而是机制</h2>
+<div class="table-wrap"><table><thead><tr>
+<th>事件表面</th>
+<th>机制翻译</th>
+<th>可能影响</th>
+<th>反向解释与边界</th>
+</tr></thead><tbody>
+<tr>
+<td>Mistral 同窗招聘多名 Cloud Platform 经理</td>
+<td>扩张中的平台按专业团队补齐一线与二线管理</td>
+<td>可能提高方向清晰度，也会新增层级与接口</td>
+<td>72 小时补漏；招聘计划不等于结构已运行</td>
+</tr>
+<tr>
+<td>Harvey 招两个 Associate Legal Engineer</td>
+<td>域专家交付出现经验分层与可复用培训层</td>
+<td>可能扩大容量，也会增加复核和升级接口</td>
+<td>两城同岗是地域复制；不代表两种机制或两名净新增</td>
+</tr>
+<tr>
+<td>Perplexity 岗位标题增加 Software Engineer</td>
+<td>宽政策岗位的技术身份更明确</td>
+<td>可能提高工程责任清晰度</td>
+<td>旧岗换 ID；不能称为新团队或边界重构</td>
+</tr>
+<tr>
+<td>ATS 删除执法/安全岗位</td>
+<td>只能说明公开页面状态变化</td>
+<td>无法判断组织影响</td>
+<td>不能解释为裁员、撤编、绩效淘汰或 AI 替代</td>
+</tr>
+<tr>
+<td>xAI 两个模态岗位在窗口内更新</td>
+<td>职责文本显示端到端团队设计</td>
+<td>有机制阅读价值</td>
+<td><code>updated_at</code> 不是首次发布时间；不计当日新增</td>
+</tr>
+</tbody></table></div>
+<h2 id="组织情报结论卡">组织情报结论卡</h2>
+<h3 id="结论卡-a-扩张期补管理层-既可能澄清边界-也可能增加层级">结论卡 A｜扩张期补管理层，既可能澄清边界，也可能增加层级</h3>
+<ul>
+<li><strong>事实基础</strong>：Mistral Cloud 在补漏窗口同窗公开 Senior EM 与多个 founding EM，职责覆盖多团队负责人、团队 charter、招聘、绩效与成长。</li>
+<li><strong>机制判断</strong>：平台规模和专业分工增加后，技术负责人式协调可能转向正式的一线/二线管理系统。</li>
+<li><strong>效率变量</strong>：决策层级、管理跨度、团队依赖、升级时延、IC 支持、绩效压力与事故响应。</li>
+<li><strong>知识等级</strong>：A / L1；不形成管理有效性或组织效率结论。</li>
+<li><strong>反向解释</strong>：岗位可能是未来蓝图、补位或管理补课；未证明结构已落地。</li>
+<li><strong>适用边界</strong>：主权云与基础设施平台扩张。</li>
+<li><strong>待验证问题</strong>：真实到岗、汇报线、团队 charter、共享平台权责、交付与人员后效。</li>
+</ul>
+<h3 id="结论卡-b-领域交付分层可能提高容量-也可能把复杂度转移给一线">结论卡 B｜领域交付分层可能提高容量，也可能把复杂度转移给一线</h3>
+<ul>
+<li><strong>事实基础</strong>：Harvey 新增要求 1—3 年经验的 Associate Legal Engineer，和高级域专家、Sales、CS、Product 协作。</li>
+<li><strong>机制判断</strong>：可重复培训与采用工作可能下沉到初级层，高级专家承担复杂判断与升级。</li>
+<li><strong>效率变量</strong>：培训覆盖、首次解决率、复核比例、升级时延、返工、客户上下文损失和指导负担。</li>
+<li><strong>知识等级</strong>：A / L1；不形成效率优劣或人才密度结论。</li>
+<li><strong>反向解释</strong>：招聘池扩大不等于稳定职级体系；分层也可能增加交接与绩效压力。</li>
+<li><strong>适用边界</strong>：高触达、强领域知识的企业 AI 交付。</li>
+<li><strong>待验证问题</strong>：正式职级、任务边界、质量门槛、成长路径与员工后效。</li>
+</ul>
+<h2 id="证据链与可信度">证据链与可信度</h2>
+<div class="table-wrap"><table><thead><tr>
+<th>ID</th>
+<th>事实验证</th>
+<th>机制验证</th>
+<th>趋势验证</th>
+<th>反证 / 缺口</th>
+<th>结论</th>
+</tr></thead><tbody>
+<tr>
+<td>MISTRAL-CLOUD-MGMT</td>
+<td>官方 Ashby 同窗多名管理岗，时间在 72 小时补漏窗口</td>
+<td>职责明确二线管理、founding charter、招聘、绩效与成长</td>
+<td>多岗位形成同向管理角色簇</td>
+<td>同一事实根；无到岗、组织图和运行结果</td>
+<td>A / L1，中置信机制假设</td>
+</tr>
+<tr>
+<td>HARVEY-ASSOC-LE</td>
+<td>官方 Ashby 同窗双城市同岗，1—3 年经验与重复性交付职责明确</td>
+<td>与既有 Legal Engineer / Manager 岗位形成经验层差异</td>
+<td>与此前域专家地区扩张方向一致</td>
+<td>地域复制；无正式职级、规模和结果</td>
+<td>A / L1，中置信机制假设</td>
+</tr>
+<tr>
+<td>PPLX-POLICY-SE</td>
+<td>旧 ID 删除、新 ID 发布，标题增加 Software Engineer</td>
+<td>正文跨政策、法律、合规、People 的工程职责基本延续</td>
+<td>与小团队宽角色设计一致</td>
+<td>典型重发；缺少职责实质变化</td>
+<td>A / L1，低置信机制变化</td>
+</tr>
+<tr>
+<td>XAI-MODAL-UPDATE</td>
+<td>官方 Greenhouse 页面职责覆盖端到端模型栈</td>
+<td>可形成机制假设</td>
+<td>缺少可比快照</td>
+<td><code>updated_at</code> 不能证明首次发布或当日变化</td>
+<td>待核验，不入核心区</td>
+</tr>
+<tr>
+<td>TRADITIONAL-NONE</td>
+<td>中英文日级检索没有发现新第一来源</td>
+<td>无可验证机制</td>
+<td>旧闻与汇总不承担趋势验证</td>
+<td>周末与公开覆盖有限</td>
+<td>零新增，不等于零变化</td>
+</tr>
+</tbody></table></div>
+<p>三角验证结果：本期新增仅完成事实验证与部分机制验证，没有独立运行数据、组织公告或员工/客户后效；全部不得升级为 L2/L3。72 小时补漏也没有发现此前遗漏且达到 L2+ 的事实。</p>
+<h2 id="去伪存真记录">去伪存真记录</h2>
+<ul>
+<li>不把 ATS 新岗位写成净增 HC；岗位可能是补位、地域复制、经验分段、换 ID 或招聘池。</li>
+<li>不把 ATS 删除写成裁员、冻结、撤编、绩效淘汰或 AI 替代；OpenAI Revenue Accounting、Anthropic Safeguards 与 Customer Success 下架原因均不可见。</li>
+<li>Perplexity 政策岗位是旧 ID 删除、新 ID 重发，标题澄清不能承担“新团队”结论。</li>
+<li>Anthropic Applied AI Manager 与 Rule of Law 只发生页面更新时间变化，不重复计算为当日新增。</li>
+<li>Anthropic Legal Specialist 在 2026-08 已有同名旧岗，本期按换 ID、扩地点和文案调整处理。</li>
+<li>SpaceXSI/xAI Imagine 与 Voice 只有页面更新时间，缺少前一日可靠快照，不写成当日新增团队。</li>
+<li>Harvey 两个 Associate 岗位正文相同，只计算一个岗位族群信号。</li>
+<li>聚合站声称的“11 月 7 日新增岗位”与官方 ATS 时间不一致，已排除。</li>
+<li>Anthropic 10 月发布的员工与 AI 使用研究属于历史基线，不能包装为当日变化；会议、Agent 运行时和代码提交也不能直接等同效率结果。</li>
+<li>OpenAI 融资、Anthropic IPO/数据中心争议只属于资本与监管背景，没有公开因果链连接到组织机制变化。</li>
+<li>裁员 tracker 的页面更新时间不等于事件时间；旧裁员不纳入本期。</li>
+<li>不把“快速”“高输出”“采用 AI”解释为员工减负、质量提升或组织效率；没有收益分配、风险和工作强度数据。</li>
+<li>未检出 L2+ 只表示公开证据不足，不表示行业或公司内部没有变化。</li>
+</ul>
+<h2 id="渠道索引补充">渠道索引补充</h2>
+<ul>
+<li><strong>AnySearch CLI</strong>：优先完成传统大厂、国内 AI 原生、国外 AI 原生与官方域名日级检索；结果回到第一来源和发布时间复核。</li>
+<li><strong>官方 ATS 日差分</strong>：OpenAI、Anthropic、ElevenLabs、Harvey、Cohere、Perplexity、Replit；另核验 Mistral、SpaceXSI/xAI 等官方页面，保留 ID、标题、时间字段语义、职责、增加/删除和重发解释。</li>
+<li><strong>国内媒体与国际媒体检索</strong>：覆盖 36氪、机器之心、虎嗅及主要国际科技媒体；当期命中未形成可进入核心区的新事实。</li>
+<li><strong>公开第一来源</strong>：Harvey / Mistral / Perplexity Ashby，Anthropic / xAI Greenhouse，DeepSeek 官方招聘页；聚合页不替代正文。</li>
+<li><strong>本期无新增私密渠道索引</strong>：未读取、复制或上传桌面私有参考文档、内部链接、访谈口径、截图、未授权附件或个人信息。</li>
+</ul>
+<h2 id="观察池-待核验池">观察池 / 待核验池</h2>
+<ul>
+<li><strong>Mistral Cloud Platform 管理岗位簇（A/L1，72h）</strong>：真实到岗、汇报线、管理跨度、团队 charter、决策与人员后效。</li>
+<li><strong>Harvey Associate Legal Engineer（A/L1）</strong>：是否形成正式职级、初高级任务边界、复核比例、晋升标准、客户与员工后效。</li>
+<li><strong>Perplexity Policy &amp; Strategic Initiatives Software Engineer（A/L1）</strong>：标题澄清是否伴随真实团队、权限或汇报线变化。</li>
+<li><strong>Anthropic Safeguards 岗位下架（不采纳）</strong>：只保留页面状态，不推断安全职能收缩。</li>
+<li><strong>SpaceXSI/xAI Imagine / Voice（待核验）</strong>：补齐前一日快照或首次发布时间后，才判断是否为本期边界变化。</li>
+<li><strong>传统大厂 / 国内 AI 原生（待核验）</strong>：需要带原始时间戳的公告、制度文本、可比基线或连续 ATS 快照。</li>
+<li><strong>历史 AI 使用研究（背景参考）</strong>：需要区分执行产出、人类注意力、会议负担、质量、风险和收益分配。</li>
+</ul>
+<h2 id="公开知识库入库判断">公开知识库入库判断</h2>
+<ul>
+<li><strong>新增 L3 结论</strong>：无。</li>
+<li><strong>新增 L2 事实观察</strong>：无。</li>
+<li><strong>新增 L1 核心观察</strong>：Harvey Associate Legal Engineer。</li>
+<li><strong>新增 L1 持续观察</strong>：Mistral Cloud Platform 管理岗位簇（72 小时补漏）。</li>
+<li><strong>页面变更观察</strong>：Perplexity 政策工程岗位重发与标题澄清；Anthropic Legal Specialist 重发/扩地点。</li>
+<li><strong>72 小时补漏</strong>：新增 Mistral Cloud Platform 管理岗位簇，等级 L1；没有发现达到 L2+ 的遗漏事实。</li>
+<li><strong>暂不采纳</strong>：ATS 删除、同岗换 ID、地域复制数量、Greenhouse 页面更新时间、旧裁员/旧报告、融资/IPO、岗位聚合、抓取时间和社媒传闻。</li>
+<li><strong>不可形成的判断</strong>：组织已经完成重组、风险治理改善、交付效率提高、员工负担下降、人才密度提高、HC 减少或 AI 替代岗位。</li>
+<li><strong>L4 方法 / playbook</strong>：无。没有外部证据与内部长期数据共同验证。</li>
+<li><strong>公开边界</strong>：公开镜像只保留公开来源、证据判断、反向解释、适用边界和待验证问题；移除原始检索归档、本地路径、访问凭据、私有渠道、访谈材料和个人信息。</li>
+</ul>
+      </article>
+    </main>
+  </div>
+</body>
+</html>
