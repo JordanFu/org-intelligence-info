@@ -1,0 +1,580 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>组织情报信息</title>
+  <style>
+    :root {
+      color-scheme: light;
+      --bg: #f6f7f1;
+      --paper: #fffdf8;
+      --ink: #172033;
+      --muted: #697181;
+      --line: #ded8c9;
+      --soft: #ece6d7;
+      --accent: #1f6f68;
+      --accent-2: #b45a34;
+      --code: #f1eee6;
+    }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "PingFang SC", "Microsoft YaHei", sans-serif;
+      color: var(--ink);
+      background: var(--bg);
+      line-height: 1.75;
+    }
+    .shell {
+      display: grid;
+      grid-template-columns: minmax(210px, 280px) minmax(0, 1fr);
+      min-height: 100vh;
+    }
+    aside {
+      position: sticky;
+      top: 0;
+      height: 100vh;
+      padding: 28px 22px;
+      border-right: 1px solid var(--line);
+      background: #ebe5d7;
+      overflow: auto;
+    }
+    main {
+      max-width: 1040px;
+      width: 100%;
+      padding: 56px 56px 90px;
+    }
+    .eyebrow {
+      color: var(--accent-2);
+      font-size: 13px;
+      font-weight: 800;
+      letter-spacing: .08em;
+      text-transform: uppercase;
+      margin: 0 0 10px;
+    }
+    h1 {
+      font-size: clamp(30px, 4vw, 48px);
+      line-height: 1.12;
+      margin: 0 0 18px;
+      letter-spacing: 0;
+    }
+    h2 {
+      font-size: 26px;
+      line-height: 1.32;
+      margin: 48px 0 14px;
+      padding-top: 18px;
+      border-top: 1px solid var(--line);
+    }
+    h3 {
+      font-size: 20px;
+      margin: 34px 0 10px;
+      color: #23314d;
+    }
+    h4 {
+      font-size: 17px;
+      margin: 26px 0 8px;
+    }
+    p, li {
+      font-size: 16px;
+      color: #2b3343;
+    }
+    p { margin: 10px 0; }
+    ul { padding-left: 1.2rem; }
+    li { margin: 7px 0; }
+    a { color: var(--accent); text-decoration-thickness: 1px; text-underline-offset: 3px; }
+    code {
+      background: var(--code);
+      border: 1px solid var(--line);
+      border-radius: 5px;
+      padding: 1px 5px;
+      font-size: .92em;
+    }
+    pre {
+      overflow: auto;
+      background: #fff9ec;
+      color: #202838;
+      border: 1px solid #d8ccb8;
+      border-radius: 8px;
+      padding: 18px;
+      box-shadow: inset 4px 0 0 var(--accent);
+      white-space: pre-wrap;
+      word-break: break-word;
+    }
+    pre code {
+      display: block;
+      padding: 0;
+      border: 0;
+      background: transparent;
+      color: inherit;
+      line-height: 1.7;
+      font-size: 14px;
+    }
+    blockquote {
+      margin: 24px 0;
+      padding: 14px 18px;
+      border-left: 4px solid var(--accent);
+      background: #eef4ee;
+      color: #344033;
+    }
+    .table-wrap {
+      overflow-x: auto;
+      margin: 18px 0 26px;
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      background: var(--paper);
+    }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      min-width: 720px;
+    }
+    th, td {
+      padding: 12px 14px;
+      border-bottom: 1px solid var(--line);
+      vertical-align: top;
+      text-align: left;
+      font-size: 14px;
+    }
+    th {
+      background: #e7e0cf;
+      color: #26324a;
+      font-weight: 800;
+      white-space: nowrap;
+    }
+    tr:last-child td { border-bottom: 0; }
+    .topbar {
+      display: flex;
+      gap: 10px;
+      align-items: center;
+      flex-wrap: wrap;
+      margin-bottom: 28px;
+    }
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 38px;
+      padding: 8px 12px;
+      border: 1px solid var(--line);
+      border-radius: 7px;
+      background: var(--paper);
+      color: var(--ink);
+      text-decoration: none;
+      font-weight: 750;
+      font-size: 14px;
+    }
+    .primary { background: var(--accent); border-color: var(--accent); color: white; }
+    .toc-title {
+      margin: 0 0 12px;
+      font-size: 14px;
+      font-weight: 850;
+      color: #273247;
+    }
+    .toc a {
+      display: block;
+      padding: 7px 0;
+      color: #465064;
+      text-decoration: none;
+      font-size: 14px;
+      line-height: 1.45;
+      border-bottom: 1px solid rgba(23,32,51,.08);
+    }
+    .toc a.level-3 { padding-left: 14px; font-size: 13px; color: #626b78; }
+    .meta {
+      color: var(--muted);
+      font-size: 14px;
+      margin-bottom: 24px;
+    }
+    @media (max-width: 900px) {
+      .shell { display: block; }
+      aside { position: relative; height: auto; border-right: 0; border-bottom: 1px solid var(--line); }
+      main { padding: 34px 20px 70px; }
+      .toc { columns: 1; }
+      table { min-width: 640px; }
+    }
+  </style>
+</head>
+<body>
+  <div class="shell">
+    <aside>
+      <p class="toc-title">目录</p>
+      <nav class="toc">
+        <a class="level-2" href="#今日结论">今日结论</a>
+        <a class="level-2" href="#今日组织机制信号">今日组织机制信号</a>
+        <a class="level-2" href="#传统大厂与-ai-原生组织分组观察">传统大厂与 AI 原生组织分组观察</a>
+        <a class="level-3" href="#传统大厂">传统大厂</a>
+        <a class="level-3" href="#ai-原生组织">AI 原生组织</a>
+        <a class="level-3" href="#趋同与分化">趋同与分化</a>
+        <a class="level-2" href="#高价值变化卡片">高价值变化卡片</a>
+        <a class="level-3" href="#变化卡-1-安全职能从专家活动进入-管理层级-资源权-运行节奏">变化卡 1｜安全职能从专家活动进入“管理层级 + 资源权 + 运行节奏”</a>
+        <a class="level-3" href="#变化卡-2-xai-x-安全运营由规模化处理岗转向自动化后的分析与升级分层">变化卡 2｜xAI / X：安全运营由规模化处理岗转向自动化后的分析与升级分层</a>
+        <a class="level-3" href="#变化卡-3-openai-创业客户交付按-core-与-greenfield-竞争迁移拆管理动作">变化卡 3｜OpenAI：创业客户交付按 Core 与 Greenfield / 竞争迁移拆管理动作</a>
+        <a class="level-3" href="#变化卡-4-perplexity-算力组合决策集中到跨技术-财务与供应商控制点">变化卡 4｜Perplexity：算力组合决策集中到跨技术、财务与供应商控制点</a>
+        <a class="level-2" href="#不是新闻而是机制">不是新闻而是机制</a>
+        <a class="level-2" href="#组织情报结论卡">组织情报结论卡</a>
+        <a class="level-3" href="#结论卡-a-安全能力的稀缺性正在被转译为组织资源配置问题">结论卡 A｜安全能力的稀缺性正在被转译为组织资源配置问题</a>
+        <a class="level-3" href="#结论卡-b-客户交付专业化的代价-可能从-角色过宽-转移为-边界交接">结论卡 B｜客户交付专业化的代价，可能从“角色过宽”转移为“边界交接”</a>
+        <a class="level-3" href="#结论卡-c-ai-od-岗位文本不能替代员工价值与运行结果证据">结论卡 C｜AI + OD 岗位文本不能替代员工价值与运行结果证据</a>
+        <a class="level-2" href="#证据链与可信度">证据链与可信度</a>
+        <a class="level-2" href="#去伪存真记录">去伪存真记录</a>
+      </nav>
+    </aside>
+    <main>
+      <div class="topbar">
+        <a class="btn primary" href="../index.html">返回研究源</a>
+        <a class="btn" href="./2026-11-11.md">查看 Markdown 原文</a>
+      </div>
+      <p class="eyebrow">Daily Scan</p>
+      <h1>2026-11-11 组织情报信息</h1>
+      <p class="meta">本页面由本地 Markdown 自动渲染生成，仍保留原始 md 文件作为知识库源文档。</p>
+      <article>
+        <blockquote><strong>扫描窗口</strong>：严格窗口为 2026-11-10 08:32:59 CST—2026-11-11 08:27:10 CST；72 小时补漏窗口为 2026-11-08 08:27:10 CST—2026-11-11 08:27:10 CST。本地最新日报为 2026-11-10，本期不存在缺失自然日。</blockquote>
+<blockquote></blockquote>
+<blockquote><strong>证据结论</strong>：严格窗口内没有新增达到 L3 的组织效率或结构结论。xAI、Anthropic、Replit 三家独立官方 ATS 同时把安全工作写入管理层级、资源配置、升级 / SLA 与持续运行系统，可形成 A / L2 跨公司模式观察；OpenAI 创业客户交付分层、Perplexity 算力控制点与美团 AI + OD 岗位族群仍为 L1 招聘设计信号。</blockquote>
+<h2 id="今日结论">今日结论</h2>
+<ul>
+<li><strong>本期没有 L3 / L4 组织结论。</strong> 没有公开证据证明决策速度、协作成本、员工负担、人才密度、风险结果或交付效率已经改变，也没有可核验的 AI 替代岗位或减少 HC 事实。</li>
+<li><strong>安全 / 风控职能正在从单点专家活动，被写成带有管理层级、稀缺资源配置、升级机制与运行节奏的常态系统。</strong> xAI、Anthropic、Replit 的三个独立官方 ATS 事实根支持 L2 模式观察；风险域不同，不能把它写成统一最佳实践或效果结论。</li>
+<li><strong>xAI / X 的安全运营蓝图把全球双枢纽、管理者的管理者与自动化后的分析 / 例外处理放在同一结构中。</strong> 它可能改变任务边界和判断密度，但不能证明自动化已经运行、人工岗位减少或安全改善。</li>
+<li><strong>Anthropic 把 Agent Security 设计为嵌入式稀缺资源，由经理决定嵌入对象、持续时间及共享控制投入。</strong> 这可能缩短安全与产品之间的路径，也可能形成新的排队和资源冲突控制点。</li>
+<li><strong>Replit 以一个经理统管云 / 基础设施安全与应用安全 / Secure SDLC，并承担 SLA、升级、绩效与风险接受。</strong> 这显示从代码到云的责任闭环设计，但不证明两组正式合并或漏洞修复更快。</li>
+<li><strong>OpenAI 的创业客户交付被拆成 Core 与 Greenfield / 竞争迁移两种管理动作。</strong> 两个同分钟岗位支持 L1 分层假设；同一 ATS 事实根不能确认两个团队已成型。</li>
+<li><strong>Perplexity 把算力预测、预算承诺、供应商容量上线、迁移 / 下线及成本 / 利用率 / 可靠性放进一个 TPM 控制点。</strong> 这可能减少跨 Research、Engineering、Finance 的断点，也可能形成新的单点瓶颈。</li>
+<li><strong>美团官方招聘页显示 AI + OD 角色画像继续细分，但刷新时间不是首次设岗证据。</strong> <code>AI型组织架构师</code>、<code>无人机-AI builder 组织发展专家</code> 与历史岗位簇只进入 L1 观察，不写成组织重构或人效改善。</li>
+<li><strong>传统大厂与国内 AI 原生公司保持零新增结论。</strong> “未检出”只表示严格窗口内缺少可回到第一来源、达到 L2 的证据。</li>
+</ul>
+<h2 id="今日组织机制信号">今日组织机制信号</h2>
+<div class="table-wrap"><table><thead><tr>
+<th>信号</th>
+<th>L1 事实</th>
+<th>L2 机制判断</th>
+<th>L3 组织判断</th>
+<th>影响变量</th>
+<th>证据 / 置信度</th>
+<th>阅读价值</th>
+</tr></thead><tbody>
+<tr>
+<td>安全职能组织化</td>
+<td>xAI 双枢纽安全运营、Anthropic 嵌入式安全资源配置、Replit 双组安全管理在同窗出现</td>
+<td>安全被设计为有管理层级、资源权、SLA / 升级与持续运行的系统</td>
+<td>不成立：无运行、风险或员工结果</td>
+<td>职能边界、决策速度、协作成本、管理跨度、执行节奏</td>
+<td>A / L2 跨公司模式；事实高、机制中</td>
+<td>核心结论</td>
+</tr>
+<tr>
+<td>OpenAI 创业客户交付分层</td>
+<td>Core 与 Greenfield 两项经理岗同分钟发布，客户阶段与竞争迁移任务不同</td>
+<td>客户交付可能按首次落地 / 迁移与持续生产 / 规模化拆管理动作</td>
+<td>不成立：无团队、到岗、转交与客户结果</td>
+<td>交付节奏、绩效归属、协作成本</td>
+<td>A / L1；事实高、机制中</td>
+<td>核心观察</td>
+</tr>
+<tr>
+<td>Perplexity 算力组合控制点</td>
+<td>TPM 覆盖 3—12 月预测、预算承诺、容量验收、迁移 / 下线及统一视图</td>
+<td>技术、财务和供应商决策可能集中到一个跨职能控制点</td>
+<td>不成立：无正式授权与成本 / 利用率结果</td>
+<td>决策速度、职能边界、单点瓶颈</td>
+<td>A / L1；事实高、机制中</td>
+<td>持续观察</td>
+</tr>
+<tr>
+<td>美团 AI + OD 岗位族群</td>
+<td>两个 AI 组织岗位在窗口内刷新，历史上已有转型专家、OD 专家与进化伙伴</td>
+<td>AI 转型被拆成架构、业务场景 OD 与职能进化伙伴等角色画像</td>
+<td>不成立：更新时间非首次设岗，无到岗或人效结果</td>
+<td>职能边界、人才机制、绩效压力、员工负担</td>
+<td>A / L1；事实中、机制中</td>
+<td>观察池</td>
+</tr>
+</tbody></table></div>
+<h2 id="传统大厂与-ai-原生组织分组观察">传统大厂与 AI 原生组织分组观察</h2>
+<h3 id="传统大厂">传统大厂</h3>
+<ul>
+<li>国内传统互联网 / 科技公司：美团在官方 ATS 中持续公开 AI + 组织发展岗位族群；严格窗口内页面刷新只能支持 L1 角色设计观察。腾讯、阿里、字节、百度、京东、快手、小米、华为、网易、拼多多、蚂蚁、飞书 / 火山、B 站、滴滴、携程没有检出达到 L2 的日级新事实。</li>
+<li>国外传统科技公司：Amazon、Google、Meta、Microsoft、Apple、Netflix、Salesforce、Adobe、Nvidia、Shopify、Atlassian、GitLab、Stripe、Canva、Zapier 的命中以旧重组、产品、财务或评论材料为主，没有进入核心区。</li>
+<li>日级窗口受公开披露节奏、搜索索引延迟和页面时间字段影响；零新增结论不等于零变化。</li>
+</ul>
+<h3 id="ai-原生组织">AI 原生组织</h3>
+<ul>
+<li>xAI / X：Singapore Center of Excellence 与 Austin 形成两个安全运营枢纽；岗位蓝图把自动化后的申诉、模型评测 / 审计、分析、调查和升级交给 analysts，并设置跨层级管理。</li>
+<li>Anthropic：Agent Security Partnerships Manager 承担嵌入式安全工程师配置权；Principal Engineer, Privacy 则以影响力而非 formal authority 跨产品、研究数据、内部工具与多云形成隐私技术控制，只进次级观察。</li>
+<li>Replit：Security Manager 同时覆盖 Cloud / Infrastructure 与 AppSec / Secure SDLC，并把 SLA、on-call、升级、绩效和风险接受放入同一管理闭环。</li>
+<li>OpenAI：Startups Applied AI Engineering 同时出现 Core 与 Greenfield 两项经理岗；三项具名 Partner Director 属于既有单一负责制模板复制，不按三个独立组织变化处理。</li>
+<li>Perplexity：Compute TPM 把算力预测、预算、供应商上线与运行视图集中到一个技术项目控制点。</li>
+<li>ElevenLabs：Product Enablement 与 Sales Execution / North America Lead 显示 GTM enablement 专业化；Partner Program 已证实为旧页重发，不能写成三岗同时新设。</li>
+<li>Harvey：Scaled Customer Success Manager 把采用、续约、扩张、健康度和流失预警合并到高容量客户组合，只作为管理跨度与绩效压力的 L1 观察。</li>
+<li>Cursor / Anysphere、Mistral、xAI 多个旧页与 ElevenLabs Partner Program 的变化均被识别为迁移、改名、重发或回现。</li>
+<li>国内 AI 原生公司：DeepSeek、Kimi / 月之暗面、智谱 AI、MiniMax 等命中主要为旧招聘、融资 / 产品消息和二手报道，没有达到日级 L2 门槛。</li>
+</ul>
+<h3 id="趋同与分化">趋同与分化</h3>
+<ul>
+<li><strong>趋同</strong>：安全工作开始出现明确管理节点、资源配置与运行节奏，而不只以专家能力或上线前评审存在。</li>
+<li><strong>分化</strong>：xAI 强调全球枢纽与自动化后的分析分层；Anthropic 强调嵌入资源组合；Replit 强调从代码到云的 SLA 与责任闭环。</li>
+<li><strong>未被证明的部分</strong>：这些结构是否真的减少等待、返工和风险，还是增加排队、判断压力、跨时区负担与管理层跨度，公开招聘页无法回答。</li>
+</ul>
+<h2 id="高价值变化卡片">高价值变化卡片</h2>
+<h3 id="变化卡-1-安全职能从专家活动进入-管理层级-资源权-运行节奏">变化卡 1｜安全职能从专家活动进入“管理层级 + 资源权 + 运行节奏”</h3>
+<ul>
+<li><strong>时间</strong>：xAI 2026-11-10 09:55:37 CST；Replit 2026-11-10 09:10:02 CST；Anthropic 2026-11-11 05:53:40 CST，均位于严格窗口。</li>
+<li><strong>公司与组织范围</strong>：xAI / X Safety Operations；Anthropic Agent Security Partnerships；Replit Cloud / Infrastructure Security 与 Application Security / Secure SDLC。</li>
+<li><strong>机制名称</strong>：安全职能组织化与常态运行。</li>
+<li><strong>机制理念</strong>：把风险工作从单点专家判断，转为有管理层级、资源分配、升级、SLA、跨时区覆盖和可复用控制的运行系统。</li>
+<li><strong>L1 事实</strong>：xAI 设置 Singapore / Austin 双枢纽与 manager-of-managers；Anthropic 经理决定稀缺安全工程师嵌入对象和时长；Replit 单一经理统管两组并承担 SLA、绩效、升级和风险接受。</li>
+<li><strong>L2 机制判断</strong>：三家独立官方 ATS 同向支持安全 / 风控职能正在进入组织边界、管理系统与运营节奏的模式观察。</li>
+<li><strong>L3 组织判断</strong>：不成立。三者风险域不同，且没有真实团队、运行、风险率、处理时长、员工负担或客户结果。</li>
+<li><strong>组织影响</strong>：可能减少安全责任漂移与产品团队重复建设，也可能形成稀缺资源排队、跨时区协调和更高判断压力。</li>
+<li><strong>来源与渠道</strong>：<a href="https://job-boards.greenhouse.io/xai/jobs/5286891007">xAI Safety CoE</a>、<a href="https://job-boards.greenhouse.io/anthropic/jobs/5394611008">Anthropic Agent Security Partnerships</a>、<a href="https://jobs.ashbyhq.com/replit/2b296184-4ef9-4587-98ec-cd20f39e003e">Replit Security Manager</a>。</li>
+<li><strong>证据等级</strong>：A / L2 跨公司模式；个体公司事实为 L1。</li>
+<li><strong>互证情况</strong>：三个公司、三个独立 ATS 事实根；均完成连续快照、时间字段和旧页反查。</li>
+<li><strong>反向解释</strong>：可能是既有职责职位化、补位、候选池或未来蓝图；不能证明组织新建、自动化运行或安全改善。</li>
+<li><strong>与历史基线关系</strong>：安全岗位并非首次出现；本期新增是管理层级、配置权和运行指标在三个事实根中同时显性化。</li>
+<li><strong>组织发展关注点</strong>：嵌入资源分配、经理跨度、升级权、跨时区交接、复用控制、SLA 与员工负担。</li>
+<li><strong>适用边界</strong>：分别限于内容安全运营、agent security partnerships、软件 / 云安全，不外推完整模型安全或公司治理。</li>
+<li><strong>待验证问题</strong>：到岗、团队规模、正式权限、排队 / 修复周期、误报漏报、事件后效与员工负担。</li>
+<li><strong>公开策略</strong>：只公开官方岗位、机制判断与证据边界；不把招聘页写成到岗、HC 或效果。</li>
+</ul>
+<h3 id="变化卡-2-xai-x-安全运营由规模化处理岗转向自动化后的分析与升级分层">变化卡 2｜xAI / X：安全运营由规模化处理岗转向自动化后的分析与升级分层</h3>
+<ul>
+<li><strong>时间</strong>：2026-11-10 09:55:37 CST。</li>
+<li><strong>公司与组织范围</strong>：xAI / X Safety Operations，Singapore 与 Austin 枢纽。</li>
+<li><strong>机制名称</strong>：全球双枢纽与人机任务再分层。</li>
+<li><strong>机制理念</strong>：以 24 / 7 / 365 双枢纽覆盖全球安全运营，把重复申诉处理交给 automation-first 流程，把人工角色放到模型评测 / 审计、分析、调查和复杂升级。</li>
+<li><strong>L1 事实</strong>：官方 JD 明确写入两枢纽、汇报 Head of Safety Operations、管理负责 Safety analysts 的经理，以及从 scaled operations agents 向 analysts 的转变。</li>
+<li><strong>L2 机制判断</strong>：人工角色被设计为从批量处理转向例外判断、模型监督与高风险案件，管理层级随之上移。</li>
+<li><strong>L3 组织判断</strong>：不成立。没有人员基线、实际自动化覆盖、HC 变化、处置时效、安全结果或工作强度数据。</li>
+<li><strong>组织影响</strong>：可能降低重复处理并扩大时区覆盖，也可能提高分析人员判断密度、升级压力和跨枢纽一致性成本。</li>
+<li><strong>来源与渠道</strong>：<a href="https://job-boards.greenhouse.io/xai/jobs/5286891007">Lead, Singapore Center of Excellence (Safety)</a>。</li>
+<li><strong>证据等级</strong>：A / L1；事实高、机制中、结果低。</li>
+<li><strong>互证情况</strong>：官方 Greenhouse 首发与连续快照；无独立运行数据。</li>
+<li><strong>反向解释</strong>：“shift”可能是目标性招聘叙事或既有转型总结，不证明已经实施。</li>
+<li><strong>与历史基线关系</strong>：既有 Safety Operations 提供职能基线；本期页面首次显性描述双枢纽与人机任务分层。</li>
+<li><strong>组织发展关注点</strong>：自动化与人工边界、升级质量、跨时区交接、管理者跨度、分析人员负荷与申诉公平。</li>
+<li><strong>适用边界</strong>：X / SpaceXSI 招聘页中的 Safety Operations，不推断法律实体关系，不外推模型研发安全。</li>
+<li><strong>待验证问题</strong>：真实团队规模、任务占比、到岗、误报漏报、申诉质量、人员流动与负担。</li>
+<li><strong>公开策略</strong>：不写成 AI 替代岗位、减少 HC 或安全改善。</li>
+</ul>
+<h3 id="变化卡-3-openai-创业客户交付按-core-与-greenfield-竞争迁移拆管理动作">变化卡 3｜OpenAI：创业客户交付按 Core 与 Greenfield / 竞争迁移拆管理动作</h3>
+<ul>
+<li><strong>时间</strong>：2026-11-10 17:00:55 / 17:01:00 CST。</li>
+<li><strong>公司与组织范围</strong>：OpenAI Applied AI Engineering, Startups。</li>
+<li><strong>机制名称</strong>：按客户阶段与任务形态拆分交付管理。</li>
+<li><strong>机制理念</strong>：Greenfield 负责早期首次生产部署、初始规模化及竞争评估 / 迁移；Core 负责更广泛高增长创业客户的持续部署与采用，同时沉淀 playbooks、reference architectures 与 internal tooling。</li>
+<li><strong>L1 事实</strong>：两个官方 Ashby 经理岗同分钟发布，均管理技术 IC、定义 operating model，并连接 Sales、Product、Engineering 与 Research。</li>
+<li><strong>L2 机制判断</strong>：客户技术交付可能由一个宽团队，拆成“首次落地 / 迁移”与“持续生产 / 规模化”两类管理动作。</li>
+<li><strong>L3 组织判断</strong>：不成立。不能确认两个独立团队已存在、是否择一招聘、人员规模或交付结果。</li>
+<li><strong>组织影响</strong>：可能降低客户阶段差异造成的优先级冲突，也可能增加 Core / Greenfield 的客户转交、上下文丢失和绩效归属问题。</li>
+<li><strong>来源与渠道</strong>：<a href="https://jobs.ashbyhq.com/openai/c0586c46-6b10-482f-af1c-a5b7eb196b3b">Greenfield</a>、<a href="https://jobs.ashbyhq.com/openai/ceca6916-b8d8-42cc-a32a-c27e06744b31">Core</a>。</li>
+<li><strong>证据等级</strong>：A / L1；同一公司、同一 ATS、相邻时间，只计一个事实根。</li>
+<li><strong>互证情况</strong>：连续快照确认本期首见；尚无组织公告、到岗或客户数据。</li>
+<li><strong>反向解释</strong>：可能是同一招聘计划的候选方向、模板拆分或既有非正式边界显性化。</li>
+<li><strong>与历史基线关系</strong>：OpenAI 已有 Startups 与 Applied AI Engineering；本期新增点是 Core / Greenfield 的明确命名与职责差异。</li>
+<li><strong>组织发展关注点</strong>：客户分层、交接、技术升级、复用资产、绩效归属与一线工程师负担。</li>
+<li><strong>适用边界</strong>：创业客户 Applied AI Engineering，不外推全部企业交付组织。</li>
+<li><strong>待验证问题</strong>：团队数量、客户划分、转交机制、到岗、采用 / 交付周期、返工和员工负担。</li>
+<li><strong>公开策略</strong>：不把两页计成两个确定团队或两个净增 HC。</li>
+</ul>
+<h3 id="变化卡-4-perplexity-算力组合决策集中到跨技术-财务与供应商控制点">变化卡 4｜Perplexity：算力组合决策集中到跨技术、财务与供应商控制点</h3>
+<ul>
+<li><strong>时间</strong>：2026-11-10 23:57:14 CST。</li>
+<li><strong>公司与组织范围</strong>：Perplexity Research、Engineering、Finance 与计算供应商。</li>
+<li><strong>机制名称</strong>：算力组合技术项目控制面。</li>
+<li><strong>机制理念</strong>：由一个 MTS / TPM 连接 3—12 个月需求预测、预算和承诺、容量上线、迁移 / 下线及成本 / 利用率 / 可靠性视图。</li>
+<li><strong>L1 事实</strong>：官方岗位正文明确列出上述职责和跨团队接口。</li>
+<li><strong>L2 机制判断</strong>：原本分散于研究需求、工程运行、财务承诺和供应商管理的决策被设计为集中控制点。</li>
+<li><strong>L3 组织判断</strong>：不成立。没有正式预算权、最终承诺权、团队结构或运行结果。</li>
+<li><strong>组织影响</strong>：可能减少需求、合同与产能上线之间的断点，也可能把跨技术与商业权衡集中成单点瓶颈。</li>
+<li><strong>来源与渠道</strong>：<a href="https://jobs.ashbyhq.com/perplexity/b85c4547-fa75-41a8-bd36-6f2c70117764">MTS (TPM, Compute)</a>。</li>
+<li><strong>证据等级</strong>：A / L1；事实高、机制中、结果低。</li>
+<li><strong>互证情况</strong>：官方 ATS 与连续快照；无独立组织公告或运行数据。</li>
+<li><strong>反向解释</strong>：“build a function with little precedent”属于招聘叙事，可能是现有协调工作的职位化。</li>
+<li><strong>与历史基线关系</strong>：算力与基础设施岗位既有；本期新增点是技术、财务和运营职责集中于一个 TPM 画像。</li>
+<li><strong>组织发展关注点</strong>：授权、单点依赖、预测质量、合同承诺、迁移风险、成本与可靠性权衡。</li>
+<li><strong>适用边界</strong>：Perplexity 算力组合管理，不外推研发组织整体。</li>
+<li><strong>待验证问题</strong>：正式权限、团队归属、容量上线周期、利用率、可靠性、成本和研发等待时间。</li>
+<li><strong>公开策略</strong>：不写成成本下降、利用率提高或决策已加快。</li>
+</ul>
+<h2 id="不是新闻而是机制">不是新闻而是机制</h2>
+<div class="table-wrap"><table><thead><tr>
+<th>事件表面</th>
+<th>机制翻译</th>
+<th>可能影响</th>
+<th>反向解释与边界</th>
+</tr></thead><tbody>
+<tr>
+<td>三家 AI 公司新增安全管理岗位</td>
+<td>风险工作进入管理层级、资源配置、SLA / 升级和持续运行系统</td>
+<td>可能减少责任漂移，也可能形成资源排队与更大管理跨度</td>
+<td>招聘设计不等于运行、到岗或效果</td>
+</tr>
+<tr>
+<td>xAI 新增 Singapore Safety CoE Lead</td>
+<td>自动化处理重复申诉，人工聚焦评测、分析与复杂升级</td>
+<td>可能改变人才密度和判断负荷</td>
+<td>不证明 AI 已替代岗位或 HC 下降</td>
+</tr>
+<tr>
+<td>OpenAI 同时发布 Core / Greenfield 经理岗</td>
+<td>客户交付按首次落地 / 迁移与持续生产 / 规模化拆分</td>
+<td>可能降低优先级冲突，也可能增加交接成本</td>
+<td>两页可能是模板拆分或候选方向</td>
+</tr>
+<tr>
+<td>Perplexity 新增 Compute TPM</td>
+<td>算力预测、财务承诺、供应商上线与运行视图集中</td>
+<td>可能减少跨部门断点，也可能形成单点瓶颈</td>
+<td>单岗不证明函数已建立或结果改善</td>
+</tr>
+<tr>
+<td>美团刷新 AI 组织岗位</td>
+<td>AI 转型被拆成架构、OD、人才与机制设计角色画像</td>
+<td>可能改变 HR / OD 边界和绩效压力</td>
+<td>更新时间非首次设岗；同一 ATS 无独立互证</td>
+</tr>
+</tbody></table></div>
+<h2 id="组织情报结论卡">组织情报结论卡</h2>
+<h3 id="结论卡-a-安全能力的稀缺性正在被转译为组织资源配置问题">结论卡 A｜安全能力的稀缺性正在被转译为组织资源配置问题</h3>
+<ul>
+<li><strong>事实基础</strong>：Anthropic 明确由经理决定嵌入哪些团队和多久；xAI 以双枢纽和多层管理保持持续运营；Replit 以统一经理负责两组、安全 SLA 与风险接受。</li>
+<li><strong>机制判断</strong>：安全不再只被描述为上线前审核或专家意见，而是需要分配、排队、升级、复用和绩效管理的组织资源。</li>
+<li><strong>效率变量</strong>：产品等待、安全控制复用、修复周期、跨时区交接、管理跨度、判断压力与员工负担。</li>
+<li><strong>知识等级</strong>：A / L2 跨公司模式；没有 L3 结果。</li>
+<li><strong>反向解释</strong>：也可能是既有工作职位化、补位或招聘品牌叙事；新增控制点可能增加审批和排队。</li>
+<li><strong>适用边界</strong>：三家不同风险域的公开招聘设计。</li>
+<li><strong>待验证问题</strong>：正式权限、团队与到岗、等待 / 修复周期、风险结果和人员负担。</li>
+</ul>
+<h3 id="结论卡-b-客户交付专业化的代价-可能从-角色过宽-转移为-边界交接">结论卡 B｜客户交付专业化的代价，可能从“角色过宽”转移为“边界交接”</h3>
+<ul>
+<li><strong>事实基础</strong>：OpenAI 将 Startup Applied AI Engineering 写成 Core 与 Greenfield 两类管理动作；ElevenLabs 将 GTM enablement 拆到产品发布准备与销售执行。</li>
+<li><strong>机制判断</strong>：专业分层试图用明确场景与复用资产降低宽角色负担，但同时创造新的交接、归属与升级界面。</li>
+<li><strong>效率变量</strong>：交付周期、重复劳动、客户转交、上下文保留、绩效归属与一线工作强度。</li>
+<li><strong>知识等级</strong>：A / L1 事实组合；不同事实未形成足够同构的 L2 结论。</li>
+<li><strong>反向解释</strong>：可能只是岗位模板细分或候选池，不代表真实团队边界。</li>
+<li><strong>适用边界</strong>：AI 公司企业 / 创业客户交付与 GTM enablement。</li>
+<li><strong>待验证问题</strong>：到岗、客户分层、转交、复用资产采用、交付结果和员工负担。</li>
+</ul>
+<h3 id="结论卡-c-ai-od-岗位文本不能替代员工价值与运行结果证据">结论卡 C｜AI + OD 岗位文本不能替代员工价值与运行结果证据</h3>
+<ul>
+<li><strong>事实基础</strong>：美团官方岗位把 AI 岗位重构、人效度量、组织形态、差异化评价激励与 AI 人才供应写入职责。</li>
+<li><strong>机制判断</strong>：AI 转型正在进入组织设计与人才机制语言，而不只停留在工具部署。</li>
+<li><strong>效率变量</strong>：岗位边界、人才密度、评价压力、员工负担、组织信任与收益分配。</li>
+<li><strong>知识等级</strong>：A / L1；更新时间不承担首次设岗语义。</li>
+<li><strong>反向解释</strong>：可能是招聘叙事、岗位簇常规维护或既有职责显性化；“人效”不等于员工减负。</li>
+<li><strong>适用边界</strong>：美团官方公开岗位画像。</li>
+<li><strong>待验证问题</strong>：到岗、实际组织应用、员工收益、工作强度、数据边界与长期后效。</li>
+</ul>
+<h2 id="证据链与可信度">证据链与可信度</h2>
+<div class="table-wrap"><table><thead><tr>
+<th>ID</th>
+<th>事实验证</th>
+<th>机制验证</th>
+<th>趋势验证</th>
+<th>反证 / 缺口</th>
+<th>结论</th>
+</tr></thead><tbody>
+<tr>
+<td>SAFETY-OPERATING-SYSTEM</td>
+<td>三家公司官方 ATS、时间位于严格窗口</td>
+<td>职责分别覆盖双枢纽 / 多层管理、嵌入资源配置、双组 / SLA / 升级</td>
+<td>三个独立事实根同向，但风险域不同</td>
+<td>无到岗、运行、风险或员工结果</td>
+<td>A / L2 跨公司模式，中置信机制判断</td>
+</tr>
+<tr>
+<td>XAI-SAFETY-COE</td>
+<td>Greenhouse <code>first_published</code> 与连续快照</td>
+<td>JD 明确 automation-first 后的人机任务与升级分层</td>
+<td>既有 Safety Operations 提供基线</td>
+<td>无人数、自动化覆盖、HC 与安全后效</td>
+<td>A / L1，中置信机制假设</td>
+</tr>
+<tr>
+<td>OPENAI-STARTUPS-SPLIT</td>
+<td>两个官方 Ashby 新页面同分钟首见</td>
+<td>Core / Greenfield 职责差异明确</td>
+<td>既有 Startups / Applied AI Engineering 提供基线</td>
+<td>同一事实根，无团队与客户结果</td>
+<td>A / L1，中置信机制假设</td>
+</tr>
+<tr>
+<td>PERPLEXITY-COMPUTE-TPM</td>
+<td>官方 Ashby 与连续快照</td>
+<td>预测、预算、供应商和运行视图集中</td>
+<td>只有单一岗位蓝图</td>
+<td>无正式权限、成本与利用率结果</td>
+<td>A / L1，中置信机制假设</td>
+</tr>
+<tr>
+<td>MEITUAN-AI-OD</td>
+<td>官方 ATS 职责与窗口刷新</td>
+<td>同一 ATS 历史角色簇支持画像细分</td>
+<td>缺首次发布时间和独立来源</td>
+<td>刷新不等于新设，无到岗或员工结果</td>
+<td>A / L1，观察池</td>
+</tr>
+<tr>
+<td>TRADITIONAL-DOMESTIC-NONE</td>
+<td>中英文日级检索未找到新第一来源</td>
+<td>无可验证机制</td>
+<td>旧闻与聚合不承担趋势验证</td>
+<td>公开覆盖与索引有局限</td>
+<td>零新增，不等于零变化</td>
+</tr>
+</tbody></table></div>
+<p>三角验证结果：安全职能组织化完成三家独立 ATS 的事实、机制与历史基线核验，达到 L2 模式观察；其余信号完成官方页面、连续快照、时间字段和反向搜索，但缺独立组织公告、到岗、运行数据、员工 / 客户结果，均停留在 L1。没有信号达到 L3。</p>
+<h2 id="去伪存真记录">去伪存真记录</h2>
+<ul>
+<li>AnySearch CLI 先完成传统大厂、国内 AI 原生、国外 AI 原生、组织 / 绩效 / 晋升 / 职级 / 招聘及反向关键词检索；核心候选全部回到官方 ATS 与正文。</li>
+<li>Greenhouse 使用 <code>first_published</code> 确认 xAI、Anthropic 候选位于窗口；<code>updated_at</code> 只作页面更新时间。Ashby <code>publishedAt</code> 与连续快照、旧 ID 和正文哈希共同使用。</li>
+<li>xAI 多个 AI Tutor / 硬件页面首次发布时间早于本窗口，按旧页回现排除；其页面删除不解释为 HC 变化。</li>
+<li>Cursor 25 个新增中 20 个标题在近期快照已出现，且存在旧 ID 删除 + 新 ID 新增，继续按 ATS 迁移处理。</li>
+<li>Mistral Design Operations Manager 与下架的 Product Operations Manager (DesignOps) 正文相似度约 0.9985，按改名 / 重发排除。</li>
+<li>ElevenLabs Partner Program 同 ID、同正文在 11 月 7—8 日已存在，本期只是回现和时间刷新。</li>
+<li>Anthropic Renewals、FDE Strategy &amp; Operations、Beneficial Deployments 等首次发布时间早于窗口，不计当日新事实。</li>
+<li>OpenAI 三项具名 Partner Director 为既有“单一负责制”模板复制；不按三个团队、三个独立事实或三个净增 HC 处理。</li>
+<li>美团官方页面刷新只证明岗位仍在公开及职责文本更新，不证明首次设岗、组织重构或 HC 获批。</li>
+<li>招聘页只证明公开角色设计；不映射到岗、净增 HC、正式组织图、流程落地或效率改善。</li>
+<li>不把自动化、工具使用、高容量覆盖或“人效”直接解释为员工减负和生产力提升；没有员工收益、工作强度、信任与收益分配数据。</li>
+<li>传统大厂与国内 AI 原生零新增只表示公开证据不足，不表示公司内部没有变化。</li>
+</ul>
+<h2 id="渠道索引补充">渠道索引补充</h2>
+<ul>
+<li><strong>AnySearch CLI</strong>：优先覆盖传统大厂、国内 AI 原生、国外 AI 原生、组织 / 绩效 / 晋升 / 职级 / 干部 / 招聘及反向关键词；结果回到官方第一来源。</li>
+<li><strong>官方 ATS 日差分</strong>：OpenAI、Anthropic、ElevenLabs、Harvey、Cohere、Perplexity、Replit、Mistral、Cursor / Anysphere、Runway、Midjourney、Character.AI、Inflection、Scale AI、xAI；保留 ID、首次 / 更新时间语义、正文、增加 / 删除、重发与迁移解释。</li>
+<li><strong>美团官方招聘 API / 页面</strong>：用于核验 AI + OD 角色画像、窗口刷新与历史岗位簇；不把更新时间当首次发布时间。</li>
+<li><strong>连续历史快照</strong>：使用 11 月 7—11 日快照核验新页面、旧页回现、时间重置、换 ID 和正文相似度。</li>
+<li><strong>传统与国际媒体检索</strong>：当期命中没有形成进入核心区的新事实；二手报道、搜索摘要和招聘聚合不替代官方正文。</li>
+<li><strong>本期无新增私密渠道索引</strong>：未读取、复制或上传桌面私有参考文档、内部链接、访谈口径、截图、未授权附件或个人信息。</li>
+</ul>
+<h2 id="观察池-待核验池">观察池 / 待核验池</h2>
+<ul>
+<li><strong>Anthropic Agent Security Partnerships（A/L1）</strong>：嵌入工程师数量、配置标准、排队时长、发布权限、控制复用率和风险后效。</li>
+<li><strong>xAI Singapore Safety CoE（A/L1）</strong>：团队规模、人机任务边界、自动化覆盖、申诉质量、管理跨度、跨时区交接与人员负担。</li>
+<li><strong>Replit Security Manager（A/L1）</strong>：两组历史关系、实际跨度、SLA 基线、风险接受权、整改周期与工程负担。</li>
+<li><strong>OpenAI Core / Greenfield（A/L1）</strong>：是否独立团队、客户分层、转交、绩效归属、交付周期与员工负担。</li>
+<li><strong>Perplexity Compute TPM（A/L1）</strong>：正式预算 / 承诺权、团队归属、容量上线、成本、利用率和可靠性。</li>
+<li><strong>美团 AI + OD 岗位族群（A/L1）</strong>：首次发布时间、到岗、角色间权责、员工价值、工作强度与人效口径。</li>
+<li><strong>Anthropic Principal Engineer, Privacy（A/L1）</strong>：跨域影响权、数据边界、控制持续验证与实际结果。</li>
+<li><strong>ElevenLabs GTM Enablement（A/L1）</strong>：产品 / 销售专岗边界、发布准备、销售执行和一线负担。</li>
+<li><strong>Harvey Scaled Customer Success（A/L1）</strong>：每人账户量、人工介入标准、采用 / 续约、上下文损失与绩效压力。</li>
+<li><strong>Cursor / Mistral / 重发页面（暂不采纳）</strong>：只记录 ATS 与页面基础设施变化。</li>
+</ul>
+<h2 id="公开知识库入库判断">公开知识库入库判断</h2>
+<ul>
+<li><strong>新增 L3 / L4 结论</strong>：无。</li>
+<li><strong>新增 L2 模式观察</strong>：安全 / 风控职能从单点专家活动进入管理层级、稀缺资源配置、升级 / SLA 与持续运行系统。</li>
+<li><strong>新增 L1 核心观察</strong>：xAI Singapore Safety CoE；Anthropic Agent Security Partnerships；Replit Security Manager；OpenAI Startups Core / Greenfield；Perplexity Compute TPM。</li>
+<li><strong>新增 L1 观察池</strong>：美团 AI + OD 岗位族群；Anthropic Principal Engineer, Privacy；ElevenLabs GTM Enablement；Harvey Scaled Customer Success。</li>
+<li><strong>72 小时补漏</strong>：没有发现此前遗漏且达到 L3 的事实；历史岗位只用于时间、模板与趋势基线。</li>
+<li><strong>暂不采纳</strong>：Cursor ATS 迁移、Mistral DesignOps 改名、ElevenLabs Partner Program 重发、xAI 旧页回现、OpenAI 旧岗重发及所有 ATS 删除。</li>
+<li><strong>不可形成的判断</strong>：组织完成重组、净增或减少 HC、AI 替代岗位、绩效制度强化、安全结果改善、交付 / 算力效率提高、员工负担下降或人才密度提高。</li>
+<li><strong>L4 方法 / playbook</strong>：无。没有外部证据与内部长期数据共同验证。</li>
+<li><strong>公开边界</strong>：公开镜像只保留公开来源、证据判断、反向解释、适用边界和待验证问题；移除原始检索归档、本地路径、访问凭据、私有渠道、访谈材料和个人信息。</li>
+</ul>
+      </article>
+    </main>
+  </div>
+</body>
+</html>
