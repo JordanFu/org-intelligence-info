@@ -1,238 +1,239 @@
-# 2026-11-11 组织情报信息
+# 2026-11-12 组织情报信息
 
-> **扫描窗口**：严格窗口为 2026-11-10 08:32:59 CST—2026-11-11 08:27:10 CST；72 小时补漏窗口为 2026-11-08 08:27:10 CST—2026-11-11 08:27:10 CST。本地最新日报为 2026-11-10，本期不存在缺失自然日。
+> **扫描窗口**：严格窗口为 2026-11-11 08:27:10 CST—2026-11-12 08:31:57 CST；72 小时补漏窗口为 2026-11-09 08:31:57 CST—2026-11-12 08:31:57 CST。本地最新日报为 2026-11-11，本期不存在缺失自然日。
 >
-> **证据结论**：严格窗口内没有新增达到 L3 的组织效率或结构结论。xAI、Anthropic、Replit 三家独立官方 ATS 同时把安全工作写入管理层级、资源配置、升级 / SLA 与持续运行系统，可形成 A / L2 跨公司模式观察；OpenAI 创业客户交付分层、Perplexity 算力控制点与美团 AI + OD 岗位族群仍为 L1 招聘设计信号。
+> **证据结论**：严格窗口内没有新增达到 L3 的组织效率或结构结论。OpenAI 与 Anthropic 两个独立官方 ATS 同时把企业交付写成“早期共创—标准沉淀—伙伴自主交付”，可形成 A / L2 双公司事实观察；Harvey 区域多层 Legal Engineering、Perplexity 收入运营控制面、OpenAI 区域交付管理与 Anthropic 国际基础设施会计均停留在 L1。
 
 ## 今日结论
 
-- **本期没有 L3 / L4 组织结论。** 没有公开证据证明决策速度、协作成本、员工负担、人才密度、风险结果或交付效率已经改变，也没有可核验的 AI 替代岗位或减少 HC 事实。
-- **安全 / 风控职能正在从单点专家活动，被写成带有管理层级、稀缺资源配置、升级机制与运行节奏的常态系统。** xAI、Anthropic、Replit 的三个独立官方 ATS 事实根支持 L2 模式观察；风险域不同，不能把它写成统一最佳实践或效果结论。
-- **xAI / X 的安全运营蓝图把全球双枢纽、管理者的管理者与自动化后的分析 / 例外处理放在同一结构中。** 它可能改变任务边界和判断密度，但不能证明自动化已经运行、人工岗位减少或安全改善。
-- **Anthropic 把 Agent Security 设计为嵌入式稀缺资源，由经理决定嵌入对象、持续时间及共享控制投入。** 这可能缩短安全与产品之间的路径，也可能形成新的排队和资源冲突控制点。
-- **Replit 以一个经理统管云 / 基础设施安全与应用安全 / Secure SDLC，并承担 SLA、升级、绩效与风险接受。** 这显示从代码到云的责任闭环设计，但不证明两组正式合并或漏洞修复更快。
-- **OpenAI 的创业客户交付被拆成 Core 与 Greenfield / 竞争迁移两种管理动作。** 两个同分钟岗位支持 L1 分层假设；同一 ATS 事实根不能确认两个团队已成型。
-- **Perplexity 把算力预测、预算承诺、供应商容量上线、迁移 / 下线及成本 / 利用率 / 可靠性放进一个 TPM 控制点。** 这可能减少跨 Research、Engineering、Finance 的断点，也可能形成新的单点瓶颈。
-- **美团官方招聘页显示 AI + OD 角色画像继续细分，但刷新时间不是首次设岗证据。** `AI型组织架构师`、`无人机-AI builder 组织发展专家` 与历史岗位簇只进入 L1 观察，不写成组织重构或人效改善。
-- **传统大厂与国内 AI 原生公司保持零新增结论。** “未检出”只表示严格窗口内缺少可回到第一来源、达到 L2 的证据。
+- **本期没有 L3 / L4 组织结论。** 没有公开证据证明决策速度、协作成本、管理跨度、员工负担、客户结果或组织效率已经改善，也没有 AI 替代岗位或减少 HC 的可核验事实。
+- **模型公司的企业交付边界正在从“原厂逐单完成”转向“早期共创—方法沉淀—伙伴复制交付”。** OpenAI Partner Applied AI Engineer 与 Anthropic Japan Partnerships Enablement 来自两个独立官方 ATS，支持 L2 事实观察；尚不足以写成行业确定趋势或最佳实践。
+- **Anthropic 把商业关系、中央课程 / 认证、区域 readiness 和实际培训交付拆成不同责任面。** 日本岗位只拥有伙伴就绪，PAM 拥有商业关系，中央团队一次建设课程；重点伙伴深度覆盖，其余走 1:many。
+- **OpenAI 让伙伴工程师先与原厂共同解决复杂部署，再接收参考架构、playbook 与交付所有权。** 这可能扩大原厂覆盖范围，也可能把质量责任、客户上下文和工作强度转移给伙伴团队。
+- **Harvey 的 Legal Engineering 正被写成“区域二线管理—国家负责人—本地混合团队”的多层组织。** APAC Head 管理各市场负责人，Japan Head 负责 Legal Engineer / Product Specialist、职业路径、HC 与绩效；官方岗位设计可信，但团队现状与未来计划混在同一文本中。
+- **OpenAI 在 APAC 同时复制 FDE Deployment Lead 与 Applied AI Architects 两类区域管理边界。** 前者覆盖生产交付与 handoff，后者覆盖技术账户组合、资源优先级与专岗交接；这不是岗位族首次出现。
+- **Perplexity 的企业化收入治理开始显性化。** Deal Desk 与 GTM Compensation 将非标交易、审批、quote-to-order、激励、佣金系统、审计轨迹和争议处理分别集中；时间语义存在反证，只作为 L1 观察。
+- **Anthropic 国际基础设施会计把财务与合规控制前移到数据中心 / 网络 / 算力承诺之前。** 这说明算力国际化需要新的控制接口，但不证明新市场、资本规模或成本效率。
+- **传统大厂与国内 AI 原生公司保持零新增结论。** 当期命中主要是旧闻、产品 / 融资、招聘聚合或页面刷新；未检出不等于内部没有变化。
 
 ## 今日组织机制信号
 
 | 信号 | L1 事实 | L2 机制判断 | L3 组织判断 | 影响变量 | 证据 / 置信度 | 阅读价值 |
 |---|---|---|---|---|---|---|
-| 安全职能组织化 | xAI 双枢纽安全运营、Anthropic 嵌入式安全资源配置、Replit 双组安全管理在同窗出现 | 安全被设计为有管理层级、资源权、SLA / 升级与持续运行的系统 | 不成立：无运行、风险或员工结果 | 职能边界、决策速度、协作成本、管理跨度、执行节奏 | A / L2 跨公司模式；事实高、机制中 | 核心结论 |
-| OpenAI 创业客户交付分层 | Core 与 Greenfield 两项经理岗同分钟发布，客户阶段与竞争迁移任务不同 | 客户交付可能按首次落地 / 迁移与持续生产 / 规模化拆管理动作 | 不成立：无团队、到岗、转交与客户结果 | 交付节奏、绩效归属、协作成本 | A / L1；事实高、机制中 | 核心观察 |
-| Perplexity 算力组合控制点 | TPM 覆盖 3—12 月预测、预算承诺、容量验收、迁移 / 下线及统一视图 | 技术、财务和供应商决策可能集中到一个跨职能控制点 | 不成立：无正式授权与成本 / 利用率结果 | 决策速度、职能边界、单点瓶颈 | A / L1；事实高、机制中 | 持续观察 |
-| 美团 AI + OD 岗位族群 | 两个 AI 组织岗位在窗口内刷新，历史上已有转型专家、OD 专家与进化伙伴 | AI 转型被拆成架构、业务场景 OD 与职能进化伙伴等角色画像 | 不成立：更新时间非首次设岗，无到岗或人效结果 | 职能边界、人才机制、绩效压力、员工负担 | A / L1；事实中、机制中 | 观察池 |
+| 伙伴能力转移式交付 | Anthropic 拆分 PAM、中央课程、区域 readiness；OpenAI 早期共创后向伙伴转移交付所有权 | 原厂保留复杂问题与标准沉淀，伙伴复制常规交付 | 不成立：无自主交付率、周期、质量或员工后效 | 决策速度、协作成本、管理跨度、职能边界、执行节奏 | A / L2 双公司观察；事实高、机制中 | 核心结论 |
+| Harvey 区域 Legal Engineering 多层化 | APAC Head 管理四地市场负责人；Japan Head 搭建本地混合团队并负责人事机制 | 领域专家职能被设计为区域二线—国家负责人—一线团队 | 不成立：现状与计划混杂，无到岗和运行结果 | 管理跨度、绩效压力、区域授权、协作成本 | A / L1；事实高、机制中 | 核心观察 |
+| OpenAI APAC 交付管理分层 | Singapore FDE Manager 与 Australia Architects Manager 同窗出现 | 部署交付与技术账户组合成为不同区域管理边界 | 不成立：属于区域模板复制，无客户与员工结果 | 资源配置、交接、绩效归属、执行节奏 | A / L1；事实高、机制中 | 持续观察 |
+| Perplexity 收入运营控制面 | Deal Desk 与 GTM Compensation 分别拥有交易例外 / 系统验收和激励 / 佣金 / 争议 | 商业化从销售个体判断转向规则、系统、审批与审计轨迹 | 不成立：时间语义有反证，无运行数据 | 决策速度、绩效压力、公平性、员工信任 | A / L1；事实中、机制中 | 观察池 |
+| Anthropic 国际算力财务接口 | 国际基础设施会计覆盖承诺前评估、新市场基础与资产数据链 | 财务与合规控制前移至基础设施承诺之前 | 不成立：无市场、规模、成本或周期结果 | 职能边界、投资节奏、协作成本 | A / L1；事实高、机制中 | 持续观察 |
 
 ## 传统大厂与 AI 原生组织分组观察
 
 ### 传统大厂
 
-- 国内传统互联网 / 科技公司：美团在官方 ATS 中持续公开 AI + 组织发展岗位族群；严格窗口内页面刷新只能支持 L1 角色设计观察。腾讯、阿里、字节、百度、京东、快手、小米、华为、网易、拼多多、蚂蚁、飞书 / 火山、B 站、滴滴、携程没有检出达到 L2 的日级新事实。
-- 国外传统科技公司：Amazon、Google、Meta、Microsoft、Apple、Netflix、Salesforce、Adobe、Nvidia、Shopify、Atlassian、GitLab、Stripe、Canva、Zapier 的命中以旧重组、产品、财务或评论材料为主，没有进入核心区。
-- 日级窗口受公开披露节奏、搜索索引延迟和页面时间字段影响；零新增结论不等于零变化。
+- 国内传统互联网 / 科技公司：腾讯、阿里、字节、美团、百度、京东、快手、小米、华为、网易、拼多多、蚂蚁、飞书 / 火山、B 站、滴滴、携程没有检出严格窗口内达到 L2 的新组织机制事实。美团 AI 组织岗位页面刷新仍不能承担首次设岗语义。
+- 国外传统科技公司：Amazon、Google、Meta、Microsoft、Apple、Netflix、Salesforce、Adobe、Nvidia、Shopify、Atlassian、GitLab、Stripe、Canva、Zapier 的命中以旧重组、裁员汇总、产品 / 财务与评论材料为主，没有进入核心区。
+- 搜索索引和公开披露节奏存在滞后；零新增结论只表示本期没有达到门槛的公开证据。
 
 ### AI 原生组织
 
-- xAI / X：Singapore Center of Excellence 与 Austin 形成两个安全运营枢纽；岗位蓝图把自动化后的申诉、模型评测 / 审计、分析、调查和升级交给 analysts，并设置跨层级管理。
-- Anthropic：Agent Security Partnerships Manager 承担嵌入式安全工程师配置权；Principal Engineer, Privacy 则以影响力而非 formal authority 跨产品、研究数据、内部工具与多云形成隐私技术控制，只进次级观察。
-- Replit：Security Manager 同时覆盖 Cloud / Infrastructure 与 AppSec / Secure SDLC，并把 SLA、on-call、升级、绩效和风险接受放入同一管理闭环。
-- OpenAI：Startups Applied AI Engineering 同时出现 Core 与 Greenfield 两项经理岗；三项具名 Partner Director 属于既有单一负责制模板复制，不按三个独立组织变化处理。
-- Perplexity：Compute TPM 把算力预测、预算、供应商上线与运行视图集中到一个技术项目控制点。
-- ElevenLabs：Product Enablement 与 Sales Execution / North America Lead 显示 GTM enablement 专业化；Partner Program 已证实为旧页重发，不能写成三岗同时新设。
-- Harvey：Scaled Customer Success Manager 把采用、续约、扩张、健康度和流失预警合并到高容量客户组合，只作为管理跨度与绩效压力的 L1 观察。
-- Cursor / Anysphere、Mistral、xAI 多个旧页与 ElevenLabs Partner Program 的变化均被识别为迁移、改名、重发或回现。
+- Anthropic：Japan Partnerships Enablement 把商业关系、中央课程 / 认证、区域 readiness 与培训交付清晰分责；International Infrastructure Accounting 把财务控制嵌入海外算力承诺前。
+- OpenAI：Google Cloud 与 Oracle / Cloud ISV Partner AAE 将早期交付沉淀为伙伴可独立使用的资产；Singapore FDE 与 Australia Architects 显示 APAC 交付管理继续区域化和专业分层。
+- Harvey：APAC Head 是 manager-of-managers，Japan Head 负责本地混合团队与人才机制；Tokyo CSM 还是 founding in-market role，显示日本市场接口同步加密。
+- Perplexity：Deal Desk 与 GTM Compensation 使交易例外、系统验收、激励规则和争议处理分别专业化；Data Acceleration 因同 ID 时间重置被排除。
+- Mistral：仅新增 Cloud SRE；两项网络岗位同 ID 时间刷新，不形成组织信号。
+- ElevenLabs：仅新增 Japan Sales Development；组织机制信息不足。Replit、Cohere、Scale AI、Runway、Midjourney、Character.AI 没有核心新增。
+- Cursor / Anysphere：仍处 ATS 迁移背景，单一 Pretraining Data 页面不承担扩编结论。
+- xAI：新增页面均为 4 月 / 10 月旧 AI Tutor 回现；删除页面不解释为物流 / 超算团队撤组。
 - 国内 AI 原生公司：DeepSeek、Kimi / 月之暗面、智谱 AI、MiniMax 等命中主要为旧招聘、融资 / 产品消息和二手报道，没有达到日级 L2 门槛。
 
 ### 趋同与分化
 
-- **趋同**：安全工作开始出现明确管理节点、资源配置与运行节奏，而不只以专家能力或上线前评审存在。
-- **分化**：xAI 强调全球枢纽与自动化后的分析分层；Anthropic 强调嵌入资源组合；Replit 强调从代码到云的 SLA 与责任闭环。
-- **未被证明的部分**：这些结构是否真的减少等待、返工和风险，还是增加排队、判断压力、跨时区负担与管理层跨度，公开招聘页无法回答。
+- **趋同**：企业交付开始把中央标准、区域市场和外部伙伴能力连接为可复制的交付链。
+- **分化**：Anthropic 强调 readiness、1:many 与职责排除；OpenAI 强调早期技术共创、参考架构和所有权转移；Harvey 强调区域 / 国家管理层与本地领域专家团队。
+- **未被证明的部分**：伙伴是否真的独立交付、客户周期是否缩短、区域层级是否降低协调成本，以及这些变化对一线工作强度和员工信任的影响。
 
 ## 高价值变化卡片
 
-### 变化卡 1｜安全职能从专家活动进入“管理层级 + 资源权 + 运行节奏”
+### 变化卡 1｜企业 AI 交付从原厂逐单支持转向伙伴能力转移
 
-- **时间**：xAI 2026-11-10 09:55:37 CST；Replit 2026-11-10 09:10:02 CST；Anthropic 2026-11-11 05:53:40 CST，均位于严格窗口。
-- **公司与组织范围**：xAI / X Safety Operations；Anthropic Agent Security Partnerships；Replit Cloud / Infrastructure Security 与 Application Security / Secure SDLC。
-- **机制名称**：安全职能组织化与常态运行。
-- **机制理念**：把风险工作从单点专家判断，转为有管理层级、资源分配、升级、SLA、跨时区覆盖和可复用控制的运行系统。
-- **L1 事实**：xAI 设置 Singapore / Austin 双枢纽与 manager-of-managers；Anthropic 经理决定稀缺安全工程师嵌入对象和时长；Replit 单一经理统管两组并承担 SLA、绩效、升级和风险接受。
-- **L2 机制判断**：三家独立官方 ATS 同向支持安全 / 风控职能正在进入组织边界、管理系统与运营节奏的模式观察。
-- **L3 组织判断**：不成立。三者风险域不同，且没有真实团队、运行、风险率、处理时长、员工负担或客户结果。
-- **组织影响**：可能减少安全责任漂移与产品团队重复建设，也可能形成稀缺资源排队、跨时区协调和更高判断压力。
-- **来源与渠道**：[xAI Safety CoE](https://job-boards.greenhouse.io/xai/jobs/5286891007)、[Anthropic Agent Security Partnerships](https://job-boards.greenhouse.io/anthropic/jobs/5394611008)、[Replit Security Manager](https://jobs.ashbyhq.com/replit/2b296184-4ef9-4587-98ec-cd20f39e003e)。
-- **证据等级**：A / L2 跨公司模式；个体公司事实为 L1。
-- **互证情况**：三个公司、三个独立 ATS 事实根；均完成连续快照、时间字段和旧页反查。
-- **反向解释**：可能是既有职责职位化、补位、候选池或未来蓝图；不能证明组织新建、自动化运行或安全改善。
-- **与历史基线关系**：安全岗位并非首次出现；本期新增是管理层级、配置权和运行指标在三个事实根中同时显性化。
-- **组织发展关注点**：嵌入资源分配、经理跨度、升级权、跨时区交接、复用控制、SLA 与员工负担。
-- **适用边界**：分别限于内容安全运营、agent security partnerships、软件 / 云安全，不外推完整模型安全或公司治理。
-- **待验证问题**：到岗、团队规模、正式权限、排队 / 修复周期、误报漏报、事件后效与员工负担。
-- **公开策略**：只公开官方岗位、机制判断与证据边界；不把招聘页写成到岗、HC 或效果。
+- **时间**：Anthropic 2026-11-11 12:57:27 CST；OpenAI 2026-11-12 03:28:01 / 03:30:32 CST，均位于严格窗口。
+- **公司与组织范围**：Anthropic Partner Enablement / Japan PAM；OpenAI Applied AI Engineering / Google Cloud / Oracle / Cloud ISV。
+- **机制名称**：中央标准—区域激活—伙伴自主交付。
+- **机制理念**：原厂集中解决高不确定性问题、定义能力标准和沉淀可复制资产，再由区域岗位激活伙伴并把成熟交付所有权移交给伙伴 / 一线团队。
+- **L1 事实**：Anthropic 岗位为 3—5 家重点伙伴制定 readiness 计划、其余走 1:many，并明确不拥有商业关系与课程建设；OpenAI 岗位负责早期共创、参考架构、playbook、workshop 与 handoff，目标包含 partner self-sufficiency。
+- **L2 机制判断**：两个独立官方 ATS 共同支持“模型公司通过明确权责与能力转移扩大企业交付覆盖”的事实观察。
+- **L3 组织判断**：不成立。没有伙伴自主交付率、部署周期、质量、客户结果、原厂 / 伙伴 HC 或员工负担。
+- **组织影响**：可能减少中央专家逐单介入、扩大管理覆盖；也可能增加跨组织交接、质量校准、客户上下文丢失和伙伴团队压力。
+- **来源与渠道**：[Anthropic Japan Enablement](https://job-boards.greenhouse.io/anthropic/jobs/5458159008)、[OpenAI Google Cloud](https://jobs.ashbyhq.com/openai/9a57d693-24ad-4457-a408-50617551ea5e)、[OpenAI Oracle / Cloud ISV](https://jobs.ashbyhq.com/openai/edfaa3d2-3434-4e51-af74-3945d63ad871)。
+- **证据等级**：A / L2 双公司事实观察；个体公司事实为 L1。
+- **互证情况**：两个公司、两个独立 ATS 事实根；OpenAI 两页只计一个机制事实。
+- **反向解释**：可能是伙伴生态常规专业化、既有职责显性化或未来招聘蓝图，不代表交付已经转移。
+- **与历史基线关系**：OpenAI 既有 Partner AAE 与 AWS 等伙伴岗位；本期是云生态进一步专门化。Anthropic 既有 PAM 与中央课程 / 认证，本期新增日本 readiness owner。
+- **组织发展关注点**：交付权责、就绪标准、移交门槛、伙伴分层、质量校准、升级路径、员工负担与客户申诉。
+- **适用边界**：企业 AI 伙伴交付，不外推自助产品或公司整体组织。
+- **待验证问题**：伙伴独立交付率、复用率、交付周期、质量、升级量、客户结果与伙伴员工负担。
+- **公开策略**：公开官方岗位、机制判断与边界；不写成效率改善、HC 减少或最佳实践。
 
-### 变化卡 2｜xAI / X：安全运营由规模化处理岗转向自动化后的分析与升级分层
+### 变化卡 2｜Harvey：Legal Engineering 形成区域二线—国家负责人—本地混合团队
 
-- **时间**：2026-11-10 09:55:37 CST。
-- **公司与组织范围**：xAI / X Safety Operations，Singapore 与 Austin 枢纽。
-- **机制名称**：全球双枢纽与人机任务再分层。
-- **机制理念**：以 24 / 7 / 365 双枢纽覆盖全球安全运营，把重复申诉处理交给 automation-first 流程，把人工角色放到模型评测 / 审计、分析、调查和复杂升级。
-- **L1 事实**：官方 JD 明确写入两枢纽、汇报 Head of Safety Operations、管理负责 Safety analysts 的经理，以及从 scaled operations agents 向 analysts 的转变。
-- **L2 机制判断**：人工角色被设计为从批量处理转向例外判断、模型监督与高风险案件，管理层级随之上移。
-- **L3 组织判断**：不成立。没有人员基线、实际自动化覆盖、HC 变化、处置时效、安全结果或工作强度数据。
-- **组织影响**：可能降低重复处理并扩大时区覆盖，也可能提高分析人员判断密度、升级压力和跨枢纽一致性成本。
-- **来源与渠道**：[Lead, Singapore Center of Excellence (Safety)](https://job-boards.greenhouse.io/xai/jobs/5286891007)。
+- **时间**：APAC Head 2026-11-11 18:35 / 18:36 CST；Japan Head 2026-11-11 19:25 CST。
+- **公司与组织范围**：Harvey Legal Engineering，Sydney、Singapore、Seoul、Tokyo。
+- **机制名称**：区域多层 Legal Engineering 组织。
+- **机制理念**：由 APAC Head 管理各市场负责人、统一区域运营节奏；Japan Head 负责本地 Legal Engineer 与 Product Specialist 混合团队、覆盖模型、职业路径、HC 与绩效。
+- **L1 事实**：APAC 岗位统管 pre / post-sales、pilot 质量、conversion、adoption、expansion 与 QBR / forecast / pipeline / adoption review；Japan 岗位负责建团队、招聘、绩效和人才发展。
+- **L2 机制判断**：Legal Engineering 被设计为跨售前、售后和产品反馈的区域多层 GTM 职能，而非单点领域专家。
+- **L3 组织判断**：不成立。岗位文本同时描述已有城市团队与待建设日本团队，没有到岗、实际汇报线或运行结果。
+- **组织影响**：可能缩短全球与本地市场的直接协调、形成稳定节奏；也可能增加管理层、预测 / 评审负担、绩效压力和区域标准漂移。
+- **来源与渠道**：[APAC Head](https://jobs.ashbyhq.com/harvey/b8e8a8a6-9609-4095-af49-ba7dcf82dbe1)、[Japan Head](https://jobs.ashbyhq.com/harvey/90446359-99f5-4fbf-afe9-417285baaa77)。
 - **证据等级**：A / L1；事实高、机制中、结果低。
-- **互证情况**：官方 Greenhouse 首发与连续快照；无独立运行数据。
-- **反向解释**：“shift”可能是目标性招聘叙事或既有转型总结，不证明已经实施。
-- **与历史基线关系**：既有 Safety Operations 提供职能基线；本期页面首次显性描述双枢纽与人机任务分层。
-- **组织发展关注点**：自动化与人工边界、升级质量、跨时区交接、管理者跨度、分析人员负荷与申诉公平。
-- **适用边界**：X / SpaceXSI 招聘页中的 Safety Operations，不推断法律实体关系，不外推模型研发安全。
-- **待验证问题**：真实团队规模、任务占比、到岗、误报漏报、申诉质量、人员流动与负担。
-- **公开策略**：不写成 AI 替代岗位、减少 HC 或安全改善。
+- **互证情况**：同一公司官方 ATS；Sydney / Singapore 两页只计一个 APAC 岗位。
+- **反向解释**：可能是 EMEA 区域模板复制、候选池或未来组织蓝图；不能断言四地团队均完整运行。
+- **与历史基线关系**：历史已有 EMEA Head；本期是 APAC 区域层与 Japan 本地层的复制 / 加厚，不是岗位族首次出现。
+- **组织发展关注点**：区域 / 国家授权、经理跨度、职业路径、HC、绩效链、售前 / 售后边界、本地化与标准一致性。
+- **适用边界**：Harvey Legal Engineering APAC / Japan，不外推全公司组织。
+- **待验证问题**：团队规模、到岗、汇报线、实际覆盖、客户转化 / 采用、员工负担与职业发展结果。
+- **公开策略**：不把重复地点页计成两个 HC，不写成组织已完成搭建。
 
-### 变化卡 3｜OpenAI：创业客户交付按 Core 与 Greenfield / 竞争迁移拆管理动作
+### 变化卡 3｜OpenAI：APAC 交付被拆成部署管理与技术账户组合管理
 
-- **时间**：2026-11-10 17:00:55 / 17:01:00 CST。
-- **公司与组织范围**：OpenAI Applied AI Engineering, Startups。
-- **机制名称**：按客户阶段与任务形态拆分交付管理。
-- **机制理念**：Greenfield 负责早期首次生产部署、初始规模化及竞争评估 / 迁移；Core 负责更广泛高增长创业客户的持续部署与采用，同时沉淀 playbooks、reference architectures 与 internal tooling。
-- **L1 事实**：两个官方 Ashby 经理岗同分钟发布，均管理技术 IC、定义 operating model，并连接 Sales、Product、Engineering 与 Research。
-- **L2 机制判断**：客户技术交付可能由一个宽团队，拆成“首次落地 / 迁移”与“持续生产 / 规模化”两类管理动作。
-- **L3 组织判断**：不成立。不能确认两个独立团队已存在、是否择一招聘、人员规模或交付结果。
-- **组织影响**：可能降低客户阶段差异造成的优先级冲突，也可能增加 Core / Greenfield 的客户转交、上下文丢失和绩效归属问题。
-- **来源与渠道**：[Greenfield](https://jobs.ashbyhq.com/openai/c0586c46-6b10-482f-af1c-a5b7eb196b3b)、[Core](https://jobs.ashbyhq.com/openai/ceca6916-b8d8-42cc-a32a-c27e06744b31)。
-- **证据等级**：A / L1；同一公司、同一 ATS、相邻时间，只计一个事实根。
-- **互证情况**：连续快照确认本期首见；尚无组织公告、到岗或客户数据。
-- **反向解释**：可能是同一招聘计划的候选方向、模板拆分或既有非正式边界显性化。
-- **与历史基线关系**：OpenAI 已有 Startups 与 Applied AI Engineering；本期新增点是 Core / Greenfield 的明确命名与职责差异。
-- **组织发展关注点**：客户分层、交接、技术升级、复用资产、绩效归属与一线工程师负担。
-- **适用边界**：创业客户 Applied AI Engineering，不外推全部企业交付组织。
-- **待验证问题**：团队数量、客户划分、转交机制、到岗、采用 / 交付周期、返工和员工负担。
-- **公开策略**：不把两页计成两个确定团队或两个净增 HC。
+- **时间**：Singapore FDE Manager 2026-11-11 09:05:49 CST；Australia Architects Manager 2026-11-11 18:03:34 CST。
+- **公司与组织范围**：OpenAI APAC Forward Deployed Engineering 与 Applied AI Architects。
+- **机制名称**：区域交付管理分层。
+- **机制理念**：Deployment Leads 负责 scoping—production—adoption—handoff；Applied AI Architects 以 book of business CTO 方式管理技术账户计划、资源分配、portfolio health 与 specialist handoff。
+- **L1 事实**：两个官方岗位分别承担团队配置、绩效 / 职业发展、playbook 沉淀，以及客户组合优先级、技术里程碑、采用风险和专岗交接。
+- **L2 机制判断**：APAC 企业交付被设计为“生产部署管理”与“技术账户组合管理”两种不同责任面。
+- **L3 组织判断**：不成立。没有人员到岗、客户划分、资源规模、交付周期或员工结果。
+- **组织影响**：可能让复杂交付与组合治理分责，也可能增加角色交接、绩效归属与客户上下文成本。
+- **来源与渠道**：[Singapore FDE](https://jobs.ashbyhq.com/openai/1ddf1fcf-a647-4016-92c3-2da4b45d1b15)、[Australia Architects](https://jobs.ashbyhq.com/openai/f4552c9d-e15f-4f2c-bf03-fd2cc1e11068)。
+- **证据等级**：A / L1；同一公司、同一 ATS，不升级为 L2 事实。
+- **互证情况**：连续快照确认本期首见；历史区域岗位提供模板基线。
+- **反向解释**：可能是既有区域组织模板复制，不代表新增管理层或已形成两个团队。
+- **与历史基线关系**：已有纽约 FDE Lead 及伦敦、巴黎、东京、慕尼黑等地的 Applied AI Architects Manager。
+- **组织发展关注点**：团队边界、客户分层、资源配置、交接、绩效归属、playbook 复用与一线压力。
+- **适用边界**：OpenAI APAC 企业交付，不外推整体产品或研发组织。
+- **待验证问题**：到岗、汇报线、客户转交、资源配置、交付周期、返工、客户后效和员工负担。
+- **公开策略**：只写区域复制与职责设计，不写新组织已运行。
 
-### 变化卡 4｜Perplexity：算力组合决策集中到跨技术、财务与供应商控制点
+### 变化卡 4｜Perplexity：企业商业化出现交易例外与激励规则控制面
 
-- **时间**：2026-11-10 23:57:14 CST。
-- **公司与组织范围**：Perplexity Research、Engineering、Finance 与计算供应商。
-- **机制名称**：算力组合技术项目控制面。
-- **机制理念**：由一个 MTS / TPM 连接 3—12 个月需求预测、预算和承诺、容量上线、迁移 / 下线及成本 / 利用率 / 可靠性视图。
-- **L1 事实**：官方岗位正文明确列出上述职责和跨团队接口。
-- **L2 机制判断**：原本分散于研究需求、工程运行、财务承诺和供应商管理的决策被设计为集中控制点。
-- **L3 组织判断**：不成立。没有正式预算权、最终承诺权、团队结构或运行结果。
-- **组织影响**：可能减少需求、合同与产能上线之间的断点，也可能把跨技术与商业权衡集中成单点瓶颈。
-- **来源与渠道**：[MTS (TPM, Compute)](https://jobs.ashbyhq.com/perplexity/b85c4547-fa75-41a8-bd36-6f2c70117764)。
-- **证据等级**：A / L1；事实高、机制中、结果低。
-- **互证情况**：官方 ATS 与连续快照；无独立组织公告或运行数据。
-- **反向解释**：“build a function with little precedent”属于招聘叙事，可能是现有协调工作的职位化。
-- **与历史基线关系**：算力与基础设施岗位既有；本期新增点是技术、财务和运营职责集中于一个 TPM 画像。
-- **组织发展关注点**：授权、单点依赖、预测质量、合同承诺、迁移风险、成本与可靠性权衡。
-- **适用边界**：Perplexity 算力组合管理，不外推研发组织整体。
-- **待验证问题**：正式权限、团队归属、容量上线周期、利用率、可靠性、成本和研发等待时间。
-- **公开策略**：不写成成本下降、利用率提高或决策已加快。
+- **时间**：官方快照在严格窗口首见 / 重新公开；反向搜索存在 10 月聚合页，首次批准时间未确认。
+- **公司与组织范围**：Perplexity Revenue Operations、Sales、Finance、Legal。
+- **机制名称**：Deal Desk 与 GTM Compensation 专业化。
+- **机制理念**：把非标交易、审批、quote-to-order 与售后交接交给 Deal Desk；把指标、加速器、crediting、佣金系统、审计轨迹、territory / 人员变化和争议交给 Compensation。
+- **L1 事实**：两个官方岗位分别写明上述端到端责任与系统要求。
+- **L2 机制判断**：企业收入治理从销售个体判断转向规则、审批、系统控制与审计轨迹。
+- **L3 组织判断**：不成立。时间语义不稳定，且没有团队、审批周期、例外率、争议或员工信任数据。
+- **组织影响**：标准交易可能更快，非标交易也可能形成集中瓶颈；激励压力和规则执行会更精确，但公平性与申诉质量未知。
+- **来源与渠道**：[Deal Desk Lead](https://jobs.ashbyhq.com/Perplexity/be6ffac6-5d72-4768-9f88-d1231a710ec9)、[GTM Compensation Lead](https://jobs.ashbyhq.com/Perplexity/a5316915-559e-4839-8ea7-cb3b16b090ed)。
+- **证据等级**：A / L1；事实中、机制中、结果低。
+- **互证情况**：同一公司官方 ATS；旧聚合页构成时间反证。
+- **反向解释**：可能是旧岗位重新公开、既有职责职位化或候选池，不代表新团队 / 新 HC。
+- **与历史基线关系**：企业商业化扩张需要 RevOps 控制；本期只确认两个岗位职责同时公开。
+- **组织发展关注点**：审批权、系统验收、例外升级、激励规则、审计、争议 / 申诉、透明度与员工信任。
+- **适用边界**：Perplexity 企业收入运营，不外推全公司绩效体系。
+- **待验证问题**：首次设岗、团队归属、审批周期、例外率、佣金争议、申诉与公平性。
+- **公开策略**：不写成效率提高、绩效制度强化或组织扩张。
 
 ## 不是新闻而是机制
 
 | 事件表面 | 机制翻译 | 可能影响 | 反向解释与边界 |
 |---|---|---|---|
-| 三家 AI 公司新增安全管理岗位 | 风险工作进入管理层级、资源配置、SLA / 升级和持续运行系统 | 可能减少责任漂移，也可能形成资源排队与更大管理跨度 | 招聘设计不等于运行、到岗或效果 |
-| xAI 新增 Singapore Safety CoE Lead | 自动化处理重复申诉，人工聚焦评测、分析与复杂升级 | 可能改变人才密度和判断负荷 | 不证明 AI 已替代岗位或 HC 下降 |
-| OpenAI 同时发布 Core / Greenfield 经理岗 | 客户交付按首次落地 / 迁移与持续生产 / 规模化拆分 | 可能降低优先级冲突，也可能增加交接成本 | 两页可能是模板拆分或候选方向 |
-| Perplexity 新增 Compute TPM | 算力预测、财务承诺、供应商上线与运行视图集中 | 可能减少跨部门断点，也可能形成单点瓶颈 | 单岗不证明函数已建立或结果改善 |
-| 美团刷新 AI 组织岗位 | AI 转型被拆成架构、OD、人才与机制设计角色画像 | 可能改变 HR / OD 边界和绩效压力 | 更新时间非首次设岗；同一 ATS 无独立互证 |
+| Anthropic 招聘日本伙伴赋能岗 | 商业关系、中央课程、区域 readiness 与交付分责；重点伙伴与长尾伙伴分层覆盖 | 可能扩大覆盖，也可能增加质量校准与伙伴压力 | 招聘蓝图，不证明伙伴已能独立交付 |
+| OpenAI 招聘两类云伙伴工程师 | 原厂早期共创后沉淀资产并移交交付所有权 | 可能减少逐单介入，也可能转移上下文与责任 | 同公司同分钟两页只计一个事实根 |
+| Harvey 招聘 APAC / Japan Head | Legal Engineering 形成区域二线—国家负责人—本地混合团队 | 可能缩短本地协调，也可能增加层级和绩效节奏 | APAC 重复地点页不是两个 HC；现状与计划混杂 |
+| OpenAI 复制 APAC 交付经理岗 | 部署交付与技术账户组合成为不同管理边界 | 可能提高分工，也可能增加 handoff | 已有区域模板，不是岗位族首次出现 |
+| Perplexity 同窗公开两个 RevOps 控制岗 | 交易例外、系统验收、激励与佣金规则专业化 | 可能提升一致性，也可能形成审批瓶颈与信任风险 | 首次时间不稳，只进 L1 |
 
 ## 组织情报结论卡
 
-### 结论卡 A｜安全能力的稀缺性正在被转译为组织资源配置问题
+### 结论卡 A｜企业交付的扩规模路径正在从“多招原厂专家”转向“把能力交给伙伴”
 
-- **事实基础**：Anthropic 明确由经理决定嵌入哪些团队和多久；xAI 以双枢纽和多层管理保持持续运营；Replit 以统一经理负责两组、安全 SLA 与风险接受。
-- **机制判断**：安全不再只被描述为上线前审核或专家意见，而是需要分配、排队、升级、复用和绩效管理的组织资源。
-- **效率变量**：产品等待、安全控制复用、修复周期、跨时区交接、管理跨度、判断压力与员工负担。
-- **知识等级**：A / L2 跨公司模式；没有 L3 结果。
-- **反向解释**：也可能是既有工作职位化、补位或招聘品牌叙事；新增控制点可能增加审批和排队。
-- **适用边界**：三家不同风险域的公开招聘设计。
-- **待验证问题**：正式权限、团队与到岗、等待 / 修复周期、风险结果和人员负担。
+- **事实基础**：Anthropic 日本岗位拆分 PAM、中央课程、区域 readiness 与培训交付；OpenAI 云伙伴岗位把早期共创沉淀为可复用资产并转移交付所有权。
+- **机制判断**：原厂的管理对象从单个项目转向伙伴能力、标准与移交门槛，执行节奏从逐项目支持转为共创—模板化—所有权转移。
+- **效率变量**：中央专家负荷、伙伴覆盖、交付周期、质量校准、升级量、客户上下文、伙伴员工工作强度。
+- **知识等级**：A / L2 双公司事实观察；没有 L3 结果。
+- **反向解释**：能力转移可能只是招聘目标，也可能把负担与风险转给伙伴，而非真正消除工作。
+- **适用边界**：企业 AI 云 / SI 伙伴交付。
+- **待验证问题**：伙伴自主率、复用率、周期、质量、客户结果、升级与员工负担。
 
-### 结论卡 B｜客户交付专业化的代价，可能从“角色过宽”转移为“边界交接”
+### 结论卡 B｜区域层能够吸收本地差异，也会制造新的管理与绩效接口
 
-- **事实基础**：OpenAI 将 Startup Applied AI Engineering 写成 Core 与 Greenfield 两类管理动作；ElevenLabs 将 GTM enablement 拆到产品发布准备与销售执行。
-- **机制判断**：专业分层试图用明确场景与复用资产降低宽角色负担，但同时创造新的交接、归属与升级界面。
-- **效率变量**：交付周期、重复劳动、客户转交、上下文保留、绩效归属与一线工作强度。
-- **知识等级**：A / L1 事实组合；不同事实未形成足够同构的 L2 结论。
-- **反向解释**：可能只是岗位模板细分或候选池，不代表真实团队边界。
-- **适用边界**：AI 公司企业 / 创业客户交付与 GTM enablement。
-- **待验证问题**：到岗、客户分层、转交、复用资产采用、交付结果和员工负担。
+- **事实基础**：Harvey APAC / Japan 形成区域与国家层；OpenAI Singapore / Australia 形成部署与技术账户两类区域管理角色。
+- **机制判断**：全球产品与本地客户之间正在加厚区域控制面，用本地授权、组合管理和稳定节奏处理市场差异。
+- **效率变量**：本地决策、全球协调、管理跨度、QBR / forecast 负担、交接、绩效归属与标准漂移。
+- **知识等级**：A / L1 公司级事实组合；不足以形成统一行业结论。
+- **反向解释**：新增区域层也可能增加审批、汇报与上下文损失；岗位页不证明实际授权。
+- **适用边界**：高触达企业 AI 交付与法律专业服务场景。
+- **待验证问题**：区域权责、团队到岗、周期、客户结果、员工负担和标准一致性。
 
-### 结论卡 C｜AI + OD 岗位文本不能替代员工价值与运行结果证据
+### 结论卡 C｜企业化会把收入增长压力转译成规则、系统与可审计控制
 
-- **事实基础**：美团官方岗位把 AI 岗位重构、人效度量、组织形态、差异化评价激励与 AI 人才供应写入职责。
-- **机制判断**：AI 转型正在进入组织设计与人才机制语言，而不只停留在工具部署。
-- **效率变量**：岗位边界、人才密度、评价压力、员工负担、组织信任与收益分配。
-- **知识等级**：A / L1；更新时间不承担首次设岗语义。
-- **反向解释**：可能是招聘叙事、岗位簇常规维护或既有职责显性化；“人效”不等于员工减负。
-- **适用边界**：美团官方公开岗位画像。
-- **待验证问题**：到岗、实际组织应用、员工收益、工作强度、数据边界与长期后效。
+- **事实基础**：Perplexity 同时公开 Deal Desk 与 GTM Compensation，职责覆盖非标交易、例外审批、系统验收、激励、佣金、审计轨迹和争议。
+- **机制判断**：销售增长开始依赖正式控制面，而不只依赖销售个人判断；绩效压力也通过规则与系统精确传导。
+- **效率变量**：审批时长、交易准确性、激励公平、争议处理、员工信任与销售压力。
+- **知识等级**：A / L1；时间与运行证据不足。
+- **反向解释**：可能是旧岗重开或既有职责显性化；专业化也可能增加瓶颈。
+- **适用边界**：Perplexity Revenue Operations，不外推公司整体绩效机制。
+- **待验证问题**：正式设岗、审批周期、例外率、佣金争议、透明度和申诉质量。
 
 ## 证据链与可信度
 
 | ID | 事实验证 | 机制验证 | 趋势验证 | 反证 / 缺口 | 结论 |
 |---|---|---|---|---|---|
-| SAFETY-OPERATING-SYSTEM | 三家公司官方 ATS、时间位于严格窗口 | 职责分别覆盖双枢纽 / 多层管理、嵌入资源配置、双组 / SLA / 升级 | 三个独立事实根同向，但风险域不同 | 无到岗、运行、风险或员工结果 | A / L2 跨公司模式，中置信机制判断 |
-| XAI-SAFETY-COE | Greenhouse `first_published` 与连续快照 | JD 明确 automation-first 后的人机任务与升级分层 | 既有 Safety Operations 提供基线 | 无人数、自动化覆盖、HC 与安全后效 | A / L1，中置信机制假设 |
-| OPENAI-STARTUPS-SPLIT | 两个官方 Ashby 新页面同分钟首见 | Core / Greenfield 职责差异明确 | 既有 Startups / Applied AI Engineering 提供基线 | 同一事实根，无团队与客户结果 | A / L1，中置信机制假设 |
-| PERPLEXITY-COMPUTE-TPM | 官方 Ashby 与连续快照 | 预测、预算、供应商和运行视图集中 | 只有单一岗位蓝图 | 无正式权限、成本与利用率结果 | A / L1，中置信机制假设 |
-| MEITUAN-AI-OD | 官方 ATS 职责与窗口刷新 | 同一 ATS 历史角色簇支持画像细分 | 缺首次发布时间和独立来源 | 刷新不等于新设，无到岗或员工结果 | A / L1，观察池 |
-| TRADITIONAL-DOMESTIC-NONE | 中英文日级检索未找到新第一来源 | 无可验证机制 | 旧闻与聚合不承担趋势验证 | 公开覆盖与索引有局限 | 零新增，不等于零变化 |
+| PARTNER-CAPABILITY-TRANSFER | Anthropic / OpenAI 两个独立官方 ATS、时间位于严格窗口 | 职责明确中央标准、区域 readiness、早期共创、复用与所有权转移 | 两家公司既有 PAM / Partner AAE 提供基线 | 无伙伴自主率、周期、质量、HC 与员工结果 | A / L2 双公司观察，中置信机制判断 |
+| HARVEY-REGIONAL-LE | 官方 Ashby 新页面与连续快照 | APAC manager-of-managers + Japan 混合团队 / 人才机制 | 既有 EMEA Head 提供区域模板基线 | 重复地点页；现状与计划混杂；无运行结果 | A / L1，中置信机制假设 |
+| OPENAI-APAC-LAYERING | 两个官方 Ashby 新页面 | 部署管理与技术账户组合职责清晰 | 其他地区同类岗位提供基线 | 同一公司；无团队、客户和员工结果 | A / L1，中置信机制假设 |
+| PERPLEXITY-REVOPS | 两个官方 Ashby 页面 | 交易例外与激励规则形成控制面 | 企业化商业运营提供一般基线 | 旧聚合页 / 时间不稳；无运行数据 | A / L1，观察池 |
+| ANTHROPIC-INFRA-ACCOUNTING | Greenhouse `first_published` 与官方正文 | 承诺前会计、合规和资产数据接口明确 | 国际算力扩张提供背景 | 无市场、规模、成本与周期结果 | A / L1，持续观察 |
+| TRADITIONAL-DOMESTIC-NONE | 中英文日级检索未找到新第一来源 | 无可验证机制 | 旧闻与聚合不承担趋势验证 | 公开覆盖和索引有局限 | 零新增，不等于零变化 |
 
-三角验证结果：安全职能组织化完成三家独立 ATS 的事实、机制与历史基线核验，达到 L2 模式观察；其余信号完成官方页面、连续快照、时间字段和反向搜索，但缺独立组织公告、到岗、运行数据、员工 / 客户结果，均停留在 L1。没有信号达到 L3。
+三角验证结果：伙伴能力转移完成 OpenAI / Anthropic 两个独立官方 ATS 的事实、职责分工与历史岗位基线核验，达到 L2 事实观察；其余信号完成官方页面、连续快照、时间字段与反向搜索，但缺独立组织公告、到岗、运行数据、员工 / 客户结果，均停留在 L1。没有信号达到 L3。
 
 ## 去伪存真记录
 
-- AnySearch CLI 先完成传统大厂、国内 AI 原生、国外 AI 原生、组织 / 绩效 / 晋升 / 职级 / 招聘及反向关键词检索；核心候选全部回到官方 ATS 与正文。
-- Greenhouse 使用 `first_published` 确认 xAI、Anthropic 候选位于窗口；`updated_at` 只作页面更新时间。Ashby `publishedAt` 与连续快照、旧 ID 和正文哈希共同使用。
-- xAI 多个 AI Tutor / 硬件页面首次发布时间早于本窗口，按旧页回现排除；其页面删除不解释为 HC 变化。
-- Cursor 25 个新增中 20 个标题在近期快照已出现，且存在旧 ID 删除 + 新 ID 新增，继续按 ATS 迁移处理。
-- Mistral Design Operations Manager 与下架的 Product Operations Manager (DesignOps) 正文相似度约 0.9985，按改名 / 重发排除。
-- ElevenLabs Partner Program 同 ID、同正文在 11 月 7—8 日已存在，本期只是回现和时间刷新。
-- Anthropic Renewals、FDE Strategy & Operations、Beneficial Deployments 等首次发布时间早于窗口，不计当日新事实。
-- OpenAI 三项具名 Partner Director 为既有“单一负责制”模板复制；不按三个团队、三个独立事实或三个净增 HC 处理。
-- 美团官方页面刷新只证明岗位仍在公开及职责文本更新，不证明首次设岗、组织重构或 HC 获批。
-- 招聘页只证明公开角色设计；不映射到岗、净增 HC、正式组织图、流程落地或效率改善。
-- 不把自动化、工具使用、高容量覆盖或“人效”直接解释为员工减负和生产力提升；没有员工收益、工作强度、信任与收益分配数据。
+- AnySearch CLI 先完成传统大厂、国内 AI 原生、国外 AI 原生、组织 / 绩效 / 晋升 / 职级 / 伙伴交付 / 收入治理及反向关键词检索；核心候选回到官方 ATS 与正文。
+- Anthropic 使用 `first_published`；OpenAI / Harvey / Perplexity 的 Ashby `publishedAt` 与连续快照、旧 ID、标题和正文共同判断。
+- Harvey APAC Head 的 Sydney / Singapore 页面只计一个岗位和一个事实根，不计两个 HC。
+- OpenAI Google Cloud 与 Oracle / Cloud ISV 两页同分钟发布，只计一个伙伴能力转移机制，不按两个独立趋势证据升级。
+- OpenAI Singapore FDE / Australia Architects 在历史上有其他地区模板，只写区域复制与职责分层。
+- Perplexity Data Acceleration 同 ID 在 11 月 8—9 日快照已存在，发布时间重置；不计当日新事实。
+- Perplexity Deal Desk / GTM Compensation 有旧聚合页时间反证，只写官方快照首见 / 重新公开，不写刚批准的新团队。
+- Anthropic Google Cloud GTM EMEA 首发 11 月 4 日；本期是旧页回现。
+- xAI 新增页面原始时间在 4 月 / 10 月，属于旧 AI Tutor 回现；删除物流 / 超算页面不解释为撤组。
+- Cursor 仍处 ATS 迁移背景，单一 Pretraining Data 页面不承担扩编或组织变化结论。
+- ATS 删除只表示页面状态变化，不解释为裁员、冻结、撤编、绩效淘汰、AI 替代或团队关闭。
+- 招聘文本中的 `build`、`first`、`founding`、`scale` 是目标语言，不证明团队已经建立、人员到岗或产生结果。
+- 不把伙伴自助、区域层、系统控制或 AI 工具直接解释为员工减负和效率改善；缺少工作量、周期、错误、员工收益、信任与收益分配数据。
 - 传统大厂与国内 AI 原生零新增只表示公开证据不足，不表示公司内部没有变化。
 
 ## 渠道索引补充
 
-- **AnySearch CLI**：优先覆盖传统大厂、国内 AI 原生、国外 AI 原生、组织 / 绩效 / 晋升 / 职级 / 干部 / 招聘及反向关键词；结果回到官方第一来源。
-- **官方 ATS 日差分**：OpenAI、Anthropic、ElevenLabs、Harvey、Cohere、Perplexity、Replit、Mistral、Cursor / Anysphere、Runway、Midjourney、Character.AI、Inflection、Scale AI、xAI；保留 ID、首次 / 更新时间语义、正文、增加 / 删除、重发与迁移解释。
-- **美团官方招聘 API / 页面**：用于核验 AI + OD 角色画像、窗口刷新与历史岗位簇；不把更新时间当首次发布时间。
-- **连续历史快照**：使用 11 月 7—11 日快照核验新页面、旧页回现、时间重置、换 ID 和正文相似度。
-- **传统与国际媒体检索**：当期命中没有形成进入核心区的新事实；二手报道、搜索摘要和招聘聚合不替代官方正文。
+- **AnySearch CLI**：优先覆盖传统大厂、国内 AI 原生、国外 AI 原生、组织 / 绩效 / 晋升 / 职级 / 伙伴 / FDE / RevOps / 基础设施及反向关键词；结果回到官方第一来源。
+- **官方 ATS 日差分**：OpenAI、Anthropic、Harvey、Perplexity、Cohere、Mistral、ElevenLabs、Replit、Cursor / Anysphere、Scale AI、Runway、Midjourney、Character.AI、xAI；保留 ID、首次 / 更新时间语义、正文、增加 / 删除、重发与迁移解释。
+- **连续历史快照**：使用 11 月 8—12 日快照核验新页面、旧页回现、时间重置、重复地点页和区域模板。
+- **官方职业页正文**：用于提取责任边界、资源配置、管理跨度、运营节奏、绩效与移交机制；招聘叙事不承担运行结果。
+- **国内与国际媒体检索**：当期命中没有形成进入核心区的新事实；二手报道、搜索摘要和招聘聚合不替代官方正文。
 - **本期无新增私密渠道索引**：未读取、复制或上传桌面私有参考文档、内部链接、访谈口径、截图、未授权附件或个人信息。
 
 ## 观察池 / 待核验池
 
-- **Anthropic Agent Security Partnerships（A/L1）**：嵌入工程师数量、配置标准、排队时长、发布权限、控制复用率和风险后效。
-- **xAI Singapore Safety CoE（A/L1）**：团队规模、人机任务边界、自动化覆盖、申诉质量、管理跨度、跨时区交接与人员负担。
-- **Replit Security Manager（A/L1）**：两组历史关系、实际跨度、SLA 基线、风险接受权、整改周期与工程负担。
-- **OpenAI Core / Greenfield（A/L1）**：是否独立团队、客户分层、转交、绩效归属、交付周期与员工负担。
-- **Perplexity Compute TPM（A/L1）**：正式预算 / 承诺权、团队归属、容量上线、成本、利用率和可靠性。
-- **美团 AI + OD 岗位族群（A/L1）**：首次发布时间、到岗、角色间权责、员工价值、工作强度与人效口径。
-- **Anthropic Principal Engineer, Privacy（A/L1）**：跨域影响权、数据边界、控制持续验证与实际结果。
-- **ElevenLabs GTM Enablement（A/L1）**：产品 / 销售专岗边界、发布准备、销售执行和一线负担。
-- **Harvey Scaled Customer Success（A/L1）**：每人账户量、人工介入标准、采用 / 续约、上下文损失与绩效压力。
-- **Cursor / Mistral / 重发页面（暂不采纳）**：只记录 ATS 与页面基础设施变化。
+- **伙伴能力转移（A/L2 模式）**：伙伴自主交付率、就绪标准、复用率、移交门槛、升级量、周期、质量、客户结果与伙伴员工负担。
+- **Harvey APAC / Japan Legal Engineering（A/L1）**：实际团队、经理到岗、汇报线、区域 / 国家权责、HC、职业路径、QBR / forecast 负担和客户后效。
+- **OpenAI APAC 交付管理（A/L1）**：客户分层、资源配置、Deployment / Architect handoff、绩效归属、周期与一线压力。
+- **Perplexity Deal Desk / GTM Compensation（A/L1）**：首次正式设岗、审批权、周期、例外率、激励公平、佣金争议、申诉与员工信任。
+- **Anthropic International Infrastructure Accounting（A/L1）**：市场范围、承诺权限、资产数据链、上线周期、资本与成本结果。
+- **Harvey Tokyo CSM（A/L1）**：早期 2027 东京办公室计划、本地客户 handoff、团队边界与实际到岗。
+- **Mistral Cloud SRE / ElevenLabs Japan SDR（背景参考）**：单点岗位不足以形成组织机制判断。
+- **Cursor / xAI / Anthropic 旧页与时间重置（暂不采纳）**：只记录 ATS / 页面状态。
 
 ## 公开知识库入库判断
 
 - **新增 L3 / L4 结论**：无。
-- **新增 L2 模式观察**：安全 / 风控职能从单点专家活动进入管理层级、稀缺资源配置、升级 / SLA 与持续运行系统。
-- **新增 L1 核心观察**：xAI Singapore Safety CoE；Anthropic Agent Security Partnerships；Replit Security Manager；OpenAI Startups Core / Greenfield；Perplexity Compute TPM。
-- **新增 L1 观察池**：美团 AI + OD 岗位族群；Anthropic Principal Engineer, Privacy；ElevenLabs GTM Enablement；Harvey Scaled Customer Success。
-- **72 小时补漏**：没有发现此前遗漏且达到 L3 的事实；历史岗位只用于时间、模板与趋势基线。
-- **暂不采纳**：Cursor ATS 迁移、Mistral DesignOps 改名、ElevenLabs Partner Program 重发、xAI 旧页回现、OpenAI 旧岗重发及所有 ATS 删除。
-- **不可形成的判断**：组织完成重组、净增或减少 HC、AI 替代岗位、绩效制度强化、安全结果改善、交付 / 算力效率提高、员工负担下降或人才密度提高。
+- **新增 L2 事实观察**：模型公司通过中央标准、区域 readiness、早期共创与伙伴能力转移扩大企业交付边界。
+- **新增 L1 核心观察**：Harvey APAC / Japan Legal Engineering 多层化；OpenAI APAC 交付管理分层。
+- **新增 L1 持续观察**：Perplexity Deal Desk / GTM Compensation；Anthropic International Infrastructure Accounting；Harvey Tokyo CSM。
+- **72 小时补漏**：没有发现此前遗漏且达到 L3 的事实；历史岗位只用于时间、模板与机制基线。
+- **暂不采纳**：Perplexity Data Acceleration 时间重置、OpenAI Southern Europe Partnerships Lead 时间刷新、Cursor ATS 迁移、Anthropic / xAI 旧页回现及所有 ATS 删除。
+- **不可形成的判断**：组织完成重组、净增或减少 HC、AI 替代岗位、交付效率提高、区域层降低协调成本、伙伴已能自主交付、绩效制度强化、员工负担下降或人才密度提高。
 - **L4 方法 / playbook**：无。没有外部证据与内部长期数据共同验证。
 - **公开边界**：公开镜像只保留公开来源、证据判断、反向解释、适用边界和待验证问题；移除原始检索归档、本地路径、访问凭据、私有渠道、访谈材料和个人信息。
