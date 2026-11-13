@@ -1,0 +1,536 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>组织情报信息</title>
+  <style>
+    :root {
+      color-scheme: light;
+      --bg: #f6f7f1;
+      --paper: #fffdf8;
+      --ink: #172033;
+      --muted: #697181;
+      --line: #ded8c9;
+      --soft: #ece6d7;
+      --accent: #1f6f68;
+      --accent-2: #b45a34;
+      --code: #f1eee6;
+    }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "PingFang SC", "Microsoft YaHei", sans-serif;
+      color: var(--ink);
+      background: var(--bg);
+      line-height: 1.75;
+    }
+    .shell {
+      display: grid;
+      grid-template-columns: minmax(210px, 280px) minmax(0, 1fr);
+      min-height: 100vh;
+    }
+    aside {
+      position: sticky;
+      top: 0;
+      height: 100vh;
+      padding: 28px 22px;
+      border-right: 1px solid var(--line);
+      background: #ebe5d7;
+      overflow: auto;
+    }
+    main {
+      max-width: 1040px;
+      width: 100%;
+      padding: 56px 56px 90px;
+    }
+    .eyebrow {
+      color: var(--accent-2);
+      font-size: 13px;
+      font-weight: 800;
+      letter-spacing: .08em;
+      text-transform: uppercase;
+      margin: 0 0 10px;
+    }
+    h1 {
+      font-size: clamp(30px, 4vw, 48px);
+      line-height: 1.12;
+      margin: 0 0 18px;
+      letter-spacing: 0;
+    }
+    h2 {
+      font-size: 26px;
+      line-height: 1.32;
+      margin: 48px 0 14px;
+      padding-top: 18px;
+      border-top: 1px solid var(--line);
+    }
+    h3 {
+      font-size: 20px;
+      margin: 34px 0 10px;
+      color: #23314d;
+    }
+    h4 {
+      font-size: 17px;
+      margin: 26px 0 8px;
+    }
+    p, li {
+      font-size: 16px;
+      color: #2b3343;
+    }
+    p { margin: 10px 0; }
+    ul { padding-left: 1.2rem; }
+    li { margin: 7px 0; }
+    a { color: var(--accent); text-decoration-thickness: 1px; text-underline-offset: 3px; }
+    code {
+      background: var(--code);
+      border: 1px solid var(--line);
+      border-radius: 5px;
+      padding: 1px 5px;
+      font-size: .92em;
+    }
+    pre {
+      overflow: auto;
+      background: #fff9ec;
+      color: #202838;
+      border: 1px solid #d8ccb8;
+      border-radius: 8px;
+      padding: 18px;
+      box-shadow: inset 4px 0 0 var(--accent);
+      white-space: pre-wrap;
+      word-break: break-word;
+    }
+    pre code {
+      display: block;
+      padding: 0;
+      border: 0;
+      background: transparent;
+      color: inherit;
+      line-height: 1.7;
+      font-size: 14px;
+    }
+    blockquote {
+      margin: 24px 0;
+      padding: 14px 18px;
+      border-left: 4px solid var(--accent);
+      background: #eef4ee;
+      color: #344033;
+    }
+    .table-wrap {
+      overflow-x: auto;
+      margin: 18px 0 26px;
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      background: var(--paper);
+    }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      min-width: 720px;
+    }
+    th, td {
+      padding: 12px 14px;
+      border-bottom: 1px solid var(--line);
+      vertical-align: top;
+      text-align: left;
+      font-size: 14px;
+    }
+    th {
+      background: #e7e0cf;
+      color: #26324a;
+      font-weight: 800;
+      white-space: nowrap;
+    }
+    tr:last-child td { border-bottom: 0; }
+    .topbar {
+      display: flex;
+      gap: 10px;
+      align-items: center;
+      flex-wrap: wrap;
+      margin-bottom: 28px;
+    }
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 38px;
+      padding: 8px 12px;
+      border: 1px solid var(--line);
+      border-radius: 7px;
+      background: var(--paper);
+      color: var(--ink);
+      text-decoration: none;
+      font-weight: 750;
+      font-size: 14px;
+    }
+    .primary { background: var(--accent); border-color: var(--accent); color: white; }
+    .toc-title {
+      margin: 0 0 12px;
+      font-size: 14px;
+      font-weight: 850;
+      color: #273247;
+    }
+    .toc a {
+      display: block;
+      padding: 7px 0;
+      color: #465064;
+      text-decoration: none;
+      font-size: 14px;
+      line-height: 1.45;
+      border-bottom: 1px solid rgba(23,32,51,.08);
+    }
+    .toc a.level-3 { padding-left: 14px; font-size: 13px; color: #626b78; }
+    .meta {
+      color: var(--muted);
+      font-size: 14px;
+      margin-bottom: 24px;
+    }
+    @media (max-width: 900px) {
+      .shell { display: block; }
+      aside { position: relative; height: auto; border-right: 0; border-bottom: 1px solid var(--line); }
+      main { padding: 34px 20px 70px; }
+      .toc { columns: 1; }
+      table { min-width: 640px; }
+    }
+  </style>
+</head>
+<body>
+  <div class="shell">
+    <aside>
+      <p class="toc-title">目录</p>
+      <nav class="toc">
+        <a class="level-2" href="#今日结论">今日结论</a>
+        <a class="level-2" href="#今日组织机制信号">今日组织机制信号</a>
+        <a class="level-2" href="#传统大厂与-ai-原生组织分组观察">传统大厂与 AI 原生组织分组观察</a>
+        <a class="level-3" href="#传统大厂">传统大厂</a>
+        <a class="level-3" href="#ai-原生组织">AI 原生组织</a>
+        <a class="level-3" href="#趋同与分化">趋同与分化</a>
+        <a class="level-2" href="#高价值变化卡片">高价值变化卡片</a>
+        <a class="level-3" href="#变化卡-1-nvidia-创始人-ceo-突发离任触发应急继任治理">变化卡 1｜NVIDIA：创始人 CEO 突发离任触发应急继任治理</a>
+        <a class="level-3" href="#变化卡-2-模型公司把伙伴交付拆成政策-交易-支持与现场执行">变化卡 2｜模型公司把伙伴交付拆成政策、交易、支持与现场执行</a>
+        <a class="level-3" href="#变化卡-3-模型评测从分散活动进入平台与发布运营层">变化卡 3｜模型评测从分散活动进入平台与发布运营层</a>
+        <a class="level-3" href="#变化卡-4-perplexity-工程能力嵌入收入运营">变化卡 4｜Perplexity：工程能力嵌入收入运营</a>
+        <a class="level-2" href="#不是新闻而是机制">不是新闻而是机制</a>
+        <a class="level-2" href="#组织情报结论卡">组织情报结论卡</a>
+        <a class="level-3" href="#结论卡-a-突发继任的关键变化是权责从单点创始人转成临时多接口治理">结论卡 A｜突发继任的关键变化是权责从单点创始人转成临时多接口治理</a>
+        <a class="level-3" href="#结论卡-b-伙伴规模化的组织对象正在从-关系-转成-运营系统">结论卡 B｜伙伴规模化的组织对象正在从“关系”转成“运营系统”</a>
+        <a class="level-3" href="#结论卡-c-评测平台化意味着发布责任开始跨越单一研究团队">结论卡 C｜评测平台化意味着发布责任开始跨越单一研究团队</a>
+        <a class="level-2" href="#证据链与可信度">证据链与可信度</a>
+        <a class="level-2" href="#去伪存真记录">去伪存真记录</a>
+      </nav>
+    </aside>
+    <main>
+      <div class="topbar">
+        <a class="btn primary" href="../index.html">返回研究源</a>
+        <a class="btn" href="./2026-11-13.md">查看 Markdown 原文</a>
+      </div>
+      <p class="eyebrow">Daily Scan</p>
+      <h1>2026-11-13 组织情报信息</h1>
+      <p class="meta">本页面由本地 Markdown 自动渲染生成，仍保留原始 md 文件作为知识库源文档。</p>
+      <article>
+        <blockquote><strong>扫描窗口</strong>：严格窗口为 2026-11-12 08:31:57 CST—2026-11-13 08:34:53 CST；72 小时补漏窗口为 2026-11-10 08:34:53 CST—2026-11-13 08:34:53 CST。本地最新日报为 2026-11-12，本期不存在缺失自然日。</blockquote>
+<blockquote></blockquote>
+<blockquote><strong>证据结论</strong>：严格窗口内形成三组 L2 事实观察：NVIDIA 创始人 CEO 突发离任后的应急继任治理；OpenAI 与 Anthropic 的伙伴交付标准化 / 运营分层；Runway 与 Harvey 将模型评测纳入发布决策链。没有新增达到 L3 / L4 的组织效率、结构或方法结论。</blockquote>
+<h2 id="今日结论">今日结论</h2>
+<ul>
+<li><strong>本期没有 L3 / L4 组织结论。</strong> 没有公开证据证明决策速度、协作成本、管理跨度、员工负担、客户结果或组织效率已经改善，也没有 AI 替代岗位或减少 HC 的可核验事实。</li>
+<li><strong>NVIDIA 的创始人集中治理在突发离任后切换为“首任董事长—临时 CEO/CFO—永久继任搜索”的应急连续性结构。</strong> 公司公告、SEC 8-K 与 AP 三类证据互证离任与任命事实，达到高置信度 L2；尚无稳定运行、战略连续性或员工后效证据。</li>
+<li><strong>模型公司的企业交付正从伙伴关系本身，继续细分为政策、交易、分层支持、质量控制、现场执行和客户采用接口。</strong> Anthropic 两个伙伴运营岗位与 OpenAI 多个咨询 / 技术伙伴和部署岗位形成跨公司 L2 观察；不能写成伙伴已经自主交付或原厂人力杠杆已经改善。</li>
+<li><strong>模型评测开始显性进入发布决策链。</strong> Runway 要把分散评测集中为 ML Platform，Harvey 通过 Evaluation Operations 编排外部律师评测；两家公司共同支持 L2 趋势观察，但没有质量、周期或事故率结果。</li>
+<li><strong>Perplexity 把工程能力嵌入 Revenue Operations。</strong> Growth GTM Engineer 直接拥有 warehouse 到 Salesforce 的数据与逻辑，并以会议、pipeline、收入衡量；单一岗位只构成 L1 职能边界观察。</li>
+<li><strong>传统大厂与国内 AI 原生公司保持零新增结论。</strong> 当期命中主要是旧闻、产品 / 融资、招聘聚合或页面刷新；未检出不等于内部没有变化。</li>
+</ul>
+<h2 id="今日组织机制信号">今日组织机制信号</h2>
+<div class="table-wrap"><table><thead><tr>
+<th>信号</th>
+<th>L1 事实</th>
+<th>L2 机制判断</th>
+<th>L3 组织判断</th>
+<th>影响变量</th>
+<th>证据 / 置信度</th>
+<th>阅读价值</th>
+</tr></thead><tbody>
+<tr>
+<td>NVIDIA 应急继任治理</td>
+<td>黄仁勋立即辞去总裁、CEO 与董事；CFO 兼任临时 CEO；董事会任命首任董事长并启动内外部搜索</td>
+<td>创始人高度集中的权责被临时拆成董事会治理、运营连续性和永久继任三条线</td>
+<td>不成立：无稳定运行、战略、人才或员工结果</td>
+<td>决策速度、权责边界、管理跨度、执行连续性</td>
+<td>A+B / L2；事实高、机制中</td>
+<td>核心结论</td>
+</tr>
+<tr>
+<td>伙伴交付运营分层</td>
+<td>Anthropic 新设伙伴支持 / 转售运营；OpenAI 同窗公开 BCG、EY、IBM 伙伴岗位</td>
+<td>企业交付被拆为政策、交易、分层支持与伙伴现场执行</td>
+<td>不成立：无伙伴自主率、周期、质量或成本结果</td>
+<td>职能边界、协作成本、覆盖范围、交接、执行节奏</td>
+<td>A / L2 双公司观察；事实高、机制中</td>
+<td>核心结论</td>
+</tr>
+<tr>
+<td>评测进入发布链</td>
+<td>Runway 集中分散 eval；Harvey 在发布前组织律师评分</td>
+<td>评测从团队活动转为平台 / 运营层，并与 ship / no-ship 证据相连</td>
+<td>不成立：无质量、周期、事故率或员工负担结果</td>
+<td>发布节奏、质量责任、跨职能成本、外部专家管理</td>
+<td>A / L2 双公司观察；事实高、机制中</td>
+<td>核心结论</td>
+</tr>
+<tr>
+<td>Perplexity 工程嵌入 RevOps</td>
+<td>GTM Engineer 在 RevOps 内写生产代码并拥有 warehouse—Salesforce 数据链</td>
+<td>数据 / 工程 / 销售交接可能被收进同一岗位边界</td>
+<td>不成立：单一岗位，无运行结果</td>
+<td>职能边界、协作成本、绩效压力、数据治理</td>
+<td>A / L1；事实高、机制中</td>
+<td>持续观察</td>
+</tr>
+<tr>
+<td>模型公司冻结开发诉讼</td>
+<td>非营利组织起诉 Anthropic、Google、Meta、OpenAI、SpaceXSI</td>
+<td>外部法律压力进入模型治理环境</td>
+<td>不成立：无公司响应、裁定或内部流程变化</td>
+<td>Safety / Preparedness 边界、研发节奏、合规成本</td>
+<td>B / L1；事实中、机制低</td>
+<td>观察池</td>
+</tr>
+</tbody></table></div>
+<h2 id="传统大厂与-ai-原生组织分组观察">传统大厂与 AI 原生组织分组观察</h2>
+<h3 id="传统大厂">传统大厂</h3>
+<ul>
+<li><strong>NVIDIA</strong>：CEO 突发离任触发第一任董事长、临时 CEO/CFO 与永久继任搜索；这是事件驱动的应急治理，不是常态组织改造。</li>
+<li><strong>Meta</strong>：基础设施负责人交接于 11 月 11 日披露，早于严格窗口起点，只作 72 小时背景，不进入今日新增核心区。</li>
+<li><strong>其他国内外传统公司</strong>：腾讯、阿里、字节、美团、百度、京东、快手、小米、华为、网易、拼多多、蚂蚁、飞书 / 火山、B 站、滴滴、携程，以及 Amazon、Google、Microsoft、Apple、Netflix、Salesforce、Adobe、Shopify、Atlassian、GitLab、Stripe、Canva、Zapier，没有检出严格窗口内达到 L2 的新组织机制事实。</li>
+<li>搜索索引和公开披露存在滞后；零新增结论只表示本期没有达到门槛的公开证据。</li>
+</ul>
+<h3 id="ai-原生组织">AI 原生组织</h3>
+<ul>
+<li><strong>Anthropic</strong>：Partner Support Operations Lead 把自助 / AI agent、外包 L1、内部专家 L2 组成分层支持；Resale Operations Lead 把 hyperscaler 与 direct resale 两条链路的授权、交易、报告、结算和支持系统化。</li>
+<li><strong>OpenAI</strong>：BCG、EY、IBM 伙伴岗位强调联合商业计划、双方 field teams、可重复现场执行和 production deployment；日语 / 韩语 AI Deployment Manager 均按同标题换 ID 的重发候选排除。</li>
+<li><strong>Runway</strong>：ML Platform (Evals) 目标是把分散评测集中为平台，统一样本、指标、人类标注、checkpoint / release、报告格式与发布证据。</li>
+<li><strong>Harvey</strong>：Evaluation Operations 在模型、功能或工作流发布前编排律师评分，并以按项目接受 / 拒绝的专家池提供可伸缩评测供给。</li>
+<li><strong>Perplexity</strong>：Growth GTM Engineer 把生产工程能力放进 Revenue Operations；属于 L1 职能边界信号。</li>
+<li><strong>Anthropic Safety / Policy</strong>：External Evaluators 与 Pacing 两个 TPM 岗位把外部评估接入、RSP 证据 / 签字和跨 Safety、Research、Policy、Legal、Comms、Engineering 项目写成控制层；历史已有 RSP 与外部评估基线，只构成 L1 运营化尝试。</li>
+<li><strong>Mistral</strong>：Agentic Engineering Scientist 连接领域专家、训练数据、agent harness 与工程工作流；Cloud TPM 连接云工程、软件基础设施和数据中心部署，均为 L1。</li>
+<li><strong>ElevenLabs</strong>：Company Operations Lead 与 Workplace Experience 等岗位可视为运营补课信号，但不能据此判断组织规模、管理失灵或扩张结果。</li>
+<li>Cohere、xAI、Replit、Scale AI、Cursor / Anysphere、Midjourney、Character.AI 没有进入核心区的新事实；岗位删除不解释为裁员、撤组或 AI 替代。</li>
+<li>国内 AI 原生公司命中仍以旧招聘、融资 / 产品消息和二手报道为主，没有达到日级 L2 门槛。</li>
+</ul>
+<h3 id="趋同与分化">趋同与分化</h3>
+<ul>
+<li><strong>趋同</strong>：企业交付与模型评测都在从少数专家的隐性工作，转为可描述的责任接口、流程、平台与升级链。</li>
+<li><strong>分化</strong>：Anthropic 偏向伙伴政策落地和分层支持；OpenAI 偏向伙伴现场执行与客户采用；Runway 偏向集中技术平台；Harvey 偏向外部领域专家运营。</li>
+<li><strong>未被证明的部分</strong>：这些接口是否减少协调成本、缩短周期、提高质量、降低中央专家负荷，以及是否真正减轻员工与伙伴团队负担。</li>
+</ul>
+<h2 id="高价值变化卡片">高价值变化卡片</h2>
+<h3 id="变化卡-1-nvidia-创始人-ceo-突发离任触发应急继任治理">变化卡 1｜NVIDIA：创始人 CEO 突发离任触发应急继任治理</h3>
+<ul>
+<li><strong>时间</strong>：董事会于 2026-11-11 接受辞任；公司公告与 SEC 文件于 2026-11-12 发布，位于严格扫描窗口。</li>
+<li><strong>公司与组织范围</strong>：NVIDIA 董事会与最高管理层。</li>
+<li><strong>机制名称</strong>：应急继任与治理连续性结构。</li>
+<li><strong>机制理念</strong>：用独立董事长承接董事会治理，用长期 CFO 临时兼任 CEO 保持经营连续性，同时通过内外部搜索保留永久继任选择。</li>
+<li><strong>L1 事实</strong>：黄仁勋立即辞去总裁、CEO 和董事；Colette Kress 在保留 CFO 职务的同时兼任临时 CEO；Harvey C. Jones 成为首任董事长；董事会启动永久 CEO 搜索。</li>
+<li><strong>L2 机制判断</strong>：创始人高度集中的单点权责在突发事件下被临时拆成董事会治理、运营连续性和永久继任三条线。</li>
+<li><strong>L3 组织判断</strong>：不成立。没有决策周期、战略连续性、组织稳定、人才流动、员工信任或经营结果。</li>
+<li><strong>组织影响</strong>：董事会治理权前移；CEO/CFO 暂时合一可能减少交接，也可能扩大单人职责与制衡风险；首任董事长增加新的治理接口。</li>
+<li><strong>来源与渠道</strong>：<a href="https://nvidianews.nvidia.com/news/nvidia-announces-ceo-transition/">NVIDIA 公告</a>、<a href="https://www.sec.gov/Archives/edgar/data/1045810/000104581026000082/nvda-20261111.htm">SEC 8-K</a>、<a href="https://apnews.com/article/5403f152a601cf82ce939f1d24fffa0f">AP</a>。</li>
+<li><strong>证据等级</strong>：A+B / L2；官方公告、监管文件与独立媒体互证核心事实。</li>
+<li><strong>互证情况</strong>：事实验证充分；机制验证来自正式任命与搜索安排；趋势验证不成立，这是单公司突发事件。</li>
+<li><strong>反向解释</strong>：这是危机治理而非常态化组织升级；临时 CEO/CFO 合一可能只是短期保连续，不代表持久权责设计或 AI 战略改变。</li>
+<li><strong>与历史基线关系</strong>：黄仁勋自 1993 年起担任 CEO；公司首次任命董事长，形成与创始人时期不同的治理结构。</li>
+<li><strong>组织发展关注点</strong>：董事会 / 管理层边界、临时角色负荷、继任过程、关键人才稳定、员工信任、战略与客户承诺连续性。</li>
+<li><strong>适用边界</strong>：NVIDIA 突发继任情境，不外推为创始人公司通用模式。</li>
+<li><strong>待验证问题</strong>：临时汇报线、董事长权限、关键决策节奏、永久继任标准、管理层与核心人才变化、员工与客户后效。</li>
+<li><strong>公开策略</strong>：只公开正式事实、机制判断与边界；不扩写未经核验的个人细节。</li>
+</ul>
+<h3 id="变化卡-2-模型公司把伙伴交付拆成政策-交易-支持与现场执行">变化卡 2｜模型公司把伙伴交付拆成政策、交易、支持与现场执行</h3>
+<ul>
+<li><strong>时间</strong>：Anthropic 两页首次发布时间为 2026-11-13 04:18 / 05:58 CST；OpenAI 相关页面在严格窗口内首次进入连续快照。</li>
+<li><strong>公司与组织范围</strong>：Anthropic Partner Ecosystem；OpenAI Partnerships、Applied AI / Deployment。</li>
+<li><strong>机制名称</strong>：伙伴交付运营分层。</li>
+<li><strong>机制理念</strong>：把关系管理、政策制定、交易流程、分层支持和伙伴现场执行拆成不同责任面，以标准、系统和升级路径承接规模化。</li>
+<li><strong>L1 事实</strong>：Anthropic 支持链分为自助 / AI agent、外包 L1、内部专家 L2，Partner Programs 制定政策、Support Operations 负责落地；Resale Operations 承接两类转售链路。OpenAI 伙伴岗位负责联合商业计划与可重复现场执行。</li>
+<li><strong>L2 机制判断</strong>：两个独立公司共同支持“模型公司的伙伴生态正在从关系层走向可运营、可交接、可升级的交付系统”。</li>
+<li><strong>L3 组织判断</strong>：不成立。没有伙伴自主交付率、响应时效、升级量、客户周期、质量、成本或员工负担数据。</li>
+<li><strong>组织影响</strong>：可能扩大覆盖并降低专家逐单介入，也可能增加跨组织交接、质量校准、外包治理、伙伴压力和客户上下文丢失。</li>
+<li><strong>来源与渠道</strong>：<a href="https://job-boards.greenhouse.io/anthropic/jobs/5453322008">Anthropic Partner Support Operations</a>、<a href="https://job-boards.greenhouse.io/anthropic/jobs/5468548008">Anthropic Resale Operations</a>、<a href="https://jobs.ashbyhq.com/openai/4197587e-c0d0-46e4-b86a-25a87d22b056">OpenAI BCG EMEA</a>、<a href="https://jobs.ashbyhq.com/openai/fcfc366b-354d-4604-9fc3-ede92e531a61">OpenAI EY North America</a>、<a href="https://jobs.ashbyhq.com/openai/5a55fa31-64fd-4bf9-8c12-48f0d6fe1d69">OpenAI IBM North America</a>。</li>
+<li><strong>证据等级</strong>：A / L2 双公司事实观察；个体岗位均为 L1。</li>
+<li><strong>互证情况</strong>：官方 ATS、不同公司、不同系统；同一公司多个页面只计一个事实根。</li>
+<li><strong>反向解释</strong>：可能只是商业扩张、区域销售建制或未来招聘蓝图，不代表伙伴已接收交付所有权或原厂组织已经减负。</li>
+<li><strong>与历史基线关系</strong>：11 月 12 日已出现“早期共创—标准沉淀—伙伴自主交付”；本期补齐政策、交易、分层支持和区域部署接口。</li>
+<li><strong>组织发展关注点</strong>：政策 / 运营边界、支持分层、SLA、升级路径、外包质量、伙伴授权、客户交接、员工与伙伴团队负担。</li>
+<li><strong>适用边界</strong>：企业 AI 伙伴和售后部署，不外推自助产品或研发组织。</li>
+<li><strong>待验证问题</strong>：伙伴自主率、升级率、响应时间、部署周期、复用率、客户质量、外包 / 内部成本与一线工作强度。</li>
+<li><strong>公开策略</strong>：不写成效率提高、HC 减少、伙伴已经自主或最佳实践。</li>
+</ul>
+<h3 id="变化卡-3-模型评测从分散活动进入平台与发布运营层">变化卡 3｜模型评测从分散活动进入平台与发布运营层</h3>
+<ul>
+<li><strong>时间</strong>：Harvey 2026-11-13 00:42 CST；Runway 2026-11-13 05:09 CST。</li>
+<li><strong>公司与组织范围</strong>：Runway ML Platform / Research；Harvey Evaluation Operations / Legal Product。</li>
+<li><strong>机制名称</strong>：发布前评测控制面。</li>
+<li><strong>机制理念</strong>：由平台统一评测对象、指标、可复现性和报告格式；由运营层组织领域专家供给，把评测证据接入发布决定。</li>
+<li><strong>L1 事实</strong>：Runway 明确当前 eval 分散，目标是集中为平台并提供分钟级结果、checkpoint / release 跟踪和 ship / no-ship 证据；Harvey 在模型、功能或工作流发布前由律师评估评分，Evaluation Operations 负责流程编排。</li>
+<li><strong>L2 机制判断</strong>：两家公司共同显示评测正在从研发团队的局部活动转为跨团队平台 / 运营责任面。</li>
+<li><strong>L3 组织判断</strong>：不成立。没有评测周期、返工、模型质量、事故率、发布频率或人类评审负担结果。</li>
+<li><strong>组织影响</strong>：可能提高发布证据一致性并减少重复建设，也可能形成新的平台排队、指标单一化、外部专家质量和发布门槛争议。</li>
+<li><strong>来源与渠道</strong>：<a href="https://jobs.ashbyhq.com/runway-ml/9a5bef1b-cd54-4258-bb71-4dc7dfded54c">Runway ML Platform (Evals)</a>、<a href="https://jobs.ashbyhq.com/harvey/4751c460-60ea-4291-9591-c865615417aa">Harvey Evaluation Operations</a>。</li>
+<li><strong>证据等级</strong>：A / L2 双公司事实观察；事实高、机制中、结果低。</li>
+<li><strong>互证情况</strong>：两个独立官方 ATS；一个技术平台、一个领域评测运营，支持共同机制但不支持相同实现。</li>
+<li><strong>反向解释</strong>：这可能只是岗位目标、补偿既有分散和质量问题的治理补课，不代表评测已成为所有发布的硬门槛。</li>
+<li><strong>与历史基线关系</strong>：评测岗位并非新岗位族；本期变化在于职责文本把分散评测、统一平台、外部专家池和发布证据写成明确接口。</li>
+<li><strong>组织发展关注点</strong>：平台所有权、研究自主性、指标治理、领域专家质量、发布否决权、评测队列与人员负担。</li>
+<li><strong>适用边界</strong>：生成式模型 / 法律 AI 的发布前评测，不外推全部 AI 产品。</li>
+<li><strong>待验证问题</strong>：覆盖率、是否硬门槛、评测时长、返工、事故、质量、专家一致性、成本与员工负担。</li>
+<li><strong>公开策略</strong>：不把“分钟级”岗位目标写成已实现周期，不写成安全或质量结果。</li>
+</ul>
+<h3 id="变化卡-4-perplexity-工程能力嵌入收入运营">变化卡 4｜Perplexity：工程能力嵌入收入运营</h3>
+<ul>
+<li><strong>时间</strong>：2026-11-13 08:06 CST。</li>
+<li><strong>公司与组织范围</strong>：Perplexity Revenue Operations。</li>
+<li><strong>机制名称</strong>：GTM Engineering 内嵌。</li>
+<li><strong>机制理念</strong>：由 RevOps 内的工程岗位直接拥有 warehouse 到 Salesforce 的数据、逻辑和生产代码，以商业结果而非内部服务工单衡量。</li>
+<li><strong>L1 事实</strong>：官方岗位写明生产编码、数据链所有权，以及 meetings、pipeline、revenue 等结果指标。</li>
+<li><strong>L2 机制判断</strong>：工程与营收运营的边界可能收紧，减少传统数据 / 工程 / 销售之间的交接。</li>
+<li><strong>L3 组织判断</strong>：不成立。只有一个岗位，没有团队、权限、周期、数据质量或业务结果。</li>
+<li><strong>组织影响</strong>：可能缩短分析—行动链，也可能扩大单岗位职责、增加收入压力并弱化独立数据治理。</li>
+<li><strong>来源与渠道</strong>：<a href="https://jobs.ashbyhq.com/Perplexity/e916f0c8-5a31-4bb6-b4e3-7c4a64b95fda">Perplexity Growth GTM Engineer</a>。</li>
+<li><strong>证据等级</strong>：A / L1。</li>
+<li><strong>互证情况</strong>：官方 ATS 单源；无独立组织公告或运行数据。</li>
+<li><strong>反向解释</strong>：可能只是 RevOps 自动化岗位的命名变化，不能据单岗判断组织重组。</li>
+<li><strong>与历史基线关系</strong>：前一日 Deal Desk 与 GTM Compensation 已显示收入控制专业化；本期新增工程执行接口。</li>
+<li><strong>组织发展关注点</strong>：代码所有权、数据治理、系统验收、收入指标压力、跨团队决策权与申诉边界。</li>
+<li><strong>适用边界</strong>：Perplexity Revenue Operations，不外推公司整体工程组织。</li>
+<li><strong>待验证问题</strong>：团队归属、生产权限、服务对象、交付周期、数据质量、返工、收入归因与员工负担。</li>
+<li><strong>公开策略</strong>：只作单源观察，不写成协作成本已经下降。</li>
+</ul>
+<h2 id="不是新闻而是机制">不是新闻而是机制</h2>
+<div class="table-wrap"><table><thead><tr>
+<th>事件表面</th>
+<th>机制翻译</th>
+<th>可能影响</th>
+<th>反向解释与边界</th>
+</tr></thead><tbody>
+<tr>
+<td>NVIDIA 创始人 CEO 离任</td>
+<td>董事会治理、临时经营连续性和永久继任搜索被拆成三条线</td>
+<td>可能维持连续性，也可能增加制衡、角色负荷与不确定性</td>
+<td>危机治理，不等于常态组织升级或 AI 战略重组</td>
+</tr>
+<tr>
+<td>Anthropic / OpenAI 新增伙伴岗位</td>
+<td>伙伴关系被转成政策、交易、分层支持、现场执行和客户采用接口</td>
+<td>可能扩大覆盖，也可能增加交接与质量成本</td>
+<td>招聘蓝图，不证明伙伴已自主交付或原厂减负</td>
+</tr>
+<tr>
+<td>Runway / Harvey 新增评测岗位</td>
+<td>分散评测被平台化、运营化，并接入发布证据链</td>
+<td>可能统一标准，也可能形成新瓶颈与指标争议</td>
+<td>岗位目标不等于分钟级结果或发布硬门槛已实现</td>
+</tr>
+<tr>
+<td>Perplexity 招聘 GTM Engineer</td>
+<td>工程执行嵌入收入运营，并直接绑定商业指标</td>
+<td>可能减少交接，也可能扩大职责和绩效压力</td>
+<td>单岗不证明组织重组或效率提升</td>
+</tr>
+<tr>
+<td>模型公司遭遇冻结开发诉讼</td>
+<td>外部法律压力进入 AI 治理环境</td>
+<td>可能影响未来合规接口</td>
+<td>诉讼主张不是法院事实，也没有内部流程变化证据</td>
+</tr>
+</tbody></table></div>
+<h2 id="组织情报结论卡">组织情报结论卡</h2>
+<h3 id="结论卡-a-突发继任的关键变化是权责从单点创始人转成临时多接口治理">结论卡 A｜突发继任的关键变化是权责从单点创始人转成临时多接口治理</h3>
+<ul>
+<li><strong>事实基础</strong>：NVIDIA 正式公告、SEC 8-K 与 AP 互证离任、临时 CEO/CFO、首任董事长和永久继任搜索。</li>
+<li><strong>机制判断</strong>：董事会以临时角色合并维持经营连续性，同时以新董事长和搜索程序承接治理与长期选择。</li>
+<li><strong>效率变量</strong>：决策周期、董事会 / 管理层边界、角色负荷、汇报线、关键人才稳定、员工信任、战略连续性。</li>
+<li><strong>知识等级</strong>：A+B / L2；没有 L3 结果。</li>
+<li><strong>反向解释</strong>：危机治理可能只是短期止损，不能据此评价结构优劣。</li>
+<li><strong>适用边界</strong>：创始人长期直管且发生突发继任的公司情境。</li>
+<li><strong>待验证问题</strong>：临时治理是否稳定、永久继任如何改变权责、关键人员和员工后效。</li>
+</ul>
+<h3 id="结论卡-b-伙伴规模化的组织对象正在从-关系-转成-运营系统">结论卡 B｜伙伴规模化的组织对象正在从“关系”转成“运营系统”</h3>
+<ul>
+<li><strong>事实基础</strong>：Anthropic 明确政策 / 运营、交易链和三层支持；OpenAI 明确伙伴现场执行与原厂客户采用接口。</li>
+<li><strong>机制判断</strong>：模型公司试图用规则、系统、SLA、升级和可重复执行承接伙伴规模，而不是让关系经理与原厂专家逐单解决。</li>
+<li><strong>效率变量</strong>：覆盖、交接、响应、升级、质量、复用、客户周期、员工与伙伴负担。</li>
+<li><strong>知识等级</strong>：A / L2 双公司观察；没有 L3 结果。</li>
+<li><strong>反向解释</strong>：可能是商业扩张后的组织补课，规模化收益尚未发生。</li>
+<li><strong>适用边界</strong>：企业 AI 伙伴交付和售后采用。</li>
+<li><strong>待验证问题</strong>：自主率、SLA、升级量、质量、周期、成本与工作强度。</li>
+</ul>
+<h3 id="结论卡-c-评测平台化意味着发布责任开始跨越单一研究团队">结论卡 C｜评测平台化意味着发布责任开始跨越单一研究团队</h3>
+<ul>
+<li><strong>事实基础</strong>：Runway 把分散 eval 收归 ML Platform；Harvey 用 Evaluation Operations 编排外部律师评测。</li>
+<li><strong>机制判断</strong>：发布证据的所有权正在从局部研究活动转向可复用平台与专业运营接口。</li>
+<li><strong>效率变量</strong>：评测覆盖、可复现性、发布周期、返工、事故、指标争议、专家供给与人员负担。</li>
+<li><strong>知识等级</strong>：A / L2 双公司观察；没有 L3 结果。</li>
+<li><strong>反向解释</strong>：也可能是管理失灵后的补救，或仅为未来岗位目标。</li>
+<li><strong>适用边界</strong>：高风险、高迭代频率或强领域知识的模型发布。</li>
+<li><strong>待验证问题</strong>：是否成为硬门槛、谁有否决权、周期与质量后效。</li>
+</ul>
+<h2 id="证据链与可信度">证据链与可信度</h2>
+<ul>
+<li><strong>NVIDIA</strong>：公司公告确认正式安排；SEC 8-K 提供监管事实与任命信息；AP 提供独立互证。事实、机制、反证均已尝试，达到 L2；缺组织运行结果，不到 L3。</li>
+<li><strong>伙伴交付</strong>：Anthropic 与 OpenAI 两个独立公司、两个 ATS 的职责文本共同支持机制；同公司多个岗位只计一个事实根。缺交付、客户、成本和员工结果，不到 L3。</li>
+<li><strong>评测控制面</strong>：Runway 与 Harvey 官方岗位分别提供技术平台和领域运营两个实现；支持共同机制，不支持结果结论。</li>
+<li><strong>Perplexity GTM Engineering</strong>：官方 ATS 单源、时间落在严格窗口；只到 L1。</li>
+<li><strong>冻结开发诉讼</strong>：只确认诉讼发起；没有被告响应、法院裁定或内部机制变化，只到 L1。</li>
+<li><strong>传统大厂 / 国内 AI 原生零新增</strong>：只是公开检索结果，不承担“内部没有变化”的结论。</li>
+</ul>
+<h2 id="去伪存真记录">去伪存真记录</h2>
+<ul>
+<li>AnySearch CLI 先行检索；一次查询成功返回结果，后续批量与定向查询出现 API 连接失败，随后使用公开 web 搜索和官方页面 / ATS 继续核验，没有把访问失败解释为内容不存在。</li>
+<li>NVIDIA 只写正式离任与治理安排，不扩写未经本报告单独验证的个人事件细节；董事会公告、SEC 和 AP 互证核心事实。</li>
+<li>NVIDIA 的 SEC 文件说明董事会于 11 月 11 日接受辞任，公司公告与监管披露在 11 月 12 日发布；时间字段分开呈现。</li>
+<li>OpenAI 日语 / 韩语 AI Deployment Manager 与 Anthropic Partner Account Manager 存在同标题换 ID，标记为重发候选，不计新能力。</li>
+<li>Ashby <code>publishedAt</code> 可能因重发重置；与连续快照、旧 ID、标题和正文共同判断。Greenhouse 优先使用 <code>first_published</code>。</li>
+<li>ATS 新增只表示公开岗位页面出现，不表示人员到岗、编制净增、团队已成立或机制已执行。</li>
+<li>ATS 删除只表示页面状态变化，不解释为招满、裁员、冻结、撤编、绩效淘汰、AI 替代或团队关闭。</li>
+<li>OpenAI 同公司多个伙伴岗位只计一个事实根；Runway 与 Harvey 的不同实现只支持共同评测机制，不写成相同组织。</li>
+<li>Runway 的“分钟级”是岗位目标，不是已经实现的周期结果；Harvey 的外部律师池不证明评测质量已经提高。</li>
+<li>伙伴自助、外包 L1、评测平台、GTM 工程或 AI support agent 都不直接解释为员工减负；缺少工作量、错误、信任、申诉与收益分配数据。</li>
+<li>Meta 基础设施负责人交接早于严格窗口，只作 72 小时背景。</li>
+<li>传统大厂与国内 AI 原生零新增只表示公开证据不足，不表示公司内部没有变化。</li>
+</ul>
+<h2 id="渠道索引补充">渠道索引补充</h2>
+<ul>
+<li><strong>AnySearch CLI</strong>：优先覆盖传统大厂、国内 AI 原生、国外 AI 原生、组织 / 绩效 / 晋升 / 职级 / 伙伴 / 评测 / 收入运营及反向关键词；连接失败被记录为渠道限制。</li>
+<li><strong>监管与公司公告</strong>：NVIDIA Newsroom 与 SEC 8-K 用于确认最高管理层变动、临时任命与董事会安排。</li>
+<li><strong>独立媒体</strong>：AP 用于核验 NVIDIA 事实与时间，不承担机制结果。</li>
+<li><strong>官方 ATS 日差分</strong>：OpenAI、Anthropic、Harvey、Perplexity、Cohere、Mistral、ElevenLabs、Replit、Cursor / Anysphere、Scale AI、Runway、Midjourney、Character.AI、xAI；保留 ID、发布时间、增加 / 删除、重发与迁移解释。</li>
+<li><strong>连续历史快照</strong>：使用 11 月 12—13 日快照核验新页面、同标题换 ID、时间重置和重复页面。</li>
+<li><strong>本期无新增私密渠道索引</strong>：未读取、复制或上传桌面私有参考文档、内部链接、访谈口径、截图、未授权附件或个人信息。</li>
+</ul>
+<h2 id="观察池-待核验池">观察池 / 待核验池</h2>
+<ul>
+<li><strong>NVIDIA 应急继任（A+B / L2）</strong>：临时汇报线、董事长权限、关键决策节奏、永久继任、核心人才、员工信任与客户连续性。</li>
+<li><strong>伙伴交付运营分层（A / L2）</strong>：伙伴自主率、支持分层、SLA、升级量、复用率、部署周期、质量、成本与员工 / 伙伴负担。</li>
+<li><strong>评测发布控制面（A / L2）</strong>：覆盖率、否决权、指标治理、评测时长、返工、事故、专家一致性与人员负担。</li>
+<li><strong>Perplexity GTM Engineering（A / L1）</strong>：团队归属、生产权限、数据治理、交付周期、收入归因与绩效压力。</li>
+<li><strong>Mistral Agentic Engineering / Cloud TPM（A / L1）</strong>：实际汇报线、领域数据权、云 / 数据中心接口与算力上线周期。</li>
+<li><strong>ElevenLabs 运营补课（A / L1）</strong>：岗位到岗、运营边界、工作场所负担与扩张后的管理系统。</li>
+<li><strong>模型公司冻结开发诉讼（B / L1）</strong>：被告响应、法院程序、是否触发 Safety / Preparedness / Policy 内部机制变化。</li>
+<li><strong>Meta 基础设施交接（背景参考）</strong>：严格窗口外，不计今日新增。</li>
+</ul>
+<h2 id="公开知识库入库判断">公开知识库入库判断</h2>
+<ul>
+<li><strong>新增 L3 / L4 结论</strong>：无。</li>
+<li><strong>新增 L2 事实观察</strong>：NVIDIA 突发继任的应急治理结构；模型公司伙伴交付运营分层；模型评测进入平台 / 运营与发布证据链。</li>
+<li><strong>新增 L1 核心观察</strong>：Perplexity 工程能力嵌入 Revenue Operations。</li>
+<li><strong>新增 L1 持续观察</strong>：Anthropic 外部评估 / Pacing 项目管理层、Mistral Agentic Engineering / Cloud TPM、ElevenLabs 运营岗位、模型公司冻结开发诉讼。</li>
+<li><strong>72 小时补漏</strong>：Meta 基础设施负责人交接只作背景；没有发现此前遗漏且达到 L3 的事实。</li>
+<li><strong>暂不采纳</strong>：同标题换 ID、旧页回现、时间重置及所有 ATS 删除；不把冻结开发诉讼主张写成公司事实。</li>
+<li><strong>不可形成的判断</strong>：组织完成重组、净增或减少 HC、AI 替代岗位、CEO 交接改善治理效率、伙伴已经自主交付、评测已经缩短周期、RevOps 工程已经降低协作成本、员工负担下降或人才密度提高。</li>
+<li><strong>L4 方法 / playbook</strong>：无。没有外部证据与内部长期数据共同验证。</li>
+<li><strong>公开边界</strong>：公开镜像只保留公开来源、证据判断、反向解释、适用边界和待验证问题；移除原始检索归档、本地路径、访问凭据、私有渠道、访谈材料和个人信息。</li>
+</ul>
+      </article>
+    </main>
+  </div>
+</body>
+</html>
