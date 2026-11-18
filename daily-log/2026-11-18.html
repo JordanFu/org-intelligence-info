@@ -1,0 +1,517 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>组织情报信息</title>
+  <style>
+    :root {
+      color-scheme: light;
+      --bg: #f6f7f1;
+      --paper: #fffdf8;
+      --ink: #172033;
+      --muted: #697181;
+      --line: #ded8c9;
+      --soft: #ece6d7;
+      --accent: #1f6f68;
+      --accent-2: #b45a34;
+      --code: #f1eee6;
+    }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "PingFang SC", "Microsoft YaHei", sans-serif;
+      color: var(--ink);
+      background: var(--bg);
+      line-height: 1.75;
+    }
+    .shell {
+      display: grid;
+      grid-template-columns: minmax(210px, 280px) minmax(0, 1fr);
+      min-height: 100vh;
+    }
+    aside {
+      position: sticky;
+      top: 0;
+      height: 100vh;
+      padding: 28px 22px;
+      border-right: 1px solid var(--line);
+      background: #ebe5d7;
+      overflow: auto;
+    }
+    main {
+      max-width: 1040px;
+      width: 100%;
+      padding: 56px 56px 90px;
+    }
+    .eyebrow {
+      color: var(--accent-2);
+      font-size: 13px;
+      font-weight: 800;
+      letter-spacing: .08em;
+      text-transform: uppercase;
+      margin: 0 0 10px;
+    }
+    h1 {
+      font-size: clamp(30px, 4vw, 48px);
+      line-height: 1.12;
+      margin: 0 0 18px;
+      letter-spacing: 0;
+    }
+    h2 {
+      font-size: 26px;
+      line-height: 1.32;
+      margin: 48px 0 14px;
+      padding-top: 18px;
+      border-top: 1px solid var(--line);
+    }
+    h3 {
+      font-size: 20px;
+      margin: 34px 0 10px;
+      color: #23314d;
+    }
+    h4 {
+      font-size: 17px;
+      margin: 26px 0 8px;
+    }
+    p, li {
+      font-size: 16px;
+      color: #2b3343;
+    }
+    p { margin: 10px 0; }
+    ul { padding-left: 1.2rem; }
+    li { margin: 7px 0; }
+    a { color: var(--accent); text-decoration-thickness: 1px; text-underline-offset: 3px; }
+    code {
+      background: var(--code);
+      border: 1px solid var(--line);
+      border-radius: 5px;
+      padding: 1px 5px;
+      font-size: .92em;
+    }
+    pre {
+      overflow: auto;
+      background: #fff9ec;
+      color: #202838;
+      border: 1px solid #d8ccb8;
+      border-radius: 8px;
+      padding: 18px;
+      box-shadow: inset 4px 0 0 var(--accent);
+      white-space: pre-wrap;
+      word-break: break-word;
+    }
+    pre code {
+      display: block;
+      padding: 0;
+      border: 0;
+      background: transparent;
+      color: inherit;
+      line-height: 1.7;
+      font-size: 14px;
+    }
+    blockquote {
+      margin: 24px 0;
+      padding: 14px 18px;
+      border-left: 4px solid var(--accent);
+      background: #eef4ee;
+      color: #344033;
+    }
+    .table-wrap {
+      overflow-x: auto;
+      margin: 18px 0 26px;
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      background: var(--paper);
+    }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      min-width: 720px;
+    }
+    th, td {
+      padding: 12px 14px;
+      border-bottom: 1px solid var(--line);
+      vertical-align: top;
+      text-align: left;
+      font-size: 14px;
+    }
+    th {
+      background: #e7e0cf;
+      color: #26324a;
+      font-weight: 800;
+      white-space: nowrap;
+    }
+    tr:last-child td { border-bottom: 0; }
+    .topbar {
+      display: flex;
+      gap: 10px;
+      align-items: center;
+      flex-wrap: wrap;
+      margin-bottom: 28px;
+    }
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 38px;
+      padding: 8px 12px;
+      border: 1px solid var(--line);
+      border-radius: 7px;
+      background: var(--paper);
+      color: var(--ink);
+      text-decoration: none;
+      font-weight: 750;
+      font-size: 14px;
+    }
+    .primary { background: var(--accent); border-color: var(--accent); color: white; }
+    .toc-title {
+      margin: 0 0 12px;
+      font-size: 14px;
+      font-weight: 850;
+      color: #273247;
+    }
+    .toc a {
+      display: block;
+      padding: 7px 0;
+      color: #465064;
+      text-decoration: none;
+      font-size: 14px;
+      line-height: 1.45;
+      border-bottom: 1px solid rgba(23,32,51,.08);
+    }
+    .toc a.level-3 { padding-left: 14px; font-size: 13px; color: #626b78; }
+    .meta {
+      color: var(--muted);
+      font-size: 14px;
+      margin-bottom: 24px;
+    }
+    @media (max-width: 900px) {
+      .shell { display: block; }
+      aside { position: relative; height: auto; border-right: 0; border-bottom: 1px solid var(--line); }
+      main { padding: 34px 20px 70px; }
+      .toc { columns: 1; }
+      table { min-width: 640px; }
+    }
+  </style>
+</head>
+<body>
+  <div class="shell">
+    <aside>
+      <p class="toc-title">目录</p>
+      <nav class="toc">
+        <a class="level-2" href="#今日结论">今日结论</a>
+        <a class="level-2" href="#今日组织机制信号">今日组织机制信号</a>
+        <a class="level-2" href="#传统大厂与-ai-原生组织分组观察">传统大厂与 AI 原生组织分组观察</a>
+        <a class="level-3" href="#传统大厂">传统大厂</a>
+        <a class="level-3" href="#ai-原生组织">AI 原生组织</a>
+        <a class="level-2" href="#高价值变化卡片">高价值变化卡片</a>
+        <a class="level-3" href="#变化卡-1-nvidia-国家安全与出口管制进入专门的董事会常设监督结构">变化卡 1｜NVIDIA：国家安全与出口管制进入专门的董事会常设监督结构</a>
+        <a class="level-3" href="#变化卡-2-nvidia-董事会正式确认当前不恢复黄仁勋-ceo-职位">变化卡 2｜NVIDIA：董事会正式确认当前不恢复黄仁勋 CEO 职位</a>
+        <a class="level-3" href="#变化卡-3-amd-world-labs-以-ceo-直达-研究保留和跨工程协作方式进入公司">变化卡 3｜AMD：World Labs 以 CEO 直达、研究保留和跨工程协作方式进入公司</a>
+        <a class="level-2" href="#不是新闻而是机制">不是新闻而是机制</a>
+        <a class="level-2" href="#组织情报结论卡">组织情报结论卡</a>
+        <a class="level-3" href="#结论卡-a-高风险职能的组织地位取决于它能否绕过单一经营汇报链">结论卡 A｜高风险职能的组织地位取决于它能否绕过单一经营汇报链</a>
+        <a class="level-3" href="#结论卡-b-继任治理的有效信息不是创始人表达-而是董事会可执行的任免状态">结论卡 B｜继任治理的有效信息不是创始人表达，而是董事会可执行的任免状态</a>
+        <a class="level-3" href="#结论卡-c-研究团队并入平台公司后-组织结构只证明接口存在-不证明协同发生">结论卡 C｜研究团队并入平台公司后，组织结构只证明接口存在，不证明协同发生</a>
+        <a class="level-3" href="#结论卡-d-规模化接口岗位的增加-更像协调机制显性化-而不是效率结果">结论卡 D｜规模化接口岗位的增加，更像协调机制显性化，而不是效率结果</a>
+        <a class="level-2" href="#证据链与可信度">证据链与可信度</a>
+        <a class="level-2" href="#去伪存真记录">去伪存真记录</a>
+        <a class="level-2" href="#渠道索引补充">渠道索引补充</a>
+      </nav>
+    </aside>
+    <main>
+      <div class="topbar">
+        <a class="btn primary" href="../index.html">返回研究源</a>
+        <a class="btn" href="./2026-11-18.md">查看 Markdown 原文</a>
+      </div>
+      <p class="eyebrow">Daily Scan</p>
+      <h1>2026-11-18 组织情报信息</h1>
+      <p class="meta">本页面由本地 Markdown 自动渲染生成，仍保留原始 md 文件作为知识库源文档。</p>
+      <article>
+        <blockquote><strong>扫描窗口</strong>：严格窗口为 2026-11-17 08:34:55 CST—2026-11-18 08:26:15 CST；72 小时补漏窗口为 2026-11-15 08:26:15 CST—2026-11-18 08:26:15 CST。本地最新日报为 2026-11-17，本期不存在缺失自然日。</blockquote>
+<blockquote></blockquote>
+<blockquote><strong>证据结论</strong>：严格窗口内，NVIDIA 新设董事会常设国家安全与出口管制监督委员会，并让既有国家安全团队、全球贸易合规团队形成“直报委员会 + 日常向临时 CEO 汇报”的双重报告结构；官方公告、历史法定披露和独立媒体互证使这项治理结构变化达到 L3。董事会同时正式压低黄仁勋近期复任 CEO 的公开不确定性，但永久 CEO 仍未确定。72 小时补漏发现 AMD 完成 World Labs 收购并公开“研究团队保留 + 首席科学家直报 CEO + 跨工程协作”的整合结构，按 A / L2 事实观察入库。没有新增达到 L3 / L4 的组织效率、减员、AI 替代岗位、绩效机制或可迁移方法结论。</blockquote>
+<h2 id="今日结论">今日结论</h2>
+<ul>
+<li><strong>NVIDIA 把国家安全与出口管制从广义风险监督升级为专门的董事会常设机制。</strong> 新委员会拥有固定会议节奏、独立外部专家接口，并直接接收国家安全与全球贸易合规团队报告；日常运营仍由临时 CEO 管理。可确认的是监督层级、汇报线和风险升级通道改变，不能据此宣称合规结果、决策速度或整体效率已经改善。</li>
+<li><strong>双重报告同时增加独立升级能力与矩阵协调成本。</strong> 专业团队不再完全依赖 CEO 向董事会传递风险，但董事会监督与经营层日常管理的边界、冲突解决和升级阈值尚未公开。组织影响仍是机制假设，不是结果事实。</li>
+<li><strong>NVIDIA 董事会正式压低了创始人近期复任的不确定性。</strong> 董事长公开表示董事会一致接受黄仁勋辞职，当前不打算恢复其 CEO 职位；临时 CEO 继续任职，永久继任搜索仍在进行。可确认的是当前任免权和继任流程控制权，不代表永久排除回归或继任稳定已经形成。</li>
+<li><strong>AMD 的补漏信号显示模型研究被放到芯片公司的 CEO 直达层。</strong> World Labs 保留基础模型研究身份，李飞飞以执行副总裁兼首席科学家身份直报 Lisa Su，并与 AMD 硬件、软件、系统工程协作。它构成整合结构事实，不构成协同效率、研发周期或产品竞争力结果。</li>
+<li><strong>AI 原生公司的官方岗位组合显示规模化接口正在继续分化。</strong> OpenAI 把客户教育拆成技术构建、高级用户、企业 GTM 和区域部署，Mistral 增加研究运营接口，Replit 将 CEO 参与的营销、销售与外部关系流程化，Anthropic 计划把 Workplace PMO 从外包转为内部团队。单岗只到 A / L1，跨公司只支持 L2 设计趋同。</li>
+<li><strong>严格窗口内，国内传统大厂和国内外 AI 原生公司没有其他达到 L2 的新增机制事实。</strong> 腾讯优图关键研究人员离职仅有单一媒体独家与同源转载，保留在 L1 待核验池；融资、IPO、产品发布、模型用量、职位页增删和匿名裁员信息均未被转写为组织结论。</li>
+<li><strong>本期唯一达到 L3 的是 NVIDIA 的结构事实，不是组织效率判断。</strong> 决策速度、协作成本、管理跨度、人才密度、绩效压力、员工负担和风险结果仍缺少可归因数据。</li>
+</ul>
+<h2 id="今日组织机制信号">今日组织机制信号</h2>
+<div class="table-wrap"><table><thead><tr>
+<th>信号</th>
+<th>L1 事实</th>
+<th>L2 机制判断</th>
+<th>L3 组织判断</th>
+<th>影响变量</th>
+<th>证据 / 置信度</th>
+<th>阅读价值</th>
+</tr></thead><tbody>
+<tr>
+<td>NVIDIA 董事会专门监督委员会</td>
+<td>董事会新设常设委员会；两支既有专业团队直报委员会，日常同时向临时 CEO 汇报；至少每季度开会并可聘独立专家</td>
+<td>风险议题由广义治理监督转为专门董事会监督，形成经营线与监督线并行的风险升级通道</td>
+<td>成立于结构事实：委员会、汇报线、会议节奏和监督边界发生正式变化；效果结论不成立</td>
+<td>风险上报、董事会可见度、职能权威、管理跨度、协调成本</td>
+<td>A/B / L3 结构事实；高</td>
+<td>核心结论</td>
+</tr>
+<tr>
+<td>NVIDIA 继任权力边界</td>
+<td>董事长表示董事会一致接受辞职，当前不打算恢复黄仁勋 CEO 职位；永久 CEO 搜索继续</td>
+<td>正式董事会口径覆盖创始人回归意愿和外部呼吁，压低临时管理层面对双重权威中心的公开不确定性</td>
+<td>不成立：永久人选、候选范围、任期和管理稳定性未知</td>
+<td>任免权、权威中心、执行连续性、关键人才预期</td>
+<td>B+ / L2；中高</td>
+<td>持续观察</td>
+</tr>
+<tr>
+<td>AMD—World Labs 整合结构（72 小时补漏）</td>
+<td>收购完成；李飞飞任执行副总裁兼首席科学家并直报 CEO；团队继续基础模型研究并与 AMD 工程协作</td>
+<td>通过保留研究身份、CEO 直达和跨硬件/软件/系统协作，把模型需求更早接入平台路线</td>
+<td>不成立：自治权、预算权、实际协作、人才保留和结果未知</td>
+<td>研究边界、决策距离、跨职能协作、模型—算力反馈</td>
+<td>A / L2；高</td>
+<td>持续观察</td>
+</tr>
+<tr>
+<td>AI 原生规模化接口补课</td>
+<td>OpenAI、Mistral、Replit、Anthropic 出现客户教育、研究运营、CEO Office 流程化和内部 PMO 岗位设计</td>
+<td>从依赖专家、研究员、创始人或外包伙伴的临时协调，转为专职接口与可重复运营节奏</td>
+<td>不成立：岗位不等于到岗、团队运行或负担下降</td>
+<td>协作成本、管理跨度、研究负担、客户采用</td>
+<td>单岗 A / L1；跨公司 L2 设计观察</td>
+<td>持续观察</td>
+</tr>
+<tr>
+<td>腾讯优图研究负责人离职传闻</td>
+<td>单一媒体独家称孙星已离职，腾讯未公开回应；转载同源</td>
+<td>若属实，只能构成多模态评测与 Agent 研究接口上的关键人员流动假设</td>
+<td>不成立</td>
+<td>人才连续性、研究接口、替代安排</td>
+<td>B- / L1；低至中</td>
+<td>暂不采纳</td>
+</tr>
+</tbody></table></div>
+<h2 id="传统大厂与-ai-原生组织分组观察">传统大厂与 AI 原生组织分组观察</h2>
+<h3 id="传统大厂">传统大厂</h3>
+<ul>
+<li><strong>NVIDIA</strong>：本期最明确的结构性新增。官方公告确认专门委员会、成员、固定节奏和双重报告结构；2026 年法定披露显示，此前国家安全、贸易合规和监管风险由提名与公司治理委员会在更广范围内监督，因此变化不是“首次出现监督”，而是监督专业化、常设化并增加直接报告通道。</li>
+<li><strong>AMD</strong>：公告发生于 11 月 16 日 09:05 EST，即北京时间 11 月 16 日 22:05，实际落入上一日报窗口，本期按 72 小时补漏记录，不伪装为严格窗口新增。整合结构把模型研究、首席科学家和芯片系统工程连接起来；并购完成不等于整合成功。</li>
+<li><strong>腾讯</strong>：优图研究负责人离职只获得雷峰网单源和新浪同源转载，腾讯未回应。个人流动不能承担团队重组、能力流失、战略转向或管理机制结论。</li>
+<li><strong>其他传统公司</strong>：阿里、字节、美团、百度、京东、快手、小米、华为、网易、拼多多、蚂蚁、飞书 / 火山、B 站、滴滴、携程、Amazon、Google、Meta、Microsoft、Apple、Netflix、Salesforce、Adobe、Shopify、Atlassian、GitLab、Stripe、Canva、Zapier 等未核实到严格窗口内可进入 L2 的新增组织机制事实。零新增只描述公开扫描结果，不代表内部没有变化。</li>
+</ul>
+<h3 id="ai-原生组织">AI 原生组织</h3>
+<ul>
+<li><strong>国内 AI 原生公司</strong>：DeepSeek、Kimi / 月之暗面、智谱 AI、MiniMax、百川智能、阶跃星辰、零一万物、商汤日日新、面壁智能、昆仑万维 / 天工、秘塔 AI、无问芯穹、硅基流动的命中主要是融资、产品价格、推理用量、招聘聚合或旧闻，没有同时满足时间定位、组织机制变化和双源互证的新增事实。</li>
+<li><strong>海外 AI 原生公司</strong>：OpenAI、Anthropic、Perplexity、Mistral AI、Cohere、xAI、Character.AI、Inflection、Adept、Runway、Midjourney、ElevenLabs、Harvey、Cursor / Anysphere、Replit、Scale AI 等未发现严格窗口内达到 L2 的新增组织机制事实。</li>
+<li><strong>OpenAI</strong>：严格窗口同批出现 Builder Education、Advanced User Education、Enterprise Education GTM 和韩国首位 Deployment Lead / FDE 等官方岗位，把教育按学习对象、产品采用、企业包装和区域交付分层。它更像客户采用基础设施设计；也可能说明产品自解释性、部署标准化或渠道能力仍不足。</li>
+<li><strong>Mistral / Replit / Anthropic</strong>：Mistral 的 Science Operations 岗位明确吸收研究员的状态汇报、资源协调和 research-to-release 工作；Replit 的 CEO Office PMO 目标是把创始人营销、销售、投资者关系和全球 GTM 转成可重复系统；Anthropic 的 Workplace PMO 计划从外部项目管理伙伴转为内部标准与资本控制。它们共同显示快速扩张后的接口补课，均无运行结果。</li>
+<li><strong>SpaceXSI / xAI 招聘入口</strong>：新出现的 Safety 工程岗位覆盖内容审核、滥用检测、品牌安全、法律请求、审核员工作流和案件管理，边界更接近 Trust &amp; Safety 运营工具，不等同模型 Alignment、Preparedness 或训练安全；页面主体归属 SpaceXSI，不能无条件写成 xAI 模型安全团队扩张。</li>
+<li><strong>Anthropic IPO 材料</strong>：11 月 17 日的资本市场进展没有提供相对 10 月原始 S-1 的新增组织机制；公司级财务比率不能转写为个人生产率、工作强度、可持续效率或员工获益。</li>
+<li><strong>AI 原生 ATS</strong>：FDE、Post-training、Safety、Infra 等岗位仍可用于观察目标边界；页面更新时间不等于新建日期，多地点不等于新增多个编制，职位移除也不等于裁员、招满、冻结或被 AI 替代。本期未形成可独立入库的新差分结论。</li>
+</ul>
+<h2 id="高价值变化卡片">高价值变化卡片</h2>
+<h3 id="变化卡-1-nvidia-国家安全与出口管制进入专门的董事会常设监督结构">变化卡 1｜NVIDIA：国家安全与出口管制进入专门的董事会常设监督结构</h3>
+<ul>
+<li><strong>时间</strong>：2026-11-17；官方页面只标日期、未标分钟。Reuters、AP 的同日报道与财报电话会时点共同支持其落入严格窗口，时间精度保留到自然日。</li>
+<li><strong>公司与组织范围</strong>：NVIDIA 董事会、国家安全团队、全球贸易合规团队、临时 CEO。</li>
+<li><strong>机制名称</strong>：董事会专门监督；专业团队双重报告；固定会议与外部专家接口。</li>
+<li><strong>机制理念</strong>：让高后果政策与合规风险绕过单一经营汇报链，直接进入董事会，同时保留 CEO 对日常运营的管理责任。</li>
+<li><strong>L1 事实</strong>：董事会设立 National Security and Export Control Oversight Committee；由 Suzanne Nora Johnson 主持，Stephen C. Neal、John O. Dabiri 任成员；现有 National Security Team、Global Trade Compliance Team 直接向委员会报告，日常运营同时向临时 CEO Colette Kress 汇报；委员会至少每季度与管理层开会并举行执行会议，可使用法律、国家安全和全球贸易合规领域的独立外部专家。</li>
+<li><strong>L2 机制判断</strong>：国家安全与贸易合规从原有提名与公司治理委员会的广义风险监督中被单独升级，形成专门、常设且具有直接信息入口的董事会机制。它增强董事会对风险的可见度，也把两支专业团队置于监督线与经营线并行的矩阵中。</li>
+<li><strong>L3 组织判断</strong>：委员会、正式汇报线、会议节奏和监督边界的结构变化成立；降低违规风险、缩短决策时间、改善出口结果或提高整体组织效率均不成立。</li>
+<li><strong>组织影响</strong>：重大风险被业务层级过滤的空间可能减少；董事会、临时 CEO、法务、政策、销售与供应链之间的升级和冲突处理可能更显性。双重报告也可能增加重复审查、责任重叠和决策时延。</li>
+<li><strong>来源与渠道</strong>：<a href="https://nvidianews.nvidia.com/news/nvidia-board-of-directors-establishes-national-security-and-export-control-oversight-committee">NVIDIA 官方公告</a>、<a href="https://www.sec.gov/Archives/edgar/data/1045810/000104581026000038/a2026-annualxreportxwebxfi.pdf">NVIDIA 2026 年报</a>、<a href="https://www.investing.com/news/stock-market-news/nvidia-board-forms-committee-for-national-security-and-export-control-oversight-5032154">Reuters 互证</a>、<a href="https://apnews.com/article/nvidia-jensen-huang-china-national-security-chips-3026bcbe04ab57b844884382e583422a">AP 互证</a>。</li>
+<li><strong>证据等级</strong>：A/B / L3 结构事实；事实置信度高，效果置信度不足。</li>
+<li><strong>互证情况</strong>：官方公告确认当前结构；法定年报确认历史委员会基线；Reuters、AP 独立确认委员会设立及继任背景。</li>
+<li><strong>反向解释</strong>：该安排也可能是领导层危机、监管压力和声誉风险后的治理修复或合法性表态；季度会议与专家接口不能证明其已经进入产品、销售或供应链的日常决策。</li>
+<li><strong>与历史基线关系</strong>：此前法定披露列出审计、薪酬、提名与公司治理三个常设委员会，国家安全、贸易合规和监管风险位于提名与公司治理委员会的广义监督范围；本期新增专门常设委员会和直接报告关系。</li>
+<li><strong>组织发展关注点</strong>：委员会章程、授权范围、升级阈值、预算与专职人员、与独立调查和法律部门的接口、业务冲突处理及真实案件记录。</li>
+<li><strong>适用边界</strong>：高地缘政治暴露、高出口管制风险且董事会需要独立信息通道的公司；不外推一般合规团队或所有科技公司。</li>
+<li><strong>待验证问题</strong>：委员会是否拥有否决或暂停权；日常事项与重大事项如何分流；两支团队的绩效、预算和任免由谁决定；是否出现可追踪的决策和风险结果变化。</li>
+<li><strong>公开策略</strong>：公开镜像保留法定与公开来源，不包含内部材料或个人信息。</li>
+</ul>
+<h3 id="变化卡-2-nvidia-董事会正式确认当前不恢复黄仁勋-ceo-职位">变化卡 2｜NVIDIA：董事会正式确认当前不恢复黄仁勋 CEO 职位</h3>
+<ul>
+<li><strong>时间</strong>：2026-11-17 财报电话会。</li>
+<li><strong>公司与组织范围</strong>：NVIDIA 董事会、临时 CEO 与永久 CEO 继任流程。</li>
+<li><strong>机制名称</strong>：董事会任免权确认与单一临时权威中心。</li>
+<li><strong>机制理念</strong>：用正式董事会口径覆盖创始人个人回归意愿和外部呼吁，维持继任流程由董事会控制。</li>
+<li><strong>L1 事实</strong>：董事长 Harvey Jones 表示，董事会一致接受黄仁勋辞职，当前不打算恢复其 CEO 职位；Colette Kress 继续担任临时 CEO，永久 CEO 搜索继续。</li>
+<li><strong>L2 机制判断</strong>：公开权力边界从“创始人可能回归”的外部猜测，转向董事会对当前任免状态和继任程序的正式确认，降低临时管理层面对公开双重权威中心的不确定性。</li>
+<li><strong>L3 组织判断</strong>：不成立。没有永久人选、正式任期、候选范围或稳定性结果。</li>
+<li><strong>组织影响</strong>：短期权威口径更清晰；永久继任空窗、关键人才预期和战略连续性仍未解决。</li>
+<li><strong>来源与渠道</strong>：<a href="https://apnews.com/article/nvidia-jensen-huang-china-national-security-chips-3026bcbe04ab57b844884382e583422a">AP</a>、<a href="https://www.sec.gov/Archives/edgar/data/1045810/000104581026000088/nvda-20261117.htm">NVIDIA 11 月 17 日 8-K</a>。</li>
+<li><strong>证据等级</strong>：B+ / L2；置信度中高。</li>
+<li><strong>互证情况</strong>：AP 报道董事长在财报电话会的公开表述；SEC 文件确认临时 CEO 与正式公司状态。</li>
+<li><strong>反向解释</strong>：公开表态可能主要用于稳定投资者和员工预期；“当前不打算”不是不可逆承诺，也不代表继任搜索已有实质进展。</li>
+<li><strong>与历史基线关系</strong>：上一期仍是支持回归与匿名“不考虑回归”相互冲突；本期首次出现董事长的正式公开口径。</li>
+<li><strong>组织发展关注点</strong>：永久候选、遴选标准、过渡授权、董事会与临时 CEO 的决策接口、关键人才稳定。</li>
+<li><strong>适用边界</strong>：创始人影响力高、继任处于公开争议中的过渡期公司。</li>
+<li><strong>待验证问题</strong>：永久 CEO 确定时间与授权；黄仁勋未来是否保留其他正式角色；关键团队的汇报与留任是否变化。</li>
+<li><strong>公开策略</strong>：只写当前董事会口径，不写成永久排除或继任完成。</li>
+</ul>
+<h3 id="变化卡-3-amd-world-labs-以-ceo-直达-研究保留和跨工程协作方式进入公司">变化卡 3｜AMD：World Labs 以 CEO 直达、研究保留和跨工程协作方式进入公司</h3>
+<ul>
+<li><strong>时间</strong>：公告于 2026-11-16 09:05 EST，即北京时间 2026-11-16 22:05；属于 72 小时补漏，并落在上一日报窗口。</li>
+<li><strong>公司与组织范围</strong>：AMD、World Labs、CEO、硬件 / 软件 / 系统工程组织。</li>
+<li><strong>机制名称</strong>：研究团队保留；首席科学家直报 CEO；模型—算力协同设计接口。</li>
+<li><strong>机制理念</strong>：保留基础模型研究能力，同时让前沿模型需求更早进入芯片、软件和系统路线讨论。</li>
+<li><strong>L1 事实</strong>：AMD 完成对 World Labs 的收购；李飞飞加入 AMD，任执行副总裁兼首席科学家，直接向 CEO Lisa Su 汇报；World Labs 继续基础模型研究，并与 AMD 工程师合作把研究洞察应用于未来硬件、软件和系统。SEC 文件确认交易完成和股份发行。</li>
+<li><strong>L2 机制判断</strong>：整合方式不是完全拆散吸收，而是保留研究身份、设置 CEO 直达层，再用跨工程合作连接平台路线。这可能缩短模型需求与算力设计之间的信息距离，也可能把更多协调负担带入研究团队。</li>
+<li><strong>L3 组织判断</strong>：不成立。研究自治、预算权、路线否决权、人才保留、实际协作和结果均未知。</li>
+<li><strong>组织影响</strong>：模型研究在平台路线中的组织地位上升；Research 与芯片、软件、系统的接口增加，决策距离可能缩短，矩阵协调成本也可能上升。</li>
+<li><strong>来源与渠道</strong>：<a href="https://ir.amd.com/news-events/press-releases/detail/1306/amd-completes-acquisition-of-world-labs">AMD 完成收购公告</a>、<a href="https://www.sec.gov/Archives/edgar/data/2488/000119312526462340/d105780d8ka_htm.xml">SEC 8-K/A</a>、<a href="https://ir.amd.com/news-events/press-releases/detail/1299/amd-to-acquire-world-labs-to-advance-the-future-of-ai-compute">AMD 此前收购公告</a>。</li>
+<li><strong>证据等级</strong>：A / L2；事实置信度高，效果置信度不足。</li>
+<li><strong>互证情况</strong>：公司公告确认角色与协作方向；SEC 文件确认交易完成；此前公告提供战略基线。</li>
+<li><strong>反向解释</strong>：大部分战略意图在 9 月已经公开，本期主要是交易交割和正式汇报线落地；“继续基础研究”也可能是留才叙事，不能证明自治或整合质量。</li>
+<li><strong>与历史基线关系</strong>：从外部收购意向进入正式完成和公开汇报关系；本期补录上一窗口遗漏，不重复制造新日期。</li>
+<li><strong>组织发展关注点</strong>：研究预算、人员保留、论文与开放发布、工程优先级冲突、路线决策权和反馈周期。</li>
+<li><strong>适用边界</strong>：芯片与系统公司并入前沿模型研究团队的整合场景；不外推一般技术并购。</li>
+<li><strong>待验证问题</strong>：World Labs 是否保留独立管理与品牌；李飞飞的资源和否决权；工程协作的固定机制；研究与产品目标冲突如何处理。</li>
+<li><strong>公开策略</strong>：只呈现公开角色和结构，不披露交易外的私人信息。</li>
+</ul>
+<h2 id="不是新闻而是机制">不是新闻而是机制</h2>
+<div class="table-wrap"><table><thead><tr>
+<th>事件表面</th>
+<th>机制翻译</th>
+<th>可能影响</th>
+<th>反向解释与边界</th>
+</tr></thead><tbody>
+<tr>
+<td>NVIDIA 新设董事会委员会</td>
+<td>把高后果政策与合规风险从广义治理监督中单独升级，并给专业团队增加直达董事会的报告线</td>
+<td>增加风险可见度和监督独立性，也可能增加矩阵协调、重复审查和决策时延</td>
+<td>可能主要是危机后的治理与声誉修复；结构存在不等于机制有效</td>
+</tr>
+<tr>
+<td>董事会公开不恢复黄仁勋 CEO 职位</td>
+<td>用正式任免口径覆盖创始人回归意愿和外部影响力，维持临时权威中心</td>
+<td>减少公开双重权威的不确定性，永久继任空窗仍在</td>
+<td>当前立场不是永久承诺，不能推断继任稳定</td>
+</tr>
+<tr>
+<td>AMD 完成 World Labs 收购</td>
+<td>保留模型研究身份、让首席科学家直达 CEO，并把 Research 接入硬件 / 软件 / 系统工程</td>
+<td>可能缩短模型需求与平台路线的信息距离，也可能增加跨职能协调负担</td>
+<td>交易完成和组织设计不等于研究自治、整合成功或产品提速</td>
+</tr>
+<tr>
+<td>AI 原生公司新增教育、研究运营与 PMO 岗位</td>
+<td>把专家培训、研究协调、创始人介入和外包项目管理转成专职接口与可重复节奏</td>
+<td>可能减少隐性协调与关键人负担，也可能增加管理层和人工采用成本</td>
+<td>招聘目标也可能暴露产品自解释性不足、研究接口碎片或创始人依赖；岗位不等于机制运行</td>
+</tr>
+<tr>
+<td>腾讯优图关键人员离职报道</td>
+<td>单点人才流动只有在团队范围、替代安排和项目变化得到确认后，才能承担组织机制判断</td>
+<td>若属实可能影响研究接口连续性</td>
+<td>单源、无公司回应；个人流动不能外推团队重组或战略变化</td>
+</tr>
+</tbody></table></div>
+<h2 id="组织情报结论卡">组织情报结论卡</h2>
+<h3 id="结论卡-a-高风险职能的组织地位取决于它能否绕过单一经营汇报链">结论卡 A｜高风险职能的组织地位取决于它能否绕过单一经营汇报链</h3>
+<ul>
+<li><strong>事实基础</strong>：NVIDIA 为国家安全与出口管制设立专门常设委员会，两支专业团队直接向委员会报告，同时由临时 CEO 负责日常运营。</li>
+<li><strong>机制判断</strong>：双重报告让风险信息获得独立升级通道，但经营责任与监督责任的边界必须通过章程、升级阈值和冲突处理机制体现。</li>
+<li><strong>效率变量</strong>：风险上报速度、信息过滤、协调成本、管理跨度、业务约束与问责清晰度。</li>
+<li><strong>知识等级</strong>：A/B / L3 结构事实；效果仍为待验证。</li>
+<li><strong>反向解释</strong>：危机后的委员会化也可能增加审批层级，或主要满足监管与声誉需要。</li>
+<li><strong>适用边界</strong>：高地缘政治与出口管制暴露的公司。</li>
+<li><strong>待验证问题</strong>：真实授权、案件升级、业务冲突、预算任免与结果变化。</li>
+</ul>
+<h3 id="结论卡-b-继任治理的有效信息不是创始人表达-而是董事会可执行的任免状态">结论卡 B｜继任治理的有效信息不是创始人表达，而是董事会可执行的任免状态</h3>
+<ul>
+<li><strong>事实基础</strong>：黄仁勋公开回归意愿后，董事长表示董事会当前不恢复其 CEO 职位，临时 CEO 与永久搜索继续。</li>
+<li><strong>机制判断</strong>：正式董事会口径把权力边界从舆论和个人意愿拉回任免程序，短期压低双重权威中心的公开不确定性。</li>
+<li><strong>效率变量</strong>：决策权威、关键人才预期、战略连续性、继任周期。</li>
+<li><strong>知识等级</strong>：B+ / L2。</li>
+<li><strong>反向解释</strong>：口径稳定不等于永久人选、管理稳定或业务连续性已经解决。</li>
+<li><strong>适用边界</strong>：创始人影响力高且处于临时 CEO 过渡期的公司。</li>
+<li><strong>待验证问题</strong>：永久人选、正式授权、关键团队汇报和留任。</li>
+</ul>
+<h3 id="结论卡-c-研究团队并入平台公司后-组织结构只证明接口存在-不证明协同发生">结论卡 C｜研究团队并入平台公司后，组织结构只证明接口存在，不证明协同发生</h3>
+<ul>
+<li><strong>事实基础</strong>：AMD 保留 World Labs 基础模型研究，设置首席科学家直报 CEO，并公开跨硬件、软件、系统工程协作方向。</li>
+<li><strong>机制判断</strong>：研究身份保留与 CEO 直达层减少研究信号被业务层级稀释的可能，跨工程接口则把模型需求接入平台路线。</li>
+<li><strong>效率变量</strong>：信息距离、研究自治、资源竞争、跨职能协调、反馈周期。</li>
+<li><strong>知识等级</strong>：A / L2 事实观察。</li>
+<li><strong>反向解释</strong>：并购留才叙事、平台目标偏置和协调负担都可能削弱预期协同。</li>
+<li><strong>适用边界</strong>：平台型科技公司收购前沿研究团队。</li>
+<li><strong>待验证问题</strong>：预算与路线权、研究发布、人员保留、协作机制和结果数据。</li>
+</ul>
+<h3 id="结论卡-d-规模化接口岗位的增加-更像协调机制显性化-而不是效率结果">结论卡 D｜规模化接口岗位的增加，更像协调机制显性化，而不是效率结果</h3>
+<ul>
+<li><strong>事实基础</strong>：OpenAI 分层客户教育与区域部署，Mistral 增加 Science Operations，Replit 将 CEO 中心活动流程化，Anthropic 计划内建 Workplace PMO。</li>
+<li><strong>机制判断</strong>：原本由专家、研究员、创始人或外部伙伴承担的隐性协调被拆成专职接口、标准、追踪与节奏。</li>
+<li><strong>效率变量</strong>：客户采用、研究人员协调负担、CEO 管理跨度、跨地区标准化和后台成本纪律。</li>
+<li><strong>知识等级</strong>：单岗 A / L1；跨公司 L2 设计观察。</li>
+<li><strong>反向解释</strong>：这些岗位也可能是产品部署不够自助、研究转发布困难、创始人依赖或外包控制不足后的补课。</li>
+<li><strong>适用边界</strong>：快速扩张、跨地区交付和研究—产品接口复杂的 AI 原生公司。</li>
+<li><strong>待验证问题</strong>：实际到岗、授权、团队规模、运行指标、员工负担和客户结果。</li>
+</ul>
+<h2 id="证据链与可信度">证据链与可信度</h2>
+<ul>
+<li><strong>NVIDIA 委员会</strong>：公司官方公告为 A 级第一来源，确认委员会、成员、汇报线、会议节奏和外部专家接口；2026 年法定披露确认此前常设委员会和广义监督基线；Reuters、AP 独立确认当日变化。三角互证支持 L3 结构事实，不支持效果结论。</li>
+<li><strong>NVIDIA 继任口径</strong>：AP 直接报道董事长在财报电话会的公开表述，SEC 文件确认临时 CEO 和正式公司状态。证据支持当前董事会立场，不支持永久排除或继任完成。</li>
+<li><strong>AMD—World Labs</strong>：公司完成收购公告与此前收购公告确认角色、汇报和协作方向，SEC 8-K/A 确认交易完成。事实达到 A / L2；缺少实际运行和独立结果数据。</li>
+<li><strong>腾讯优图</strong>：雷峰网独家与新浪转载属于同一引用链，不能计算为双源互证；腾讯无公开回应，保持 B- / L1。</li>
+<li><strong>AI 原生 ATS</strong>：官方职位页只证明公开目标责任。页面更新、地点扩展和职位移除不承担到岗、编制、团队运行、裁员或效率结论。</li>
+<li><strong>AI 原生岗位组合</strong>：OpenAI、Mistral、Replit、Anthropic 的官方岗位页分别确认目标责任；同一严格窗口内出现教育分层、研究运营、CEO Office 流程化和内部 PMO，支持 L2 设计趋同。Ashby <code>publishedAt</code> 会刷新，Greenhouse <code>updated_at</code> 只证明页面更新，因此逐页新鲜度不承担净增编制结论。</li>
+<li><strong>传统大厂与 AI 原生零新增</strong>：只描述严格窗口内公开扫描和核验结果，不承担“内部没有变化”的判断。</li>
+</ul>
+<h2 id="去伪存真记录">去伪存真记录</h2>
+<ul>
+<li>AnySearch CLI 先覆盖传统大厂、国内 AI 原生、国外 AI 原生、组织 / 绩效 / 晋升 / 职级 / 治理 / 安全 / 商业化 / 反向关键词，再回到公司公告、SEC、官方 ATS 和原始媒体核验。</li>
+<li>NVIDIA 委员会被写成 L3 结构事实，但没有写成治理修复完成、风险下降、出口结果改善、决策更快或组织效率提高。</li>
+<li>NVIDIA 的“双重报告”没有被写成委员会拥有日常否决权；两支团队仍由临时 CEO 管理日常运营。</li>
+<li>董事长当前不恢复黄仁勋职位的表述没有被写成永久排除；永久 CEO 搜索仍未完成。</li>
+<li>AMD 公告的精确时间被换算为北京时间并识别为上一窗口遗漏，本期只做 72 小时补录，不伪造为严格窗口新发。</li>
+<li>AMD 的交易完成、CEO 直达和跨工程协作没有被写成研究自治、人才保留、研发提速、芯片竞争力提升或整合成功。</li>
+<li>腾讯优图个人离职没有被写成团队重组、战略调整或能力流失；同源转载不按独立互证累计。</li>
+<li>OpenAI、Mistral、Replit、Anthropic 的岗位组合只写成目标组织接口；没有写成团队已成立、扩编、采用改善、研究提速、CEO 负担下降或后台成本下降。</li>
+<li>SpaceXSI / xAI 招聘入口中的 Safety 被限定为 Trust &amp; Safety 运营工具边界，没有写成模型 Alignment 或训练安全团队扩张。</li>
+<li>Anthropic IPO、IBM CAIO 调研、Microsoft 模型发布、市场涨跌、用量单位 用量、服务故障、产品采用、职位页增删和匿名裁员信息均未被写成组织机制或效率结果。</li>
+<li>腾讯 11 月 11 日讲话、11 月 12 日报道及 11 月 16 日转载，Canva 11 月初调整、Microsoft 10 月自愿退出计划、Atlassian 历史重组等因时间错配或既有覆盖被排除。</li>
+</ul>
+<h2 id="渠道索引补充">渠道索引补充</h2>
+<ul>
+<li><strong>AnySearch CLI</strong>：优先覆盖中英文传统大厂、国内外 AI 原生、组织、岗位、绩效、晋升、职级、治理、出口管制、安全与反向查询。</li>
+<li><strong>公司治理第一来源</strong>：NVIDIA Newsroom、NVIDIA 年报与 SEC 文件、AMD Investor Relations 与 SEC 文件。</li>
+<li><strong>独立互证</strong>：Reuters、AP 用于核对发布时间、委员会变化和董事会公开口径；转载不替代原始引用链。</li>
+<li><strong>国内媒体原始引用链</strong>：雷峰网独家作为腾讯优图候选信号，新浪仅作同源传播记录，不累计证据等级。</li>
+<li><strong>官方 ATS 日差分</strong>：继续记录 OpenAI、Anthropic、Harvey、Perplexity、Cohere、Mistral、ElevenLabs、Replit、Cursor / Anysphere、Scale AI、Runway、Midjourney、Character.AI、xAI 等页面生命周期；单页变化不承担组织结论。</li>
+<li><strong>ATS 新鲜度校验</strong>：对 OpenAI、Mistral、Replit、Anthropic、SpaceXSI / xAI 使用岗位 ID、外部索引和前一日快照判重；页面时间戳刷新、改名、撤下后重现不计作新岗位族。</li>
+<li><strong>本期无新增私密渠道索引</strong>：未读取、复制或上传桌面私有参考文档、内部链接、访谈口径、截图、未授权附件或个人信息。</li>
+</ul>
+<h2 id="观察池-待核验池">观察池 / 待核验池</h2>
+<ul>
+<li><strong>NVIDIA 专门监督委员会（A/B / L3 结构事实）</strong>：章程、升级阈值、否决权、预算与任免、独立调查接口、业务冲突处理、案件与结果数据。</li>
+<li><strong>NVIDIA 继任治理（B+ / L2）</strong>：永久候选、正式授权、黄仁勋未来角色、关键人才稳定、战略连续性和继任周期。</li>
+<li><strong>AMD—World Labs（A / L2，72 小时补漏）</strong>：研究自治、预算与路线权、人员保留、固定协作机制、研究发布、反馈周期和整合结果。</li>
+<li><strong>腾讯优图孙星离职（B- / L1）</strong>：公司或本人确认、团队范围、替代安排、项目调整和后续去向；核验前不承担组织结论。</li>
+<li><strong>国内外 AI 原生 ATS（A / L0 组织判断）</strong>：保留页面生命周期，等待连续岗位结构变化、正式组织公告、实际人员到位或独立运行证据。</li>
+<li><strong>AI 原生规模化接口（单岗 A / L1；跨公司 L2 设计观察）</strong>：OpenAI 客户教育与韩国部署、Mistral Science Operations、Replit CEO Office、Anthropic Workplace PMO 的到岗、授权、运行数据和人员负担。</li>
+<li><strong>Anthropic IPO 与行业财务比率（A/B / 背景）</strong>：等待治理、汇报线、权限、绩效或人员制度出现相对原始 S-1 的实质变化；财务比率不承担个人效率结论。</li>
+</ul>
+<h2 id="公开知识库入库判断">公开知识库入库判断</h2>
+<ul>
+<li><strong>新增 L3 结构事实</strong>：NVIDIA 新设董事会常设国家安全与出口管制监督委员会，形成专业团队直报委员会、日常向临时 CEO 汇报的双重报告结构。只入库结构与机制，不入库效果判断。</li>
+<li><strong>新增 L2 事实观察</strong>：NVIDIA 董事会当前不恢复黄仁勋 CEO 职位的正式口径；AMD—World Labs 的研究保留、首席科学家直报 CEO 和跨工程协作结构（72 小时补漏）。</li>
+<li><strong>跨公司 L2 设计趋同</strong>：AI 原生公司把客户教育、研究运营、创始人中心活动和外包项目管理拆为专职规模化接口；只描述公开岗位设计，不构成到岗、扩编、减负或效率结论。</li>
+<li><strong>新增 L1 观察</strong>：腾讯优图研究负责人离职的单源报道，仅留待核验池。</li>
+<li><strong>新增 L3 / L4 效率结论</strong>：无。没有可归因证据证明决策速度、协作成本、管理跨度、人才密度、绩效压力、员工负担、人员规模或风险结果出现稳定改善。</li>
+<li><strong>暂不采纳</strong>：匿名裁员与 PIP 说法、同源转载、职位页增删推导、产品发布、IPO 热度、模型用量、服务故障、供应商横截面调查和公司自报效果。</li>
+<li><strong>L4 方法 / playbook</strong>：无。没有外部证据与内部长期数据共同验证。</li>
+<li><strong>公开边界</strong>：公开镜像只保留公开来源、证据判断、反向解释、适用边界和待验证问题；移除原始检索归档、本地路径、访问凭据、私有渠道、访谈材料和个人信息。</li>
+</ul>
+      </article>
+    </main>
+  </div>
+</body>
+</html>
