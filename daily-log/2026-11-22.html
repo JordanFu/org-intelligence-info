@@ -1,0 +1,494 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>组织情报信息</title>
+  <style>
+    :root {
+      color-scheme: light;
+      --bg: #f6f7f1;
+      --paper: #fffdf8;
+      --ink: #172033;
+      --muted: #697181;
+      --line: #ded8c9;
+      --soft: #ece6d7;
+      --accent: #1f6f68;
+      --accent-2: #b45a34;
+      --code: #f1eee6;
+    }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "PingFang SC", "Microsoft YaHei", sans-serif;
+      color: var(--ink);
+      background: var(--bg);
+      line-height: 1.75;
+    }
+    .shell {
+      display: grid;
+      grid-template-columns: minmax(210px, 280px) minmax(0, 1fr);
+      min-height: 100vh;
+    }
+    aside {
+      position: sticky;
+      top: 0;
+      height: 100vh;
+      padding: 28px 22px;
+      border-right: 1px solid var(--line);
+      background: #ebe5d7;
+      overflow: auto;
+    }
+    main {
+      max-width: 1040px;
+      width: 100%;
+      padding: 56px 56px 90px;
+    }
+    .eyebrow {
+      color: var(--accent-2);
+      font-size: 13px;
+      font-weight: 800;
+      letter-spacing: .08em;
+      text-transform: uppercase;
+      margin: 0 0 10px;
+    }
+    h1 {
+      font-size: clamp(30px, 4vw, 48px);
+      line-height: 1.12;
+      margin: 0 0 18px;
+      letter-spacing: 0;
+    }
+    h2 {
+      font-size: 26px;
+      line-height: 1.32;
+      margin: 48px 0 14px;
+      padding-top: 18px;
+      border-top: 1px solid var(--line);
+    }
+    h3 {
+      font-size: 20px;
+      margin: 34px 0 10px;
+      color: #23314d;
+    }
+    h4 {
+      font-size: 17px;
+      margin: 26px 0 8px;
+    }
+    p, li {
+      font-size: 16px;
+      color: #2b3343;
+    }
+    p { margin: 10px 0; }
+    ul { padding-left: 1.2rem; }
+    li { margin: 7px 0; }
+    a { color: var(--accent); text-decoration-thickness: 1px; text-underline-offset: 3px; }
+    code {
+      background: var(--code);
+      border: 1px solid var(--line);
+      border-radius: 5px;
+      padding: 1px 5px;
+      font-size: .92em;
+    }
+    pre {
+      overflow: auto;
+      background: #fff9ec;
+      color: #202838;
+      border: 1px solid #d8ccb8;
+      border-radius: 8px;
+      padding: 18px;
+      box-shadow: inset 4px 0 0 var(--accent);
+      white-space: pre-wrap;
+      word-break: break-word;
+    }
+    pre code {
+      display: block;
+      padding: 0;
+      border: 0;
+      background: transparent;
+      color: inherit;
+      line-height: 1.7;
+      font-size: 14px;
+    }
+    blockquote {
+      margin: 24px 0;
+      padding: 14px 18px;
+      border-left: 4px solid var(--accent);
+      background: #eef4ee;
+      color: #344033;
+    }
+    .table-wrap {
+      overflow-x: auto;
+      margin: 18px 0 26px;
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      background: var(--paper);
+    }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      min-width: 720px;
+    }
+    th, td {
+      padding: 12px 14px;
+      border-bottom: 1px solid var(--line);
+      vertical-align: top;
+      text-align: left;
+      font-size: 14px;
+    }
+    th {
+      background: #e7e0cf;
+      color: #26324a;
+      font-weight: 800;
+      white-space: nowrap;
+    }
+    tr:last-child td { border-bottom: 0; }
+    .topbar {
+      display: flex;
+      gap: 10px;
+      align-items: center;
+      flex-wrap: wrap;
+      margin-bottom: 28px;
+    }
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 38px;
+      padding: 8px 12px;
+      border: 1px solid var(--line);
+      border-radius: 7px;
+      background: var(--paper);
+      color: var(--ink);
+      text-decoration: none;
+      font-weight: 750;
+      font-size: 14px;
+    }
+    .primary { background: var(--accent); border-color: var(--accent); color: white; }
+    .toc-title {
+      margin: 0 0 12px;
+      font-size: 14px;
+      font-weight: 850;
+      color: #273247;
+    }
+    .toc a {
+      display: block;
+      padding: 7px 0;
+      color: #465064;
+      text-decoration: none;
+      font-size: 14px;
+      line-height: 1.45;
+      border-bottom: 1px solid rgba(23,32,51,.08);
+    }
+    .toc a.level-3 { padding-left: 14px; font-size: 13px; color: #626b78; }
+    .meta {
+      color: var(--muted);
+      font-size: 14px;
+      margin-bottom: 24px;
+    }
+    @media (max-width: 900px) {
+      .shell { display: block; }
+      aside { position: relative; height: auto; border-right: 0; border-bottom: 1px solid var(--line); }
+      main { padding: 34px 20px 70px; }
+      .toc { columns: 1; }
+      table { min-width: 640px; }
+    }
+  </style>
+</head>
+<body>
+  <div class="shell">
+    <aside>
+      <p class="toc-title">目录</p>
+      <nav class="toc">
+        <a class="level-2" href="#今日结论">今日结论</a>
+        <a class="level-2" href="#今日组织机制信号">今日组织机制信号</a>
+        <a class="level-2" href="#传统大厂与-ai-原生组织分组观察">传统大厂与 AI 原生组织分组观察</a>
+        <a class="level-3" href="#传统大厂">传统大厂</a>
+        <a class="level-3" href="#ai-原生组织">AI 原生组织</a>
+        <a class="level-3" href="#趋同与分化">趋同与分化</a>
+        <a class="level-2" href="#高价值变化卡片">高价值变化卡片</a>
+        <a class="level-3" href="#变化卡-1-openai-网络安全判断进入后训练回路">变化卡 1｜OpenAI：网络安全判断进入后训练回路</a>
+        <a class="level-3" href="#变化卡-2-anthropic-外部安全材料被转成发布运营职责">变化卡 2｜Anthropic：外部安全材料被转成发布运营职责</a>
+        <a class="level-3" href="#变化卡-3-harvey-工程嵌入品牌职能-薪酬复杂度进入系统治理">变化卡 3｜Harvey：工程嵌入品牌职能，薪酬复杂度进入系统治理</a>
+        <a class="level-3" href="#变化卡-4-bytedance-seed-maas-双线汇报的接口压缩信号">变化卡 4｜ByteDance：Seed MaaS 双线汇报的接口压缩信号</a>
+        <a class="level-2" href="#不是新闻而是机制">不是新闻而是机制</a>
+        <a class="level-2" href="#组织情报结论卡">组织情报结论卡</a>
+        <a class="level-3" href="#结论卡-a-模型安全正在从外围审查进入训练与发布运营">结论卡 A｜模型安全正在从外围审查进入训练与发布运营</a>
+        <a class="level-3" href="#结论卡-b-ai-原生职能改造的关键不是工具使用-而是责任与质量系统重写">结论卡 B｜AI 原生职能改造的关键不是工具使用，而是责任与质量系统重写</a>
+        <a class="level-3" href="#结论卡-c-快速扩张会同时产生业务接口与管理基础设施需求">结论卡 C｜快速扩张会同时产生业务接口与管理基础设施需求</a>
+        <a class="level-2" href="#证据链与可信度">证据链与可信度</a>
+        <a class="level-2" href="#去伪存真记录">去伪存真记录</a>
+      </nav>
+    </aside>
+    <main>
+      <div class="topbar">
+        <a class="btn primary" href="../index.html">返回研究源</a>
+        <a class="btn" href="./2026-11-22.md">查看 Markdown 原文</a>
+      </div>
+      <p class="eyebrow">Daily Scan</p>
+      <h1>2026-11-22 组织情报信息</h1>
+      <p class="meta">本页面由本地 Markdown 自动渲染生成，仍保留原始 md 文件作为知识库源文档。</p>
+      <article>
+        <blockquote><strong>扫描窗口</strong>：严格窗口为 2026-11-21 08:33:07 CST—2026-11-22 08:34:00 CST；72 小时补漏窗口为 2026-11-19 08:34:00 CST—2026-11-22 08:34:00 CST。本地最新日报为 2026-11-21，本期不存在缺失自然日。</blockquote>
+<blockquote></blockquote>
+<blockquote><strong>证据结论</strong>：严格窗口内，公开新闻没有形成新的 L2 / L3 组织结论；官方 ATS 与连续快照确认 12 个新增 UUID，折叠地点复制后为 7 个岗位族。ByteDance Seed MaaS 的汇报线调整只有同源转述，保留为 L1。72 小时补漏未发现尚未覆盖的 L2+ 变化。</blockquote>
+<h2 id="今日结论">今日结论</h2>
+<ul>
+<li><strong>今天没有新增 L3 组织效率结论。</strong> 公开新闻侧没有获得足以互证的 L2 新动作；72 小时补漏也没有发现此前遗漏的 L2+ 变化。零新增只表示可验证公开证据不足，不表示企业内部没有变化。</li>
+<li><strong>AI 原生公司的高价值新增集中在“训练安全—发布披露—职能工作流—管理基础设施”四个接口。</strong> OpenAI 把网络安全领域判断接入后训练；Anthropic 把 system card 与风险披露变成专门的发布运营职责；Harvey 把工程能力嵌入品牌团队，同时以 People Systems 承接薪酬周期复杂度。它们是岗位设计事实，不是效率结果。</li>
+<li><strong>12 个新增 UUID 只代表 7 个岗位族。</strong> Harvey 的 5 个薪酬系统 ID 和 2 个 Creative AI Engineer ID 都是同岗多地点复制；不能写成 7 个不同能力、7 个新增编制或 7 人到岗。</li>
+<li><strong>ByteDance Seed MaaS 显示模型基础设施与企业 MaaS 交付可能在收紧接口。</strong> 公开转述称 Seed Model–MaaS Infra 与 Seed MaaS 由同一负责人统筹，并保留技术实线、商业虚线汇报。由于全部公开页面追溯到同一内部邮件链，事实等级仅 L1。</li>
+<li><strong>传统大厂没有核实到严格窗口 L2 新动作。</strong> 腾讯文章重复 11 月 16 日 LinkTime 信息，Microsoft WARN 动作早在 9 月通知，NVIDIA 管理叙事是历史回顾；均未伪装为当日变化。</li>
+<li><strong>本期没有新增 L4 方法。</strong> 招聘职责可说明组织设计意图，但不能证明团队成立、编制净增、协作成本下降、工作强度改善或业务结果发生。</li>
+</ul>
+<h2 id="今日组织机制信号">今日组织机制信号</h2>
+<div class="table-wrap"><table><thead><tr>
+<th>信号</th>
+<th>L1 事实</th>
+<th>L2 机制判断</th>
+<th>L3 组织判断</th>
+<th>影响变量</th>
+<th>证据 / 置信度</th>
+<th>阅读价值</th>
+</tr></thead><tbody>
+<tr>
+<td>OpenAI Cyber Safety Training</td>
+<td>官方岗位进入 frontier model 训练，连接 post-training、RL、评测、部署反馈及 T&amp;S / Legal / Policy</td>
+<td>网络安全领域判断被放进核心后训练回路</td>
+<td>不成立：无风险、能力或员工负担结果</td>
+<td>风险门槛、职能边界、发布节奏</td>
+<td>官方 ATS + 连续差分 / L2；中高</td>
+<td>核心结论</td>
+</tr>
+<tr>
+<td>Anthropic External Artifacts</td>
+<td>岗位统筹 system card 时间线、贡献者、open threads、完成定义，并连接多支安全与能力团队</td>
+<td>外部安全披露从附属写作转为模型发布运营职责</td>
+<td>不成立：无发布速度、披露质量或风险结果</td>
+<td>协作成本、责任边界、风险治理</td>
+<td>官方 Greenhouse + 连续差分 / L2；中高</td>
+<td>核心结论</td>
+</tr>
+<tr>
+<td>Harvey Creative AI Engineer</td>
+<td>工程岗位于 Marketing、汇报 Creative Director，负责 agent skills、templates、工具连接、媒体管线和品牌评测</td>
+<td>工程能力嵌入品牌职能，设计方法被编码成可复用工作流</td>
+<td>不成立：无设计等待时间、质量或岗位替代结果</td>
+<td>职能边界、复用成本、执行节奏</td>
+<td>官方 ATS + 连续差分 / L2；中</td>
+<td>持续观察</td>
+</tr>
+<tr>
+<td>Harvey People Systems</td>
+<td>同一薪酬系统岗位以五个地点 ID 发布，覆盖 Workday Compensation、奖金、股权、周期与数据完整性</td>
+<td>快速扩张后的薪酬运行复杂度被系统岗位承接</td>
+<td>不成立：无周期质量、经理负担或员工体验结果</td>
+<td>管理系统、协作成本、绩效压力</td>
+<td>官方 ATS + 连续差分 / L2；中</td>
+<td>持续观察</td>
+</tr>
+<tr>
+<td>ByteDance Seed MaaS</td>
+<td>同源报道转述二级组织新设、Ark 团队改名及同一负责人双线汇报</td>
+<td>模型服务基础设施与企业 MaaS 交付接口可能收紧</td>
+<td>不成立：缺官方确认、人员预算与运行结果</td>
+<td>决策速度、协作成本、管理跨度</td>
+<td>同源公开转述 / L1；低中</td>
+<td>持续观察</td>
+</tr>
+</tbody></table></div>
+<h2 id="传统大厂与-ai-原生组织分组观察">传统大厂与 AI 原生组织分组观察</h2>
+<h3 id="传统大厂">传统大厂</h3>
+<ul>
+<li><strong>ByteDance / 火山引擎</strong>：Seed MaaS 调整只进入 L1 观察池。若汇报线属实，其结构不是简单合并，而是用同一负责人承接技术实线与商业虚线；这可能缩短客户问题回流，也可能把技术优先级与商业交付冲突集中到一个管理节点。</li>
+<li><strong>腾讯</strong>：11 月 21 日中文文章主要重复 11 月 16 日 LinkTime 和既有季度信息，本地 11 月 19 日报告已覆盖，不计新变化。</li>
+<li><strong>Microsoft</strong>：277 个岗位终止在 11 月 21 日生效，但 WARN 决定与通知发生在 9 月，不构成本窗口新决策。</li>
+<li><strong>NVIDIA 及其他传统大厂</strong>：管理评论、产品发布、融资、股价、裁员榜单和旧闻没有被转换成当日组织机制结论。</li>
+</ul>
+<h3 id="ai-原生组织">AI 原生组织</h3>
+<ul>
+<li><strong>OpenAI</strong>：官方板 851→852；可信新增为 Cyber Safety Training 与 Integrated Marketing Manager 两个 UUID，同批还出现撤页和旧 ID 改名。高价值变化是安全判断进入训练回路，不是净增两人。</li>
+<li><strong>Anthropic</strong>：官方板 634→635；严格窗确认 External Artifacts、Finetuning、韩国 Applied AI Architect 三个岗位族。External Artifacts 连接 Alignment、Safeguards、Frontier Red Team、Interpretability 与 capabilities research；Finetuning 跨 Research / Engineering / Product；韩国 Applied AI Architect 连接企业发现、评测、部署与产品反馈。职位标题含 Manager，但正文未说明直接下属，不能推断管理跨度。</li>
+<li><strong>Harvey</strong>：官方板 383→390，实际为两个岗位族的七个地点 ID。Creative AI Engineer 显示工程能力进入品牌职能；People Systems 显示组织扩张后开始把薪酬、奖金、股权和数据完整性放进统一系统责任。</li>
+<li><strong>Perplexity、Mistral、Cohere、xAI、Cursor、Replit</strong>：开放页总量没有严格窗可信新增；旧 ID 更新、地点变化和批量刷新均已剔除。</li>
+<li><strong>ElevenLabs 与 Scale AI</strong>：分别净撤下一页，但页面撤下不能推断招满、冻结、裁员或编制收缩。</li>
+<li><strong>国内 AI 原生公司</strong>：固定名单检索未核实到严格窗口 L2 新变化；检索覆盖不足与零结论边界一并保留。</li>
+</ul>
+<h3 id="趋同与分化">趋同与分化</h3>
+<ul>
+<li>趋同点是 AI 原生组织把原本隐性的跨职能协调接口岗位化：训练安全、外部披露、客户部署、品牌生产和薪酬系统都有明确责任对象。</li>
+<li>分化点在于接口所处阶段：OpenAI、Anthropic 把风险判断放进模型训练与发布主流程；Harvey 同时补品牌生产工作流与规模化管理基础设施。现有证据只能说明设计方向，不能比较谁的组织效率更高。</li>
+</ul>
+<h2 id="高价值变化卡片">高价值变化卡片</h2>
+<h3 id="变化卡-1-openai-网络安全判断进入后训练回路">变化卡 1｜OpenAI：网络安全判断进入后训练回路</h3>
+<ul>
+<li><strong>时间与范围</strong>：岗位发布时间为 2026-11-21 00:40:42Z，落入严格窗口；范围是 Cyber Safety Training。</li>
+<li><strong>机制变化</strong>：岗位直接参与 frontier model 大规模训练，连接 post-training、强化学习、评测和部署反馈，并与 Trust &amp; Safety、Legal、Policy 协作。</li>
+<li><strong>L1 事实</strong>：官方 Ashby 页列明职责与跨职能关系。</li>
+<li><strong>L2 机制判断</strong>：网络安全专业判断不只停留在政策或上线后审核，而被放进训练目标、评测和反馈回路，同时处理“误拒合法防御工作”与“帮助造成伤害”两类错误。</li>
+<li><strong>L3 组织判断</strong>：不成立。没有风险事件、模型效果、发布速度、决策权或人员到岗数据。</li>
+<li><strong>组织影响</strong>：安全与能力之间的权衡更靠近模型训练核心；跨 T&amp;S / Legal / Policy 的接口也可能增加协调与发布约束。</li>
+<li><strong>证据链</strong>：<a href="https://jobs.ashbyhq.com/openai/0503a31f-5550-44e8-bec3-99b493532000">OpenAI 官方岗位</a>、<a href="https://frontierterm.com/alerts/c4b05010421863e694f5a1dabe852449c38d0ff25ed3a7e502edaf8a72b85150">逐时差分</a>。</li>
+<li><strong>证据等级</strong>：官方职责 A；新鲜度由连续差分互证，事实观察 L2；效果仍为空白。</li>
+<li><strong>反向解释</strong>：单岗可能是回填、试点或既有职责显性化，不证明安全组织扩大或训练风险下降。</li>
+<li><strong>适用边界与待验证问题</strong>：到岗、汇报线、训练决策权、评测门槛、误拒 / 漏放、发布节奏与员工负担仍待验证。</li>
+</ul>
+<h3 id="变化卡-2-anthropic-外部安全材料被转成发布运营职责">变化卡 2｜Anthropic：外部安全材料被转成发布运营职责</h3>
+<ul>
+<li><strong>时间与范围</strong>：官方更新时间折算为 2026-11-21 00:47:30Z；范围是 Research Operations, External Artifacts。</li>
+<li><strong>机制变化</strong>：岗位拥有 system card 时间线、贡献者列表、open threads 与 definition of done，协调 Alignment、Safeguards、Frontier Red Team、Interpretability 和 capabilities research，并保持 system card、风险报告与 RSP 更新一致。</li>
+<li><strong>L1 事实</strong>：官方 Greenhouse 页给出责任边界。</li>
+<li><strong>L2 机制判断</strong>：外部安全披露被放入模型发布过程的专门运营层，用进度、责任和完成标准连接多个研究与风险团队。</li>
+<li><strong>L3 组织判断</strong>：不成立。没有披露质量、发布周期、冲突解决或外部风险结果。</li>
+<li><strong>组织影响</strong>：可能减少跨团队信息遗漏和临时协调，也可能增加文档门槛与发布摩擦；两种方向均缺结果证据。</li>
+<li><strong>证据链</strong>：<a href="https://job-boards.greenhouse.io/anthropic/jobs/5490492008">Anthropic 官方岗位</a>、<a href="https://frontierterm.com/alerts/ce066c2a83ef01871f4a0d4037580568a3abc92eed649603f57c4ae5c1503beb">逐时差分</a>。</li>
+<li><strong>证据等级</strong>：官方职责 A；连续差分支持新鲜度，事实观察 L2。</li>
+<li><strong>反向解释</strong>：岗位也可能是既有协调缺口的补救，或只是公开披露工作增加，并不代表 Safety 获得更强否决权。</li>
+<li><strong>适用边界与待验证问题</strong>：实际权限、发布门、研究团队响应、材料返工、完成标准和外部审查结果仍待验证。</li>
+</ul>
+<h3 id="变化卡-3-harvey-工程嵌入品牌职能-薪酬复杂度进入系统治理">变化卡 3｜Harvey：工程嵌入品牌职能，薪酬复杂度进入系统治理</h3>
+<ul>
+<li><strong>时间与范围</strong>：两个岗位族分别于 2026-11-21 00:37—00:38Z 与 17:44Z 发布；七个 UUID 折叠为两个岗位族。</li>
+<li><strong>机制变化</strong>：Creative AI Engineer 位于 Marketing 并汇报 Creative Director，把 agent skills、templates、媒体管线、品牌评测和可编辑交付放进同一职责；Sr. People Systems Analyst 负责 Workday Compensation、年度 / 期中周期、奖金、股权、权限与数据完整性。</li>
+<li><strong>L1 事实</strong>：官方 Ashby 页确认同岗多地点和职责正文。</li>
+<li><strong>L2 机制判断</strong>：一条线把设计师经验编码成跨营销与销售可复用的工作流，另一条线把扩张后的薪酬复杂度转成交由系统岗位维护的管理基础设施。</li>
+<li><strong>L3 组织判断</strong>：不成立。没有品牌质量、等待时间、设计岗位变化、薪酬周期错误率或员工体验数据。</li>
+<li><strong>组织影响</strong>：品牌职能边界可能从“设计交付”扩展为“工作流与质量系统”；People Ops 的手工协调可能转为系统配置和数据治理，但也会增加平台依赖与集中控制。</li>
+<li><strong>证据链</strong>：<a href="https://jobs.ashbyhq.com/harvey/a42047fc-fbd1-4e14-bf10-15207ae2d060">Harvey Creative AI Engineer</a>、<a href="https://jobs.ashbyhq.com/harvey/994d18db-236e-4516-a949-ab6af1df3499">Harvey People Systems</a>。</li>
+<li><strong>证据等级</strong>：官方职责 A；连续差分支持新鲜度与地点折叠，事实观察 L2。</li>
+<li><strong>反向解释</strong>：招聘目标不等于已运行结果；“无需等待设计师”是岗位目标，不是岗位替代或效率证明。</li>
+<li><strong>适用边界与待验证问题</strong>：到岗、使用者、权限、采纳率、返工、品牌质量、薪酬数据治理与员工可解释性仍待验证。</li>
+</ul>
+<h3 id="变化卡-4-bytedance-seed-maas-双线汇报的接口压缩信号">变化卡 4｜ByteDance：Seed MaaS 双线汇报的接口压缩信号</h3>
+<ul>
+<li><strong>时间与范围</strong>：报道发表于严格窗口；范围被描述为 Seed 模型系统与火山引擎 Ark / MaaS 团队。</li>
+<li><strong>机制变化</strong>：公开转述称新设 Seed Model–MaaS Infra，Ark 团队改名 Seed MaaS，两者由吴迪统筹；技术实线汇报 Seed 基础设施负责人，商业虚线汇报火山引擎负责人。</li>
+<li><strong>L1 事实</strong>：多页面均追溯同一内部邮件 / Beating AI 链，未获得官方独立确认。</li>
+<li><strong>L2 机制判断</strong>：不成立；只保留“模型服务基础设施与企业交付接口可能收紧”的假设。</li>
+<li><strong>L3 组织判断</strong>：不成立。</li>
+<li><strong>组织影响</strong>：同一负责人可能缩短研发、推理服务和客户问题之间的反馈，也可能成为技术与商业目标冲突的集中节点。</li>
+<li><strong>证据链</strong>：<a href="https://en.theblockbeats.news/flash/378537">BlockBeats 转述</a>、<a href="https://www.itsdw.cn/news/50997.html">IT 时代网转述</a>。</li>
+<li><strong>证据等级</strong>：同源公开转述 / L1；低中置信度。</li>
+<li><strong>反向解释</strong>：可能只是命名、汇报或协同口径调整，不代表人员、预算、权限、产品或商业化已经整合。</li>
+<li><strong>适用边界与待验证问题</strong>：官方组织图、人员与预算迁移、架构责任、产品决策、客户交付、管理跨度与实际反馈周期仍待验证。</li>
+</ul>
+<h2 id="不是新闻而是机制">不是新闻而是机制</h2>
+<div class="table-wrap"><table><thead><tr>
+<th>事件表面</th>
+<th>机制翻译</th>
+<th>可能影响</th>
+<th>反向解释与边界</th>
+</tr></thead><tbody>
+<tr>
+<td>OpenAI 招网络安全研究员</td>
+<td>专业领域判断进入训练、评测与部署反馈回路</td>
+<td>安全与能力权衡更接近训练核心</td>
+<td>单岗不证明风险下降或 Safety 权力增强</td>
+</tr>
+<tr>
+<td>Anthropic 招 External Artifacts 运营</td>
+<td>system card 和风险材料获得时间线、责任人与完成标准</td>
+<td>跨团队披露协调可能更可控</td>
+<td>也可能是协调失灵后的补课</td>
+</tr>
+<tr>
+<td>Harvey 招 Creative AI Engineer</td>
+<td>工程进入品牌团队，把设计方法编码成工作流和评测</td>
+<td>复用可能增加，品牌质量治理更集中</td>
+<td>岗位目标不是已实现效果，更不是设计岗位替代</td>
+</tr>
+<tr>
+<td>Harvey 招薪酬系统岗位</td>
+<td>奖金、股权和薪酬周期由 People Systems 承接</td>
+<td>管理复杂度从人工协调转向系统治理</td>
+<td>五个地点 ID 不是五个岗位族或五人</td>
+</tr>
+<tr>
+<td>ByteDance 调整 Seed MaaS</td>
+<td>用同一负责人和双线汇报压缩模型服务与商业交付接口</td>
+<td>反馈可能更快，目标冲突也可能集中</td>
+<td>同源 L1，不能写成重组完成或效率提高</td>
+</tr>
+</tbody></table></div>
+<h2 id="组织情报结论卡">组织情报结论卡</h2>
+<h3 id="结论卡-a-模型安全正在从外围审查进入训练与发布运营">结论卡 A｜模型安全正在从外围审查进入训练与发布运营</h3>
+<ul>
+<li><strong>事实基础</strong>：OpenAI Cyber Safety Training 进入后训练与评测；Anthropic External Artifacts 连接多支安全 / 能力团队和发布材料。</li>
+<li><strong>机制判断</strong>：风险判断分别向上游进入训练回路、向下游进入发布披露的完成标准。</li>
+<li><strong>效率变量</strong>：发布节奏、跨团队协作、风险门槛、返工和责任边界。</li>
+<li><strong>知识等级</strong>：岗位设计事实 L2；跨公司趋势为窄 L2 观察；运行效果 L1。</li>
+<li><strong>反向解释与边界</strong>：岗位化也可能增加流程或补救既有失灵；无否决权和结果证据。</li>
+<li><strong>待验证问题</strong>：训练 / 发布决策权、实际门槛、冲突解决、误报漏报、返工和风险结果。</li>
+</ul>
+<h3 id="结论卡-b-ai-原生职能改造的关键不是工具使用-而是责任与质量系统重写">结论卡 B｜AI 原生职能改造的关键不是工具使用，而是责任与质量系统重写</h3>
+<ul>
+<li><strong>事实基础</strong>：Harvey 的 Creative AI Engineer 位于 Marketing，负责可复用 skills、templates、管线、品牌评测和可编辑交付。</li>
+<li><strong>机制判断</strong>：工程能力进入品牌团队，设计师经验被转为多人可复用、可评测的工作流资产。</li>
+<li><strong>效率变量</strong>：等待时间、复用、返工、品牌质量、职能边界与工作强度。</li>
+<li><strong>知识等级</strong>：事实 L2、机制观察 L2；效率和岗位影响不成立。</li>
+<li><strong>反向解释与边界</strong>：招聘文本可能描述目标状态；没有采纳率、质量或员工负担反事实。</li>
+<li><strong>待验证问题</strong>：使用范围、设计师角色、审核权、返工、质量、等待时间与收益分配。</li>
+</ul>
+<h3 id="结论卡-c-快速扩张会同时产生业务接口与管理基础设施需求">结论卡 C｜快速扩张会同时产生业务接口与管理基础设施需求</h3>
+<ul>
+<li><strong>事实基础</strong>：Harvey 同窗新增 Creative AI Engineer 与 Advanced Comp People Systems；Anthropic 继续增加 Finetuning 与企业部署接口。</li>
+<li><strong>机制判断</strong>：规模化不只是增加前台交付，也要求把薪酬、数据、风险披露和训练实验转成专门责任。</li>
+<li><strong>效率变量</strong>：管理跨度、协作成本、数据完整性、人才压力与执行节奏。</li>
+<li><strong>知识等级</strong>：岗位事实 L2；跨公司设计观察 L2；成效为空白。</li>
+<li><strong>反向解释与边界</strong>：新岗位可能是回填、试点或补救，不证明组织成熟度或效率优劣。</li>
+<li><strong>待验证问题</strong>：到岗、权限、团队规模、系统采用、经理负担、员工体验和业务结果。</li>
+</ul>
+<h2 id="证据链与可信度">证据链与可信度</h2>
+<ul>
+<li><strong>官方 ATS 总量</strong>：OpenAI 851→852、Harvey 383→390、Perplexity 151→151、Mistral 260→260、Cohere 124→124、xAI 299→299、ElevenLabs 122→121、Anthropic 634→635、Cursor 89→89、Replit 38→38、Scale AI 167→166；合计 3,118→3,125，净 +7。总量只代表开放页面。</li>
+<li><strong>新增内容折叠</strong>：严格窗确认 12 个 UUID、7 个岗位族：OpenAI 2、Harvey 7 个 UUID折为 2 个岗位族、Anthropic 3。官方正文与连续逐时差分共同承担 L2 新鲜度。</li>
+<li><strong>官方复核</strong>：本次直接查询 OpenAI、Harvey Ashby API 与 Anthropic Greenhouse API，核对了 ID、标题、地点和时间；官方页面不承担到岗或结果证据。</li>
+<li><strong>历史反查</strong>：Anthropic Privacy / Customer Marketing、xAI Client Partner、Scale AI Creative Advisor / Fellows、OpenAI 旧实验和计算岗位均为旧页、地点变化或更新时间刷新，未计新增。</li>
+<li><strong>ByteDance</strong>：公开页面虽有多个，但引用链同源，未将数量当作独立互证；只保留 L1。</li>
+<li><strong>新闻侧边界</strong>：严格窗口没有达到 L2 的新组织动作；72 小时补漏没有发现此前遗漏的 L2+ 变化。</li>
+<li><strong>零结论边界</strong>：检索与页面可见性有覆盖限制；“没有核实到”不等于“没有发生”。</li>
+</ul>
+<h2 id="去伪存真记录">去伪存真记录</h2>
+<ul>
+<li>AnySearch CLI 先覆盖国内传统大厂、国内 AI 原生、海外传统公司、海外 AI 原生及绩效 / 晋升 / 职级关键词；聚合页和旧闻只作为候选入口。</li>
+<li>ByteDance Seed MaaS 的多篇文章追溯到同一内部邮件转述，没有被升级为双源互证，也没有写成人员整合、预算整合或商业化效率提升。</li>
+<li>ATS 先按 UUID 检查，再按岗位族折叠地点；Harvey 七个新 ID只计两个岗位族。</li>
+<li>开放页净值没有被写成 HC、offer、入职或裁员净额；页面撤下也没有被写成招聘冻结、招满或人员退出。</li>
+<li>岗位标题中的 Manager 没有被自动解释为带人管理；正文未说明直接下属时，不推断管理跨度。</li>
+<li>岗位职责只承担组织设计事实；“无需等待设计师”、提高发布质量或降低风险等目标没有被写成实际结果。</li>
+<li>Tencent 重复信息、Microsoft 早期 WARN 决策、NVIDIA 历史评论、Anthropic IPO、Signal 产品治理以及融资和股价均未冒充当日组织变化。</li>
+<li>产品功能、AI 工具使用、职位活跃度和招聘数量没有被单独解释为组织变革或生产力提升。</li>
+</ul>
+<h2 id="渠道索引补充">渠道索引补充</h2>
+<ul>
+<li><strong>AnySearch CLI</strong>：请求 ID <code>5ee2b930cc784c71b8fcd5c25a3b2b95</code>、<code>d5946263d3584f579d4e3460f5102fde</code>、<code>c431a9b591d34d429a15e5232c635f54</code>、<code>0d6820c73deb44aba71bf8e5d6428d3e</code>、<code>1763dfe20e154d2ea2494135b71ee358</code>、<code>e816beba9ad242e59cb06cfbce96edb1</code>、<code>ae34817a95334774a7a21d87722288cf</code>、<code>8fca5b0d01fc484c805b68091e74ed4d</code>、<code>94465ea4f5ea4282a37049397872b0ab</code>、<code>1318f000291440f7936c903051a299e9</code>、<code>e1227837324c44868fd973ec370232dd</code>、<code>5dfe9345d2aa491489597d0f5696a734</code>、<code>9efe6906e0a0479bb32fd65f73fba48d</code>、<code>11bd97ed3aa8467389fce9115c9b653f</code>；聚合结果只作线索。</li>
+<li><strong>官方职位源</strong>：OpenAI、Harvey 的 Ashby API；Anthropic 的 Greenhouse API；其他固定公司职位板与连续快照。</li>
+<li><strong>独立差分</strong>：FrontierTerm 逐时差分用于确认发布时间、撤页、旧 ID 改名和批量更新，不替代官方岗位正文。</li>
+<li><strong>国内公开来源</strong>：BlockBeats、IT 时代网及同源转载用于 ByteDance Seed MaaS L1 观察；36Kr 腾讯文章用于重复信息反查。</li>
+<li><strong>本期无新增私密渠道索引</strong>：未读取、复制或上传桌面私有参考文档、内部链接、访谈口径、截图、未授权附件或个人信息。</li>
+</ul>
+<h2 id="观察池-待核验池">观察池 / 待核验池</h2>
+<ul>
+<li><strong>OpenAI Cyber Safety Training（官方 + 差分 / L2）</strong>：到岗、汇报线、训练目标权、评测门、误拒 / 漏放、发布节奏与员工负担。</li>
+<li><strong>Anthropic External Artifacts（官方 + 差分 / L2）</strong>：到岗、发布门、完成标准、跨团队冲突、材料返工与风险结果。</li>
+<li><strong>Anthropic Finetuning（官方 + 差分 / L2）</strong>：早期团队规模、Research / Engineering / Product 决策边界、长时程 RL 环境与评测结果。</li>
+<li><strong>Anthropic Applied AI Architect Korea（官方 + 差分 / L2）</strong>：是否带人、客户反馈回流、部署复用、销售压力与产品边界。</li>
+<li><strong>Harvey Creative AI Engineer（官方 + 差分 / L2）</strong>：采纳率、设计师角色、品牌审核、返工、等待时间、质量和工作强度。</li>
+<li><strong>Harvey People Systems（官方 + 差分 / L2）</strong>：系统权限、薪酬周期错误率、员工可解释性、经理负担与数据完整性。</li>
+<li><strong>ByteDance Seed MaaS（同源公开报道 / L1）</strong>：官方确认、人员 / 预算、实虚线权限、管理跨度、客户反馈和交付结果。</li>
+<li><strong>ElevenLabs / Scale AI 撤页（官方板 / L1）</strong>：撤页原因未知，不推断招满、冻结或缩编。</li>
+<li><strong>国内固定名单零新增</strong>：继续保留公开页面可见性和检索覆盖边界。</li>
+</ul>
+<h2 id="公开知识库入库判断">公开知识库入库判断</h2>
+<ul>
+<li><strong>新增 L3 / L4</strong>：无。没有组织效率结果，也没有外部机制与内部长期数据共同验证的方法。</li>
+<li><strong>新增 L2 岗位设计事实</strong>：OpenAI Cyber Safety Training；Anthropic External Artifacts、Finetuning、Applied AI Architect；Harvey Creative AI Engineer、People Systems；OpenAI Integrated Marketing Manager 仅作背景岗位事实。</li>
+<li><strong>新增跨公司 L2 观察</strong>：风险判断正在分别进入训练与发布运营；AI 原生规模化同时需要业务接口和管理基础设施。观察不承担效率优劣或普适方法。</li>
+<li><strong>新增 L1 观察</strong>：ByteDance Seed MaaS 双线汇报；ElevenLabs 与 Scale AI 单页撤下。</li>
+<li><strong>暂不采纳</strong>：12 个 UUID等于 12 个编制、Harvey 五地薪酬岗等于五个岗位族、岗位目标等于实际提效、设计岗位已被替代、Seed MaaS 已完成组织整合、撤页等于裁员或冻结。</li>
+<li><strong>公开边界</strong>：公开镜像只保留公开事实、机制判断、证据强度、反向解释、适用边界与待验证问题；移除原始检索归档、本地路径、访问凭据、私有渠道、访谈材料和个人信息。</li>
+</ul>
+      </article>
+    </main>
+  </div>
+</body>
+</html>
