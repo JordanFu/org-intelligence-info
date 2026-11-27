@@ -1,0 +1,403 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>组织情报信息</title>
+  <style>
+    :root {
+      color-scheme: light;
+      --bg: #f6f7f1;
+      --paper: #fffdf8;
+      --ink: #172033;
+      --muted: #697181;
+      --line: #ded8c9;
+      --soft: #ece6d7;
+      --accent: #1f6f68;
+      --accent-2: #b45a34;
+      --code: #f1eee6;
+    }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "PingFang SC", "Microsoft YaHei", sans-serif;
+      color: var(--ink);
+      background: var(--bg);
+      line-height: 1.75;
+    }
+    .shell {
+      display: grid;
+      grid-template-columns: minmax(210px, 280px) minmax(0, 1fr);
+      min-height: 100vh;
+    }
+    aside {
+      position: sticky;
+      top: 0;
+      height: 100vh;
+      padding: 28px 22px;
+      border-right: 1px solid var(--line);
+      background: #ebe5d7;
+      overflow: auto;
+    }
+    main {
+      max-width: 1040px;
+      width: 100%;
+      padding: 56px 56px 90px;
+    }
+    .eyebrow {
+      color: var(--accent-2);
+      font-size: 13px;
+      font-weight: 800;
+      letter-spacing: .08em;
+      text-transform: uppercase;
+      margin: 0 0 10px;
+    }
+    h1 {
+      font-size: clamp(30px, 4vw, 48px);
+      line-height: 1.12;
+      margin: 0 0 18px;
+      letter-spacing: 0;
+    }
+    h2 {
+      font-size: 26px;
+      line-height: 1.32;
+      margin: 48px 0 14px;
+      padding-top: 18px;
+      border-top: 1px solid var(--line);
+    }
+    h3 {
+      font-size: 20px;
+      margin: 34px 0 10px;
+      color: #23314d;
+    }
+    h4 {
+      font-size: 17px;
+      margin: 26px 0 8px;
+    }
+    p, li {
+      font-size: 16px;
+      color: #2b3343;
+    }
+    p { margin: 10px 0; }
+    ul { padding-left: 1.2rem; }
+    li { margin: 7px 0; }
+    a { color: var(--accent); text-decoration-thickness: 1px; text-underline-offset: 3px; }
+    code {
+      background: var(--code);
+      border: 1px solid var(--line);
+      border-radius: 5px;
+      padding: 1px 5px;
+      font-size: .92em;
+    }
+    pre {
+      overflow: auto;
+      background: #fff9ec;
+      color: #202838;
+      border: 1px solid #d8ccb8;
+      border-radius: 8px;
+      padding: 18px;
+      box-shadow: inset 4px 0 0 var(--accent);
+      white-space: pre-wrap;
+      word-break: break-word;
+    }
+    pre code {
+      display: block;
+      padding: 0;
+      border: 0;
+      background: transparent;
+      color: inherit;
+      line-height: 1.7;
+      font-size: 14px;
+    }
+    blockquote {
+      margin: 24px 0;
+      padding: 14px 18px;
+      border-left: 4px solid var(--accent);
+      background: #eef4ee;
+      color: #344033;
+    }
+    .table-wrap {
+      overflow-x: auto;
+      margin: 18px 0 26px;
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      background: var(--paper);
+    }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      min-width: 720px;
+    }
+    th, td {
+      padding: 12px 14px;
+      border-bottom: 1px solid var(--line);
+      vertical-align: top;
+      text-align: left;
+      font-size: 14px;
+    }
+    th {
+      background: #e7e0cf;
+      color: #26324a;
+      font-weight: 800;
+      white-space: nowrap;
+    }
+    tr:last-child td { border-bottom: 0; }
+    .topbar {
+      display: flex;
+      gap: 10px;
+      align-items: center;
+      flex-wrap: wrap;
+      margin-bottom: 28px;
+    }
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 38px;
+      padding: 8px 12px;
+      border: 1px solid var(--line);
+      border-radius: 7px;
+      background: var(--paper);
+      color: var(--ink);
+      text-decoration: none;
+      font-weight: 750;
+      font-size: 14px;
+    }
+    .primary { background: var(--accent); border-color: var(--accent); color: white; }
+    .toc-title {
+      margin: 0 0 12px;
+      font-size: 14px;
+      font-weight: 850;
+      color: #273247;
+    }
+    .toc a {
+      display: block;
+      padding: 7px 0;
+      color: #465064;
+      text-decoration: none;
+      font-size: 14px;
+      line-height: 1.45;
+      border-bottom: 1px solid rgba(23,32,51,.08);
+    }
+    .toc a.level-3 { padding-left: 14px; font-size: 13px; color: #626b78; }
+    .meta {
+      color: var(--muted);
+      font-size: 14px;
+      margin-bottom: 24px;
+    }
+    @media (max-width: 900px) {
+      .shell { display: block; }
+      aside { position: relative; height: auto; border-right: 0; border-bottom: 1px solid var(--line); }
+      main { padding: 34px 20px 70px; }
+      .toc { columns: 1; }
+      table { min-width: 640px; }
+    }
+  </style>
+</head>
+<body>
+  <div class="shell">
+    <aside>
+      <p class="toc-title">目录</p>
+      <nav class="toc">
+        <a class="level-2" href="#今日结论">今日结论</a>
+        <a class="level-2" href="#今日组织机制信号">今日组织机制信号</a>
+        <a class="level-2" href="#传统大厂与-ai-原生组织分组观察">传统大厂与 AI 原生组织分组观察</a>
+        <a class="level-2" href="#高价值变化卡片">高价值变化卡片</a>
+        <a class="level-3" href="#平台劳动规则的集体协商-公示与申诉">平台劳动规则的集体协商、公示与申诉</a>
+        <a class="level-2" href="#不是新闻而是机制">不是新闻而是机制</a>
+        <a class="level-2" href="#组织情报结论卡">组织情报结论卡</a>
+        <a class="level-3" href="#算法的管理效率包含争议处理与劳动者负担">算法的管理效率包含争议处理与劳动者负担</a>
+        <a class="level-3" href="#平台资产的可转让范围与运营连续性">平台资产的可转让范围与运营连续性</a>
+        <a class="level-2" href="#证据链与可信度">证据链与可信度</a>
+        <a class="level-2" href="#去伪存真记录">去伪存真记录</a>
+        <a class="level-2" href="#渠道索引补充">渠道索引补充</a>
+        <a class="level-2" href="#观察池-待核验池">观察池 / 待核验池</a>
+        <a class="level-3" href="#character-ai-的云与分发合同承接-72-小时补漏">Character.AI 的云与分发合同承接，72 小时补漏</a>
+        <a class="level-3" href="#海外-ai-原生岗位设计">海外 AI 原生岗位设计</a>
+        <a class="level-2" href="#公开知识库入库判断">公开知识库入库判断</a>
+      </nav>
+    </aside>
+    <main>
+      <div class="topbar">
+        <a class="btn primary" href="../index.html">返回研究源</a>
+        <a class="btn" href="./2026-11-27.md">查看 Markdown 原文</a>
+      </div>
+      <p class="eyebrow">Daily Scan</p>
+      <h1>2026-11-27 组织情报信息</h1>
+      <p class="meta">本页面由本地 Markdown 自动渲染生成，仍保留原始 md 文件作为知识库源文档。</p>
+      <article>
+        <blockquote>严格扫描窗口为 2026-11-26 08:34:07 至 2026-11-27 08:28:04（北京时间）。从上一期扫描终点连续接续，缺失自然日 0 天。72 小时补漏起点为 11 月 24 日 08:28:04。严格窗内出现的报道与其所述事件的原始时间分别记录。</blockquote>
+<h2 id="今日结论">今日结论</h2>
+<ul>
+<li><strong>平台的派单、计价和判责规则进入集体协商。</strong> 全国总工会 11 月 26 日通报，截至 11 月 10 日，18 家重点平台已完成协商签约。美团此前披露了本公司签约及骑手参与情况，网信办材料也记录了超时扣款和申诉规则的既有调整。本期增量是跨平台签约进度和条款范围的公开证据。规则在各站点的执行、实际收入与申诉结果仍待验证。</li>
+<li>严格窗口暂无达到 L3 的新增组织结构、人才制度或效率结论。前期 NVIDIA 董事会问责、Microsoft 365 可靠性整改、Amazon／Decart 拟引入团队均未见可核实的机制落地或结果更新。</li>
+<li>72 小时补漏中，Character.AI 出售程序增加了云与分发服务的合同承接问题。报道在严格窗内出现，所述异议在严格窗前提交。上一期关注的竞标资格与用户数据审查之外，还存在服务账号、使用权、付款义务和持续履约的衔接问题。补漏证据仅覆盖公开程序或当事方主张，最终裁定和运营结果待验证。</li>
+<li>国内搜索命中的 DeepSeek 部门扩招说法最早可追溯到 6 月报道。当前招聘页提供岗位可见性，部门编制、到岗与组织调整仍需其他证据。</li>
+</ul>
+<h2 id="今日组织机制信号">今日组织机制信号</h2>
+<div class="table-wrap"><table><thead><tr>
+<th>对象</th>
+<th>归属</th>
+<th>机制变量</th>
+<th>证据与阅读价值</th>
+</tr></thead><tbody>
+<tr>
+<td>美团、淘宝闪购、滴滴等平台</td>
+<td>严格窗披露、签约节点为 11 月 10 日</td>
+<td>劳动规则集体协商、规则公示、申诉人工复核</td>
+<td>A+B／L2，高（披露和美团签约）；核心结论限事实</td>
+</tr>
+<tr>
+<td>Character.AI</td>
+<td>窗内报道，异议提交早于严格窗</td>
+<td>云、分发与广告账号的合同承接及持续运营条件</td>
+<td>见观察池；持续观察</td>
+</tr>
+<tr>
+<td>Mistral、Harvey、ElevenLabs</td>
+<td>严格窗招聘页出现</td>
+<td>研究招聘、区域商业交付、产品营销接口</td>
+<td>A+C／L2（页面存在），机制 L1；持续观察</td>
+</tr>
+<tr>
+<td>NVIDIA／Microsoft／Amazon</td>
+<td>前期基线复查</td>
+<td>调查与合规职权、事故治理、技术与人员承接</td>
+<td>既有公开证据；背景参考</td>
+</tr>
+<tr>
+<td>DeepSeek</td>
+<td>历史翻倍报道重现</td>
+<td>拟招聘与实际人员配置的证据区分</td>
+<td>历史事件高置信，作为本期新增暂不采纳</td>
+</tr>
+</tbody></table></div>
+<h2 id="传统大厂与-ai-原生组织分组观察">传统大厂与 AI 原生组织分组观察</h2>
+<ul>
+<li>国内传统大厂覆盖腾讯、阿里、字节、美团、百度、京东、快手、小米、华为、网易、拼多多、蚂蚁、飞书／火山、B 站、滴滴、携程。美团、淘宝闪购及滴滴涉及全国总工会新披露的平台劳动规则协商。其他命中主要为历史层级调整、旧裁员和产品动态。</li>
+<li>海外传统大厂覆盖 Amazon、Google、Meta、Microsoft、Apple、Netflix、Salesforce、Adobe、NVIDIA、Shopify、Atlassian、GitLab、Stripe、Canva、Zapier。汇总页、证券诉讼招募与产业评论未提供新的正式汇报线、授权或实施结果。</li>
+<li>国内 AI 原生覆盖 DeepSeek、Kimi／月之暗面、智谱 AI、MiniMax、百川智能、阶跃星辰、零一万物、商汤日日新、面壁智能、昆仑万维／天工、秘塔 AI、无问芯穹、硅基流动。产品与融资线索按公开原始日期检查，相关机制判断以可见职责、制度或真实变化为限。</li>
+<li>海外 AI 原生覆盖 OpenAI、Anthropic、Perplexity、Mistral AI、Cohere、xAI、Character.AI、Inflection、Adept、Runway、Midjourney、ElevenLabs、Harvey、Cursor／Anysphere、Replit、Scale AI。Character.AI 案涉产品运营连续性，招聘板仅用于岗位信号核验。</li>
+<li>11 家同口径招聘板面合计 3,132 至 3,132，严格窗命中 9 条发布字段、1 条更新字段。去重后有三组较有价值的招聘事实进入观察池。职位库存持平包含增减抵消，实际编制走势未知。</li>
+</ul>
+<h2 id="高价值变化卡片">高价值变化卡片</h2>
+<h3 id="平台劳动规则的集体协商-公示与申诉">平台劳动规则的集体协商、公示与申诉</h3>
+<ul>
+<li><strong>L1 事实层</strong>。全国总工会 11 月 26 日在季度发布会上披露，截至 11 月 10 日，网约配送、网约车、网络货运、快递四个行业的 18 家重点平台完成协商签约，通报覆盖口径为 2,500 多万新就业形态劳动者。披露涉及派单和计价规则公开、美团及淘宝闪购取消超时扣款、滴滴和 T3 将当地小时最低工资标准列入协议，以及部分企业采用人工复核。各平台具体适用的条款不同。专家委员会、地方二次协商与履约评估仍处于拟推进阶段。<a href="https://www.chinanews.com/cj/2026/11-26/10738085.shtml">发布会报道</a> · <a href="https://www.meituan.com/news/NN261009181011040">美团历史签约披露</a></li>
+<li><strong>L2 机制判断层</strong>。部分平台劳动者的收入与压力曾直接受自动派单、时限和扣款规则影响。集体协商把劳动者代表、工会和平台纳入规则形成，公示和人工复核使规则变更与异常判责有明确接口。旧基线见 5 月网信办通报，超时扣款调整和申诉保护已有公开记录，本期证据涉及覆盖范围和签约进度。现有工具可见于平台积分和申诉机制，具体版本及工时口径未统一披露。<a href="https://www.cac.gov.cn/2026-05/08/c_1779979790806325.htm">网信办 5 月通报</a></li>
+<li><strong>L3 组织判断层</strong>。人工复核可能降低误罚、返工和争议成本，也可能增加处理等待和客服负荷。取消直接扣款后，积分、派单、奖励和站点规则仍可能改变行为压力。替代解释是合规签约先于实际执行，或公司把已有试点归入协议。缺平台间和城市间可比的履约、收入、工时和申诉数据，暂无效率或新组织结构结论。</li>
+<li><strong>证据、适用与待验证</strong>。A+B／L2 支持公开披露及美团签约的事实，置信度高，阅读价值为核心结论。全国数字来自发布会，媒体转述共用同一统计根。覆盖人数采用披露口径，实际受益人数未知。适用限平台用工，不能外推为正式雇员绩效或晋升制度。待核各地协议生效、合作站点一致性、人工复核覆盖与处理时长。公开范围限已公开的制度事实及来源。</li>
+</ul>
+<h2 id="不是新闻而是机制">不是新闻而是机制</h2>
+<div class="table-wrap"><table><thead><tr>
+<th>外部事件或历史基线</th>
+<th>对应组织问题</th>
+<th>效率与风险边界</th>
+</tr></thead><tbody>
+<tr>
+<td>平台签订劳动规则和算法协商协议</td>
+<td>分配、计价与判责规则的制定和监督主体增多</td>
+<td>协商与复核需要时间，是否减少反复申诉与误判取决于实际执行</td>
+</tr>
+<tr>
+<td>Character.AI 资产出售程序</td>
+<td>拟转让资产背后的服务合同、付款和运营责任能否同步移交</td>
+<td>专项审查可能增加短期交接时间，也可能暴露交割后中断风险。缺实际转移及服务结果数据</td>
+</tr>
+<tr>
+<td>Microsoft 365 高优先级整改</td>
+<td>事故后的治理节奏和工程执行需要不同证据</td>
+<td>原报道、事故报告及实际恢复实测分列，前两者尚未得到当期执行结果支持</td>
+</tr>
+<tr>
+<td>招聘板页面更新</td>
+<td>招聘职责、招聘进度和组织运行有各自证据</td>
+<td>页面、部门归属及日期可记录，工作交接、管理跨度与人员进出需另核</td>
+</tr>
+</tbody></table></div>
+<h2 id="组织情报结论卡">组织情报结论卡</h2>
+<h3 id="算法的管理效率包含争议处理与劳动者负担">算法的管理效率包含争议处理与劳动者负担</h3>
+<p>平台算法把时限、计价和评价变成高频管理决策。协商协议把部分决定纳入公示与复核程序，为误判和例外形成处理渠道。可核的结论限 L2 协议与公开条款事实。对实际效率的判断同时涉及配送履约、劳动强度、结算与人工复核成本，现有披露缺少这些指标的前后和分地区对照。</p>
+<h3 id="平台资产的可转让范围与运营连续性">平台资产的可转让范围与运营连续性</h3>
+<p>上期已经核实 Character.AI 出售程序与数据权利争议的事实边界。本期补漏让问题具体到云、分发和商业化服务能否继续使用，以及义务由谁承担。对拥有关键外部服务依赖的平台，潜在影响可表现为更长的交割等待、额外的法务与运营协调，或交接后服务不稳定。也可能只是债权人议价或破产程序下的权利保留。缺最终裁定、替代性安排及交割后的运行数据，因此保留为原卡的观察问题。</p>
+<h2 id="证据链与可信度">证据链与可信度</h2>
+<ul>
+<li><strong>事实验证</strong>。AnySearch 首轮覆盖四组公司，候选回查官方、案卷和报道。按发生、提交、公开披露和媒体再传播分开标记。法院案件入口可读，部分文书镜像访问受限。</li>
+<li><strong>机制验证</strong>。把法律程序、正式授权、招聘存在和结果区分开。涉及工作流程、决策速度、协作成本的推断均保留替代解释。</li>
+<li><strong>趋势验证</strong>。对照 11 月 25、26 日既有卡片、旧报道、招聘字段和可用历史索引。暂缺可比效率指标和可用于 L4 的内部数据。</li>
+<li><strong>覆盖限制</strong>。公众号、企业内网、员工私域与当日清晨索引不完整，交易所和法院未获全量实时记录。海外节假日、站点权限与索引延迟影响当期可见性。</li>
+</ul>
+<h2 id="去伪存真记录">去伪存真记录</h2>
+<ul>
+<li><strong>DeepSeek 扩招翻倍是旧报道。</strong> 第一财经 6 月 26 日、彭博与路透 6 月 25 日已有相同主要主张。当期“千人”聚合材料未提供新的官方人员数字或履历变动。职业页可核岗位类型，不能反推已完成的招聘规模。<a href="https://www.yicai.com/news/103247116.html">第一财经 6 月原文</a> · <a href="https://www.bloomberg.com/news/articles/2026-06-25/deepseek-plans-to-double-staff-across-all-departments-mqtlpz76">彭博报道</a> · <a href="https://talent.deepseek.com/">官方招聘</a></li>
+<li><strong>Character.AI 的报道时间晚于异议提交。</strong> 竞标方资格、拟议命令、合同承接和最终出售批准分别核验，未经法官确认的金额和条款保留当事方归属。论坛讨论回引案卷号，未构成额外独立证据。</li>
+<li><strong>NVIDIA、Microsoft 和 Amazon</strong>。律所投资者线索征集与复职评论未提供合规官任命。Code Red 的报道沿用此前路透来源，缺新结果。Amazon／Decart 仍以 11 月 23 日签约及拟承接团队为基线，未见交割或就任证据。<a href="https://www.sec.gov/Archives/edgar/data/1045810/000104581026000090/nvda-20261122.htm">NVIDIA 前期正式披露</a> · <a href="https://www.reuters.com/business/microsoft-declares-code-red-after-historic-outage-internal-memos-show-2026-11-24/">Microsoft 上期来源</a> · <a href="https://www.aboutamazon.com/news/company-news/amazon-decart-ai-optimization">Amazon 公告</a></li>
+<li><strong>平台算法协商</strong>。11 月 26 日是新披露日，签约截至 11 月 10 日。美团 10 月已披露签约，网信办 5 月已记录超时扣款措施。将 18 家企业作为协商覆盖，不能按标题认定 18 家同步取消扣款。相关进展与效果仍按具体公司和条款核对。</li>
+<li><strong>岗位板面去重</strong>。Mistral 的 Enterprise Controls 产品岗存在同 ID 旧版本。Harvey 新加坡 Customer Success Leader 此前有索引，Scale 同一 ID 的更新时间再变。撤页与重新上线均不用于判断裁员或组织重组。</li>
+</ul>
+<h2 id="渠道索引补充">渠道索引补充</h2>
+<div class="table-wrap"><table><thead><tr>
+<th>公开渠道</th>
+<th>可核范围</th>
+<th>证据边界</th>
+</tr></thead><tbody>
+<tr>
+<td><a href="https://www.cac.gov.cn/2026-05/08/c_1779979790806325.htm">网信办算法治理</a> · <a href="https://www.meituan.com/news/NN261009181011040">美团算法协商</a></td>
+<td>规则基线和企业公开签约</td>
+<td>A，无法覆盖所有平台和地区的履约情况</td>
+</tr>
+<tr>
+<td><a href="https://cases.stretto.com/chartech/">Stretto 公开案卷入口</a></td>
+<td>破产程序、案号、竞标及法院文件</td>
+<td>A，入口的静态日期可能落后于案卷更新</td>
+</tr>
+<tr>
+<td><a href="https://talent.deepseek.com/">DeepSeek 招聘</a></td>
+<td>公开招聘范围、职位及职责</td>
+<td>A，不提供实际人员编制</td>
+</tr>
+<tr>
+<td><a href="https://openai.com/careers/search/">OpenAI 招聘</a> · <a href="https://www.anthropic.com/careers/jobs">Anthropic 招聘</a></td>
+<td>招聘职位和团队范围</td>
+<td>A，发布时间和更新字段分别核验</td>
+</tr>
+</tbody></table></div>
+<ul>
+</ul>
+<h2 id="观察池-待核验池">观察池 / 待核验池</h2>
+<h3 id="character-ai-的云与分发合同承接-72-小时补漏">Character.AI 的云与分发合同承接，72 小时补漏</h3>
+<ul>
+<li><strong>L1 事实层</strong>。PPC Land 报道于北京时间 11 月 27 日 03:50 左右发布，所述 Google 有限异议（Dkt.254）于北京时间 11 月 26 日 04:43 左右提交，早于严格窗。报道据案卷称，Google 对拟转让账号所依附合同的识别、未偿款及买方履约保障提出异议。Dkt.255 涉及竞标方资格的拟议命令。公开案卷入口可读，单件下载受限，案卷详节保留待核。<a href="https://ppc.land/character-ais-10m-sale-faces-google-objection-over-5-5m-in-bills/">PPC Land 案卷报道</a> · <a href="https://cases.stretto.com/chartech/">Stretto 案件入口</a></li>
+<li><strong>L2 机制判断层</strong>。从原平台到新运营主体的账号控制、合同权利和付款义务可能不同步，由此增加交接协商并影响产品连续性。Google 的意见也可能主要服务于保全回款，报道引述其称服务仍继续。竞标方获准参与的媒体说法与书面命令状态仍要区分，异议亦未覆盖整笔交易。重点组织接口为法务、财务、基础设施和产品运营。</li>
+<li><strong>L3 组织判断层</strong>。最终受让、债务口径、日常运营和运行效果证据不足。待核法院签署文件所覆盖的资产、账户与合同，及相关条款是否在实际交接中生效。证据 C／L1，置信度中，阅读价值为持续观察。公开范围限报道的程序与立场。</li>
+</ul>
+<h3 id="海外-ai-原生岗位设计">海外 AI 原生岗位设计</h3>
+<div class="table-wrap"><table><thead><tr>
+<th>招聘事实（L1 事实层）</th>
+<th>机制假设（L2 判断层）</th>
+<th>组织判断边界（L3 判断层）</th>
+</tr></thead><tbody>
+<tr>
+<td><strong>Mistral</strong> 于北京时间 11 月 27 日 01:57 发布 EMEA 科研招聘岗。职责涵盖与研究负责人共定科学人才画像、职级校准、研究面试和研究条件。<a href="https://jobs.ashbyhq.com/mistral.ai/00338181-7584-435c-bb32-deb302ce5446">官方岗位</a></td>
+<td>研究招聘的人员标准、薪酬和可用算力可由 People 与 Research 共同讨论，可能降低筛选错配，也会增加校准沟通</td>
+<td>可属于既有团队的专业补位。未证编制增长、取舍权限或缩短招聘周期</td>
+</tr>
+<tr>
+<td><strong>Harvey</strong> 于北京时间 11 月 26 日中午出现亚太商业负责人和新加坡定制方案 Legal Engineer。前者覆盖区域商业团队与经营，后者覆盖需求范围、交付采用和产品反馈。<a href="https://jobs.ashbyhq.com/harvey/eaa58e64-f64e-4c80-850f-c0bb9972a90b">商业岗</a> · <a href="https://jobs.ashbyhq.com/harvey/acfe78ba-48f7-4668-b990-44c39f95a8c0">交付岗</a></td>
+<td>两种本地职责可能缩短客户需求与交付之间的沟通，也可能增加定制负担或区域审批层</td>
+<td>可能是已有工作的补员。暂无实线汇报、团队配置和上线周期证据</td>
+</tr>
+<tr>
+<td><strong>ElevenLabs</strong> 于北京时间 11 月 27 日 02:07 出现 Agents 产品营销岗，职责涵盖企业定位、发布与销售支持。<a href="https://elevenlabs.io/careers/945abd50-09e6-4adb-b59b-0f0d17b9d507/product-marketing-agents">官方岗位</a></td>
+<td>主题营销职责聚焦同一产品线，可降低产品与销售口径反复对齐的成本</td>
+<td>也可能是一次产品推广或旧团队增补，独立业务单元及收入责任待核</td>
+</tr>
+</tbody></table></div>
+<p>三组均为 A+C／L2 岗位出现事实，置信度高，阅读价值为持续观察。外部聚合索引仅佐证日期和可见性，实际机制均为 L1。适用范围限所列地区、团队及公开职责。关心的是实际岗位到岗、权责生效和效率指标，当前没有对应结果。</p>
+<h2 id="公开知识库入库判断">公开知识库入库判断</h2>
+<p>平台劳动规则协商可维护为 L2 公开事实观察，区分本期披露与既有签约和调整。继续保留前期已核的治理与协议事实。未达互证门槛的新增机制假设列入观察池，本期没有 L3 新结论或 L4 方法。公开镜像使用公开来源与脱敏正文。原始检索及交叉核验材料留在本地。</p>
+      </article>
+    </main>
+  </div>
+</body>
+</html>
