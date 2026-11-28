@@ -1,0 +1,407 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>组织情报信息</title>
+  <style>
+    :root {
+      color-scheme: light;
+      --bg: #f6f7f1;
+      --paper: #fffdf8;
+      --ink: #172033;
+      --muted: #697181;
+      --line: #ded8c9;
+      --soft: #ece6d7;
+      --accent: #1f6f68;
+      --accent-2: #b45a34;
+      --code: #f1eee6;
+    }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "PingFang SC", "Microsoft YaHei", sans-serif;
+      color: var(--ink);
+      background: var(--bg);
+      line-height: 1.75;
+    }
+    .shell {
+      display: grid;
+      grid-template-columns: minmax(210px, 280px) minmax(0, 1fr);
+      min-height: 100vh;
+    }
+    aside {
+      position: sticky;
+      top: 0;
+      height: 100vh;
+      padding: 28px 22px;
+      border-right: 1px solid var(--line);
+      background: #ebe5d7;
+      overflow: auto;
+    }
+    main {
+      max-width: 1040px;
+      width: 100%;
+      padding: 56px 56px 90px;
+    }
+    .eyebrow {
+      color: var(--accent-2);
+      font-size: 13px;
+      font-weight: 800;
+      letter-spacing: .08em;
+      text-transform: uppercase;
+      margin: 0 0 10px;
+    }
+    h1 {
+      font-size: clamp(30px, 4vw, 48px);
+      line-height: 1.12;
+      margin: 0 0 18px;
+      letter-spacing: 0;
+    }
+    h2 {
+      font-size: 26px;
+      line-height: 1.32;
+      margin: 48px 0 14px;
+      padding-top: 18px;
+      border-top: 1px solid var(--line);
+    }
+    h3 {
+      font-size: 20px;
+      margin: 34px 0 10px;
+      color: #23314d;
+    }
+    h4 {
+      font-size: 17px;
+      margin: 26px 0 8px;
+    }
+    p, li {
+      font-size: 16px;
+      color: #2b3343;
+    }
+    p { margin: 10px 0; }
+    ul { padding-left: 1.2rem; }
+    li { margin: 7px 0; }
+    a { color: var(--accent); text-decoration-thickness: 1px; text-underline-offset: 3px; }
+    code {
+      background: var(--code);
+      border: 1px solid var(--line);
+      border-radius: 5px;
+      padding: 1px 5px;
+      font-size: .92em;
+    }
+    pre {
+      overflow: auto;
+      background: #fff9ec;
+      color: #202838;
+      border: 1px solid #d8ccb8;
+      border-radius: 8px;
+      padding: 18px;
+      box-shadow: inset 4px 0 0 var(--accent);
+      white-space: pre-wrap;
+      word-break: break-word;
+    }
+    pre code {
+      display: block;
+      padding: 0;
+      border: 0;
+      background: transparent;
+      color: inherit;
+      line-height: 1.7;
+      font-size: 14px;
+    }
+    blockquote {
+      margin: 24px 0;
+      padding: 14px 18px;
+      border-left: 4px solid var(--accent);
+      background: #eef4ee;
+      color: #344033;
+    }
+    .table-wrap {
+      overflow-x: auto;
+      margin: 18px 0 26px;
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      background: var(--paper);
+    }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      min-width: 720px;
+    }
+    th, td {
+      padding: 12px 14px;
+      border-bottom: 1px solid var(--line);
+      vertical-align: top;
+      text-align: left;
+      font-size: 14px;
+    }
+    th {
+      background: #e7e0cf;
+      color: #26324a;
+      font-weight: 800;
+      white-space: nowrap;
+    }
+    tr:last-child td { border-bottom: 0; }
+    .topbar {
+      display: flex;
+      gap: 10px;
+      align-items: center;
+      flex-wrap: wrap;
+      margin-bottom: 28px;
+    }
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 38px;
+      padding: 8px 12px;
+      border: 1px solid var(--line);
+      border-radius: 7px;
+      background: var(--paper);
+      color: var(--ink);
+      text-decoration: none;
+      font-weight: 750;
+      font-size: 14px;
+    }
+    .primary { background: var(--accent); border-color: var(--accent); color: white; }
+    .toc-title {
+      margin: 0 0 12px;
+      font-size: 14px;
+      font-weight: 850;
+      color: #273247;
+    }
+    .toc a {
+      display: block;
+      padding: 7px 0;
+      color: #465064;
+      text-decoration: none;
+      font-size: 14px;
+      line-height: 1.45;
+      border-bottom: 1px solid rgba(23,32,51,.08);
+    }
+    .toc a.level-3 { padding-left: 14px; font-size: 13px; color: #626b78; }
+    .meta {
+      color: var(--muted);
+      font-size: 14px;
+      margin-bottom: 24px;
+    }
+    @media (max-width: 900px) {
+      .shell { display: block; }
+      aside { position: relative; height: auto; border-right: 0; border-bottom: 1px solid var(--line); }
+      main { padding: 34px 20px 70px; }
+      .toc { columns: 1; }
+      table { min-width: 640px; }
+    }
+  </style>
+</head>
+<body>
+  <div class="shell">
+    <aside>
+      <p class="toc-title">目录</p>
+      <nav class="toc">
+        <a class="level-2" href="#今日结论">今日结论</a>
+        <a class="level-2" href="#今日组织机制信号">今日组织机制信号</a>
+        <a class="level-2" href="#传统大厂与-ai-原生组织分组观察">传统大厂与 AI 原生组织分组观察</a>
+        <a class="level-2" href="#高价值变化卡片">高价值变化卡片</a>
+        <a class="level-3" href="#美团集团层面-ai-投入的财务归属">美团集团层面 AI 投入的财务归属</a>
+        <a class="level-2" href="#不是新闻而是机制">不是新闻而是机制</a>
+        <a class="level-2" href="#组织情报结论卡">组织情报结论卡</a>
+        <a class="level-3" href="#ai-投入的成本归属与实际协作是两个可检验的变量">AI 投入的成本归属与实际协作是两个可检验的变量</a>
+        <a class="level-2" href="#证据链与可信度">证据链与可信度</a>
+        <a class="level-2" href="#去伪存真记录">去伪存真记录</a>
+        <a class="level-2" href="#渠道索引补充">渠道索引补充</a>
+        <a class="level-2" href="#观察池-待核验池">观察池 / 待核验池</a>
+        <a class="level-3" href="#快手生活服务的业务归属">快手生活服务的业务归属</a>
+        <a class="level-3" href="#阶跃星辰的研发-商业与激励接口-72-小时补漏">阶跃星辰的研发、商业与激励接口（72 小时补漏）</a>
+        <a class="level-3" href="#sap-的人员配置讨论-名单外">SAP 的人员配置讨论（名单外）</a>
+        <a class="level-3" href="#cohere-与-mistral-的岗位边界">Cohere 与 Mistral 的岗位边界</a>
+        <a class="level-2" href="#公开知识库入库判断">公开知识库入库判断</a>
+      </nav>
+    </aside>
+    <main>
+      <div class="topbar">
+        <a class="btn primary" href="../index.html">返回研究源</a>
+        <a class="btn" href="./2026-11-28.md">查看 Markdown 原文</a>
+      </div>
+      <p class="eyebrow">Daily Scan</p>
+      <h1>2026-11-28 组织情报信息</h1>
+      <p class="meta">本页面由本地 Markdown 自动渲染生成，仍保留原始 md 文件作为知识库源文档。</p>
+      <article>
+        <blockquote>严格扫描窗口为 2026-11-27 08:28:04 至 2026-11-28 08:30:54（北京时间），接续上一期扫描终点，缺失自然日 0 天。72 小时补漏从 11 月 25 日 08:30:54 起算。事件发生、正式披露和媒体转述分别归档。</blockquote>
+<h2 id="今日结论">今日结论</h2>
+<ul>
+<li><strong>美团披露集团层面 AI 投入增加。</strong> 11 月 27 日三季报将其列为未分配经营亏损环比增加的部分原因，同期资金管理相关收益亦有变化。可核增量落在集团投入及其财务归属。实际由谁立项、业务部门如何接入、员工是否减少重复工作，公开材料尚无可比证据。<a href="https://www1.hkexnews.hk/listedco/listconews/sehk/2026/1127/2026112700341.pdf">港交所三季报</a> · <a href="https://www.mrjjxw.com/articles/2026-11-27/4661724.html">业绩会报道</a></li>
+<li><strong>本期无达到 L3 的组织结构、绩效晋升或组织效率新结论。</strong> 快手生活服务的架构报道仍待公司或独立来源确认。海外观察中，SAP 的新报道提高了人员调整讨论存在的可信度，具体规模、调整方式和生效均待核。Cohere 的招聘说明提出跨职能模型发布职责，Mistral 的岗位说明明确研究与市场之间的接口，两者均在观察池。</li>
+</ul>
+<h2 id="今日组织机制信号">今日组织机制信号</h2>
+<div class="table-wrap"><table><thead><tr>
+<th>对象</th>
+<th>时间和范围</th>
+<th>涉及的机制</th>
+<th>证据及阅读价值</th>
+</tr></thead><tbody>
+<tr>
+<td>美团</td>
+<td>11 月 27 日披露，集团与业务分部</td>
+<td>跨业务 AI 投入的财务归属，集团能力与业务使用的接口</td>
+<td>A／B，官方披露高置信、投入归因为单一公司披露根 L1，背景参考；新预算机制待核</td>
+</tr>
+<tr>
+<td>快手</td>
+<td>11 月 27 日媒体报道，所述实施日期未明</td>
+<td>生活服务的独立业务单元、交易和商业化分工</td>
+<td>B／L1，中置信，持续观察</td>
+</tr>
+<tr>
+<td>SAP（邻近样本）</td>
+<td>11 月 26 日首报，27 日路透新增采访</td>
+<td>人员配置讨论、员工代表与实施程序</td>
+<td>B，调整讨论中置信、持续观察；实际重组和人数低置信</td>
+</tr>
+<tr>
+<td>Cohere、Mistral</td>
+<td>11 月 28 日凌晨公开招聘字段</td>
+<td>模型发布责任，研究与市场的反馈接口</td>
+<td>A／L1，岗位字段高置信，运行成效低置信，持续观察</td>
+</tr>
+<tr>
+<td>Character.AI</td>
+<td>窗内出现案卷解读，所涉异议早于严格窗</td>
+<td>资产出售中的数据、合同与运营责任</td>
+<td>案卷程序高置信、背景参考；无当期新裁定确认</td>
+</tr>
+</tbody></table></div>
+<h2 id="传统大厂与-ai-原生组织分组观察">传统大厂与 AI 原生组织分组观察</h2>
+<ul>
+<li><strong>国内传统大厂。</strong> 查询覆盖腾讯、阿里、字节、美团、百度、京东、快手、小米、华为、网易、拼多多、蚂蚁、飞书／火山、B 站、滴滴、携程。美团有财务口径新增，快手有生活服务归属的单源候选。阿里、腾讯、字节、百度的同期组织回顾多指向此前已发生的调整。公开检索暂未取得新的绩效、晋升、职级或管理跨度制度原文。<a href="https://www.digitalchina.gov.cn/2026/xwzx/szkx/202611/t20261127_5397418.htm">大厂架构回顾</a></li>
+<li><strong>海外传统大厂。</strong> 查询覆盖 Amazon、Google、Meta、Microsoft、Apple、Netflix、Salesforce、Adobe、NVIDIA、Shopify、Atlassian、GitLab、Stripe、Canva、Zapier。继续核对 NVIDIA 合规授权、Microsoft 365 事故整改与 Amazon／Decart 团队承接。目前未查到三条跟进线的正式实施增量。SAP 作为名单外企业软件样本进入观察池。</li>
+<li><strong>国内 AI 原生。</strong> 查询覆盖 DeepSeek、Kimi／月之暗面、智谱 AI、MiniMax、百川智能、阶跃星辰、零一万物、商汤日日新、面壁智能、昆仑万维／天工、秘塔 AI、无问芯穹、硅基流动。新增检索命中主要为融资、产品及未注明新增时间的招聘。Kimi 全球招聘页与 DeepSeek 在聘岗位提供历史职责基线。72 小时补漏收录阶跃星辰的公开调查，所述管理分工和人才激励争议多发生在更早时期。<a href="https://www.kimi.com/news/kimi-global-hiring">Kimi 全球招聘</a> · <a href="https://talent.deepseek.com/">DeepSeek 招聘</a></li>
+<li><strong>海外 AI 原生。</strong> 查询覆盖 OpenAI、Anthropic、Perplexity、Mistral AI、Cohere、xAI、Character.AI、Inflection、Adept、Runway、Midjourney、ElevenLabs、Harvey、Cursor／Anysphere、Replit、Scale AI。发布安全治理的旧报道、法院案卷以及岗位页分别观察。岗位页可记录招聘职责，实际委派权、入职、绩效制度和团队编制需要另外核验。11 家同口径招聘板公开职位合计从 3,132 降至 3,127。严格窗命中 9 条发布字段及 1 条更新字段，含重挂与旧岗刷新。</li>
+</ul>
+<h2 id="高价值变化卡片">高价值变化卡片</h2>
+<h3 id="美团集团层面-ai-投入的财务归属">美团集团层面 AI 投入的财务归属</h3>
+<ul>
+<li><strong>L1 事实层。</strong> 11 月 27 日披露的 2026 年三季报称，未分配经营亏损由二季度约 12 亿元增至三季度约 17 亿元，公司同时列出集团层面 AI 投入增加及资金管理相关公允价值收益减少等原因。三季度研发开支约 77 亿元，同比增长 11.3%，与已披露的二季度约 77 亿元处于同一量级。业绩会将研发、客服和运营列为 AI 应用场景。披露未单列集团 AI 投入金额，也未给出各环节新增岗位或工时节省数据。<a href="https://www.hkexnews.hk/listedco/listconews/sehk/2026/1127/2026112700341.pdf">港交所三季报</a> · <a href="https://www.meituan.com/news/NN260828216013035">美团二季报解读</a> · <a href="https://www.mrjjxw.com/articles/2026-11-27/4661724.html">业绩会报道</a></li>
+<li><strong>L2 机制判断层。</strong> 新披露使一部分 AI 投入在业务分部之外可见。可能的机制是集团承担部分通用能力成本，业务部门将能力嵌入研发、客服或运营流程。共享投入可能减少重复建设，业务接入也可能增加排期、验收、质量回流和责任界面上的协调。财务分部归属能定位披露范围，审批权、排期权和验收责任尚无证据。已披露的商家经营工作台属于商家侧应用，其覆盖数据不用于估计内部生产率。</li>
+<li><strong>L3 组织判断层。</strong> 判断集团投入是否改变组织效率，至少需要同一业务流程的等待、复核、积压、返工和员工负担的前后口径。跨部门共用能力也可能沿用既有预算分类，费用增长可能来自供应价格、支出确认时点或项目周期。集团与各场景的分工、人员规模、管理跨度、绩效考核与生产率结果尚不确定。</li>
+<li><strong>证据和适用边界。</strong> A 为公司交易所公告，B 为记者对同次业绩会的报道，财务口径与管理层用途说明可交叉核对，财务数字共用公司披露根。公司披露该口径的置信度高，投入归因的证据为单一公司根 L1。预算和运行机制为假设、置信度低。阅读价值为背景参考，仅公开披露事实和机制边界。待核集团投入覆盖哪些共用能力、业务分部如何验收，以及节省时间最终体现为减少工作负担还是提高吞吐。</li>
+</ul>
+<h2 id="不是新闻而是机制">不是新闻而是机制</h2>
+<div class="table-wrap"><table><thead><tr>
+<th>公开信号</th>
+<th>对应组织变量</th>
+<th>效率与风险边界</th>
+</tr></thead><tbody>
+<tr>
+<td>集团 AI 投入上升</td>
+<td>成本承担层级、资源调用、业务验收</td>
+<td>复用可能减少重复投入，排期与质量复核也可能带来新等待</td>
+</tr>
+<tr>
+<td>SAP 调整讨论见诸报道</td>
+<td>经营意向、岗位转换方式、员工代表介入</td>
+<td>各地区程序、岗位过渡和客户交接会影响执行节奏；现无本轮实施数据</td>
+</tr>
+<tr>
+<td>AI 岗位公开职责</td>
+<td>职能接口及招聘需求的公开表达</td>
+<td>页面变化可由重发、替补或地区调整引起，实际配置与运行效果另待证实</td>
+</tr>
+<tr>
+<td>Character.AI 案卷解读再次传播</td>
+<td>拟交割资产与服务依赖</td>
+<td>交割程序可暴露云和分发服务的衔接风险，服务中断及最终义务仍未确认</td>
+</tr>
+</tbody></table></div>
+<h2 id="组织情报结论卡">组织情报结论卡</h2>
+<h3 id="ai-投入的成本归属与实际协作是两个可检验的变量">AI 投入的成本归属与实际协作是两个可检验的变量</h3>
+<p>美团本期披露明确了集团层面有新增投入，提供了识别成本承担范围的证据。分析组织效率时，成本口径需和真实工作流对照，看模型能力由谁供给、业务团队能否在所需时间调用、例外由谁处理、质量和员工负担如何变化。本期证据支持财务事实观察，缺费用分摊方案、实际权责及工作流对照，未形成效率结论。</p>
+<h2 id="证据链与可信度">证据链与可信度</h2>
+<ul>
+<li><strong>事实验证。</strong> AnySearch 首轮与反向检索覆盖传统大厂及 AI 原生公司。核对美团港交所公告及二季度基线，区分记者独立采访与同一披露的转载。SAP 两轮采访仅在讨论方向有重合，消息人士重合与否未知。</li>
+<li><strong>机制验证。</strong> 财务归属、岗位说明、组织权责与实际运行分开查证。公开索引、声明和公司报告可解释其各自所述层面。</li>
+<li><strong>趋势验证。</strong> 对照前期日报、旧公司公告和已有岗位记录。缺少可比工时、重复劳动、员工自主权、目标变化及交付质量，本期无达到 L3 或 L4 的新组织结论。</li>
+<li><strong>覆盖边界。</strong> 企业内部制度、部分公众号内容及法院单件文书的可访问性有限。节假日及截稿附近的索引延迟会影响海外覆盖。未检出信号只反映本期可见公开证据。</li>
+</ul>
+<h2 id="去伪存真记录">去伪存真记录</h2>
+<ul>
+<li><strong>美团骑手社保。</strong> 三季报同期报道说继续推进骑手保障。养老保险补贴全国开放与首批到账已分别在 2025 年公布；职业伤害保障是另一项安排。本期未把旧覆盖口径当作新制度。11 月 27 日“工资准时险”说法已被美团否认，且平台骑手结算与正式雇员薪酬制度的适用范围不同。<a href="https://www.meituan.com/news/NN251027085008876">养老补贴历史公告</a> · <a href="https://finance.sina.com.cn/roll/2026-11-27/doc-inkaefwe7804192.shtml">工资险声明报道</a></li>
+<li><strong>快手生活服务。</strong> 多家转载回引新浪科技。11 月 24 日界面新闻还报道补贴可能重启，亦未获快手确认。结构调整和业务继续经营可以并存，核验范围包括生效日、服务商接口与交易责任。<a href="https://wap.cj.sina.cn/7x24/5241842">新浪首发</a> · <a href="https://finance.sina.com.cn/tech/roll/2026-11-24/doc-inizvkmk8972878.shtml">界面新闻反向材料</a></li>
+<li><strong>支付宝。</strong> 11 月 27 日公开亮相属于新披露活动，任命和业务归并的报道可追溯至 9 月。本期观察限角色公开露面。<a href="https://finance.sina.com.cn/jjxw/2026-11-27/doc-inkaefwi3239251.shtml">当期报道</a></li>
+<li><strong>SAP 岗位数量。</strong> 彭博的精确数字经多家转述仍是同一根。路透次日另访两人，未独立确认该数字，其中员工代表未获通知的说法来自一位消息人士。SAP 在彭博引述的回应中只陈述常规组织审视。2024 年正式项目包含自愿离职及内部再培训，历史上的受影响岗位与净减少人数口径有别。<a href="https://www.bloomberg.com/news/articles/2026-11-26/sap-weighs-cutting-at-least-10-000-positions-in-ai-restructuring">彭博首报</a> · <a href="https://live.euronext.com/en/financial-news/software-giant-sap-weighs-major-job-cuts-ai-transforms-sector-sources-say">路透报道</a> · <a href="https://www.sap.com/investors/en/financial-news/ad-hoc-news/2024/01/311d894d-b3e3-405a-99e3-8169a0345ca4.html">SAP 历史公告</a></li>
+<li><strong>海外既有线索。</strong> NVIDIA 复任后的市场报道和归因争议未证明实际合规任命或授权改变。Microsoft 事故后的整改报道沿用既有消息，实际可靠性待后续数据。Amazon 发布的是签约与拟承接安排，仍待公开交割证据。Character.AI 的 Maryland 异议解读在北京时间 11 月 28 日 08:19 更新，官方立场已于 11 月 25 日清晨公开。复查公开案卷镜像，所列最近记录仍为美国当地 11 月 25 日。<a href="https://www.sec.gov/Archives/edgar/data/1045810/000104581026000090/nvda-20261122.htm">NVIDIA 正式披露</a> · <a href="https://www.reuters.com/business/microsoft-declares-code-red-after-historic-outage-internal-memos-show-2026-11-24/">微软事件报道</a> · <a href="https://www.aboutamazon.com/news/company-news/amazon-decart-ai-optimization">Amazon 公告</a> · <a href="https://cases.stretto.com/chartech/">Character.AI 案卷入口</a></li>
+<li><strong>历史报道与新组织制度。</strong> 11 月 27 日的大厂架构综述回顾年内多轮调整。OpenAI、Anthropic 安全讨论在前期已公开，搜索复现的讨论及产品发行记录未提供本期新审批或发布授权证据。<a href="https://www.digitalchina.gov.cn/2026/xwzx/szkx/202611/t20261127_5397418.htm">大厂架构回顾</a> · <a href="https://www.axios.com/2026/11/24/anthropic-openai-unreleased-ai-safety-risks">前期安全讨论报道</a></li>
+</ul>
+<h2 id="渠道索引补充">渠道索引补充</h2>
+<div class="table-wrap"><table><thead><tr>
+<th>公开渠道</th>
+<th>可核事项</th>
+<th>证据边界</th>
+</tr></thead><tbody>
+<tr>
+<td><a href="https://www.meituan.com/investor-relations">美团投资者关系</a> · <a href="https://www1.hkexnews.hk/listedco/listconews/sehk/2026/1127/2026112700341.pdf">港交所三季报</a></td>
+<td>公告日、分部与集团财务归属</td>
+<td>对同一公司披露交叉查阅，独立采访另标</td>
+</tr>
+<tr>
+<td><a href="https://www.sap.com/investors/en/financial-news/ad-hoc-news/2024/01/311d894d-b3e3-405a-99e3-8169a0345ca4.html">SAP 历史项目公告</a></td>
+<td>正式项目对岗位及转换方式的定义</td>
+<td>历史基线，不证实当前调整</td>
+</tr>
+<tr>
+<td><a href="https://cases.stretto.com/chartech/">Stretto 案卷索引</a></td>
+<td>程序、文件及法院记录入口</td>
+<td>静态日期可能落后，部分文件正文访问受限</td>
+</tr>
+<tr>
+<td><a href="https://openai.com/careers/search/">OpenAI 招聘</a> · <a href="https://www.anthropic.com/careers/jobs">Anthropic 招聘</a></td>
+<td>团队和岗位职责的公开表达</td>
+<td>岗位链接和时间字段可作复查依据，编制与到岗未知</td>
+</tr>
+</tbody></table></div>
+<ul>
+</ul>
+<h2 id="观察池-待核验池">观察池 / 待核验池</h2>
+<h3 id="快手生活服务的业务归属">快手生活服务的业务归属</h3>
+<ul>
+<li><strong>L1 事实层。</strong> 新浪科技 11 月 27 日 09:07 报道生活服务事业部近期撤销，业务归入电商及商业化体系。原报道还指出，7 月已由电商及商业化负责人兼管生活服务。截至报道发稿公司未回应。转发与解读沿用同一信源，B／L1，置信度中，阅读价值为持续观察。<a href="https://wap.cj.sina.cn/7x24/5241842">新浪首发</a> · <a href="https://ir.kuaishou.com/zh-hans/news-releases/news-release-details/kuaishoukejifabu2026niandisanjiduweijingshenhecaiwuyeji">快手经营基线</a></li>
+<li><strong>L2 机制判断层。</strong> 若属实，变化在于管理职责的集中延伸到业务单元边界。交易与广告可以复用商家运营和销售，也可能形成两套目标、商家接口和协调成本。另一个解释是沿既有管理关系调整编制及财务口径，线下交付职责仍由原团队承担。</li>
+<li><strong>L3 组织判断层。</strong> 生效日期、预算权、披露口径和实际人员变动均待核。公开范围限新闻主张与已公开经营基线。暂缺业务退出、AI 替代和效率变化的证据。</li>
+</ul>
+<h3 id="阶跃星辰的研发-商业与激励接口-72-小时补漏">阶跃星辰的研发、商业与激励接口（72 小时补漏）</h3>
+<ul>
+<li><strong>L1 事实层。</strong> 11 月 26 日刊发的调查描述了此前的技术研发与商业化治理分工、产品方向调整中的团队合并，以及离职者期权回购争议。细节以报道及其所引受访信息为限，实际发生日期早于严格窗。C／L1，置信度中，阅读价值为持续观察。<a href="https://www.huxiu.com/article/4908693.html?f=rss">调查原文</a></li>
+<li><strong>L2 机制判断层。</strong> 商业目标和技术路线由不同负责人统筹可能使各自更聚焦，也可能增加产品方向、算力、人员和预算优先级的协调。股权条款执行争议还涉及长期激励的兑现预期。公司所述上市合规解释和员工的权益主张均有待进一步核对。</li>
+<li><strong>L3 组织判断层。</strong> 缺正式权责、可核制度文本、代表性样本与效率数据。观察范围限公开报道所述治理与激励问题，适用边界为该公司特定时期。</li>
+</ul>
+<h3 id="sap-的人员配置讨论-名单外">SAP 的人员配置讨论（名单外）</h3>
+<ul>
+<li><strong>L1 事实层。</strong> 彭博于美东 11 月 26 日报道公司研究较大规模调整，路透于北京时间 11 月 27 日 17:17 报道两位消息人士提及准备调整岗位，一位称员工代表尚未获通知。两条报道对讨论方向有交叉，数字、覆盖职能及时间均未获正式确认。B／L1，两轮报道方向一致，采访对象独立性未知，具体口径缺少互证，整体置信度中，阅读价值为持续观察。<a href="https://www.bloomberg.com/news/articles/2026-11-26/sap-weighs-cutting-at-least-10000-positions-in-ai-restructuring">彭博首报</a> · <a href="https://live.euronext.com/en/financial-news/sap-seeks-cut-sizeable-number-jobs-sources-say">路透报道</a></li>
+<li><strong>L2 机制判断层。</strong> 可能涉及技能、预算与岗位重新匹配，也可能主要来自投资组合转向和费用约束。员工代表沟通、岗位转换和客户交接属于会影响实施节奏的过程，当前缺本轮方案、覆盖地区、角色和工具口径。</li>
+<li><strong>L3 组织判断层。</strong> 任何结构、净裁减、AI 替代及效率判断均待验证。关键未决点是是否形成正式方案、岗位影响与净变动的区别，以及对客户和员工工作负担的实际影响。公开范围限报道可追溯的讨论及其限制。</li>
+</ul>
+<h3 id="cohere-与-mistral-的岗位边界">Cohere 与 Mistral 的岗位边界</h3>
+<div class="table-wrap"><table><thead><tr>
+<th>L1 事实层</th>
+<th>L2 机制判断层</th>
+<th>L3 组织判断层及待验证问题</th>
+</tr></thead><tbody>
+<tr>
+<td><strong>Cohere 模型交付技术项目经理。</strong> 公告板发布字段为北京时间 11 月 28 日 04:28。岗位说明提出由同一负责人统筹自研及第三方模型从候选到正式可用的常设项目，按月度发布节奏与评测安排，协调建模、推理、工程、交付、安全及法务，使用模型登记册、决策日志及上线门槛。<a href="https://jobs.ashbyhq.com/cohere/d24de9b2-35b6-456a-843e-a9e01d2facf2">官方岗位</a></td>
+<td>相较既有客户交付项目经理，新增可见职责聚焦模型生命周期。集中维护发布标准可能减少跨组交接，也可能形成协调瓶颈。岗位说明可用于理解治理设计，安全、法务及项目经理的实际批准权未知。</td>
+<td>也可能是既有流程补员或把分散职责写入一个岗位。是否已经按所述频率运行，异常时谁有权延期，发布等待、返工和风险有何变化，均待核。</td>
+</tr>
+<tr>
+<td><strong>Mistral 模型与研究产品营销负责人。</strong> 公告板发布字段为北京时间 11 月 28 日 00:39。岗位说明覆盖研究成果向技术材料和企业使用证据的转译，并将市场、评测及企业需求反馈至研究与产品。<a href="https://jobs.ashbyhq.com/mistral.ai/9eb41a88-1a06-4dbe-9ec5-12919821c6b3">官方岗位</a></td>
+<td>与既有企业产品等营销岗位相比，新增可见职责明确对接模型和研究。设置专门接口可能缩短解释与校准时间，也可能增加内容评审。</td>
+<td>也可能是品牌传播补位。该岗位能否影响研究优先级、是否拥有团队和配置权限、反馈采纳如何记录，公开证据有限。</td>
+</tr>
+</tbody></table></div>
+<p>两项均为 A／L1 单根官方岗位观察，岗位字段置信度高，实际机制变化置信度低，阅读价值为持续观察。所有推断限相关产品及职责范围。第三方岗位聚合或转发沿用同一招聘数据。公开范围限岗位记录和证据边界。</p>
+<h2 id="公开知识库入库判断">公开知识库入库判断</h2>
+<p>美团公司公告与二季度基线可维护为来源索引，投入归因属于同一公司根，保留为事实材料。快手、阶跃星辰、SAP、招聘与案卷线索作为持续观察或背景。未新增 L3 组织机制结论及 L4 方法。公开镜像仅含脱敏正文与可公开来源，原始检索和核验材料留本地。</p>
+      </article>
+    </main>
+  </div>
+</body>
+</html>
